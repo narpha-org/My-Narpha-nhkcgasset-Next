@@ -1,0 +1,14 @@
+version: '3'
+services:
+  next:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    command: bash -c " npm install && npm run dev"
+    ports:
+      - "3000:3000"
+    networks:
+      - laravel_sail
+networks:
+  laravel_sail:
+    external: true
