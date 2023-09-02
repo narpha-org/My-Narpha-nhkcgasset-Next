@@ -1,0 +1,15 @@
+version: "3"
+services:
+  next:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    networks:
+      - laravel_web
+networks:
+  laravel_web:
+    external: true
