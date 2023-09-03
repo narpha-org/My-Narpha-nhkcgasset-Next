@@ -8,5 +8,5 @@ COPY ./ ./
 RUN apk update && apk add bash
 RUN npm install
 
-CMD ["npm", "run", "dev:dev"]
+CMD ["npm", "run", "dev"]
 

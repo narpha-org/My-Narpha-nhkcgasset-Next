@@ -3,13 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:dev": "set NODE_ENV=development & NODE_OPTIONS='--inspect' next dev",
-    "dev:prod": "set NODE_ENV=production & NODE_OPTIONS='--inspect' next dev",
-    "build": "next build",
-    "start": "next start",
-    "start:dev": "set NODE_ENV=development & next start",
-    "start:prod": "set NODE_ENV=production & next start",
+    "dev": "NODE_ENV=development NODE_OPTIONS='--inspect' next dev",
+    "build": "NODE_ENV=production next build",
+    "start": "NODE_ENV=production next start",
     "lint": "next lint"
   },
   "dependencies": {
