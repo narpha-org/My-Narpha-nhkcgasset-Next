@@ -1,0 +1,7 @@
+query GetSample($id: ID!) {
+  sample(id: $id) {
+    created_at
+    id
+    text
+  }
+}

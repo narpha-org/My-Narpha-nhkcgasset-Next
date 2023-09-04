@@ -2,7 +2,14 @@ import type { NextPage, GetStaticProps, GetStaticPaths } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import styles from '../../styles/Home.module.css'
-import { apiClient, apiServer } from "../../utils/apiClient";
+import { apolloClient, apolloServer } from "../../utils/apolloClient";
+import { ApolloQueryResult, FetchResult } from "@apollo/client";
+import {
+  Sample,
+  SamplesAllDocument,
+  GetSampleDocument,
+  DeleteSampleDocument,
+} from "./../../types/generated/graphql";
 import { TestItem, TestItemResponse } from "../../types/TestItem";
 
 interface Props {
@@ -11,19 +18,24 @@ interface Props {
 
 export const getStaticPaths: GetStaticPaths = async () => {
 
-  let data: TestItem[] = []
+  let data: Sample[] = []
 
-  await apiServer.get<TestItemResponse[]>('testAll')
-    .then((res) => {
+  await apolloServer
+    .query({
+      query: SamplesAllDocument,
+    })
+    .then((res: ApolloQueryResult<{
+      samplesAll: Sample[];
+    }>) => {
 
-      data = res.data
+      data = res.data.samplesAll
 
     }).catch(err => {
       console.error(`[test][getStaticPaths]`)
       console.error(err)
     })
 
-  const paths = data.map((testItem: TestItem) => ({
+  const paths = data.map((testItem: Sample) => ({
     params: { id: String(testItem.id) },
   }))
 
@@ -35,14 +47,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 
-  const ret = await apiServer.get<TestItem>(`test/${params!.id}`)
+  const ret: ApolloQueryResult<{
+    sample: Sample;
+  }> = await apolloServer
+    .query({
+      query: GetSampleDocument,
+      variables: {
+        id: params!.id,
+      },
+    })
 
   console.log(`[test][getStaticProps]`)
-  console.log(ret.data)
+  console.log(JSON.stringify(ret.data.sample))
 
   return {
     props: {
-      testItem: ret.data,
+      testItem: ret.data.sample,
     },
   }
 }
@@ -62,7 +82,13 @@ const TestItemPage: NextPage<Props> = ({ testItem }: Props) => {
   async function handleDelete(): Promise<void> {
     try {
 
-      await apiClient.delete<boolean>(`test/${testItem.id}/delete`)
+      await apolloClient
+        .mutate({
+          mutation: DeleteSampleDocument,
+          variables: {
+            id: testItem.id,
+          },
+        })
         .then(res => {
           console.log(res.data)
         })

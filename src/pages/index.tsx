@@ -4,7 +4,13 @@ import Link from 'next/link';
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
-import { apiClient, apiServer } from "../utils/apiClient";
+import { apolloClient, apolloServer } from "../utils/apolloClient";
+import { ApolloQueryResult, FetchResult } from "@apollo/client";
+import {
+  Sample,
+  SamplesAllDocument,
+  CreateSampleDocument,
+} from "./../types/generated/graphql";
 import { TestItem, TestItemResponse } from "../types/TestItem";
 
 interface Props {
@@ -13,12 +19,18 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps = async () => {
 
-  let data: TestItem[] = []
+  let data: Sample[] = []
 
-  await apiServer.get<TestItemResponse[]>('testAll')
-    .then((res) => {
+  await apolloServer
+    .query({
+      query: SamplesAllDocument,
+      fetchPolicy: "network-only",
+    })
+    .then((res: ApolloQueryResult<{
+      samplesAll: Sample[];
+    }>) => {
 
-      data = res.data
+      data = res.data.samplesAll
 
     }).catch(err => {
       console.error(`[index][getServerSideProps]`)
@@ -32,19 +44,27 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
 }
 
-export async function postData(): Promise<TestItem | null> {
+export async function postData(): Promise<Sample | null> {
 
-  let data: TestItem = {
-    id: 0,
+  let data: Sample = {
+    id: '0',
     text: '',
     updated_at: '',
     created_at: ''
   }
 
-  return apiClient.post<TestItemResponse>('test', { text: `検証 テスト_${Math.ceil(Math.random() * 100)}` })
-    .then(res => {
-      const item: TestItemResponse = res.data
-      data = { ...item }
+  return apolloClient
+    .mutate({
+      mutation: CreateSampleDocument,
+      variables: {
+        text: `検証 テスト_${Math.ceil(Math.random() * 100)}`
+      }
+    })
+    .then((res: FetchResult<{
+      createSample: Sample;
+    }>) => {
+      // const item: TestItemResponse = res.data.createSample
+      data = res.data!.createSample
       console.log(data)
       return data
     }).catch(e => {
@@ -77,11 +97,9 @@ const Home: NextPage<Props> = (props) => {
           Welcome to Next.js!
         </h1>
         <ul>{props.data.map((elem: TestItem) => {
-          return <>
-            <Link href={`/test/${elem.id}`} key={elem.id}>
-              <li key={elem.id}>{elem.text}</li>
-            </Link>
-          </>
+          return <Link href={`/test/${elem.id}`} key={elem.id}>
+            <li key={elem.id}>{elem.text}</li>
+          </Link>
         })}</ul>
         {/* <h2>{props.data.text}</h2> */}
 
