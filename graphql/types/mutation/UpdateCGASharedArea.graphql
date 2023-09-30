@@ -1,0 +1,8 @@
+mutation UpdateCGASharedArea($id: ID!, $desc: String!, $valid_flg: Boolean!) {
+  updateCGASharedArea(id: $id, desc: $desc, valid_flg: $valid_flg) {
+    __typename
+    id
+    desc
+    valid_flg
+  }
+}

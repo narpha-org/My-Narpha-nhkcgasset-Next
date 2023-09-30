@@ -1,0 +1,8 @@
+mutation DeleteCgaRegistrantAffiliation($id: ID!) {
+  deleteCGARegistrantAffiliation(id: $id) {
+    __typename
+    id
+    desc
+    valid_flg
+  }
+}

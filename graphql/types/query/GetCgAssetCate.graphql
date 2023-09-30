@@ -1,0 +1,8 @@
+query GetCgAssetCate($id: ID!) {
+  CGAssetCate(id: $id) {
+    id
+    desc
+    valid_flg
+    created_at
+  }
+}

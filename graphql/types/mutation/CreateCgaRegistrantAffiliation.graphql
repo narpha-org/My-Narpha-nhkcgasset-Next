@@ -1,0 +1,8 @@
+mutation CreateCgaRegistrantAffiliation($desc: String!, $valid_flg: Boolean!) {
+  createCGARegistrantAffiliation(desc: $desc, valid_flg: $valid_flg) {
+    __typename
+    id
+    desc
+    valid_flg
+  }
+}

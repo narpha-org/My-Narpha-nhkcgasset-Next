@@ -1,0 +1,6 @@
+query GetCgaBroadcastingRightsValid {
+  CGABroadcastingRightsValid {
+    desc
+    id
+  }
+}

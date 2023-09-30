@@ -1,0 +1,9 @@
+query GetUserRoleCGAssetStore($id: ID!) {
+  UserRoleCGAssetStore(id: $id) {
+    id
+    role
+    desc
+    valid_flg
+    created_at
+  }
+}

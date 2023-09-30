@@ -1,0 +1,13 @@
+mutation CreateUserRoleCGAssetStore(
+  $role: RoleCGAssetStore!
+  $desc: String!
+  $valid_flg: Boolean!
+) {
+  createUserRoleCGAssetStore(role: $role, desc: $desc, valid_flg: $valid_flg) {
+    __typename
+    id
+    role
+    desc
+    valid_flg
+  }
+}

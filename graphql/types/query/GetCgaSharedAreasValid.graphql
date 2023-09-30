@@ -1,0 +1,6 @@
+query GetCgaSharedAreasValid {
+  CGASharedAreasValid {
+    desc
+    id
+  }
+}

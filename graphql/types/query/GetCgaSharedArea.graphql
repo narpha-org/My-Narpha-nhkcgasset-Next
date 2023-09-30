@@ -1,0 +1,8 @@
+query GetCgaSharedArea($id: ID!) {
+  CGASharedArea(id: $id) {
+    id
+    desc
+    valid_flg
+    created_at
+  }
+}

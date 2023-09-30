@@ -4,6 +4,7 @@ services:
     build: .
     env_file:
       - ./.env.development
+      - ./.env.development.aws
     volumes:
       - .:/usr/src/app
     command: bash -c " npm install && npm run dev"

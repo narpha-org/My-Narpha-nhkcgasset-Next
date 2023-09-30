@@ -1,0 +1,6 @@
+query GetCgaRegistrantAffilliationsValid {
+  CGARegistrantAffiliationsValid {
+    desc
+    id
+  }
+}

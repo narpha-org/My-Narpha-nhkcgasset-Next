@@ -1,0 +1,8 @@
+query GetCGABroadcastingRight($id: ID!) {
+  CGABroadcastingRight(id: $id) {
+    id
+    desc
+    valid_flg
+    created_at
+  }
+}

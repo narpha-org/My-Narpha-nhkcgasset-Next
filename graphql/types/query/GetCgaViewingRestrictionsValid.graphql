@@ -1,0 +1,6 @@
+query GetCgaViewingRestrictionsValid {
+  CGAViewingRestrictionsValid {
+    desc
+    id
+  }
+}

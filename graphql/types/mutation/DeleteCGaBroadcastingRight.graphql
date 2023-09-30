@@ -1,0 +1,8 @@
+mutation DeleteCGABroadcastingRight($id: ID!) {
+  deleteCGABroadcastingRight(id: $id) {
+    __typename
+    id
+    desc
+    valid_flg
+  }
+}

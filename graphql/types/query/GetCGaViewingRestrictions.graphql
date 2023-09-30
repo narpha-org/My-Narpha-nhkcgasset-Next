@@ -1,0 +1,16 @@
+query GetCgaViewingRestrictions($first: Int!, $page: Int!) {
+  CGAViewingRestrictions(first: $first, page: $page) {
+    data {
+      id
+      desc
+      valid_flg
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}

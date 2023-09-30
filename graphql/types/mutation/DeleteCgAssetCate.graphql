@@ -1,0 +1,8 @@
+mutation DeleteCgAssetCate($id: ID!) {
+  deleteCGAssetCate(id: $id) {
+    __typename
+    id
+    desc
+    valid_flg
+  }
+}

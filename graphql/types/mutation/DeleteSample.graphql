@@ -1,0 +1,7 @@
+mutation DeleteSample($id: ID!) {
+  deleteSample(id: $id) {
+    __typename
+    id
+    text
+  }
+}

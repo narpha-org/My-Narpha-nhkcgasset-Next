@@ -1,0 +1,17 @@
+query GetUserRoleCGAssetStores($first: Int!, $page: Int!) {
+  UserRoleCGAssetStores(first: $first, page: $page) {
+    data {
+      id
+      role
+      desc
+      valid_flg
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}

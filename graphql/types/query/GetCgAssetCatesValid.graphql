@@ -1,0 +1,6 @@
+query GetCgAssetCatesValid {
+  CGAssetCatesValid {
+    desc
+    id
+  }
+}

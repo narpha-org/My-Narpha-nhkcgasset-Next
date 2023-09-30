@@ -1,0 +1,9 @@
+mutation DeleteUserRoleCGAssetStore($id: ID!) {
+  deleteUserRoleCGAssetStore(id: $id) {
+    __typename
+    id
+    role
+    desc
+    valid_flg
+  }
+}

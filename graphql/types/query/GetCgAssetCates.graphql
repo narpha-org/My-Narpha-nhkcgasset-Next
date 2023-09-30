@@ -1,0 +1,16 @@
+query GetCgAssetCates($first: Int!, $page: Int!) {
+  CGAssetCates(first: $first, page: $page) {
+    data {
+      id
+      desc
+      valid_flg
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
