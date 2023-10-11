@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from "next/link"
 
-import { getClient as apolloServer } from "@/lib/apolloServer";
+import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgAssetCate,

@@ -104,7 +104,7 @@ export const CGAssetClient: React.FC<CGAssetClientProps> = ({
                   {elem.assetImages ? (
                     <>
                       <Image
-                        src={(elem.assetImages && elem.assetImages[0] ? elem.assetImages[0].url as string : "/images/asset_image_notfound.png")}
+                        src={(elem.assetImages && elem.assetImages[0] ? elem.assetImages[0].thumb_url as string : "/images/asset_image_notfound.png")}
                         alt={elem.asset_id}
                         width={500}
                         height={276}

@@ -5,6 +5,7 @@ services:
     env_file:
       - ./.env.development
       - ./.env.development.aws
+      - ./.env.development.okta
     volumes:
       - .:/usr/src/app
     command: bash -c " npm install && npm run dev"

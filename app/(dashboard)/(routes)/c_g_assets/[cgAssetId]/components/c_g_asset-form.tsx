@@ -7,8 +7,9 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { Trash } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 
-import { apolloClient } from "@/lib/apolloClient";
+import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgAsset,
@@ -18,9 +19,9 @@ import {
   CgaBroadcastingRight,
   CgaSharedArea,
   CgAssetTag,
-  CgAssetImage,
-  CgAssetVideo,
-  CgAsset3Dcg,
+  // CgAssetImage,
+  // CgAssetVideo,
+  // CgAsset3Dcg,
   CreateCgAssetDocument,
   UpdateCgAssetDocument,
   DeleteCgAssetDocument,
@@ -43,8 +44,8 @@ import { AlertModal } from "@/components/modals/alert-modal"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/components/ui/text-area"
-import ImageUpload from "@/components/ui/image-upload"
-import FileUpload from "@/components/ui/file-upload"
+import ImageUpload, { UploadImageProps } from "@/components/ui/image-upload"
+import FileUpload, { UploadFileProps } from "@/components/ui/file-upload"
 
 const formSchema = z.object({
   asset_id: z.string().min(1, {
@@ -99,9 +100,9 @@ const formSchema = z.object({
     .regex(/^[^/].+[^/]$/, {
       message: "アップロード場所 は最初と最後に / は使用できません。",
     }),
-  assetImages: z.object({ file_name: z.string(), url: z.string(), file_path: z.string() }).array(),
-  assetVideos: z.object({ file_name: z.string(), url: z.string(), file_path: z.string() }).array(),
-  asset3DCGs: z.object({ file_name: z.string(), url: z.string(), file_path: z.string() }).array(),
+  assetImages: z.object({ file_name: z.string(), url: z.string(), file_path: z.string(), thumb_file_name: z.string(), thumb_url: z.string(), thumb_file_path: z.string() }).array(),
+  assetVideos: z.object({ file_name: z.string(), url: z.string(), file_path: z.string(), thumb_file_name: z.string(), thumb_url: z.string(), thumb_file_path: z.string() }).array(),
+  asset3DCGs: z.object({ file_name: z.string(), url: z.string(), file_path: z.string(), thumb_file_name: z.string(), thumb_url: z.string(), thumb_file_path: z.string() }).array(),
   valid_flg: z.boolean().default(true).optional(),
 });
 
@@ -126,6 +127,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
 }) => {
   const params = useParams();
   const router = useRouter();
+  const { data: session, status } = useSession()
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -154,9 +156,9 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
       return assetTag?.tag
     }).join(','),
     asset_media_base: initialData?.asset_media_base as string | undefined,
-    assetImages: initialData?.assetImages as CgAssetImage[],
-    assetVideos: initialData?.assetVideos as CgAssetVideo[],
-    asset3DCGs: initialData?.asset3DCGs as CgAsset3Dcg[]
+    assetImages: initialData?.assetImages as UploadImageProps[],
+    assetVideos: initialData?.assetVideos as UploadImageProps[],
+    asset3DCGs: initialData?.asset3DCGs as UploadFileProps[]
   } : {
     asset_id: '',
     assetCateId: '',
@@ -198,7 +200,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
             variables: {
               input: {
                 id: params.cgAssetId,
-                user_id: 101,
+                user_id: (session?.user as { userId: string }).userId,
                 ...data,
                 ...additionalData
               }
@@ -216,7 +218,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
             mutation: CreateCgAssetDocument,
             variables: {
               input: {
-                user_id: 101,
+                user_id: (session?.user as { userId: string }).userId,
                 ...data,
                 ...additionalData
               }
@@ -559,7 +561,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                   <FormLabel>アセット画像</FormLabel>
                   <FormControl>
                     <ImageUpload
-                      value={field.value.map((image) => image.url)}
+                      value={field.value as UploadImageProps[]}
                       disabled={loading}
                       onChange={({ file_name, url, file_path }) => field.onChange([...field.value, { file_name, url, file_path }])}
                       onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
@@ -577,7 +579,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                   <FormLabel>アセット動画</FormLabel>
                   <FormControl>
                     <FileUpload
-                      value={field.value.map((file) => file.url)}
+                      value={field.value as UploadFileProps[]}
                       disabled={loading}
                       onChange={({ file_name, url, file_path }) => field.onChange([...field.value, { file_name, url, file_path }])}
                       onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
@@ -596,7 +598,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                   <FormLabel>アセット3DCG</FormLabel>
                   <FormControl>
                     <FileUpload
-                      value={field.value.map((file) => file.url)}
+                      value={field.value as UploadFileProps[]}
                       disabled={loading}
                       onChange={({ file_name, url, file_path }) => field.onChange([...field.value, { file_name, url, file_path }])}
                       onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}

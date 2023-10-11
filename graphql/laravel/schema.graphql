@@ -58,6 +58,12 @@ type Query {
   "Find a single CGAssetVideo by an identifying attribute."
   CGAssetVideo("Search by primary key." id: ID): CGAssetVideo
 
+  "Find a single OktaSession by an identifying attribute."
+  getSessionAndUser(sessionToken: String!): OktaSession
+
+  "Find a single OktaVerificationToken by an identifying attribute."
+  useVerificationToken(input: UseVerificationTokenInput!): OktaVerificationToken
+
   "Find a single Sample by an identifying attribute."
   sample("Search by primary key." id: ID): Sample
 
@@ -65,13 +71,13 @@ type Query {
   samplesAll: [Sample!]!
 
   "Find a single user by an identifying attribute."
-  user(
-    "Search by primary key."
-    id: ID
+  getUser(id: ID!): User
 
-    "Search by email address."
-    email: String
-  ): User
+  "Find a single user by an identifying attribute."
+  getUserByEmail(email: String!): User
+
+  "Find a single user by an identifying attribute."
+  getUserByAccount(input: GetUserByAccountInput!): User
 
   "Find a single UserRoleCGAssetStore by an identifying attribute."
   UserRoleCGAssetStore("Search by primary key." id: ID): UserRoleCGAssetStore
@@ -235,18 +241,6 @@ type Query {
     page: Int
   ): SamplePaginator!
 
-  "List multiple users."
-  users(
-    "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
-    name: String
-
-    "Limits number of fetched items."
-    first: Int! = 10
-
-    "The offset from which items are returned."
-    page: Int
-  ): UserPaginator!
-
   "List multiple UserRoleCGAssetStore."
   UserRoleCGAssetStores(
     "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
@@ -350,6 +344,9 @@ type Mutation {
     file_name: String!
     url: String!
     file_path: String!
+    thumb_file_name: String!
+    thumb_url: String!
+    thumb_file_path: String!
     revised_user_id: ID!
   ): CGAsset3DCG
 
@@ -358,6 +355,9 @@ type Mutation {
     file_name: String!
     url: String!
     file_path: String!
+    thumb_file_name: String!
+    thumb_url: String!
+    thumb_file_path: String!
   ): CGAsset3DCG
 
   "Delete a CGAsset3DCG."
@@ -378,6 +378,9 @@ type Mutation {
     file_name: String!
     url: String!
     file_path: String!
+    thumb_file_name: String!
+    thumb_url: String!
+    thumb_file_path: String!
     revised_user_id: ID!
   ): CGAssetImage
 
@@ -386,6 +389,9 @@ type Mutation {
     file_name: String!
     url: String!
     file_path: String!
+    thumb_file_name: String!
+    thumb_url: String!
+    thumb_file_path: String!
   ): CGAssetImage
 
   "Delete a CGAssetImage."
@@ -410,6 +416,9 @@ type Mutation {
     file_name: String!
     url: String!
     file_path: String!
+    thumb_file_name: String!
+    thumb_url: String!
+    thumb_file_path: String!
     revised_user_id: ID!
   ): CGAssetVideo
 
@@ -418,10 +427,33 @@ type Mutation {
     file_name: String!
     url: String!
     file_path: String!
+    thumb_file_name: String!
+    thumb_url: String!
+    thumb_file_path: String!
   ): CGAssetVideo
 
   "Delete a CGAssetVideo."
   deleteCGAssetVideo(id: ID!): CGAssetVideo
+
+  "Link a OktaAccount."
+  linkAccount(account: LinkAccountInput!): OktaAccount
+
+  "Unlink a OktaAccount."
+  unlinkAccount(input: UnlinkAccountInput!): OktaAccount
+
+  "Create a OktaSession."
+  createSession(input: CreateSessionInput!): OktaSession
+
+  "Update a OktaSession."
+  updateSession(input: UpdateSessionInput!): OktaSession
+
+  "Delete a OktaSession."
+  deleteSession(sessionToken: String!): OktaSession
+
+  "Create a OktaVerificationToken."
+  createVerificationToken(
+    input: CreateVerificationTokenInput!
+  ): OktaVerificationToken
 
   "Create a Sample."
   createSample(text: String): Sample
@@ -431,6 +463,15 @@ type Mutation {
 
   "Delete a Sample."
   deleteSample(id: ID!): Sample
+
+  "Create a OktaSession."
+  createUser(user: CreateUserInput!): User
+
+  "Update a OktaSession."
+  updateUser(user: UpdateUserInput!): User
+
+  "Delete a OktaSession."
+  deleteUser(userId: ID!): User
 
   "Create a UserRoleCGAssetStore."
   createUserRoleCGAssetStore(
@@ -809,6 +850,9 @@ input CGAssetImageInput {
 
   "リソースファイルパス"
   file_path: String!
+  thumb_file_name: String!
+  thumb_url: String!
+  thumb_file_path: String!
 }
 
 "アセット動画"
@@ -821,6 +865,9 @@ input CGAssetVideoInput {
 
   "リソースファイルパス"
   file_path: String!
+  thumb_file_name: String!
+  thumb_url: String!
+  thumb_file_path: String!
 }
 
 "アセット3DCG"
@@ -833,6 +880,9 @@ input CGAsset3DCGInput {
 
   "リソースファイルパス"
   file_path: String!
+  thumb_file_name: String!
+  thumb_url: String!
+  thumb_file_path: String!
 }
 
 """
@@ -854,6 +904,15 @@ type CGAsset3DCG {
 
   "リソースファイルパス"
   file_path: String!
+
+  "サムネイルファイル名"
+  thumb_file_name: String
+
+  "サムネイルURL"
+  thumb_url: String
+
+  "サムネイルファイルパス"
+  thumb_file_path: String
 
   "When the CGAsset3DCG was created."
   created_at: DateTime!
@@ -902,6 +961,15 @@ type CGAssetImage {
 
   "リソースファイルパス"
   file_path: String!
+
+  "サムネイルファイル名"
+  thumb_file_name: String
+
+  "サムネイルURL"
+  thumb_url: String
+
+  "サムネイルファイルパス"
+  thumb_file_path: String
 
   "When the CGAssetImage was created."
   created_at: DateTime!
@@ -957,11 +1025,134 @@ type CGAssetVideo {
   "リソースファイルパス"
   file_path: String!
 
+  "サムネイルファイル名"
+  thumb_file_name: String
+
+  "サムネイルURL"
+  thumb_url: String
+
+  "サムネイルファイルパス"
+  thumb_file_path: String
+
   "When the CGAssetVideo was created."
   created_at: DateTime!
 
   "When the CGAssetVideo was last updated."
   updated_at: DateTime!
+}
+
+"""
+OktaAccount.
+ユーザーアカウント（Next.js）
+
+unique([provider, providerAccountId])
+"""
+type OktaAccount {
+  "Unique primary key."
+  id: ID!
+
+  user: User!
+  type: String!
+  provider: String!
+  providerAccountId: String!
+  refresh_token: String
+  refresh_token_expires_in: Int
+  access_token: String
+  expires_at: Int
+  token_type: String
+  scope: String
+  id_token: String
+  session_state: String
+  oauth_token_secret: String
+  oauth_token: String
+
+  "When the account was created."
+  created_at: DateTime!
+
+  "When the account was last updated."
+  updated_at: DateTime!
+}
+
+input LinkAccountInput {
+  userId: ID!
+  type: String!
+  provider: String!
+  providerAccountId: String!
+  refresh_token: String
+  refresh_token_expires_in: Int
+  access_token: String
+  expires_at: Int
+  token_type: String
+  scope: String
+  id_token: String
+  session_state: String
+  oauth_token_secret: String
+  oauth_token: String
+}
+
+input UnlinkAccountInput {
+  providerAccountId: String
+  provider: String
+}
+
+"""
+OktaSession.
+ユーザーセッション（Next.js）
+"""
+type OktaSession {
+  "Unique primary key."
+  id: ID!
+
+  expires: DateTime
+  sessionToken: String
+  user: User
+
+  "When the OktaSession was created."
+  created_at: DateTime!
+
+  "When the OktaSession was last updated."
+  updated_at: DateTime!
+}
+
+input CreateSessionInput {
+  sessionToken: String
+  userId: ID
+  expires: DateTime
+}
+
+input UpdateSessionInput {
+  sessionToken: String
+}
+
+"""
+OktaVerificationToken.
+認証トークン（Next.js）
+"""
+type OktaVerificationToken {
+  "Unique primary key."
+  id: ID!
+
+  identifier: String
+  token: String
+  expires: DateTime
+  user: User
+
+  "When the OktaVerificationToken was created."
+  created_at: DateTime!
+
+  "When the OktaVerificationToken was last updated."
+  updated_at: DateTime!
+}
+
+input UseVerificationTokenInput {
+  identifier: String
+  token: String
+}
+
+input CreateVerificationTokenInput {
+  identifier: String
+  expires: DateTime
+  token: String
 }
 
 """
@@ -997,16 +1188,61 @@ type User {
   email: String!
 
   "When the email was verified."
-  email_verified_at: DateTime
+  emailVerified: DateTime
+
+  "Image."
+  image: String
 
   "CGアセットストア ロール"
   roleCGAssetStore: UserRoleCGAssetStore
+
+  accounts: [OktaAccount]
+  sessions: [OktaSession]
+  verificationTokens: [OktaVerificationToken]
 
   "When the account was created."
   created_at: DateTime!
 
   "When the account was last updated."
   updated_at: DateTime!
+}
+
+input GetUserByAccountInput {
+  providerAccountId: String!
+  provider: String!
+}
+
+input CreateUserInput {
+  "Non-unique name."
+  name: String!
+
+  "Unique email address."
+  email: String!
+
+  "When the email was verified."
+  emailVerified: DateTime
+  image: String
+
+  "CGアセットストア ロール"
+  user_role_cgas_id: ID
+}
+
+input UpdateUserInput {
+  "Unique primary key."
+  id: ID!
+
+  "Non-unique name."
+  name: String!
+
+  "Unique email address."
+  email: String!
+
+  "When the email was verified."
+  emailVerified: DateTime
+  image: String
+
+  "CGアセットストア ロール"
+  user_role_cgas_id: ID
 }
 
 """
@@ -1172,15 +1408,6 @@ type SamplePaginator {
 
   "A list of Sample items."
   data: [Sample!]!
-}
-
-"A paginated list of User items."
-type UserPaginator {
-  "Pagination information about the list of items."
-  paginatorInfo: PaginatorInfo!
-
-  "A list of User items."
-  data: [User!]!
 }
 
 "A paginated list of UserRoleCGAssetStore items."

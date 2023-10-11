@@ -45,18 +45,27 @@ query GetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
         file_name
         url
         file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
       }
       assetVideos {
         id
         file_name
         url
         file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
       }
       asset3DCGs {
         id
         file_name
         url
         file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
       }
       assetTags {
         id

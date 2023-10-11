@@ -5,7 +5,7 @@ import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 
-import { apolloClient } from "@/lib/apolloClient";
+import { apolloClient } from "@/lib/apollo-client";
 import {
   DeleteCgaSharedAreaDocument,
 } from "@/graphql/generated/graphql";

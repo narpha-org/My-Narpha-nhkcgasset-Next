@@ -14,9 +14,9 @@ import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 import { DashboardClient } from './components/client';
 
 export const metadata: Metadata = {
-  title: 'ダッシュボード',
+  title: 'NHK CGアセットストア',
   openGraph: {
-    title: 'ダッシュボード',
+    title: 'NHK CGアセットストア',
     ...commonMetadataOpenGraph,
   }
 }

@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast"
 import { Trash } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
 
-import { apolloClient } from "@/lib/apolloClient";
+import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgaRegistrantAffiliation,

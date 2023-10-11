@@ -31,16 +31,25 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     assetVideos {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     asset3DCGs {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     assetTags {
       tag

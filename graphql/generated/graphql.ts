@@ -238,6 +238,12 @@ export type CgAsset3Dcg = {
   file_path: Scalars['String']['output'];
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  /** サムネイルファイル名 */
+  thumb_file_name?: Maybe<Scalars['String']['output']>;
+  /** サムネイルファイルパス */
+  thumb_file_path?: Maybe<Scalars['String']['output']>;
+  /** サムネイルURL */
+  thumb_url?: Maybe<Scalars['String']['output']>;
   /** When the CGAsset3DCG was last updated. */
   updated_at: Scalars['DateTime']['output'];
   /** URL */
@@ -250,6 +256,9 @@ export type CgAsset3DcgInput = {
   file_name: Scalars['String']['input'];
   /** リソースファイルパス */
   file_path: Scalars['String']['input'];
+  thumb_file_name: Scalars['String']['input'];
+  thumb_file_path: Scalars['String']['input'];
+  thumb_url: Scalars['String']['input'];
   /** URL */
   url: Scalars['String']['input'];
 };
@@ -306,6 +315,12 @@ export type CgAssetImage = {
   file_path: Scalars['String']['output'];
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  /** サムネイルファイル名 */
+  thumb_file_name?: Maybe<Scalars['String']['output']>;
+  /** サムネイルファイルパス */
+  thumb_file_path?: Maybe<Scalars['String']['output']>;
+  /** サムネイルURL */
+  thumb_url?: Maybe<Scalars['String']['output']>;
   /** When the CGAssetImage was last updated. */
   updated_at: Scalars['DateTime']['output'];
   /** URL */
@@ -318,6 +333,9 @@ export type CgAssetImageInput = {
   file_name: Scalars['String']['input'];
   /** リソースファイルパス */
   file_path: Scalars['String']['input'];
+  thumb_file_name: Scalars['String']['input'];
+  thumb_file_path: Scalars['String']['input'];
+  thumb_url: Scalars['String']['input'];
   /** URL */
   url: Scalars['String']['input'];
 };
@@ -394,6 +412,12 @@ export type CgAssetVideo = {
   file_path: Scalars['String']['output'];
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  /** サムネイルファイル名 */
+  thumb_file_name?: Maybe<Scalars['String']['output']>;
+  /** サムネイルファイルパス */
+  thumb_file_path?: Maybe<Scalars['String']['output']>;
+  /** サムネイルURL */
+  thumb_url?: Maybe<Scalars['String']['output']>;
   /** When the CGAssetVideo was last updated. */
   updated_at: Scalars['DateTime']['output'];
   /** URL */
@@ -406,6 +430,9 @@ export type CgAssetVideoInput = {
   file_name: Scalars['String']['input'];
   /** リソースファイルパス */
   file_path: Scalars['String']['input'];
+  thumb_file_name: Scalars['String']['input'];
+  thumb_file_path: Scalars['String']['input'];
+  thumb_url: Scalars['String']['input'];
   /** URL */
   url: Scalars['String']['input'];
 };
@@ -464,6 +491,52 @@ export type CreateCgAssetInput = {
   viewingRestrictionId?: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type CreateSessionInput = {
+  expires?: InputMaybe<Scalars['DateTime']['input']>;
+  sessionToken?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type CreateUserInput = {
+  /** Unique email address. */
+  email: Scalars['String']['input'];
+  /** When the email was verified. */
+  emailVerified?: InputMaybe<Scalars['DateTime']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
+  /** Non-unique name. */
+  name: Scalars['String']['input'];
+  /** CGアセットストア ロール */
+  user_role_cgas_id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type CreateVerificationTokenInput = {
+  expires?: InputMaybe<Scalars['DateTime']['input']>;
+  identifier?: InputMaybe<Scalars['String']['input']>;
+  token?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GetUserByAccountInput = {
+  provider: Scalars['String']['input'];
+  providerAccountId: Scalars['String']['input'];
+};
+
+export type LinkAccountInput = {
+  access_token?: InputMaybe<Scalars['String']['input']>;
+  expires_at?: InputMaybe<Scalars['Int']['input']>;
+  id_token?: InputMaybe<Scalars['String']['input']>;
+  oauth_token?: InputMaybe<Scalars['String']['input']>;
+  oauth_token_secret?: InputMaybe<Scalars['String']['input']>;
+  provider: Scalars['String']['input'];
+  providerAccountId: Scalars['String']['input'];
+  refresh_token?: InputMaybe<Scalars['String']['input']>;
+  refresh_token_expires_in?: InputMaybe<Scalars['Int']['input']>;
+  scope?: InputMaybe<Scalars['String']['input']>;
+  session_state?: InputMaybe<Scalars['String']['input']>;
+  token_type?: InputMaybe<Scalars['String']['input']>;
+  type: Scalars['String']['input'];
+  userId: Scalars['ID']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   /** Create a CGABroadcastingRight. */
@@ -490,8 +563,14 @@ export type Mutation = {
   createCGAssetVideo?: Maybe<CgAssetVideo>;
   /** Create a Sample. */
   createSample?: Maybe<Sample>;
+  /** Create a OktaSession. */
+  createSession?: Maybe<OktaSession>;
+  /** Create a OktaSession. */
+  createUser?: Maybe<User>;
   /** Create a UserRoleCGAssetStore. */
   createUserRoleCGAssetStore?: Maybe<UserRoleCgAssetStore>;
+  /** Create a OktaVerificationToken. */
+  createVerificationToken?: Maybe<OktaVerificationToken>;
   /** Delete a CGABroadcastingRight. */
   deleteCGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** Delete a CGARegistrantAffiliation. */
@@ -516,8 +595,16 @@ export type Mutation = {
   deleteCGAssetVideo?: Maybe<CgAssetVideo>;
   /** Delete a Sample. */
   deleteSample?: Maybe<Sample>;
+  /** Delete a OktaSession. */
+  deleteSession?: Maybe<OktaSession>;
+  /** Delete a OktaSession. */
+  deleteUser?: Maybe<User>;
   /** Delete a UserRoleCGAssetStore. */
   deleteUserRoleCGAssetStore?: Maybe<UserRoleCgAssetStore>;
+  /** Link a OktaAccount. */
+  linkAccount?: Maybe<OktaAccount>;
+  /** Unlink a OktaAccount. */
+  unlinkAccount?: Maybe<OktaAccount>;
   /** Update a CGABroadcastingRight. */
   updateCGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** Update a CGARegistrantAffiliation. */
@@ -542,6 +629,10 @@ export type Mutation = {
   updateCGAssetVideo?: Maybe<CgAssetVideo>;
   /** Update a Sample. */
   updateSample?: Maybe<Sample>;
+  /** Update a OktaSession. */
+  updateSession?: Maybe<OktaSession>;
+  /** Update a OktaSession. */
+  updateUser?: Maybe<User>;
   /** Update a UserRoleCGAssetStore. */
   updateUserRoleCGAssetStore?: Maybe<UserRoleCgAssetStore>;
 };
@@ -588,6 +679,9 @@ export type MutationCreateCgAsset3DcgArgs = {
   file_name: Scalars['String']['input'];
   file_path: Scalars['String']['input'];
   revised_user_id: Scalars['ID']['input'];
+  thumb_file_name: Scalars['String']['input'];
+  thumb_file_path: Scalars['String']['input'];
+  thumb_url: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
@@ -603,6 +697,9 @@ export type MutationCreateCgAssetImageArgs = {
   file_name: Scalars['String']['input'];
   file_path: Scalars['String']['input'];
   revised_user_id: Scalars['ID']['input'];
+  thumb_file_name: Scalars['String']['input'];
+  thumb_file_path: Scalars['String']['input'];
+  thumb_url: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
@@ -619,6 +716,9 @@ export type MutationCreateCgAssetVideoArgs = {
   file_name: Scalars['String']['input'];
   file_path: Scalars['String']['input'];
   revised_user_id: Scalars['ID']['input'];
+  thumb_file_name: Scalars['String']['input'];
+  thumb_file_path: Scalars['String']['input'];
+  thumb_url: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
@@ -628,10 +728,25 @@ export type MutationCreateSampleArgs = {
 };
 
 
+export type MutationCreateSessionArgs = {
+  input: CreateSessionInput;
+};
+
+
+export type MutationCreateUserArgs = {
+  user: CreateUserInput;
+};
+
+
 export type MutationCreateUserRoleCgAssetStoreArgs = {
   desc: Scalars['String']['input'];
   role: RoleCgAssetStore;
   valid_flg: Scalars['Boolean']['input'];
+};
+
+
+export type MutationCreateVerificationTokenArgs = {
+  input: CreateVerificationTokenInput;
 };
 
 
@@ -695,8 +810,28 @@ export type MutationDeleteSampleArgs = {
 };
 
 
+export type MutationDeleteSessionArgs = {
+  sessionToken: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteUserArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
 export type MutationDeleteUserRoleCgAssetStoreArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationLinkAccountArgs = {
+  account: LinkAccountInput;
+};
+
+
+export type MutationUnlinkAccountArgs = {
+  input: UnlinkAccountInput;
 };
 
 
@@ -741,6 +876,9 @@ export type MutationUpdateCgAssetArgs = {
 export type MutationUpdateCgAsset3DcgArgs = {
   file_name: Scalars['String']['input'];
   file_path: Scalars['String']['input'];
+  thumb_file_name: Scalars['String']['input'];
+  thumb_file_path: Scalars['String']['input'];
+  thumb_url: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
@@ -755,6 +893,9 @@ export type MutationUpdateCgAssetCateArgs = {
 export type MutationUpdateCgAssetImageArgs = {
   file_name: Scalars['String']['input'];
   file_path: Scalars['String']['input'];
+  thumb_file_name: Scalars['String']['input'];
+  thumb_file_path: Scalars['String']['input'];
+  thumb_url: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
@@ -767,6 +908,9 @@ export type MutationUpdateCgAssetTagArgs = {
 export type MutationUpdateCgAssetVideoArgs = {
   file_name: Scalars['String']['input'];
   file_path: Scalars['String']['input'];
+  thumb_file_name: Scalars['String']['input'];
+  thumb_file_path: Scalars['String']['input'];
+  thumb_url: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
@@ -777,11 +921,86 @@ export type MutationUpdateSampleArgs = {
 };
 
 
+export type MutationUpdateSessionArgs = {
+  input: UpdateSessionInput;
+};
+
+
+export type MutationUpdateUserArgs = {
+  user: UpdateUserInput;
+};
+
+
 export type MutationUpdateUserRoleCgAssetStoreArgs = {
   desc: Scalars['String']['input'];
   id: Scalars['ID']['input'];
   role: RoleCgAssetStore;
   valid_flg: Scalars['Boolean']['input'];
+};
+
+/**
+ * OktaAccount.
+ * ユーザーアカウント（Next.js）
+ *
+ * unique([provider, providerAccountId])
+ */
+export type OktaAccount = {
+  __typename?: 'OktaAccount';
+  access_token?: Maybe<Scalars['String']['output']>;
+  /** When the account was created. */
+  created_at: Scalars['DateTime']['output'];
+  expires_at?: Maybe<Scalars['Int']['output']>;
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  id_token?: Maybe<Scalars['String']['output']>;
+  oauth_token?: Maybe<Scalars['String']['output']>;
+  oauth_token_secret?: Maybe<Scalars['String']['output']>;
+  provider: Scalars['String']['output'];
+  providerAccountId: Scalars['String']['output'];
+  refresh_token?: Maybe<Scalars['String']['output']>;
+  refresh_token_expires_in?: Maybe<Scalars['Int']['output']>;
+  scope?: Maybe<Scalars['String']['output']>;
+  session_state?: Maybe<Scalars['String']['output']>;
+  token_type?: Maybe<Scalars['String']['output']>;
+  type: Scalars['String']['output'];
+  /** When the account was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  user: User;
+};
+
+/**
+ * OktaSession.
+ * ユーザーセッション（Next.js）
+ */
+export type OktaSession = {
+  __typename?: 'OktaSession';
+  /** When the OktaSession was created. */
+  created_at: Scalars['DateTime']['output'];
+  expires?: Maybe<Scalars['DateTime']['output']>;
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  sessionToken?: Maybe<Scalars['String']['output']>;
+  /** When the OktaSession was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  user?: Maybe<User>;
+};
+
+/**
+ * OktaVerificationToken.
+ * 認証トークン（Next.js）
+ */
+export type OktaVerificationToken = {
+  __typename?: 'OktaVerificationToken';
+  /** When the OktaVerificationToken was created. */
+  created_at: Scalars['DateTime']['output'];
+  expires?: Maybe<Scalars['DateTime']['output']>;
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  identifier?: Maybe<Scalars['String']['output']>;
+  token?: Maybe<Scalars['String']['output']>;
+  /** When the OktaVerificationToken was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  user?: Maybe<User>;
 };
 
 /** Allows ordering a list of records. */
@@ -901,16 +1120,22 @@ export type Query = {
   UserRoleCGAssetStores: UserRoleCgAssetStorePaginator;
   /** List all available UserRoleCGAssetStore. */
   UserRoleCGAssetStoresValid: Array<UserRoleCgAssetStore>;
+  /** Find a single OktaSession by an identifying attribute. */
+  getSessionAndUser?: Maybe<OktaSession>;
+  /** Find a single user by an identifying attribute. */
+  getUser?: Maybe<User>;
+  /** Find a single user by an identifying attribute. */
+  getUserByAccount?: Maybe<User>;
+  /** Find a single user by an identifying attribute. */
+  getUserByEmail?: Maybe<User>;
   /** Find a single Sample by an identifying attribute. */
   sample?: Maybe<Sample>;
   /** List multiple Samples. */
   samples: SamplePaginator;
   /** List all Samples. */
   samplesAll: Array<Sample>;
-  /** Find a single user by an identifying attribute. */
-  user?: Maybe<User>;
-  /** List multiple users. */
-  users: UserPaginator;
+  /** Find a single OktaVerificationToken by an identifying attribute. */
+  useVerificationToken?: Maybe<OktaVerificationToken>;
 };
 
 
@@ -1067,6 +1292,26 @@ export type QueryUserRoleCgAssetStoresArgs = {
 };
 
 
+export type QueryGetSessionAndUserArgs = {
+  sessionToken: Scalars['String']['input'];
+};
+
+
+export type QueryGetUserArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryGetUserByAccountArgs = {
+  input: GetUserByAccountInput;
+};
+
+
+export type QueryGetUserByEmailArgs = {
+  email: Scalars['String']['input'];
+};
+
+
 export type QuerySampleArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
 };
@@ -1079,16 +1324,8 @@ export type QuerySamplesArgs = {
 };
 
 
-export type QueryUserArgs = {
-  email?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
-export type QueryUsersArgs = {
-  first?: Scalars['Int']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
+export type QueryUseVerificationTokenArgs = {
+  input: UseVerificationTokenInput;
 };
 
 export enum RoleCgAssetStore {
@@ -1172,6 +1409,11 @@ export enum Trashed {
   Without = 'WITHOUT'
 }
 
+export type UnlinkAccountInput = {
+  provider?: InputMaybe<Scalars['String']['input']>;
+  providerAccountId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateCgAssetInput = {
   /** アセット3DCG */
   asset3DCGs?: InputMaybe<Array<InputMaybe<CgAsset3DcgInput>>>;
@@ -1218,35 +1460,54 @@ export type UpdateCgAssetInput = {
   viewingRestrictionId?: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type UpdateSessionInput = {
+  sessionToken?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateUserInput = {
+  /** Unique email address. */
+  email: Scalars['String']['input'];
+  /** When the email was verified. */
+  emailVerified?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Unique primary key. */
+  id: Scalars['ID']['input'];
+  image?: InputMaybe<Scalars['String']['input']>;
+  /** Non-unique name. */
+  name: Scalars['String']['input'];
+  /** CGアセットストア ロール */
+  user_role_cgas_id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type UseVerificationTokenInput = {
+  identifier?: InputMaybe<Scalars['String']['input']>;
+  token?: InputMaybe<Scalars['String']['input']>;
+};
+
 /**
  * Account of a person who utilizes this application.
  * ユーザ
  */
 export type User = {
   __typename?: 'User';
+  accounts?: Maybe<Array<Maybe<OktaAccount>>>;
   /** When the account was created. */
   created_at: Scalars['DateTime']['output'];
   /** Unique email address. */
   email: Scalars['String']['output'];
   /** When the email was verified. */
-  email_verified_at?: Maybe<Scalars['DateTime']['output']>;
+  emailVerified?: Maybe<Scalars['DateTime']['output']>;
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  /** Image. */
+  image?: Maybe<Scalars['String']['output']>;
   /** Non-unique name. */
   name: Scalars['String']['output'];
   /** CGアセットストア ロール */
   roleCGAssetStore?: Maybe<UserRoleCgAssetStore>;
+  sessions?: Maybe<Array<Maybe<OktaSession>>>;
   /** When the account was last updated. */
   updated_at: Scalars['DateTime']['output'];
-};
-
-/** A paginated list of User items. */
-export type UserPaginator = {
-  __typename?: 'UserPaginator';
-  /** A list of User items. */
-  data: Array<User>;
-  /** Pagination information about the list of items. */
-  paginatorInfo: PaginatorInfo;
+  verificationTokens?: Maybe<Array<Maybe<OktaVerificationToken>>>;
 };
 
 /**
@@ -1319,7 +1580,7 @@ export type CreateCgAssetMutationVariables = Exact<{
 }>;
 
 
-export type CreateCgAssetMutation = { __typename?: 'Mutation', createCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type CreateCgAssetMutation = { __typename?: 'Mutation', createCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
 
 export type CreateCgAssetCateMutationVariables = Exact<{
   desc: Scalars['String']['input'];
@@ -1360,6 +1621,20 @@ export type CreateSampleMutationVariables = Exact<{
 
 export type CreateSampleMutation = { __typename?: 'Mutation', createSample?: { __typename: 'Sample', id: string, text: string } | null };
 
+export type CreateSessionMutationVariables = Exact<{
+  input: CreateSessionInput;
+}>;
+
+
+export type CreateSessionMutation = { __typename?: 'Mutation', createSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+
+export type CreateUserMutationVariables = Exact<{
+  user: CreateUserInput;
+}>;
+
+
+export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
 export type CreateUserRoleCgAssetStoreMutationVariables = Exact<{
   role: RoleCgAssetStore;
   desc: Scalars['String']['input'];
@@ -1368,6 +1643,13 @@ export type CreateUserRoleCgAssetStoreMutationVariables = Exact<{
 
 
 export type CreateUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', createUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, valid_flg: boolean } | null };
+
+export type CreateVerificationTokenMutationVariables = Exact<{
+  input: CreateVerificationTokenInput;
+}>;
+
+
+export type CreateVerificationTokenMutation = { __typename?: 'Mutation', createVerificationToken?: { __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null } | null } | null };
 
 export type DeleteCgaBroadcastingRightMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1381,7 +1663,7 @@ export type DeleteCgAssetMutationVariables = Exact<{
 }>;
 
 
-export type DeleteCgAssetMutation = { __typename?: 'Mutation', deleteCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type DeleteCgAssetMutation = { __typename?: 'Mutation', deleteCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
 
 export type DeleteCgAssetCateMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1418,12 +1700,40 @@ export type DeleteSampleMutationVariables = Exact<{
 
 export type DeleteSampleMutation = { __typename?: 'Mutation', deleteSample?: { __typename: 'Sample', id: string, text: string } | null };
 
+export type DeleteSessionMutationVariables = Exact<{
+  sessionToken: Scalars['String']['input'];
+}>;
+
+
+export type DeleteSessionMutation = { __typename?: 'Mutation', deleteSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+
+export type DeleteUserMutationVariables = Exact<{
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
 export type DeleteUserRoleCgAssetStoreMutationVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
 export type DeleteUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', deleteUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, valid_flg: boolean } | null };
+
+export type LinkAccountMutationVariables = Exact<{
+  account: LinkAccountInput;
+}>;
+
+
+export type LinkAccountMutation = { __typename?: 'Mutation', linkAccount?: { __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string, user: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } } | null };
+
+export type UnlinkAccountMutationVariables = Exact<{
+  input: UnlinkAccountInput;
+}>;
+
+
+export type UnlinkAccountMutation = { __typename?: 'Mutation', unlinkAccount?: { __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string, user: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } } | null };
 
 export type UpdateCgaRegistrantAffiliationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1466,7 +1776,7 @@ export type UpdateCgAssetMutationVariables = Exact<{
 }>;
 
 
-export type UpdateCgAssetMutation = { __typename?: 'Mutation', updateCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type UpdateCgAssetMutation = { __typename?: 'Mutation', updateCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
 
 export type UpdateCgAssetCateMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1476,6 +1786,20 @@ export type UpdateCgAssetCateMutationVariables = Exact<{
 
 
 export type UpdateCgAssetCateMutation = { __typename?: 'Mutation', updateCGAssetCate?: { __typename: 'CGAssetCate', id: string, desc: string, valid_flg: boolean } | null };
+
+export type UpdateSessionMutationVariables = Exact<{
+  input: UpdateSessionInput;
+}>;
+
+
+export type UpdateSessionMutation = { __typename?: 'Mutation', updateSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+
+export type UpdateUserMutationVariables = Exact<{
+  user: UpdateUserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
 
 export type UpdateUserRoleCgAssetStoreMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1522,7 +1846,7 @@ export type GetCgAssetQueryVariables = Exact<{
 }>;
 
 
-export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
 
 export type GetCgAssetCateQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1551,7 +1875,7 @@ export type GetCgAssetsQueryVariables = Exact<{
 }>;
 
 
-export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgaBroadcastingRightsValidQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1610,6 +1934,34 @@ export type GetSampleQueryVariables = Exact<{
 
 export type GetSampleQuery = { __typename?: 'Query', sample?: { __typename?: 'Sample', created_at: any, id: string, text: string } | null };
 
+export type GetSessionAndUserQueryVariables = Exact<{
+  sessionToken: Scalars['String']['input'];
+}>;
+
+
+export type GetSessionAndUserQuery = { __typename?: 'Query', getSessionAndUser?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+
+export type GetUserQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
+export type GetUserByAccountQueryVariables = Exact<{
+  input: GetUserByAccountInput;
+}>;
+
+
+export type GetUserByAccountQuery = { __typename?: 'Query', getUserByAccount?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
+export type GetUserByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
 export type GetUserRoleCgAssetStoreQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -1629,6 +1981,13 @@ export type SamplesAllQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SamplesAllQuery = { __typename?: 'Query', samplesAll: Array<{ __typename?: 'Sample', id: string, text: string }> };
+
+export type UseVerificationTokenQueryVariables = Exact<{
+  input: UseVerificationTokenInput;
+}>;
+
+
+export type UseVerificationTokenQuery = { __typename?: 'Query', useVerificationToken?: { __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null } | null } | null };
 
 
 export const CreateCgaBroadcastingRightDocument = gql`
@@ -1702,16 +2061,25 @@ export const CreateCgAssetDocument = gql`
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     assetVideos {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     asset3DCGs {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     assetTags {
       tag
@@ -1943,6 +2311,136 @@ export function useCreateSampleMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateSampleMutationHookResult = ReturnType<typeof useCreateSampleMutation>;
 export type CreateSampleMutationResult = Apollo.MutationResult<CreateSampleMutation>;
 export type CreateSampleMutationOptions = Apollo.BaseMutationOptions<CreateSampleMutation, CreateSampleMutationVariables>;
+export const CreateSessionDocument = gql`
+    mutation CreateSession($input: CreateSessionInput!) {
+  createSession(input: $input) {
+    expires
+    sessionToken
+    user {
+      id
+      name
+      email
+      emailVerified
+      roleCGAssetStore {
+        desc
+        role
+        valid_flg
+      }
+      accounts {
+        access_token
+        expires_at
+        id_token
+        oauth_token
+        oauth_token_secret
+        provider
+        providerAccountId
+        refresh_token
+        refresh_token_expires_in
+        scope
+        session_state
+        token_type
+        type
+      }
+      verificationTokens {
+        identifier
+        expires
+        token
+      }
+    }
+  }
+}
+    `;
+export type CreateSessionMutationFn = Apollo.MutationFunction<CreateSessionMutation, CreateSessionMutationVariables>;
+
+/**
+ * __useCreateSessionMutation__
+ *
+ * To run a mutation, you first call `useCreateSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSessionMutation, { data, loading, error }] = useCreateSessionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateSessionMutation(baseOptions?: Apollo.MutationHookOptions<CreateSessionMutation, CreateSessionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSessionMutation, CreateSessionMutationVariables>(CreateSessionDocument, options);
+      }
+export type CreateSessionMutationHookResult = ReturnType<typeof useCreateSessionMutation>;
+export type CreateSessionMutationResult = Apollo.MutationResult<CreateSessionMutation>;
+export type CreateSessionMutationOptions = Apollo.BaseMutationOptions<CreateSessionMutation, CreateSessionMutationVariables>;
+export const CreateUserDocument = gql`
+    mutation CreateUser($user: CreateUserInput!) {
+  createUser(user: $user) {
+    id
+    name
+    email
+    emailVerified
+    roleCGAssetStore {
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
+      }
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
 export const CreateUserRoleCgAssetStoreDocument = gql`
     mutation CreateUserRoleCGAssetStore($role: RoleCGAssetStore!, $desc: String!, $valid_flg: Boolean!) {
   createUserRoleCGAssetStore(role: $role, desc: $desc, valid_flg: $valid_flg) {
@@ -1982,6 +2480,71 @@ export function useCreateUserRoleCgAssetStoreMutation(baseOptions?: Apollo.Mutat
 export type CreateUserRoleCgAssetStoreMutationHookResult = ReturnType<typeof useCreateUserRoleCgAssetStoreMutation>;
 export type CreateUserRoleCgAssetStoreMutationResult = Apollo.MutationResult<CreateUserRoleCgAssetStoreMutation>;
 export type CreateUserRoleCgAssetStoreMutationOptions = Apollo.BaseMutationOptions<CreateUserRoleCgAssetStoreMutation, CreateUserRoleCgAssetStoreMutationVariables>;
+export const CreateVerificationTokenDocument = gql`
+    mutation CreateVerificationToken($input: CreateVerificationTokenInput!) {
+  createVerificationToken(input: $input) {
+    identifier
+    expires
+    token
+    user {
+      id
+      name
+      email
+      emailVerified
+      roleCGAssetStore {
+        desc
+        role
+        valid_flg
+      }
+      accounts {
+        access_token
+        expires_at
+        id_token
+        oauth_token
+        oauth_token_secret
+        provider
+        providerAccountId
+        refresh_token
+        refresh_token_expires_in
+        scope
+        session_state
+        token_type
+        type
+      }
+      sessions {
+        expires
+        sessionToken
+      }
+    }
+  }
+}
+    `;
+export type CreateVerificationTokenMutationFn = Apollo.MutationFunction<CreateVerificationTokenMutation, CreateVerificationTokenMutationVariables>;
+
+/**
+ * __useCreateVerificationTokenMutation__
+ *
+ * To run a mutation, you first call `useCreateVerificationTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateVerificationTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createVerificationTokenMutation, { data, loading, error }] = useCreateVerificationTokenMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateVerificationTokenMutation(baseOptions?: Apollo.MutationHookOptions<CreateVerificationTokenMutation, CreateVerificationTokenMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateVerificationTokenMutation, CreateVerificationTokenMutationVariables>(CreateVerificationTokenDocument, options);
+      }
+export type CreateVerificationTokenMutationHookResult = ReturnType<typeof useCreateVerificationTokenMutation>;
+export type CreateVerificationTokenMutationResult = Apollo.MutationResult<CreateVerificationTokenMutation>;
+export type CreateVerificationTokenMutationOptions = Apollo.BaseMutationOptions<CreateVerificationTokenMutation, CreateVerificationTokenMutationVariables>;
 export const DeleteCgaBroadcastingRightDocument = gql`
     mutation DeleteCGABroadcastingRight($id: ID!) {
   deleteCGABroadcastingRight(id: $id) {
@@ -2052,16 +2615,25 @@ export const DeleteCgAssetDocument = gql`
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     assetVideos {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     asset3DCGs {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     assetTags {
       tag
@@ -2289,6 +2861,136 @@ export function useDeleteSampleMutation(baseOptions?: Apollo.MutationHookOptions
 export type DeleteSampleMutationHookResult = ReturnType<typeof useDeleteSampleMutation>;
 export type DeleteSampleMutationResult = Apollo.MutationResult<DeleteSampleMutation>;
 export type DeleteSampleMutationOptions = Apollo.BaseMutationOptions<DeleteSampleMutation, DeleteSampleMutationVariables>;
+export const DeleteSessionDocument = gql`
+    mutation DeleteSession($sessionToken: String!) {
+  deleteSession(sessionToken: $sessionToken) {
+    expires
+    sessionToken
+    user {
+      id
+      name
+      email
+      emailVerified
+      roleCGAssetStore {
+        desc
+        role
+        valid_flg
+      }
+      accounts {
+        access_token
+        expires_at
+        id_token
+        oauth_token
+        oauth_token_secret
+        provider
+        providerAccountId
+        refresh_token
+        refresh_token_expires_in
+        scope
+        session_state
+        token_type
+        type
+      }
+      verificationTokens {
+        identifier
+        expires
+        token
+      }
+    }
+  }
+}
+    `;
+export type DeleteSessionMutationFn = Apollo.MutationFunction<DeleteSessionMutation, DeleteSessionMutationVariables>;
+
+/**
+ * __useDeleteSessionMutation__
+ *
+ * To run a mutation, you first call `useDeleteSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSessionMutation, { data, loading, error }] = useDeleteSessionMutation({
+ *   variables: {
+ *      sessionToken: // value for 'sessionToken'
+ *   },
+ * });
+ */
+export function useDeleteSessionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSessionMutation, DeleteSessionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSessionMutation, DeleteSessionMutationVariables>(DeleteSessionDocument, options);
+      }
+export type DeleteSessionMutationHookResult = ReturnType<typeof useDeleteSessionMutation>;
+export type DeleteSessionMutationResult = Apollo.MutationResult<DeleteSessionMutation>;
+export type DeleteSessionMutationOptions = Apollo.BaseMutationOptions<DeleteSessionMutation, DeleteSessionMutationVariables>;
+export const DeleteUserDocument = gql`
+    mutation DeleteUser($userId: ID!) {
+  deleteUser(userId: $userId) {
+    id
+    name
+    email
+    emailVerified
+    roleCGAssetStore {
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
+
+/**
+ * __useDeleteUserMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserMutation, DeleteUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, options);
+      }
+export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
+export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
+export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
 export const DeleteUserRoleCgAssetStoreDocument = gql`
     mutation DeleteUserRoleCGAssetStore($id: ID!) {
   deleteUserRoleCGAssetStore(id: $id) {
@@ -2326,6 +3028,136 @@ export function useDeleteUserRoleCgAssetStoreMutation(baseOptions?: Apollo.Mutat
 export type DeleteUserRoleCgAssetStoreMutationHookResult = ReturnType<typeof useDeleteUserRoleCgAssetStoreMutation>;
 export type DeleteUserRoleCgAssetStoreMutationResult = Apollo.MutationResult<DeleteUserRoleCgAssetStoreMutation>;
 export type DeleteUserRoleCgAssetStoreMutationOptions = Apollo.BaseMutationOptions<DeleteUserRoleCgAssetStoreMutation, DeleteUserRoleCgAssetStoreMutationVariables>;
+export const LinkAccountDocument = gql`
+    mutation LinkAccount($account: LinkAccountInput!) {
+  linkAccount(account: $account) {
+    access_token
+    expires_at
+    id_token
+    oauth_token
+    oauth_token_secret
+    provider
+    providerAccountId
+    refresh_token
+    refresh_token_expires_in
+    scope
+    session_state
+    token_type
+    type
+    user {
+      id
+      name
+      email
+      emailVerified
+      roleCGAssetStore {
+        desc
+        role
+        valid_flg
+      }
+      sessions {
+        expires
+        sessionToken
+      }
+      verificationTokens {
+        identifier
+        expires
+        token
+      }
+    }
+  }
+}
+    `;
+export type LinkAccountMutationFn = Apollo.MutationFunction<LinkAccountMutation, LinkAccountMutationVariables>;
+
+/**
+ * __useLinkAccountMutation__
+ *
+ * To run a mutation, you first call `useLinkAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLinkAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [linkAccountMutation, { data, loading, error }] = useLinkAccountMutation({
+ *   variables: {
+ *      account: // value for 'account'
+ *   },
+ * });
+ */
+export function useLinkAccountMutation(baseOptions?: Apollo.MutationHookOptions<LinkAccountMutation, LinkAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LinkAccountMutation, LinkAccountMutationVariables>(LinkAccountDocument, options);
+      }
+export type LinkAccountMutationHookResult = ReturnType<typeof useLinkAccountMutation>;
+export type LinkAccountMutationResult = Apollo.MutationResult<LinkAccountMutation>;
+export type LinkAccountMutationOptions = Apollo.BaseMutationOptions<LinkAccountMutation, LinkAccountMutationVariables>;
+export const UnlinkAccountDocument = gql`
+    mutation UnlinkAccount($input: UnlinkAccountInput!) {
+  unlinkAccount(input: $input) {
+    access_token
+    expires_at
+    id_token
+    oauth_token
+    oauth_token_secret
+    provider
+    providerAccountId
+    refresh_token
+    refresh_token_expires_in
+    scope
+    session_state
+    token_type
+    type
+    user {
+      id
+      name
+      email
+      emailVerified
+      roleCGAssetStore {
+        desc
+        role
+        valid_flg
+      }
+      sessions {
+        expires
+        sessionToken
+      }
+      verificationTokens {
+        identifier
+        expires
+        token
+      }
+    }
+  }
+}
+    `;
+export type UnlinkAccountMutationFn = Apollo.MutationFunction<UnlinkAccountMutation, UnlinkAccountMutationVariables>;
+
+/**
+ * __useUnlinkAccountMutation__
+ *
+ * To run a mutation, you first call `useUnlinkAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnlinkAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unlinkAccountMutation, { data, loading, error }] = useUnlinkAccountMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUnlinkAccountMutation(baseOptions?: Apollo.MutationHookOptions<UnlinkAccountMutation, UnlinkAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnlinkAccountMutation, UnlinkAccountMutationVariables>(UnlinkAccountDocument, options);
+      }
+export type UnlinkAccountMutationHookResult = ReturnType<typeof useUnlinkAccountMutation>;
+export type UnlinkAccountMutationResult = Apollo.MutationResult<UnlinkAccountMutation>;
+export type UnlinkAccountMutationOptions = Apollo.BaseMutationOptions<UnlinkAccountMutation, UnlinkAccountMutationVariables>;
 export const UpdateCgaRegistrantAffiliationDocument = gql`
     mutation UpdateCGARegistrantAffiliation($id: ID!, $desc: String!, $valid_flg: Boolean!) {
   updateCGARegistrantAffiliation(id: $id, desc: $desc, valid_flg: $valid_flg) {
@@ -2512,16 +3344,25 @@ export const UpdateCgAssetDocument = gql`
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     assetVideos {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     asset3DCGs {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     assetTags {
       tag
@@ -2608,6 +3449,136 @@ export function useUpdateCgAssetCateMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdateCgAssetCateMutationHookResult = ReturnType<typeof useUpdateCgAssetCateMutation>;
 export type UpdateCgAssetCateMutationResult = Apollo.MutationResult<UpdateCgAssetCateMutation>;
 export type UpdateCgAssetCateMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetCateMutation, UpdateCgAssetCateMutationVariables>;
+export const UpdateSessionDocument = gql`
+    mutation UpdateSession($input: UpdateSessionInput!) {
+  updateSession(input: $input) {
+    expires
+    sessionToken
+    user {
+      id
+      name
+      email
+      emailVerified
+      roleCGAssetStore {
+        desc
+        role
+        valid_flg
+      }
+      accounts {
+        access_token
+        expires_at
+        id_token
+        oauth_token
+        oauth_token_secret
+        provider
+        providerAccountId
+        refresh_token
+        refresh_token_expires_in
+        scope
+        session_state
+        token_type
+        type
+      }
+      verificationTokens {
+        identifier
+        expires
+        token
+      }
+    }
+  }
+}
+    `;
+export type UpdateSessionMutationFn = Apollo.MutationFunction<UpdateSessionMutation, UpdateSessionMutationVariables>;
+
+/**
+ * __useUpdateSessionMutation__
+ *
+ * To run a mutation, you first call `useUpdateSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSessionMutation, { data, loading, error }] = useUpdateSessionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateSessionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSessionMutation, UpdateSessionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSessionMutation, UpdateSessionMutationVariables>(UpdateSessionDocument, options);
+      }
+export type UpdateSessionMutationHookResult = ReturnType<typeof useUpdateSessionMutation>;
+export type UpdateSessionMutationResult = Apollo.MutationResult<UpdateSessionMutation>;
+export type UpdateSessionMutationOptions = Apollo.BaseMutationOptions<UpdateSessionMutation, UpdateSessionMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($user: UpdateUserInput!) {
+  updateUser(user: $user) {
+    id
+    name
+    email
+    emailVerified
+    roleCGAssetStore {
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const UpdateUserRoleCgAssetStoreDocument = gql`
     mutation UpdateUserRoleCGAssetStore($id: ID!, $role: RoleCGAssetStore!, $desc: String!, $valid_flg: Boolean!) {
   updateUserRoleCGAssetStore(
@@ -2862,18 +3833,27 @@ export const GetCgAssetDocument = gql`
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     assetVideos {
       id
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     asset3DCGs {
       id
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
     }
     assetTags {
       id
@@ -3091,18 +4071,27 @@ export const GetCgAssetsDocument = gql`
         file_name
         url
         file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
       }
       assetVideos {
         id
         file_name
         url
         file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
       }
       asset3DCGs {
         id
         file_name
         url
         file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
       }
       assetTags {
         id
@@ -3511,6 +4500,274 @@ export function useGetSampleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetSampleQueryHookResult = ReturnType<typeof useGetSampleQuery>;
 export type GetSampleLazyQueryHookResult = ReturnType<typeof useGetSampleLazyQuery>;
 export type GetSampleQueryResult = Apollo.QueryResult<GetSampleQuery, GetSampleQueryVariables>;
+export const GetSessionAndUserDocument = gql`
+    query GetSessionAndUser($sessionToken: String!) {
+  getSessionAndUser(sessionToken: $sessionToken) {
+    expires
+    sessionToken
+    user {
+      id
+      name
+      email
+      emailVerified
+      roleCGAssetStore {
+        desc
+        role
+        valid_flg
+      }
+      accounts {
+        access_token
+        expires_at
+        id_token
+        oauth_token
+        oauth_token_secret
+        provider
+        providerAccountId
+        refresh_token
+        refresh_token_expires_in
+        scope
+        session_state
+        token_type
+        type
+      }
+      verificationTokens {
+        identifier
+        expires
+        token
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSessionAndUserQuery__
+ *
+ * To run a query within a React component, call `useGetSessionAndUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSessionAndUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSessionAndUserQuery({
+ *   variables: {
+ *      sessionToken: // value for 'sessionToken'
+ *   },
+ * });
+ */
+export function useGetSessionAndUserQuery(baseOptions: Apollo.QueryHookOptions<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>(GetSessionAndUserDocument, options);
+      }
+export function useGetSessionAndUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>(GetSessionAndUserDocument, options);
+        }
+export type GetSessionAndUserQueryHookResult = ReturnType<typeof useGetSessionAndUserQuery>;
+export type GetSessionAndUserLazyQueryHookResult = ReturnType<typeof useGetSessionAndUserLazyQuery>;
+export type GetSessionAndUserQueryResult = Apollo.QueryResult<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>;
+export const GetUserDocument = gql`
+    query GetUser($id: ID!) {
+  getUser(id: $id) {
+    id
+    name
+    email
+    emailVerified
+    roleCGAssetStore {
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserQuery__
+ *
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+      }
+export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+        }
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetUserByAccountDocument = gql`
+    query GetUserByAccount($input: GetUserByAccountInput!) {
+  getUserByAccount(input: $input) {
+    id
+    name
+    email
+    emailVerified
+    roleCGAssetStore {
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserByAccountQuery__
+ *
+ * To run a query within a React component, call `useGetUserByAccountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByAccountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByAccountQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetUserByAccountQuery(baseOptions: Apollo.QueryHookOptions<GetUserByAccountQuery, GetUserByAccountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByAccountQuery, GetUserByAccountQueryVariables>(GetUserByAccountDocument, options);
+      }
+export function useGetUserByAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByAccountQuery, GetUserByAccountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByAccountQuery, GetUserByAccountQueryVariables>(GetUserByAccountDocument, options);
+        }
+export type GetUserByAccountQueryHookResult = ReturnType<typeof useGetUserByAccountQuery>;
+export type GetUserByAccountLazyQueryHookResult = ReturnType<typeof useGetUserByAccountLazyQuery>;
+export type GetUserByAccountQueryResult = Apollo.QueryResult<GetUserByAccountQuery, GetUserByAccountQueryVariables>;
+export const GetUserByEmailDocument = gql`
+    query GetUserByEmail($email: String!) {
+  getUserByEmail(email: $email) {
+    id
+    name
+    email
+    emailVerified
+    roleCGAssetStore {
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserByEmailQuery__
+ *
+ * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByEmailQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+      }
+export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+        }
+export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
+export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
+export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
 export const GetUserRoleCgAssetStoreDocument = gql`
     query GetUserRoleCGAssetStore($id: ID!) {
   UserRoleCGAssetStore(id: $id) {
@@ -3633,3 +4890,70 @@ export function useSamplesAllLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type SamplesAllQueryHookResult = ReturnType<typeof useSamplesAllQuery>;
 export type SamplesAllLazyQueryHookResult = ReturnType<typeof useSamplesAllLazyQuery>;
 export type SamplesAllQueryResult = Apollo.QueryResult<SamplesAllQuery, SamplesAllQueryVariables>;
+export const UseVerificationTokenDocument = gql`
+    query UseVerificationToken($input: UseVerificationTokenInput!) {
+  useVerificationToken(input: $input) {
+    identifier
+    expires
+    token
+    user {
+      id
+      name
+      email
+      emailVerified
+      roleCGAssetStore {
+        desc
+        role
+        valid_flg
+      }
+      accounts {
+        access_token
+        expires_at
+        id_token
+        oauth_token
+        oauth_token_secret
+        provider
+        providerAccountId
+        refresh_token
+        refresh_token_expires_in
+        scope
+        session_state
+        token_type
+        type
+      }
+      sessions {
+        expires
+        sessionToken
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useUseVerificationTokenQuery__
+ *
+ * To run a query within a React component, call `useUseVerificationTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUseVerificationTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUseVerificationTokenQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUseVerificationTokenQuery(baseOptions: Apollo.QueryHookOptions<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>(UseVerificationTokenDocument, options);
+      }
+export function useUseVerificationTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>(UseVerificationTokenDocument, options);
+        }
+export type UseVerificationTokenQueryHookResult = ReturnType<typeof useUseVerificationTokenQuery>;
+export type UseVerificationTokenLazyQueryHookResult = ReturnType<typeof useUseVerificationTokenLazyQuery>;
+export type UseVerificationTokenQueryResult = Apollo.QueryResult<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>;

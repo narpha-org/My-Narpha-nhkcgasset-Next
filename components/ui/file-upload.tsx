@@ -1,6 +1,6 @@
 "use client";
 
-import { uploadImageToS3 } from '@/lib/awsS3';
+import { uploadImageToS3 } from '@/lib/aws-s3';
 import { useEffect, useState, useRef, ChangeEventHandler } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -8,11 +8,20 @@ import Image from 'next/image';
 import { FileVideo, Trash } from 'lucide-react';
 import Link from 'next/link';
 
+export type UploadFileProps = {
+  file_name: string;
+  url: string;
+  file_path: string;
+  thumb_file_name: string;
+  thumb_url: string;
+  thumb_file_path: string;
+}
+
 interface FileUploadProps {
   disabled?: boolean;
   onChange: ({ file_name, url, file_path }: { file_name: string, url: string, file_path: string }) => void;
   onRemove: (value: string) => void;
-  value: string[];
+  value: UploadFileProps[];
   poster: string;
 }
 
@@ -75,25 +84,25 @@ const FileUpload: React.FC<FileUploadProps> = ({
   return (
     <>
       <div className="mb-4 flex items-center gap-4">
-        {value.map((url) => (
-          <div key={url} className="relative w-[290px] h-[160px] rounded-md overflow-hidden">
+        {value.map((obj) => (
+          <div key={obj.url} className="relative w-[290px] h-[160px] rounded-md overflow-hidden">
             <div className="z-10 absolute top-2 right-2">
               <Button
                 type="button"
                 disabled={disabled}
-                onClick={() => onRemove(url)}
+                onClick={() => onRemove(obj.url)}
                 variant="destructive"
                 size="sm"
               >
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
-            <Link href={url} rel="noopener noreferrer" target="_blank">
+            <Link href={obj.url} rel="noopener noreferrer" target="_blank">
               <Image
                 fill
                 className="object-cover"
                 alt="Image"
-                src={poster}
+                src={obj.thumb_url ? obj.thumb_url : poster}
               />
             </Link>
           </div>

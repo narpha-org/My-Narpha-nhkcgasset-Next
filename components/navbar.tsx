@@ -1,14 +1,18 @@
+import { getServerSession } from "next-auth/next";
+import { Session } from "next-auth";
+import { authOptions } from "@/lib/auth-options";
 import { redirect } from "next/navigation";
 
 import { MainNav } from "@/components/main-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LogoutButton } from "@/components/auth-buttons";
 
 const Navbar = async () => {
-  // const { userId } = auth();
+  const session: Session | null = await getServerSession(authOptions)
 
-  // if (!userId) {
-  //   redirect('/sign-in');
-  // }
+  if (!session) {
+    redirect('/sign-in');
+  }
 
   return (
     <div className="border-b">
@@ -16,6 +20,7 @@ const Navbar = async () => {
         <MainNav className="mx-6" />
         <div className="ml-auto flex items-center space-x-4">
           <ThemeToggle />
+          <LogoutButton session={session} />
         </div>
       </div>
     </div>

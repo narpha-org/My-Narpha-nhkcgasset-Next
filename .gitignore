@@ -27,6 +27,7 @@ yarn-error.log*
 # local env files
 .env*.local
 .env*.aws
+.env*.okta
 
 # vercel
 .vercel

@@ -1,6 +1,6 @@
 "use client";
 
-import { apolloClient } from "@/lib/apolloClient";
+import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgAsset,
