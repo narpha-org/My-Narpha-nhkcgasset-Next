@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"
 import { ClientSafeProvider, LiteralUnion, getProviders, signOut, useSession } from "next-auth/react"
 import { BuiltInProviderType } from "next-auth/providers";
+import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const SignOut = () => {
@@ -39,7 +40,7 @@ const SignOut = () => {
           <Button
             onClick={() => signOut()}
           >
-            {provider.name} からサインアウト
+            <LogOut className="mr-2 h-4 w-4" /> {provider.name} からサインアウト
           </Button>
         </div>
       ))}

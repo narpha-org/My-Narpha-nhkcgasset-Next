@@ -1,7 +1,12 @@
-mutation CreateCgAssetCate($desc: String!, $valid_flg: Boolean!) {
-  createCGAssetCate(desc: $desc, valid_flg: $valid_flg) {
+mutation CreateCgAssetCate(
+  $code: CodeCGAssetCate!
+  $desc: String!
+  $valid_flg: Boolean!
+) {
+  createCGAssetCate(code: $code, desc: $desc, valid_flg: $valid_flg) {
     __typename
     id
+    code
     desc
     valid_flg
   }

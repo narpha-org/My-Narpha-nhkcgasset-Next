@@ -79,6 +79,9 @@ type Query {
   "Find a single user by an identifying attribute."
   getUserByAccount(input: GetUserByAccountInput!): User
 
+  "Find a single User by an identifying attribute."
+  User("Search by primary key." id: ID): User
+
   "Find a single UserRoleCGAssetStore by an identifying attribute."
   UserRoleCGAssetStore("Search by primary key." id: ID): UserRoleCGAssetStore
 
@@ -241,6 +244,17 @@ type Query {
     page: Int
   ): SamplePaginator!
 
+  "List multiple Users."
+  Users(
+    "Limits number of fetched items."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+
+    orderBy: [OrderByClause!]
+  ): UserPaginator!
+
   "List multiple UserRoleCGAssetStore."
   UserRoleCGAssetStores(
     "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
@@ -364,10 +378,19 @@ type Mutation {
   deleteCGAsset3DCG(id: ID!): CGAsset3DCG
 
   "Create a CGAssetCate."
-  createCGAssetCate(desc: String!, valid_flg: Boolean!): CGAssetCate
+  createCGAssetCate(
+    code: CodeCGAssetCate!
+    desc: String!
+    valid_flg: Boolean!
+  ): CGAssetCate
 
   "Update a CGAssetCate."
-  updateCGAssetCate(id: ID!, desc: String!, valid_flg: Boolean!): CGAssetCate
+  updateCGAssetCate(
+    id: ID!
+    code: CodeCGAssetCate!
+    desc: String!
+    valid_flg: Boolean!
+  ): CGAssetCate
 
   "Delete a CGAssetCate."
   deleteCGAssetCate(id: ID!): CGAssetCate
@@ -471,7 +494,7 @@ type Mutation {
   updateUser(user: UpdateUserInput!): User
 
   "Delete a OktaSession."
-  deleteUser(userId: ID!): User
+  deleteUser(id: ID!): User
 
   "Create a UserRoleCGAssetStore."
   createUserRoleCGAssetStore(
@@ -673,6 +696,12 @@ type CGAsset {
   "修正履歴"
   revisionHistory: [CGARevisionHistory]
 
+  "登録ユーザ"
+  userCreate: User!
+
+  "更新ユーザ"
+  userUpdate: User!
+
   "有効フラグ"
   valid_flg: Boolean!
 
@@ -683,24 +712,6 @@ type CGAsset {
   updated_at: DateTime!
 }
 
-"Allows ordering a list of records."
-input OrderByClause {
-  "The column that is used for ordering."
-  column: String!
-
-  "The direction that is used for ordering."
-  order: SortOrder!
-}
-
-"Directions for ordering a list of records."
-enum SortOrder {
-  "Sort records in ascending order."
-  ASC
-
-  "Sort records in descending order."
-  DESC
-}
-
 input CGAssetSearchFormValues {
   assetCates: [ID]
   assetTags: [String]
@@ -709,8 +720,8 @@ input CGAssetSearchFormValues {
 }
 
 input CreateCGAssetInput {
-  "更新ユーザID"
-  user_id: ID!
+  "登録ユーザID"
+  create_user_id: ID!
 
   "アセットID"
   asset_id: String
@@ -777,7 +788,7 @@ input UpdateCGAssetInput {
   id: ID!
 
   "更新ユーザID"
-  user_id: ID!
+  update_user_id: ID!
 
   "アセットID"
   asset_id: String
@@ -929,6 +940,9 @@ type CGAssetCate {
   "Unique primary key."
   id: ID!
 
+  "アセット種別 区分"
+  code: CodeCGAssetCate!
+
   "表記"
   desc: String!
 
@@ -940,6 +954,12 @@ type CGAssetCate {
 
   "When the CGAssetCate was last updated."
   updated_at: DateTime!
+}
+
+enum CodeCGAssetCate {
+  C3D
+  C2D
+  IMG
 }
 
 """
@@ -1039,6 +1059,24 @@ type CGAssetVideo {
 
   "When the CGAssetVideo was last updated."
   updated_at: DateTime!
+}
+
+"Allows ordering a list of records."
+input OrderByClause {
+  "The column that is used for ordering."
+  column: String!
+
+  "The direction that is used for ordering."
+  order: SortOrder!
+}
+
+"Directions for ordering a list of records."
+enum SortOrder {
+  "Sort records in ascending order."
+  ASC
+
+  "Sort records in descending order."
+  DESC
 }
 
 """
@@ -1193,6 +1231,12 @@ type User {
   "Image."
   image: String
 
+  "主所属名"
+  registrantAffiliation: CGARegistrantAffiliation
+
+  "主所属コード"
+  regist_affili_code: String
+
   "CGアセットストア ロール"
   roleCGAssetStore: UserRoleCGAssetStore
 
@@ -1223,6 +1267,12 @@ input CreateUserInput {
   emailVerified: DateTime
   image: String
 
+  "主所属名"
+  regist_affili_id: ID
+
+  "主所属コード"
+  regist_affili_code: String
+
   "CGアセットストア ロール"
   user_role_cgas_id: ID
 }
@@ -1240,6 +1290,12 @@ input UpdateUserInput {
   "When the email was verified."
   emailVerified: DateTime
   image: String
+
+  "主所属名"
+  regist_affili_id: ID
+
+  "主所属コード"
+  regist_affili_code: String
 
   "CGアセットストア ロール"
   user_role_cgas_id: ID
@@ -1408,6 +1464,15 @@ type SamplePaginator {
 
   "A list of Sample items."
   data: [Sample!]!
+}
+
+"A paginated list of User items."
+type UserPaginator {
+  "Pagination information about the list of items."
+  paginatorInfo: PaginatorInfo!
+
+  "A list of User items."
+  data: [User!]!
 }
 
 "A paginated list of UserRoleCGAssetStore items."

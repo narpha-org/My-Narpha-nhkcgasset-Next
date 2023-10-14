@@ -28,7 +28,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nhkcgasset-app.narpha.click"),
+  metadataBase: new URL(`https://nhkcgasset-app.${process.env.NEXT_PUBLIC_BASE_DOMAIN}`),
   title: {
     default: "CGアセットストア",
     template: "%s | NHK CGアセットストア",

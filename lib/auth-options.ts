@@ -6,6 +6,7 @@ import { Adapter } from "next-auth/adapters";
 
 import { MyApolloAdapter } from "@/lib/auth-adp-my-apollo-adapter";
 import { getClient as apolloServer } from "@/lib/apollo-server";
+import { unknown } from "zod";
 // import { PrismaAdapter } from "@auth/prisma-adapter";
 // import { PrismaAdapter } from "@/lib/auth-adp-prisma-adapter";
 // import prisma from "@/lib/prisma";
@@ -44,33 +45,59 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
   callbacks: {
     jwt: async ({ token, user, account, profile, isNewUser }) => {
-      // 注意: トークンをログ出力してはダメです。
-      console.log("in jwt", { user, token, account, profile });
+      if (process.env.NODE_ENV === "development") {
+        console.log("in jwt", { user, token, account, profile });
+      }
 
       if (user) {
         token.user = user;
         const u = user as any;
         token.role = u.roleCGAssetStore.role;
-        token.roleDesc = u.roleCGAssetStore.desc;
+        token.roleDesc = u.roleCGAssetStore ? u.roleCGAssetStore.desc : "";
+        token.rgstAffiDesc = u.registrantAffiliation
+          ? u.registrantAffiliation.desc
+          : "";
+        token.rgstAffiCode = u.regist_affili_code;
         token.userId = u.id;
       }
       if (account) {
         // token.accessToken = account.access_token;
       }
-      return token;
+
+      let yourToken = token;
+
+      yourToken.user = null;
+
+      if (process.env.NODE_ENV === "development") {
+        console.log("your token", yourToken);
+      }
+
+      return Promise.resolve(yourToken);
     },
-    session: ({ session, token }) => {
-      console.log("in session", { session, token });
+    session: async ({ session, token }) => {
+      if (process.env.NODE_ENV === "development") {
+        console.log("in session", { session, token });
+      }
+
       token.accessToken;
-      return {
+
+      let yourSession = {
         ...session,
         user: {
           ...session.user,
           userId: token.userId,
           role: token.role,
           roleDesc: token.roleDesc,
+          rgstAffiDesc: token.rgstAffiDesc,
+          rgstAffiCode: token.rgstAffiCode,
         },
       };
+
+      if (process.env.NODE_ENV === "development") {
+        console.log("your session", yourSession);
+      }
+
+      return Promise.resolve(yourSession);
     },
   },
 };

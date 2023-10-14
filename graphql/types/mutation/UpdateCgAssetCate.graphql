@@ -1,7 +1,13 @@
-mutation UpdateCgAssetCate($id: ID!, $desc: String!, $valid_flg: Boolean!) {
-  updateCGAssetCate(id: $id, desc: $desc, valid_flg: $valid_flg) {
+mutation UpdateCgAssetCate(
+  $id: ID!
+  $code: CodeCGAssetCate!
+  $desc: String!
+  $valid_flg: Boolean!
+) {
+  updateCGAssetCate(id: $id, code: $code, desc: $desc, valid_flg: $valid_flg) {
     __typename
     id
+    code
     desc
     valid_flg
   }

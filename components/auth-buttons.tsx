@@ -4,6 +4,7 @@ import { useState } from "react"
 import { signIn, signOut } from "next-auth/react";
 import { Session } from "next-auth";
 import { toast } from "react-hot-toast"
+import { LogIn, LogOut } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal"
@@ -15,7 +16,7 @@ export const LoginButton = () => {
       style={{ marginRight: 10 }}
       onClick={() => signIn()}
     >
-      Okta ログイン
+      <LogIn className="mr-2 h-4 w-4" /> Okta ログイン
     </Button>
   );
 };
@@ -52,7 +53,7 @@ export const LogoutButton = (props: { session: Session | null }) => {
         }
         onClick={() => setOpen(true)}
       >
-        {props.session?.user?.name}さん
+        <LogOut className="mr-2 h-4 w-4" /> {props.session?.user?.name}さん
       </Button >
     </>
   );

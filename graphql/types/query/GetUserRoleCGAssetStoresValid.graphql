@@ -1,0 +1,6 @@
+query GetUserRoleCGAssetStoresValid {
+  UserRoleCGAssetStoresValid {
+    desc
+    id
+  }
+}

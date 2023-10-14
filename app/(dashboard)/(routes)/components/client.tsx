@@ -1,20 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
 
 import { useSearchForm } from "@/hooks/use-search-form";
 
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
+import NoticeBlock from "./notice-block";
+import AssetInfoBlock from "./asset-info-block";
+import UserInfoBlock from "./user-info-block";
 
-interface DashboardClientProps {
+interface HomeDashboardClientProps {
 }
 
-export const DashboardClient: React.FC<DashboardClientProps> = ({ }) => {
-  const params = useParams();
-  const router = useRouter();
-
+export const HomeDashboardClient: React.FC<HomeDashboardClientProps> = ({ }) => {
   const [isMounted, setIsMounted] = useState(false);
 
   const storeSearchInfo = useSearchForm();
@@ -36,9 +35,24 @@ export const DashboardClient: React.FC<DashboardClientProps> = ({ }) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title="ダッシュボード" description="概要 - CGアセット管理" />
+        <Heading title="ホーム画面" description="お知らせ、申請等" />
       </div>
       <Separator />
+      <div className="flex flex-row">
+        <div className="basis-2/3">
+          <div className="flex flex-col w-full overflow-hidden h-96 px-3 py-2">
+            <NoticeBlock />
+          </div>
+          <div className="flex flex-col w-full overflow-hidden h-96 px-3 py-2">
+            <AssetInfoBlock />
+          </div>
+        </div>
+        <div className="basis-1/3">
+          <div className="flex flex-col w-full overflow-hidden h-full px-3 py-2">
+            <UserInfoBlock />
+          </div>
+        </div>
+      </div>
     </>
   );
 };

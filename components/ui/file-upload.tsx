@@ -19,7 +19,7 @@ export type UploadFileProps = {
 
 interface FileUploadProps {
   disabled?: boolean;
-  onChange: ({ file_name, url, file_path }: { file_name: string, url: string, file_path: string }) => void;
+  onChange: ({ file_name, url, file_path, thumb_file_name, thumb_url, thumb_file_path }: UploadFileProps) => void;
   onRemove: (value: string) => void;
   value: UploadFileProps[];
   poster: string;
@@ -73,6 +73,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
         file_name: fileObj.name,
         url: fileData?.Location,
         file_path: fileData?.Key,
+        thumb_file_name: '',
+        thumb_url: '',
+        thumb_file_path: '',
       });
     }
   };

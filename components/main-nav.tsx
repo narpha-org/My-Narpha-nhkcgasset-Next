@@ -15,7 +15,7 @@ export function MainNav({
   const routes = [
     {
       href: `/`,
-      label: 'ダッシュボード',
+      label: 'HOME',
       active: pathname === `/`,
     },
     {
@@ -24,34 +24,9 @@ export function MainNav({
       active: pathname === `/c_g_assets`,
     },
     {
-      href: `/user_role_c_g_asset_stores`,
-      label: 'CGアセットストアロール',
-      active: pathname === `/user_role_c_g_asset_stores`,
-    },
-    {
-      href: `/c_g_asset_cates`,
-      label: 'アセット種別',
-      active: pathname === `/c_g_asset_cates`,
-    },
-    {
-      href: `/c_g_a_registrant_affiliations`,
-      label: '登録者所属',
-      active: pathname === `/c_g_a_registrant_affiliations`,
-    },
-    {
-      href: `/c_g_a_viewing_restrictions`,
-      label: '閲覧制限',
-      active: pathname === `/c_g_a_viewing_restrictions`,
-    },
-    {
-      href: `/c_g_a_broadcasting_rights`,
-      label: '放送権利',
-      active: pathname === `/c_g_a_broadcasting_rights`,
-    },
-    {
-      href: `/c_g_a_shared_areas`,
-      label: '公開エリア',
-      active: pathname === `/c_g_a_shared_areas`,
+      href: `/admin/`,
+      label: '管理TOP',
+      active: pathname === `/admin/`,
     },
   ]
 

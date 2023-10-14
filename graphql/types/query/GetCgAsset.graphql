@@ -4,6 +4,7 @@ query GetCgAsset($id: ID!) {
     asset_id
     assetCate {
       id
+      code
       desc
     }
     asset_app_prod
@@ -73,6 +74,38 @@ query GetCgAsset($id: ID!) {
       desc
       revisedUser {
         name
+      }
+    }
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
       }
     }
     valid_flg

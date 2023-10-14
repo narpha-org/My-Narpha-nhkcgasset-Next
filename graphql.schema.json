@@ -1050,6 +1050,38 @@
             "deprecationReason": null
           },
           {
+            "name": "userCreate",
+            "description": "登録ユーザ",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userUpdate",
+            "description": "更新ユーザ",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "valid_flg",
             "description": "有効フラグ",
             "args": [],
@@ -1401,6 +1433,22 @@
         "name": "CGAssetCate",
         "description": "CGAssetCate.\nアセット種別",
         "fields": [
+          {
+            "name": "code",
+            "description": "アセット種別 区分",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "CodeCGAssetCate",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "created_at",
             "description": "When the CGAssetCate was created.",
@@ -2453,6 +2501,35 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "CodeCGAssetCate",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "C2D",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "C3D",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "IMG",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "INPUT_OBJECT",
         "name": "CreateCGAssetInput",
         "description": null,
@@ -2627,6 +2704,22 @@
             "deprecationReason": null
           },
           {
+            "name": "create_user_id",
+            "description": "登録ユーザID",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "program_id",
             "description": "番組ID",
             "type": {
@@ -2681,22 +2774,6 @@
               "kind": "SCALAR",
               "name": "ID",
               "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "user_id",
-            "description": "更新ユーザID",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -2835,6 +2912,30 @@
                 "name": "String",
                 "ofType": null
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "regist_affili_code",
+            "description": "主所属コード",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "regist_affili_id",
+            "description": "主所属名",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -3612,6 +3713,22 @@
             "name": "createCGAssetCate",
             "description": "Create a CGAssetCate.",
             "args": [
+              {
+                "name": "code",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "CodeCGAssetCate",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
               {
                 "name": "desc",
                 "description": null,
@@ -4551,7 +4668,7 @@
             "description": "Delete a OktaSession.",
             "args": [
               {
-                "name": "userId",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -5077,6 +5194,22 @@
             "name": "updateCGAssetCate",
             "description": "Update a CGAssetCate.",
             "args": [
+              {
+                "name": "code",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "CodeCGAssetCate",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
               {
                 "name": "desc",
                 "description": null,
@@ -7417,6 +7550,31 @@
             "deprecationReason": null
           },
           {
+            "name": "User",
+            "description": "Find a single User by an identifying attribute.",
+            "args": [
+              {
+                "name": "id",
+                "description": "Search by primary key.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "UserRoleCGAssetStore",
             "description": "Find a single UserRoleCGAssetStore by an identifying attribute.",
             "args": [
@@ -7517,6 +7675,71 @@
                     "ofType": null
                   }
                 }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "Users",
+            "description": "List multiple Users.",
+            "args": [
+              {
+                "name": "first",
+                "description": "Limits number of fetched items.",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "10",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "orderBy",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "OrderByClause",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "page",
+                "description": "The offset from which items are returned.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserPaginator",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -8377,7 +8600,7 @@
             "deprecationReason": null
           },
           {
-            "name": "user_id",
+            "name": "update_user_id",
             "description": "更新ユーザID",
             "type": {
               "kind": "NON_NULL",
@@ -8517,6 +8740,30 @@
                 "name": "String",
                 "ofType": null
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "regist_affili_code",
+            "description": "主所属コード",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "regist_affili_id",
+            "description": "主所属名",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -8684,6 +8931,30 @@
             "deprecationReason": null
           },
           {
+            "name": "regist_affili_code",
+            "description": "主所属コード",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "registrantAffiliation",
+            "description": "主所属名",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CGARegistrantAffiliation",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "roleCGAssetStore",
             "description": "CGアセットストア ロール",
             "args": [],
@@ -8737,6 +9008,57 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "OktaVerificationToken",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserPaginator",
+        "description": "A paginated list of User items.",
+        "fields": [
+          {
+            "name": "data",
+            "description": "A list of User items.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "User",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paginatorInfo",
+            "description": "Pagination information about the list of items.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PaginatorInfo",
                 "ofType": null
               }
             },

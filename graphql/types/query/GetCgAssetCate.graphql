@@ -1,6 +1,7 @@
 query GetCgAssetCate($id: ID!) {
   CGAssetCate(id: $id) {
     id
+    code
     desc
     valid_flg
     created_at

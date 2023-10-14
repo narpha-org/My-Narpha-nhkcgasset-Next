@@ -4,7 +4,13 @@ query GetUser($id: ID!) {
     name
     email
     emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
     roleCGAssetStore {
+      id
       desc
       role
       valid_flg

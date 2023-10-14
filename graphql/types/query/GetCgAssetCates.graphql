@@ -2,6 +2,7 @@ query GetCgAssetCates($first: Int!, $page: Int!) {
   CGAssetCates(first: $first, page: $page) {
     data {
       id
+      code
       desc
       valid_flg
       created_at

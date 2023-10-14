@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"
 import { ClientSafeProvider, LiteralUnion, getProviders, signIn, useSession } from "next-auth/react"
 import { BuiltInProviderType } from "next-auth/providers";
+import { LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface SignInPageParams {
@@ -55,7 +56,7 @@ const SignIn = ({ params, searchParams }: SignInPageParams) => {
             <Button
               onClick={() => signIn(provider.id)}
             >
-              {provider.name} でサインイン
+              <LogIn className="mr-2 h-4 w-4" /> {provider.name} でサインイン
             </Button>
           </div>
         ))}

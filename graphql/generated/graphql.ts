@@ -216,6 +216,10 @@ export type CgAsset = {
   sharedArea?: Maybe<CgaSharedArea>;
   /** When the CGAsset was last updated. */
   updated_at: Scalars['DateTime']['output'];
+  /** 登録ユーザ */
+  userCreate: User;
+  /** 更新ユーザ */
+  userUpdate: User;
   /** 有効フラグ */
   valid_flg: Scalars['Boolean']['output'];
   /** 閲覧制限ID */
@@ -278,6 +282,8 @@ export type CgAsset3DcgPaginator = {
  */
 export type CgAssetCate = {
   __typename?: 'CGAssetCate';
+  /** アセット種別 区分 */
+  code: CodeCgAssetCate;
   /** When the CGAssetCate was created. */
   created_at: Scalars['DateTime']['output'];
   /** 表記 */
@@ -446,6 +452,12 @@ export type CgAssetVideoPaginator = {
   paginatorInfo: PaginatorInfo;
 };
 
+export enum CodeCgAssetCate {
+  C2D = 'C2D',
+  C3D = 'C3D',
+  Img = 'IMG'
+}
+
 export type CreateCgAssetInput = {
   /** アセット3DCG */
   asset3DCGs?: InputMaybe<Array<InputMaybe<CgAsset3DcgInput>>>;
@@ -473,6 +485,8 @@ export type CreateCgAssetInput = {
   asset_size?: InputMaybe<Scalars['String']['input']>;
   /** 放送権利ID */
   broadcastingRightId?: InputMaybe<Scalars['ID']['input']>;
+  /** 登録ユーザID */
+  create_user_id: Scalars['ID']['input'];
   /** 番組ID */
   program_id?: InputMaybe<Scalars['String']['input']>;
   /** 番組名 */
@@ -483,8 +497,6 @@ export type CreateCgAssetInput = {
   rights_supplement?: InputMaybe<Scalars['String']['input']>;
   /** 公開エリアID */
   sharedAreaId?: InputMaybe<Scalars['ID']['input']>;
-  /** 更新ユーザID */
-  user_id: Scalars['ID']['input'];
   /** 有効フラグ */
   valid_flg?: InputMaybe<Scalars['Boolean']['input']>;
   /** 閲覧制限ID */
@@ -505,6 +517,10 @@ export type CreateUserInput = {
   image?: InputMaybe<Scalars['String']['input']>;
   /** Non-unique name. */
   name: Scalars['String']['input'];
+  /** 主所属コード */
+  regist_affili_code?: InputMaybe<Scalars['String']['input']>;
+  /** 主所属名 */
+  regist_affili_id?: InputMaybe<Scalars['ID']['input']>;
   /** CGアセットストア ロール */
   user_role_cgas_id?: InputMaybe<Scalars['ID']['input']>;
 };
@@ -687,6 +703,7 @@ export type MutationCreateCgAsset3DcgArgs = {
 
 
 export type MutationCreateCgAssetCateArgs = {
+  code: CodeCgAssetCate;
   desc: Scalars['String']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
@@ -816,7 +833,7 @@ export type MutationDeleteSessionArgs = {
 
 
 export type MutationDeleteUserArgs = {
-  userId: Scalars['ID']['input'];
+  id: Scalars['ID']['input'];
 };
 
 
@@ -884,6 +901,7 @@ export type MutationUpdateCgAsset3DcgArgs = {
 
 
 export type MutationUpdateCgAssetCateArgs = {
+  code: CodeCgAssetCate;
   desc: Scalars['String']['input'];
   id: Scalars['ID']['input'];
   valid_flg: Scalars['Boolean']['input'];
@@ -1114,12 +1132,16 @@ export type Query = {
   CGAssets: CgAssetPaginator;
   /** List all available CGAssetCate. */
   CGAssetsValid: CgAssetPaginator;
+  /** Find a single User by an identifying attribute. */
+  User?: Maybe<User>;
   /** Find a single UserRoleCGAssetStore by an identifying attribute. */
   UserRoleCGAssetStore?: Maybe<UserRoleCgAssetStore>;
   /** List multiple UserRoleCGAssetStore. */
   UserRoleCGAssetStores: UserRoleCgAssetStorePaginator;
   /** List all available UserRoleCGAssetStore. */
   UserRoleCGAssetStoresValid: Array<UserRoleCgAssetStore>;
+  /** List multiple Users. */
+  Users: UserPaginator;
   /** Find a single OktaSession by an identifying attribute. */
   getSessionAndUser?: Maybe<OktaSession>;
   /** Find a single user by an identifying attribute. */
@@ -1280,6 +1302,11 @@ export type QueryCgAssetsValidArgs = {
 };
 
 
+export type QueryUserArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
 export type QueryUserRoleCgAssetStoreArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
 };
@@ -1288,6 +1315,13 @@ export type QueryUserRoleCgAssetStoreArgs = {
 export type QueryUserRoleCgAssetStoresArgs = {
   desc?: InputMaybe<Scalars['String']['input']>;
   first?: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryUsersArgs = {
+  first?: Scalars['Int']['input'];
+  orderBy?: InputMaybe<Array<OrderByClause>>;
   page?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -1453,7 +1487,7 @@ export type UpdateCgAssetInput = {
   /** 公開エリアID */
   sharedAreaId?: InputMaybe<Scalars['ID']['input']>;
   /** 更新ユーザID */
-  user_id: Scalars['ID']['input'];
+  update_user_id: Scalars['ID']['input'];
   /** 有効フラグ */
   valid_flg?: InputMaybe<Scalars['Boolean']['input']>;
   /** 閲覧制限ID */
@@ -1474,6 +1508,10 @@ export type UpdateUserInput = {
   image?: InputMaybe<Scalars['String']['input']>;
   /** Non-unique name. */
   name: Scalars['String']['input'];
+  /** 主所属コード */
+  regist_affili_code?: InputMaybe<Scalars['String']['input']>;
+  /** 主所属名 */
+  regist_affili_id?: InputMaybe<Scalars['ID']['input']>;
   /** CGアセットストア ロール */
   user_role_cgas_id?: InputMaybe<Scalars['ID']['input']>;
 };
@@ -1502,12 +1540,25 @@ export type User = {
   image?: Maybe<Scalars['String']['output']>;
   /** Non-unique name. */
   name: Scalars['String']['output'];
+  /** 主所属コード */
+  regist_affili_code?: Maybe<Scalars['String']['output']>;
+  /** 主所属名 */
+  registrantAffiliation?: Maybe<CgaRegistrantAffiliation>;
   /** CGアセットストア ロール */
   roleCGAssetStore?: Maybe<UserRoleCgAssetStore>;
   sessions?: Maybe<Array<Maybe<OktaSession>>>;
   /** When the account was last updated. */
   updated_at: Scalars['DateTime']['output'];
   verificationTokens?: Maybe<Array<Maybe<OktaVerificationToken>>>;
+};
+
+/** A paginated list of User items. */
+export type UserPaginator = {
+  __typename?: 'UserPaginator';
+  /** A list of User items. */
+  data: Array<User>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
 };
 
 /**
@@ -1583,12 +1634,13 @@ export type CreateCgAssetMutationVariables = Exact<{
 export type CreateCgAssetMutation = { __typename?: 'Mutation', createCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
 
 export type CreateCgAssetCateMutationVariables = Exact<{
+  code: CodeCgAssetCate;
   desc: Scalars['String']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type CreateCgAssetCateMutation = { __typename?: 'Mutation', createCGAssetCate?: { __typename: 'CGAssetCate', id: string, desc: string, valid_flg: boolean } | null };
+export type CreateCgAssetCateMutation = { __typename?: 'Mutation', createCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, valid_flg: boolean } | null };
 
 export type CreateCgaRegistrantAffiliationMutationVariables = Exact<{
   desc: Scalars['String']['input'];
@@ -1633,7 +1685,7 @@ export type CreateUserMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
 
 export type CreateUserRoleCgAssetStoreMutationVariables = Exact<{
   role: RoleCgAssetStore;
@@ -1649,7 +1701,7 @@ export type CreateVerificationTokenMutationVariables = Exact<{
 }>;
 
 
-export type CreateVerificationTokenMutation = { __typename?: 'Mutation', createVerificationToken?: { __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null } | null } | null };
+export type CreateVerificationTokenMutation = { __typename?: 'Mutation', createVerificationToken?: { __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null } | null } | null };
 
 export type DeleteCgaBroadcastingRightMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1670,7 +1722,7 @@ export type DeleteCgAssetCateMutationVariables = Exact<{
 }>;
 
 
-export type DeleteCgAssetCateMutation = { __typename?: 'Mutation', deleteCGAssetCate?: { __typename: 'CGAssetCate', id: string, desc: string, valid_flg: boolean } | null };
+export type DeleteCgAssetCateMutation = { __typename?: 'Mutation', deleteCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, valid_flg: boolean } | null };
 
 export type DeleteCgaRegistrantAffiliationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1705,14 +1757,14 @@ export type DeleteSessionMutationVariables = Exact<{
 }>;
 
 
-export type DeleteSessionMutation = { __typename?: 'Mutation', deleteSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+export type DeleteSessionMutation = { __typename?: 'Mutation', deleteSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
 
 export type DeleteUserMutationVariables = Exact<{
-  userId: Scalars['ID']['input'];
+  id: Scalars['ID']['input'];
 }>;
 
 
-export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
 
 export type DeleteUserRoleCgAssetStoreMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1726,14 +1778,14 @@ export type LinkAccountMutationVariables = Exact<{
 }>;
 
 
-export type LinkAccountMutation = { __typename?: 'Mutation', linkAccount?: { __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string, user: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } } | null };
+export type LinkAccountMutation = { __typename?: 'Mutation', linkAccount?: { __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string, user: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } } | null };
 
 export type UnlinkAccountMutationVariables = Exact<{
   input: UnlinkAccountInput;
 }>;
 
 
-export type UnlinkAccountMutation = { __typename?: 'Mutation', unlinkAccount?: { __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string, user: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } } | null };
+export type UnlinkAccountMutation = { __typename?: 'Mutation', unlinkAccount?: { __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string, user: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } } | null };
 
 export type UpdateCgaRegistrantAffiliationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1776,30 +1828,31 @@ export type UpdateCgAssetMutationVariables = Exact<{
 }>;
 
 
-export type UpdateCgAssetMutation = { __typename?: 'Mutation', updateCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type UpdateCgAssetMutation = { __typename?: 'Mutation', updateCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
 
 export type UpdateCgAssetCateMutationVariables = Exact<{
   id: Scalars['ID']['input'];
+  code: CodeCgAssetCate;
   desc: Scalars['String']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateCgAssetCateMutation = { __typename?: 'Mutation', updateCGAssetCate?: { __typename: 'CGAssetCate', id: string, desc: string, valid_flg: boolean } | null };
+export type UpdateCgAssetCateMutation = { __typename?: 'Mutation', updateCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, valid_flg: boolean } | null };
 
 export type UpdateSessionMutationVariables = Exact<{
   input: UpdateSessionInput;
 }>;
 
 
-export type UpdateSessionMutation = { __typename?: 'Mutation', updateSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+export type UpdateSessionMutation = { __typename?: 'Mutation', updateSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
 
 export type UpdateUserMutationVariables = Exact<{
   user: UpdateUserInput;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
 
 export type UpdateUserRoleCgAssetStoreMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1846,14 +1899,14 @@ export type GetCgAssetQueryVariables = Exact<{
 }>;
 
 
-export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
 
 export type GetCgAssetCateQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetCgAssetCateQuery = { __typename?: 'Query', CGAssetCate?: { __typename?: 'CGAssetCate', id: string, desc: string, valid_flg: boolean, created_at: any } | null };
+export type GetCgAssetCateQuery = { __typename?: 'Query', CGAssetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, valid_flg: boolean, created_at: any } | null };
 
 export type GetCgAssetCatesQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -1861,12 +1914,12 @@ export type GetCgAssetCatesQueryVariables = Exact<{
 }>;
 
 
-export type GetCgAssetCatesQuery = { __typename?: 'Query', CGAssetCates: { __typename?: 'CGAssetCatePaginator', data: Array<{ __typename?: 'CGAssetCate', id: string, desc: string, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgAssetCatesQuery = { __typename?: 'Query', CGAssetCates: { __typename?: 'CGAssetCatePaginator', data: Array<{ __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgAssetCatesValidQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCgAssetCatesValidQuery = { __typename?: 'Query', CGAssetCatesValid: Array<{ __typename?: 'CGAssetCate', desc: string, id: string }> };
+export type GetCgAssetCatesValidQuery = { __typename?: 'Query', CGAssetCatesValid: Array<{ __typename?: 'CGAssetCate', code: CodeCgAssetCate, desc: string, id: string }> };
 
 export type GetCgAssetsQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -1875,7 +1928,7 @@ export type GetCgAssetsQueryVariables = Exact<{
 }>;
 
 
-export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgaBroadcastingRightsValidQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1939,28 +1992,28 @@ export type GetSessionAndUserQueryVariables = Exact<{
 }>;
 
 
-export type GetSessionAndUserQuery = { __typename?: 'Query', getSessionAndUser?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+export type GetSessionAndUserQuery = { __typename?: 'Query', getSessionAndUser?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
 
 export type GetUserByAccountQueryVariables = Exact<{
   input: GetUserByAccountInput;
 }>;
 
 
-export type GetUserByAccountQuery = { __typename?: 'Query', getUserByAccount?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+export type GetUserByAccountQuery = { __typename?: 'Query', getUserByAccount?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
 
 export type GetUserByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];
 }>;
 
 
-export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
 
 export type GetUserRoleCgAssetStoreQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1977,6 +2030,19 @@ export type GetUserRoleCgAssetStoresQueryVariables = Exact<{
 
 export type GetUserRoleCgAssetStoresQuery = { __typename?: 'Query', UserRoleCGAssetStores: { __typename?: 'UserRoleCGAssetStorePaginator', data: Array<{ __typename?: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
+export type GetUserRoleCgAssetStoresValidQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserRoleCgAssetStoresValidQuery = { __typename?: 'Query', UserRoleCGAssetStoresValid: Array<{ __typename?: 'UserRoleCGAssetStore', desc: string, id: string }> };
+
+export type GetUsersQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetUsersQuery = { __typename?: 'Query', Users: { __typename?: 'UserPaginator', data: Array<{ __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, created_at: any, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
 export type SamplesAllQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1987,7 +2053,7 @@ export type UseVerificationTokenQueryVariables = Exact<{
 }>;
 
 
-export type UseVerificationTokenQuery = { __typename?: 'Query', useVerificationToken?: { __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null } | null } | null };
+export type UseVerificationTokenQuery = { __typename?: 'Query', useVerificationToken?: { __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null } | null } | null };
 
 
 export const CreateCgaBroadcastingRightDocument = gql`
@@ -2129,10 +2195,11 @@ export type CreateCgAssetMutationHookResult = ReturnType<typeof useCreateCgAsset
 export type CreateCgAssetMutationResult = Apollo.MutationResult<CreateCgAssetMutation>;
 export type CreateCgAssetMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetMutation, CreateCgAssetMutationVariables>;
 export const CreateCgAssetCateDocument = gql`
-    mutation CreateCgAssetCate($desc: String!, $valid_flg: Boolean!) {
-  createCGAssetCate(desc: $desc, valid_flg: $valid_flg) {
+    mutation CreateCgAssetCate($code: CodeCGAssetCate!, $desc: String!, $valid_flg: Boolean!) {
+  createCGAssetCate(code: $code, desc: $desc, valid_flg: $valid_flg) {
     __typename
     id
+    code
     desc
     valid_flg
   }
@@ -2153,6 +2220,7 @@ export type CreateCgAssetCateMutationFn = Apollo.MutationFunction<CreateCgAssetC
  * @example
  * const [createCgAssetCateMutation, { data, loading, error }] = useCreateCgAssetCateMutation({
  *   variables: {
+ *      code: // value for 'code'
  *      desc: // value for 'desc'
  *      valid_flg: // value for 'valid_flg'
  *   },
@@ -2383,7 +2451,13 @@ export const CreateUserDocument = gql`
     name
     email
     emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
     roleCGAssetStore {
+      id
       desc
       role
       valid_flg
@@ -2491,7 +2565,13 @@ export const CreateVerificationTokenDocument = gql`
       name
       email
       emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
       roleCGAssetStore {
+        id
         desc
         role
         valid_flg
@@ -2687,6 +2767,7 @@ export const DeleteCgAssetCateDocument = gql`
   deleteCGAssetCate(id: $id) {
     __typename
     id
+    code
     desc
     valid_flg
   }
@@ -2871,7 +2952,13 @@ export const DeleteSessionDocument = gql`
       name
       email
       emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
       roleCGAssetStore {
+        id
         desc
         role
         valid_flg
@@ -2927,13 +3014,19 @@ export type DeleteSessionMutationHookResult = ReturnType<typeof useDeleteSession
 export type DeleteSessionMutationResult = Apollo.MutationResult<DeleteSessionMutation>;
 export type DeleteSessionMutationOptions = Apollo.BaseMutationOptions<DeleteSessionMutation, DeleteSessionMutationVariables>;
 export const DeleteUserDocument = gql`
-    mutation DeleteUser($userId: ID!) {
-  deleteUser(userId: $userId) {
+    mutation DeleteUser($id: ID!) {
+  deleteUser(id: $id) {
     id
     name
     email
     emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
     roleCGAssetStore {
+      id
       desc
       role
       valid_flg
@@ -2980,7 +3073,7 @@ export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, D
  * @example
  * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
  *   variables: {
- *      userId: // value for 'userId'
+ *      id: // value for 'id'
  *   },
  * });
  */
@@ -3049,7 +3142,13 @@ export const LinkAccountDocument = gql`
       name
       email
       emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
       roleCGAssetStore {
+        id
         desc
         role
         valid_flg
@@ -3114,7 +3213,13 @@ export const UnlinkAccountDocument = gql`
       name
       email
       emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
       roleCGAssetStore {
+        id
         desc
         role
         valid_flg
@@ -3379,6 +3484,38 @@ export const UpdateCgAssetDocument = gql`
         name
       }
     }
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
     valid_flg
     created_at
     updated_at
@@ -3412,10 +3549,11 @@ export type UpdateCgAssetMutationHookResult = ReturnType<typeof useUpdateCgAsset
 export type UpdateCgAssetMutationResult = Apollo.MutationResult<UpdateCgAssetMutation>;
 export type UpdateCgAssetMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetMutation, UpdateCgAssetMutationVariables>;
 export const UpdateCgAssetCateDocument = gql`
-    mutation UpdateCgAssetCate($id: ID!, $desc: String!, $valid_flg: Boolean!) {
-  updateCGAssetCate(id: $id, desc: $desc, valid_flg: $valid_flg) {
+    mutation UpdateCgAssetCate($id: ID!, $code: CodeCGAssetCate!, $desc: String!, $valid_flg: Boolean!) {
+  updateCGAssetCate(id: $id, code: $code, desc: $desc, valid_flg: $valid_flg) {
     __typename
     id
+    code
     desc
     valid_flg
   }
@@ -3437,6 +3575,7 @@ export type UpdateCgAssetCateMutationFn = Apollo.MutationFunction<UpdateCgAssetC
  * const [updateCgAssetCateMutation, { data, loading, error }] = useUpdateCgAssetCateMutation({
  *   variables: {
  *      id: // value for 'id'
+ *      code: // value for 'code'
  *      desc: // value for 'desc'
  *      valid_flg: // value for 'valid_flg'
  *   },
@@ -3459,7 +3598,13 @@ export const UpdateSessionDocument = gql`
       name
       email
       emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
       roleCGAssetStore {
+        id
         desc
         role
         valid_flg
@@ -3521,7 +3666,13 @@ export const UpdateUserDocument = gql`
     name
     email
     emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
     roleCGAssetStore {
+      id
       desc
       role
       valid_flg
@@ -3801,6 +3952,7 @@ export const GetCgAssetDocument = gql`
     asset_id
     assetCate {
       id
+      code
       desc
     }
     asset_app_prod
@@ -3872,6 +4024,38 @@ export const GetCgAssetDocument = gql`
         name
       }
     }
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
     valid_flg
     created_at
     updated_at
@@ -3910,6 +4094,7 @@ export const GetCgAssetCateDocument = gql`
     query GetCgAssetCate($id: ID!) {
   CGAssetCate(id: $id) {
     id
+    code
     desc
     valid_flg
     created_at
@@ -3949,6 +4134,7 @@ export const GetCgAssetCatesDocument = gql`
   CGAssetCates(first: $first, page: $page) {
     data {
       id
+      code
       desc
       valid_flg
       created_at
@@ -3994,6 +4180,7 @@ export type GetCgAssetCatesQueryResult = Apollo.QueryResult<GetCgAssetCatesQuery
 export const GetCgAssetCatesValidDocument = gql`
     query GetCgAssetCatesValid {
   CGAssetCatesValid {
+    code
     desc
     id
   }
@@ -4039,6 +4226,7 @@ export const GetCgAssetsDocument = gql`
       asset_id
       assetCate {
         id
+        code
         desc
       }
       asset_app_prod
@@ -4108,6 +4296,38 @@ export const GetCgAssetsDocument = gql`
         desc
         revisedUser {
           name
+        }
+      }
+      userCreate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      userUpdate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
         }
       }
       valid_flg
@@ -4510,7 +4730,13 @@ export const GetSessionAndUserDocument = gql`
       name
       email
       emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
       roleCGAssetStore {
+        id
         desc
         role
         valid_flg
@@ -4574,7 +4800,13 @@ export const GetUserDocument = gql`
     name
     email
     emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
     roleCGAssetStore {
+      id
       desc
       role
       valid_flg
@@ -4641,7 +4873,13 @@ export const GetUserByAccountDocument = gql`
     name
     email
     emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
     roleCGAssetStore {
+      id
       desc
       role
       valid_flg
@@ -4708,7 +4946,13 @@ export const GetUserByEmailDocument = gql`
     name
     email
     emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
     roleCGAssetStore {
+      id
       desc
       role
       valid_flg
@@ -4855,6 +5099,128 @@ export function useGetUserRoleCgAssetStoresLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetUserRoleCgAssetStoresQueryHookResult = ReturnType<typeof useGetUserRoleCgAssetStoresQuery>;
 export type GetUserRoleCgAssetStoresLazyQueryHookResult = ReturnType<typeof useGetUserRoleCgAssetStoresLazyQuery>;
 export type GetUserRoleCgAssetStoresQueryResult = Apollo.QueryResult<GetUserRoleCgAssetStoresQuery, GetUserRoleCgAssetStoresQueryVariables>;
+export const GetUserRoleCgAssetStoresValidDocument = gql`
+    query GetUserRoleCGAssetStoresValid {
+  UserRoleCGAssetStoresValid {
+    desc
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetUserRoleCgAssetStoresValidQuery__
+ *
+ * To run a query within a React component, call `useGetUserRoleCgAssetStoresValidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserRoleCgAssetStoresValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserRoleCgAssetStoresValidQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUserRoleCgAssetStoresValidQuery(baseOptions?: Apollo.QueryHookOptions<GetUserRoleCgAssetStoresValidQuery, GetUserRoleCgAssetStoresValidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserRoleCgAssetStoresValidQuery, GetUserRoleCgAssetStoresValidQueryVariables>(GetUserRoleCgAssetStoresValidDocument, options);
+      }
+export function useGetUserRoleCgAssetStoresValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserRoleCgAssetStoresValidQuery, GetUserRoleCgAssetStoresValidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserRoleCgAssetStoresValidQuery, GetUserRoleCgAssetStoresValidQueryVariables>(GetUserRoleCgAssetStoresValidDocument, options);
+        }
+export type GetUserRoleCgAssetStoresValidQueryHookResult = ReturnType<typeof useGetUserRoleCgAssetStoresValidQuery>;
+export type GetUserRoleCgAssetStoresValidLazyQueryHookResult = ReturnType<typeof useGetUserRoleCgAssetStoresValidLazyQuery>;
+export type GetUserRoleCgAssetStoresValidQueryResult = Apollo.QueryResult<GetUserRoleCgAssetStoresValidQuery, GetUserRoleCgAssetStoresValidQueryVariables>;
+export const GetUsersDocument = gql`
+    query GetUsers($first: Int!, $page: Int!) {
+  Users(
+    first: $first
+    page: $page
+    orderBy: [{column: "created_at", order: DESC}, {column: "name", order: ASC}]
+  ) {
+    data {
+      id
+      name
+      email
+      emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+      accounts {
+        access_token
+        expires_at
+        id_token
+        oauth_token
+        oauth_token_secret
+        provider
+        providerAccountId
+        refresh_token
+        refresh_token_expires_in
+        scope
+        session_state
+        token_type
+        type
+      }
+      sessions {
+        expires
+        sessionToken
+      }
+      verificationTokens {
+        identifier
+        expires
+        token
+      }
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUsersQuery__
+ *
+ * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetUsersQuery(baseOptions: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+      }
+export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+        }
+export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
+export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
+export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
 export const SamplesAllDocument = gql`
     query SamplesAll {
   samplesAll {
@@ -4901,7 +5267,13 @@ export const UseVerificationTokenDocument = gql`
       name
       email
       emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
       roleCGAssetStore {
+        id
         desc
         role
         valid_flg
