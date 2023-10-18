@@ -1,0 +1,10 @@
+query GetCgAssetSearchAppProd($id: ID!) {
+  CGAssetSearchAppProd(id: $id) {
+    id
+    code
+    desc
+    order
+    valid_flg
+    created_at
+  }
+}

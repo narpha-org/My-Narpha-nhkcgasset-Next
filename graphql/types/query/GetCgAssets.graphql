@@ -11,6 +11,7 @@ query GetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
     data {
       id
       asset_id
+      asset_name
       assetCate {
         id
         code

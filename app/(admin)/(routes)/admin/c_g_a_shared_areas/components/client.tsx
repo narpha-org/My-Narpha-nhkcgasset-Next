@@ -27,7 +27,7 @@ export const CGASharedAreaClient: React.FC<CGASharedAreaClientProps> = ({
     <>
       <div className="flex items-center justify-between">
         <Heading title={`公開エリア (${paginatorInfo.total})`} description="公開エリア管理" />
-        <Button onClick={() => router.push(`/c_g_a_shared_areas/new`)}>
+        <Button onClick={() => router.push(`/admin/c_g_a_shared_areas/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>
       </div>

@@ -1,0 +1,10 @@
+mutation DeleteCgAssetSearchAppProd($id: ID!) {
+  deleteCGAssetSearchAppProd(id: $id) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}

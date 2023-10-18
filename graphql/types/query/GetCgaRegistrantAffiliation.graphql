@@ -2,6 +2,7 @@ query GetCgaRegistrantAffiliation($id: ID!) {
   CGARegistrantAffiliation(id: $id) {
     id
     desc
+    order
     valid_flg
     created_at
   }

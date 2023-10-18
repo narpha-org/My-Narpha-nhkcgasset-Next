@@ -48,6 +48,7 @@ const CGAViewingRestrictionsPage = async ({
   const formattedCGAViewingRestrictions: CGAViewingRestrictionColumn[] = CGAViewingRestrictions.map((item) => ({
     id: item.id,
     desc: item.desc,
+    order: item.order as number,
     valid_flg: (item.valid_flg ? '○' : '-'),
     created_at: format(new Date(item.created_at), 'yyyy/MM/dd HH:ii'),
   }));

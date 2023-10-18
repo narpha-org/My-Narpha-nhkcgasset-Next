@@ -37,8 +37,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { codeCGAssetCates } from "../../components/columns"
 
 const formSchema = z.object({
-  code: z.string().min(1),
-  desc: z.string().min(1),
+  code: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
+    message: "必須入力",
+  }),
+  desc: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
+    message: "必須入力",
+  }),
+  order: z.coerce.number({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }),
   valid_flg: z.boolean().default(false).optional(),
 });
 
@@ -57,18 +62,24 @@ export const CGAssetCateForm: React.FC<CGAssetCateFormProps> = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? 'アセット種別 編集' : 'アセット種別 新規追加';
+  const title = initialData ? 'アセット検索項目: 種別 編集' : 'アセット検索項目: 種別 新規追加';
   const description = initialData ? '指定アセット種別の編集' : '新規アセット種別の追加';
   const toastMessage = initialData ? 'アセット種別が更新されました。' : 'アセット種別が新規追加されました。';
   const action = initialData ? '更新' : '追加';
 
+  const defaultValues = initialData ? {
+    ...initialData,
+    order: initialData?.order as number | undefined,
+  } : {
+    code: '',
+    desc: '',
+    order: undefined,
+    valid_flg: false,
+  }
+
   const form = useForm<CGAssetCateFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
-      code: '',
-      desc: '',
-      valid_flg: false,
-    }
+    defaultValues
   });
 
   const onSubmit = async (data: CGAssetCateFormValues) => {
@@ -185,6 +196,19 @@ export const CGAssetCateForm: React.FC<CGAssetCateFormProps> = ({
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="order"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>表示順</FormLabel>
+                  <FormControl>
+                    <Input type="number" disabled={loading} placeholder="表示順" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

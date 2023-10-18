@@ -11,6 +11,7 @@ export type CGAssetCateColumn = {
   id: string
   code: string;
   desc: string;
+  order: number;
   valid_flg: string;
   created_at: string;
 }
@@ -23,6 +24,10 @@ export const columns: ColumnDef<CGAssetCateColumn>[] = [
   {
     accessorKey: "code",
     header: "アセット区分",
+  },
+  {
+    accessorKey: "order",
+    header: "表示順",
   },
   {
     accessorKey: "valid_flg",

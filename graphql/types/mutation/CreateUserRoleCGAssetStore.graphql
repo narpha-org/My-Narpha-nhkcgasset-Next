@@ -1,13 +1,20 @@
 mutation CreateUserRoleCGAssetStore(
   $role: RoleCGAssetStore!
   $desc: String!
+  $order: Int!
   $valid_flg: Boolean!
 ) {
-  createUserRoleCGAssetStore(role: $role, desc: $desc, valid_flg: $valid_flg) {
+  createUserRoleCGAssetStore(
+    role: $role
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     role
     desc
+    order
     valid_flg
   }
 }

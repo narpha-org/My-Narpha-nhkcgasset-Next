@@ -7,6 +7,7 @@ import { CellAction } from "./cell-action"
 export type CGAViewingRestrictionColumn = {
   id: string
   desc: string;
+  order: number;
   valid_flg: string;
   created_at: string;
 }
@@ -15,6 +16,10 @@ export const columns: ColumnDef<CGAViewingRestrictionColumn>[] = [
   {
     accessorKey: "desc",
     header: "閲覧制限",
+  },
+  {
+    accessorKey: "order",
+    header: "表示順",
   },
   {
     accessorKey: "valid_flg",

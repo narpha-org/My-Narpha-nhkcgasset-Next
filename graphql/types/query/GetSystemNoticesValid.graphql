@@ -1,0 +1,44 @@
+query GetSystemNoticesValid {
+  SystemNoticesValid(
+    orderBy: [
+      { column: "order", order: ASC }
+      { column: "created_at", order: DESC }
+    ]
+  ) {
+    message
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+    id
+  }
+}

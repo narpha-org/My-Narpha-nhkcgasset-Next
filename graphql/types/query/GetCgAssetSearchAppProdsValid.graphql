@@ -1,0 +1,7 @@
+query GetCgAssetSearchAppProdsValid {
+  CGAssetSearchAppProdsValid {
+    code
+    desc
+    id
+  }
+}

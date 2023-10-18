@@ -31,7 +31,7 @@ export const UserRoleCgAssetStoreClient: React.FC<UserRoleCgAssetStoreClientProp
     <>
       <div className="flex items-center justify-between">
         <Heading title={`CGアセットストアロール (${paginatorInfo.total})`} description="CGアセットストアロール管理" />
-        <Button onClick={() => router.push(`/user_role_c_g_asset_stores/new`)}>
+        <Button onClick={() => router.push(`/admin/user_role_c_g_asset_stores/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>
       </div>

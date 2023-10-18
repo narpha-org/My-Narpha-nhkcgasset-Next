@@ -2,6 +2,7 @@ query GetCgAsset($id: ID!) {
   CGAsset(id: $id) {
     id
     asset_id
+    asset_name
     assetCate {
       id
       code

@@ -3,6 +3,7 @@ query GetCgAssetCate($id: ID!) {
     id
     code
     desc
+    order
     valid_flg
     created_at
   }

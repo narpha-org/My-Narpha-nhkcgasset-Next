@@ -2,6 +2,7 @@ query GetCGABroadcastingRight($id: ID!) {
   CGABroadcastingRight(id: $id) {
     id
     desc
+    order
     valid_flg
     created_at
   }

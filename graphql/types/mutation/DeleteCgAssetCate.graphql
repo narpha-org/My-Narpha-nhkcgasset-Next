@@ -4,6 +4,7 @@ mutation DeleteCgAssetCate($id: ID!) {
     id
     code
     desc
+    order
     valid_flg
   }
 }

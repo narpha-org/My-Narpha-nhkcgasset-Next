@@ -11,6 +11,7 @@ export type UserRoleCgAssetStoreColumn = {
   id: string
   role: string;
   desc: string;
+  order: number;
   valid_flg: string;
   created_at: string;
 }
@@ -23,6 +24,10 @@ export const columns: ColumnDef<UserRoleCgAssetStoreColumn>[] = [
   {
     accessorKey: "role",
     header: "ユーザ種類",
+  },
+  {
+    accessorKey: "order",
+    header: "表示順",
   },
   {
     accessorKey: "valid_flg",

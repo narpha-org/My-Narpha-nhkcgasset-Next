@@ -3,6 +3,7 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
     __typename
     id
     asset_id
+    asset_name
     assetCate {
       desc
     }

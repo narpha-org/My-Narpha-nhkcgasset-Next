@@ -4,6 +4,7 @@ mutation DeleteUserRoleCGAssetStore($id: ID!) {
     id
     role
     desc
+    order
     valid_flg
   }
 }

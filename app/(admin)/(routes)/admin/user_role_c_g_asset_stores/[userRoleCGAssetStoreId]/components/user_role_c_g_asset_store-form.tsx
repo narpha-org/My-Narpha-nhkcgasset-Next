@@ -37,8 +37,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { roleCGAssetStores } from "../../components/columns"
 
 const formSchema = z.object({
-  role: z.string().min(1),
-  desc: z.string().min(1),
+  role: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
+    message: "必須入力",
+  }),
+  desc: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
+    message: "必須入力",
+  }),
+  order: z.coerce.number({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }),
   valid_flg: z.boolean().default(false).optional(),
 });
 
@@ -62,13 +67,19 @@ export const UserRoleCgAssetStoreForm: React.FC<UserRoleCgAssetStoreFormProps> =
   const toastMessage = initialData ? 'CGアセットストアロールが更新されました。' : 'CGアセットストアロールが新規追加されました。';
   const action = initialData ? '更新' : '追加';
 
+  const defaultValues = initialData ? {
+    ...initialData,
+    order: initialData?.order as number | undefined,
+  } : {
+    role: '',
+    desc: '',
+    order: undefined,
+    valid_flg: false,
+  }
+
   const form = useForm<UserRoleCgAssetStoreFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
-      role: '',
-      desc: '',
-      valid_flg: false,
-    }
+    defaultValues
   });
 
   const onSubmit = async (data: UserRoleCgAssetStoreFormValues) => {
@@ -79,7 +90,7 @@ export const UserRoleCgAssetStoreForm: React.FC<UserRoleCgAssetStoreFormProps> =
           .mutate({
             mutation: UpdateUserRoleCgAssetStoreDocument,
             variables: {
-              id: params.userRoleCgAssetStoreId,
+              id: params.userRoleCGAssetStoreId,
               ...data
             },
           })
@@ -109,7 +120,7 @@ export const UserRoleCgAssetStoreForm: React.FC<UserRoleCgAssetStoreFormProps> =
         .mutate({
           mutation: DeleteUserRoleCgAssetStoreDocument,
           variables: {
-            id: params.userRoleCgAssetStoreId,
+            id: params.userRoleCGAssetStoreId,
           },
         })
 
@@ -185,6 +196,19 @@ export const UserRoleCgAssetStoreForm: React.FC<UserRoleCgAssetStoreFormProps> =
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="order"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>表示順</FormLabel>
+                  <FormControl>
+                    <Input type="number" disabled={loading} placeholder="表示順" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

@@ -2,18 +2,21 @@ mutation UpdateUserRoleCGAssetStore(
   $id: ID!
   $role: RoleCGAssetStore!
   $desc: String!
+  $order: Int!
   $valid_flg: Boolean!
 ) {
   updateUserRoleCGAssetStore(
     id: $id
     role: $role
     desc: $desc
+    order: $order
     valid_flg: $valid_flg
   ) {
     __typename
     id
     role
     desc
+    order
     valid_flg
   }
 }

@@ -11,10 +11,23 @@ import { AlertModal } from "@/components/modals/alert-modal"
 
 // ログインボタン
 export const LoginButton = () => {
+  const [loading, setLoading] = useState(false);
+
+  const onSignIn = () => {
+    setLoading(true);
+
+    signIn();
+
+    // toast.success('Oktaの認証画面に移動します。');
+
+    setLoading(false);
+  }
+
   return (
     <Button
+      disabled={loading}
       style={{ marginRight: 10 }}
-      onClick={() => signIn()}
+      onClick={onSignIn}
     >
       <LogIn className="mr-2 h-4 w-4" /> Okta ログイン
     </Button>
@@ -49,6 +62,7 @@ export const LogoutButton = (props: { session: Session | null }) => {
       />
       < Button
         variant="ghost"
+        disabled={loading}
         style={{ marginRight: 0 }
         }
         onClick={() => setOpen(true)}

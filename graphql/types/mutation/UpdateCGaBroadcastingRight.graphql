@@ -1,12 +1,19 @@
 mutation UpdateCGABroadcastingRight(
   $id: ID!
   $desc: String!
+  $order: Int!
   $valid_flg: Boolean!
 ) {
-  updateCGABroadcastingRight(id: $id, desc: $desc, valid_flg: $valid_flg) {
+  updateCGABroadcastingRight(
+    id: $id
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }

@@ -27,7 +27,7 @@ export const CGARegistrantAffiliationClient: React.FC<CGARegistrantAffiliationCl
     <>
       <div className="flex items-center justify-between">
         <Heading title={`登録者所属 (${paginatorInfo.total})`} description="登録者所属管理" />
-        <Button onClick={() => router.push(`/c_g_a_registrant_affiliations/new`)}>
+        <Button onClick={() => router.push(`/admin/c_g_a_registrant_affiliations/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>
       </div>

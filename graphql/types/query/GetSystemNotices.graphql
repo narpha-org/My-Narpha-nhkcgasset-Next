@@ -1,0 +1,57 @@
+query GetSystemNotices($first: Int!, $page: Int!) {
+  SystemNotices(
+    first: $first
+    page: $page
+    orderBy: [
+      { column: "order", order: ASC }
+      { column: "created_at", order: DESC }
+    ]
+  ) {
+    data {
+      id
+      message
+      order
+      userCreate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      userUpdate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}

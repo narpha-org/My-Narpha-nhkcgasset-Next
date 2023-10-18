@@ -49,6 +49,7 @@ const CGAssetCatesPage = async ({
     id: item.id,
     code: item.code,
     desc: item.desc,
+    order: item.order as number,
     valid_flg: (item.valid_flg ? '○' : '-'),
     created_at: format(new Date(item.created_at), 'yyyy/MM/dd HH:ii'),
   }));

@@ -3,6 +3,7 @@ query GetCgaRegistrantAffiliations($first: Int!, $page: Int!) {
     data {
       id
       desc
+      order
       valid_flg
       created_at
     }

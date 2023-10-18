@@ -1,0 +1,43 @@
+mutation DeleteSystemNotice($id: ID!) {
+  deleteSystemNotice(id: $id) {
+    __typename
+    id
+    message
+    order
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}

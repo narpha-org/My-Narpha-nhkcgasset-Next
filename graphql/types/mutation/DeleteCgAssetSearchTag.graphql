@@ -1,0 +1,10 @@
+mutation DeleteCgAssetSearchTag($id: ID!) {
+  deleteCGAssetSearchTag(id: $id) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}

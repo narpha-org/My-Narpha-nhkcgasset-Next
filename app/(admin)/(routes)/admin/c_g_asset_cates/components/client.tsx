@@ -29,8 +29,8 @@ export const CGAssetCateClient: React.FC<CGAssetCateClientProps> = ({
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`アセット種別 (${paginatorInfo.total})`} description="アセット種別管理" />
-        <Button onClick={() => router.push(`/c_g_asset_cates/new`)}>
+        <Heading title={`アセット検索項目: 種別 (${paginatorInfo.total})`} description="アセット種別管理" />
+        <Button onClick={() => router.push(`/admin/c_g_asset_cates/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>
       </div>

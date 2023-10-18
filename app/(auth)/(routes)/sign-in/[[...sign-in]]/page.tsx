@@ -23,6 +23,7 @@ const SignIn = ({ params, searchParams }: SignInPageParams) => {
   const { data: session, status } = useSession()
   const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null)
   const [isMounted, setIsMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -43,6 +44,14 @@ const SignIn = ({ params, searchParams }: SignInPageParams) => {
     return null;
   }
 
+  const onSignIn = (providerId: LiteralUnion<BuiltInProviderType>) => {
+    setLoading(true);
+
+    signIn(providerId);
+
+    setLoading(false);
+  }
+
   return (
     <>
       <div className="card">
@@ -54,7 +63,8 @@ const SignIn = ({ params, searchParams }: SignInPageParams) => {
         {providers && Object.values(providers).map((provider) => (
           <div key={provider.name}>
             <Button
-              onClick={() => signIn(provider.id)}
+              disabled={loading}
+              onClick={() => onSignIn(provider.id)}
             >
               <LogIn className="mr-2 h-4 w-4" /> {provider.name} でサインイン
             </Button>

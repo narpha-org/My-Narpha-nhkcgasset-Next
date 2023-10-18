@@ -3,6 +3,7 @@ mutation DeleteCGABroadcastingRight($id: ID!) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }

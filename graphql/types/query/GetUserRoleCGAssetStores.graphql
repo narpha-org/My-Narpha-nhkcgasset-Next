@@ -4,6 +4,7 @@ query GetUserRoleCGAssetStores($first: Int!, $page: Int!) {
       id
       role
       desc
+      order
       valid_flg
       created_at
     }

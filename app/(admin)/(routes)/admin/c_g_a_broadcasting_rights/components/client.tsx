@@ -27,7 +27,7 @@ export const CGaBroadcastingRightClient: React.FC<CGaBroadcastingRightClientProp
     <>
       <div className="flex items-center justify-between">
         <Heading title={`放送権利 (${paginatorInfo.total})`} description="放送権利管理" />
-        <Button onClick={() => router.push(`/c_g_a_broadcasting_rights/new`)}>
+        <Button onClick={() => router.push(`/admin/c_g_a_broadcasting_rights/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>
       </div>

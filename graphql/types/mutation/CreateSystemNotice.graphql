@@ -1,0 +1,53 @@
+mutation CreateSystemNotice(
+  $create_user_id: ID!
+  $message: String!
+  $order: Int!
+  $valid_flg: Boolean!
+) {
+  createSystemNotice(
+    create_user_id: $create_user_id
+    message: $message
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    message
+    order
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}

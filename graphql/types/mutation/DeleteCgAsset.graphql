@@ -3,6 +3,7 @@ mutation DeleteCgAsset($id: ID!) {
     __typename
     id
     asset_id
+    asset_name
     assetCate {
       desc
     }

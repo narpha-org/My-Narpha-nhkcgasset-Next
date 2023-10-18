@@ -34,7 +34,10 @@ import { AlertModal } from "@/components/modals/alert-modal"
 import { Checkbox } from "@/components/ui/checkbox"
 
 const formSchema = z.object({
-  desc: z.string().min(1),
+  desc: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
+    message: "必須入力",
+  }),
+  order: z.coerce.number({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }),
   valid_flg: z.boolean().default(false).optional(),
 });
 
@@ -58,12 +61,18 @@ export const CGaBroadcastingRightForm: React.FC<CGaBroadcastingRightFormProps> =
   const toastMessage = initialData ? '放送権利が更新されました。' : '放送権利が新規追加されました。';
   const action = initialData ? '更新' : '追加';
 
+  const defaultValues = initialData ? {
+    ...initialData,
+    order: initialData?.order as number | undefined,
+  } : {
+    desc: '',
+    order: undefined,
+    valid_flg: false,
+  }
+
   const form = useForm<CGaBroadcastingRightFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
-      desc: '',
-      valid_flg: false,
-    }
+    defaultValues
   });
 
   const onSubmit = async (data: CGaBroadcastingRightFormValues) => {
@@ -157,6 +166,19 @@ export const CGaBroadcastingRightForm: React.FC<CGaBroadcastingRightFormProps> =
                   <FormLabel>表記</FormLabel>
                   <FormControl>
                     <Input disabled={loading} placeholder="放送権利 表記" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="order"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>表示順</FormLabel>
+                  <FormControl>
+                    <Input type="number" disabled={loading} placeholder="表示順" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

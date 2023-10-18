@@ -1,0 +1,10 @@
+query GetCgAssetSearchTag($id: ID!) {
+  CGAssetSearchTag(id: $id) {
+    id
+    code
+    desc
+    order
+    valid_flg
+    created_at
+  }
+}

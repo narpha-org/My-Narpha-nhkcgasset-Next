@@ -1,0 +1,18 @@
+query GetCgAssetSearchTags($first: Int!, $page: Int!) {
+  CGAssetSearchTags(first: $first, page: $page) {
+    data {
+      id
+      code
+      desc
+      order
+      valid_flg
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}

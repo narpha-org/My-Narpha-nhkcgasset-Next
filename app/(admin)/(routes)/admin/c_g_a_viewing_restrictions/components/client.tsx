@@ -27,7 +27,7 @@ export const CGAViewingRestrictionClient: React.FC<CGAViewingRestrictionClientPr
     <>
       <div className="flex items-center justify-between">
         <Heading title={`閲覧制限 (${paginatorInfo.total})`} description="閲覧制限管理" />
-        <Button onClick={() => router.push(`/c_g_a_viewing_restrictions/new`)}>
+        <Button onClick={() => router.push(`/admin/c_g_a_viewing_restrictions/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>
       </div>

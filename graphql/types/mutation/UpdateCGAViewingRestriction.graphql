@@ -1,12 +1,19 @@
 mutation UpdateCGAViewingRestriction(
   $id: ID!
   $desc: String!
+  $order: Int!
   $valid_flg: Boolean!
 ) {
-  updateCGAViewingRestriction(id: $id, desc: $desc, valid_flg: $valid_flg) {
+  updateCGAViewingRestriction(
+    id: $id
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }

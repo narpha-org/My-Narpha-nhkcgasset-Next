@@ -49,6 +49,18 @@ type Query {
   "Find a single CGAssetImage by an identifying attribute."
   CGAssetImage("Search by primary key." id: ID): CGAssetImage
 
+  "Find a single CGAssetSearchAppProd by an identifying attribute."
+  CGAssetSearchAppProd("Search by primary key." id: ID): CGAssetSearchAppProd
+
+  "List all available CGAssetSearchAppProd."
+  CGAssetSearchAppProdsValid: [CGAssetSearchAppProd!]!
+
+  "Find a single CGAssetSearchTag by an identifying attribute."
+  CGAssetSearchTag("Search by primary key." id: ID): CGAssetSearchTag
+
+  "List all available CGAssetSearchTag."
+  CGAssetSearchTagsValid: [CGAssetSearchTag!]!
+
   "Find a single CGAssetTag by an identifying attribute."
   CGAssetTag("Search by primary key." id: ID): CGAssetTag
 
@@ -69,6 +81,12 @@ type Query {
 
   "List all Samples."
   samplesAll: [Sample!]!
+
+  "Find a single SystemNotice by an identifying attribute."
+  SystemNotice("Search by primary key." id: ID): SystemNotice
+
+  "List all available SystemNotice."
+  SystemNoticesValid(orderBy: [OrderByClause!]): [SystemNotice!]!
 
   "Find a single user by an identifying attribute."
   getUser(id: ID!): User
@@ -208,6 +226,30 @@ type Query {
     page: Int
   ): CGAssetImagePaginator!
 
+  "List multiple CGAssetSearchAppProd."
+  CGAssetSearchAppProds(
+    "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
+    desc: String
+
+    "Limits number of fetched items."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+  ): CGAssetSearchAppProdPaginator!
+
+  "List multiple CGAssetSearchTag."
+  CGAssetSearchTags(
+    "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
+    desc: String
+
+    "Limits number of fetched items."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+  ): CGAssetSearchTagPaginator!
+
   "List multiple CGAssetTag."
   CGAssetTags(
     "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
@@ -244,6 +286,20 @@ type Query {
     page: Int
   ): SamplePaginator!
 
+  "List multiple SystemNotice."
+  SystemNotices(
+    orderBy: [OrderByClause!]
+
+    "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
+    message: String
+
+    "Limits number of fetched items."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+  ): SystemNoticePaginator!
+
   "List multiple Users."
   Users(
     "Limits number of fetched items."
@@ -272,6 +328,7 @@ type Mutation {
   "Create a CGABroadcastingRight."
   createCGABroadcastingRight(
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): CGABroadcastingRight
 
@@ -279,6 +336,7 @@ type Mutation {
   updateCGABroadcastingRight(
     id: ID!
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): CGABroadcastingRight
 
@@ -288,6 +346,7 @@ type Mutation {
   "Create a CGARegistrantAffiliation."
   createCGARegistrantAffiliation(
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): CGARegistrantAffiliation
 
@@ -295,6 +354,7 @@ type Mutation {
   updateCGARegistrantAffiliation(
     id: ID!
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): CGARegistrantAffiliation
 
@@ -315,12 +375,17 @@ type Mutation {
   deleteCGARevisionHistory(id: ID!): CGARevisionHistory
 
   "Create a CGASharedArea."
-  createCGASharedArea(desc: String!, valid_flg: Boolean!): CGASharedArea
+  createCGASharedArea(
+    desc: String!
+    order: Int!
+    valid_flg: Boolean!
+  ): CGASharedArea
 
   "Update a CGASharedArea."
   updateCGASharedArea(
     id: ID!
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): CGASharedArea
 
@@ -330,6 +395,7 @@ type Mutation {
   "Create a CGAViewingRestriction."
   createCGAViewingRestriction(
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): CGAViewingRestriction
 
@@ -337,6 +403,7 @@ type Mutation {
   updateCGAViewingRestriction(
     id: ID!
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): CGAViewingRestriction
 
@@ -381,6 +448,7 @@ type Mutation {
   createCGAssetCate(
     code: CodeCGAssetCate!
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): CGAssetCate
 
@@ -389,6 +457,7 @@ type Mutation {
     id: ID!
     code: CodeCGAssetCate!
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): CGAssetCate
 
@@ -420,11 +489,52 @@ type Mutation {
   "Delete a CGAssetImage."
   deleteCGAssetImage(id: ID!): CGAssetImage
 
+  "Create a CGAssetSearchAppProd."
+  createCGAssetSearchAppProd(
+    code: String!
+    desc: String!
+    order: Int!
+    valid_flg: Boolean!
+  ): CGAssetSearchAppProd
+
+  "Update a CGAssetSearchAppProd."
+  updateCGAssetSearchAppProd(
+    id: ID!
+    code: String!
+    desc: String!
+    order: Int!
+    valid_flg: Boolean!
+  ): CGAssetSearchAppProd
+
+  "Delete a CGAssetSearchAppProd."
+  deleteCGAssetSearchAppProd(id: ID!): CGAssetSearchAppProd
+
+  "Create a CGAssetSearchTag."
+  createCGAssetSearchTag(
+    code: String!
+    desc: String!
+    order: Int!
+    valid_flg: Boolean!
+  ): CGAssetSearchTag
+
+  "Update a CGAssetSearchTag."
+  updateCGAssetSearchTag(
+    id: ID!
+    code: String!
+    desc: String!
+    order: Int!
+    valid_flg: Boolean!
+  ): CGAssetSearchTag
+
+  "Delete a CGAssetSearchTag."
+  deleteCGAssetSearchTag(id: ID!): CGAssetSearchTag
+
   "Create a CGAssetTag."
   createCGAssetTag(
     asset_db_id: ID!
     tag: String!
-    revised_user_id: ID!
+    tagged_user_id: ID!
+    tag_add_edit_flg: Boolean!
   ): CGAssetTag
 
   "Update a CGAssetTag."
@@ -487,6 +597,26 @@ type Mutation {
   "Delete a Sample."
   deleteSample(id: ID!): Sample
 
+  "Create a SystemNotice."
+  createSystemNotice(
+    create_user_id: ID!
+    message: String!
+    order: Int!
+    valid_flg: Boolean!
+  ): SystemNotice
+
+  "Update a SystemNotice."
+  updateSystemNotice(
+    id: ID!
+    update_user_id: ID
+    message: String!
+    order: Int!
+    valid_flg: Boolean!
+  ): SystemNotice
+
+  "Delete a SystemNotice."
+  deleteSystemNotice(id: ID!): SystemNotice
+
   "Create a OktaSession."
   createUser(user: CreateUserInput!): User
 
@@ -500,6 +630,7 @@ type Mutation {
   createUserRoleCGAssetStore(
     role: RoleCGAssetStore!
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): UserRoleCGAssetStore
 
@@ -508,6 +639,7 @@ type Mutation {
     id: ID!
     role: RoleCGAssetStore!
     desc: String!
+    order: Int!
     valid_flg: Boolean!
   ): UserRoleCGAssetStore
 
@@ -531,6 +663,9 @@ type CGABroadcastingRight {
   "表記"
   desc: String!
 
+  "表示順"
+  order: Int
+
   "有効フラグ"
   valid_flg: Boolean!
 
@@ -551,6 +686,9 @@ type CGARegistrantAffiliation {
 
   "表記"
   desc: String!
+
+  "表示順"
+  order: Int
 
   "有効フラグ"
   valid_flg: Boolean!
@@ -597,6 +735,9 @@ type CGASharedArea {
   "表記"
   desc: String!
 
+  "表示順"
+  order: Int
+
   "有効フラグ"
   valid_flg: Boolean!
 
@@ -618,6 +759,9 @@ type CGAViewingRestriction {
   "表記"
   desc: String!
 
+  "表示順"
+  order: Int
+
   "有効フラグ"
   valid_flg: Boolean!
 
@@ -638,6 +782,9 @@ type CGAsset {
 
   "アセットID"
   asset_id: String!
+
+  "アセット名"
+  asset_name: String!
 
   "アセット種別ID"
   assetCate: CGAssetCate
@@ -726,6 +873,9 @@ input CreateCGAssetInput {
   "アセットID"
   asset_id: String
 
+  "アセット名"
+  asset_name: String
+
   "アセット種別ID"
   assetCateId: ID
 
@@ -792,6 +942,9 @@ input UpdateCGAssetInput {
 
   "アセットID"
   asset_id: String
+
+  "アセット名"
+  asset_name: String
 
   "アセット種別ID"
   assetCateId: ID
@@ -946,6 +1099,9 @@ type CGAssetCate {
   "表記"
   desc: String!
 
+  "表示順"
+  order: Int
+
   "有効フラグ"
   valid_flg: Boolean!
 
@@ -995,6 +1151,60 @@ type CGAssetImage {
   created_at: DateTime!
 
   "When the CGAssetImage was last updated."
+  updated_at: DateTime!
+}
+
+"""
+CGAssetSearchAppProd.
+アセット検索項目・制作ソフトウェア
+"""
+type CGAssetSearchAppProd {
+  "Unique primary key."
+  id: ID!
+
+  "コード"
+  code: String!
+
+  "表記"
+  desc: String!
+
+  "表示順"
+  order: Int
+
+  "有効フラグ"
+  valid_flg: Boolean!
+
+  "When the CGAssetSearchAppProd was created."
+  created_at: DateTime!
+
+  "When the CGAssetSearchAppProd was last updated."
+  updated_at: DateTime!
+}
+
+"""
+CGAssetSearchTag.
+アセット検索項目・ジャンル
+"""
+type CGAssetSearchTag {
+  "Unique primary key."
+  id: ID!
+
+  "コード"
+  code: String!
+
+  "表記"
+  desc: String!
+
+  "表示順"
+  order: Int
+
+  "有効フラグ"
+  valid_flg: Boolean!
+
+  "When the CGAssetSearchTag was created."
+  created_at: DateTime!
+
+  "When the CGAssetSearchTag was last updated."
   updated_at: DateTime!
 }
 
@@ -1212,6 +1422,36 @@ type Sample {
 }
 
 """
+SystemNotice.
+お知らせ
+"""
+type SystemNotice {
+  "Unique primary key."
+  id: ID!
+
+  "お知らせ"
+  message: String!
+
+  "表示順"
+  order: Int
+
+  "登録ユーザ"
+  userCreate: User!
+
+  "更新ユーザ"
+  userUpdate: User
+
+  "有効フラグ"
+  valid_flg: Boolean!
+
+  "When the SystemNotice was created."
+  created_at: DateTime!
+
+  "When the SystemNotice was last updated."
+  updated_at: DateTime!
+}
+
+"""
 Account of a person who utilizes this application.
 ユーザ
 """
@@ -1314,6 +1554,9 @@ type UserRoleCGAssetStore {
 
   "表記"
   desc: String!
+
+  "表示順"
+  order: Int
 
   "有効フラグ"
   valid_flg: Boolean!
@@ -1439,6 +1682,24 @@ type CGAssetImagePaginator {
   data: [CGAssetImage!]!
 }
 
+"A paginated list of CGAssetSearchAppProd items."
+type CGAssetSearchAppProdPaginator {
+  "Pagination information about the list of items."
+  paginatorInfo: PaginatorInfo!
+
+  "A list of CGAssetSearchAppProd items."
+  data: [CGAssetSearchAppProd!]!
+}
+
+"A paginated list of CGAssetSearchTag items."
+type CGAssetSearchTagPaginator {
+  "Pagination information about the list of items."
+  paginatorInfo: PaginatorInfo!
+
+  "A list of CGAssetSearchTag items."
+  data: [CGAssetSearchTag!]!
+}
+
 "A paginated list of CGAssetTag items."
 type CGAssetTagPaginator {
   "Pagination information about the list of items."
@@ -1464,6 +1725,15 @@ type SamplePaginator {
 
   "A list of Sample items."
   data: [Sample!]!
+}
+
+"A paginated list of SystemNotice items."
+type SystemNoticePaginator {
+  "Pagination information about the list of items."
+  paginatorInfo: PaginatorInfo!
+
+  "A list of SystemNotice items."
+  data: [SystemNotice!]!
 }
 
 "A paginated list of User items."

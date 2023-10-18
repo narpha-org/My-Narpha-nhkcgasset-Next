@@ -2,6 +2,7 @@ query GetCgaViewingRestriction($id: ID!) {
   CGAViewingRestriction(id: $id) {
     id
     desc
+    order
     valid_flg
     created_at
   }

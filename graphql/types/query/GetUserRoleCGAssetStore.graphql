@@ -3,6 +3,7 @@ query GetUserRoleCGAssetStore($id: ID!) {
     id
     role
     desc
+    order
     valid_flg
     created_at
   }

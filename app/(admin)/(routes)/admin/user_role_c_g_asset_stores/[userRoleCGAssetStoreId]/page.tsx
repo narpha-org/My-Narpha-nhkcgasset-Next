@@ -18,7 +18,7 @@ const UserRoleCgAssetStorePage = async ({
     .query({
       query: GetUserRoleCgAssetStoreDocument,
       variables: {
-        id: params.userRoleCgAssetStoreId
+        id: params.userRoleCGAssetStoreId
       },
     });
   const UserRoleCGAssetStore = ret.data.UserRoleCGAssetStore;

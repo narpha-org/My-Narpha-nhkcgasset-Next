@@ -2,13 +2,21 @@ mutation UpdateCgAssetCate(
   $id: ID!
   $code: CodeCGAssetCate!
   $desc: String!
+  $order: Int!
   $valid_flg: Boolean!
 ) {
-  updateCGAssetCate(id: $id, code: $code, desc: $desc, valid_flg: $valid_flg) {
+  updateCGAssetCate(
+    id: $id
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     code
     desc
+    order
     valid_flg
   }
 }

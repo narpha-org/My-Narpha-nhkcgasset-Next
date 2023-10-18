@@ -1,0 +1,20 @@
+mutation CreateCgAssetSearchTag(
+  $code: String!
+  $desc: String!
+  $order: Int!
+  $valid_flg: Boolean!
+) {
+  createCGAssetSearchTag(
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}

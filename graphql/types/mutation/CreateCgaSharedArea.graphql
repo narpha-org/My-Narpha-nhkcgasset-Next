@@ -1,8 +1,13 @@
-mutation CreateCgaSharedArea($desc: String!, $valid_flg: Boolean!) {
-  createCGASharedArea(desc: $desc, valid_flg: $valid_flg) {
+mutation CreateCgaSharedArea(
+  $desc: String!
+  $order: Int!
+  $valid_flg: Boolean!
+) {
+  createCGASharedArea(desc: $desc, order: $order, valid_flg: $valid_flg) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }

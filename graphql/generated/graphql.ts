@@ -41,6 +41,8 @@ export type CgaBroadcastingRight = {
   desc: Scalars['String']['output'];
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  /** 表示順 */
+  order?: Maybe<Scalars['Int']['output']>;
   /** When the CGABroadcastingRight was last updated. */
   updated_at: Scalars['DateTime']['output'];
   /** 有効フラグ */
@@ -68,6 +70,8 @@ export type CgaRegistrantAffiliation = {
   desc: Scalars['String']['output'];
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  /** 表示順 */
+  order?: Maybe<Scalars['Int']['output']>;
   /** When the CGARegistrantAffiliation was last updated. */
   updated_at: Scalars['DateTime']['output'];
   /** 有効フラグ */
@@ -124,6 +128,8 @@ export type CgaSharedArea = {
   desc: Scalars['String']['output'];
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  /** 表示順 */
+  order?: Maybe<Scalars['Int']['output']>;
   /** When the CGASharedArea was last updated. */
   updated_at: Scalars['DateTime']['output'];
   /** 有効フラグ */
@@ -151,6 +157,8 @@ export type CgaViewingRestriction = {
   desc: Scalars['String']['output'];
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  /** 表示順 */
+  order?: Maybe<Scalars['Int']['output']>;
   /** When the CGAViewingRestriction was last updated. */
   updated_at: Scalars['DateTime']['output'];
   /** 有効フラグ */
@@ -192,6 +200,8 @@ export type CgAsset = {
   asset_id: Scalars['String']['output'];
   /** アップロード場所 */
   asset_media_base: Scalars['String']['output'];
+  /** アセット名 */
+  asset_name: Scalars['String']['output'];
   /** レンダラ */
   asset_renderer?: Maybe<Scalars['String']['output']>;
   /** サイズ */
@@ -290,6 +300,8 @@ export type CgAssetCate = {
   desc: Scalars['String']['output'];
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  /** 表示順 */
+  order?: Maybe<Scalars['Int']['output']>;
   /** When the CGAssetCate was last updated. */
   updated_at: Scalars['DateTime']['output'];
   /** 有効フラグ */
@@ -364,11 +376,73 @@ export type CgAssetPaginator = {
   paginatorInfo: PaginatorInfo;
 };
 
+/**
+ * CGAssetSearchAppProd.
+ * アセット検索項目・制作ソフトウェア
+ */
+export type CgAssetSearchAppProd = {
+  __typename?: 'CGAssetSearchAppProd';
+  /** コード */
+  code: Scalars['String']['output'];
+  /** When the CGAssetSearchAppProd was created. */
+  created_at: Scalars['DateTime']['output'];
+  /** 表記 */
+  desc: Scalars['String']['output'];
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  /** 表示順 */
+  order?: Maybe<Scalars['Int']['output']>;
+  /** When the CGAssetSearchAppProd was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  /** 有効フラグ */
+  valid_flg: Scalars['Boolean']['output'];
+};
+
+/** A paginated list of CGAssetSearchAppProd items. */
+export type CgAssetSearchAppProdPaginator = {
+  __typename?: 'CGAssetSearchAppProdPaginator';
+  /** A list of CGAssetSearchAppProd items. */
+  data: Array<CgAssetSearchAppProd>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+};
+
 export type CgAssetSearchFormValues = {
   assetAppProds?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   assetCates?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   assetTags?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   keyword?: InputMaybe<Scalars['String']['input']>;
+};
+
+/**
+ * CGAssetSearchTag.
+ * アセット検索項目・ジャンル
+ */
+export type CgAssetSearchTag = {
+  __typename?: 'CGAssetSearchTag';
+  /** コード */
+  code: Scalars['String']['output'];
+  /** When the CGAssetSearchTag was created. */
+  created_at: Scalars['DateTime']['output'];
+  /** 表記 */
+  desc: Scalars['String']['output'];
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  /** 表示順 */
+  order?: Maybe<Scalars['Int']['output']>;
+  /** When the CGAssetSearchTag was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  /** 有効フラグ */
+  valid_flg: Scalars['Boolean']['output'];
+};
+
+/** A paginated list of CGAssetSearchTag items. */
+export type CgAssetSearchTagPaginator = {
+  __typename?: 'CGAssetSearchTagPaginator';
+  /** A list of CGAssetSearchTag items. */
+  data: Array<CgAssetSearchTag>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
 };
 
 /**
@@ -479,6 +553,8 @@ export type CreateCgAssetInput = {
   asset_id?: InputMaybe<Scalars['String']['input']>;
   /** アップロード場所 */
   asset_media_base?: InputMaybe<Scalars['String']['input']>;
+  /** アセット名 */
+  asset_name?: InputMaybe<Scalars['String']['input']>;
   /** レンダラ */
   asset_renderer?: InputMaybe<Scalars['String']['input']>;
   /** サイズ */
@@ -573,6 +649,10 @@ export type Mutation = {
   createCGAssetCate?: Maybe<CgAssetCate>;
   /** Create a CGAssetImage. */
   createCGAssetImage?: Maybe<CgAssetImage>;
+  /** Create a CGAssetSearchAppProd. */
+  createCGAssetSearchAppProd?: Maybe<CgAssetSearchAppProd>;
+  /** Create a CGAssetSearchTag. */
+  createCGAssetSearchTag?: Maybe<CgAssetSearchTag>;
   /** Create a CGAssetTag. */
   createCGAssetTag?: Maybe<CgAssetTag>;
   /** Create a CGAssetVideo. */
@@ -581,6 +661,8 @@ export type Mutation = {
   createSample?: Maybe<Sample>;
   /** Create a OktaSession. */
   createSession?: Maybe<OktaSession>;
+  /** Create a SystemNotice. */
+  createSystemNotice?: Maybe<SystemNotice>;
   /** Create a OktaSession. */
   createUser?: Maybe<User>;
   /** Create a UserRoleCGAssetStore. */
@@ -605,6 +687,10 @@ export type Mutation = {
   deleteCGAssetCate?: Maybe<CgAssetCate>;
   /** Delete a CGAssetImage. */
   deleteCGAssetImage?: Maybe<CgAssetImage>;
+  /** Delete a CGAssetSearchAppProd. */
+  deleteCGAssetSearchAppProd?: Maybe<CgAssetSearchAppProd>;
+  /** Delete a CGAssetSearchTag. */
+  deleteCGAssetSearchTag?: Maybe<CgAssetSearchTag>;
   /** Delete a CGAssetTag. */
   deleteCGAssetTag?: Maybe<CgAssetTag>;
   /** Delete a CGAssetVideo. */
@@ -613,6 +699,8 @@ export type Mutation = {
   deleteSample?: Maybe<Sample>;
   /** Delete a OktaSession. */
   deleteSession?: Maybe<OktaSession>;
+  /** Delete a SystemNotice. */
+  deleteSystemNotice?: Maybe<SystemNotice>;
   /** Delete a OktaSession. */
   deleteUser?: Maybe<User>;
   /** Delete a UserRoleCGAssetStore. */
@@ -639,6 +727,10 @@ export type Mutation = {
   updateCGAssetCate?: Maybe<CgAssetCate>;
   /** Update a CGAssetImage. */
   updateCGAssetImage?: Maybe<CgAssetImage>;
+  /** Update a CGAssetSearchAppProd. */
+  updateCGAssetSearchAppProd?: Maybe<CgAssetSearchAppProd>;
+  /** Update a CGAssetSearchTag. */
+  updateCGAssetSearchTag?: Maybe<CgAssetSearchTag>;
   /** Update a CGAssetTag. */
   updateCGAssetTag?: Maybe<CgAssetTag>;
   /** Update a CGAssetVideo. */
@@ -647,6 +739,8 @@ export type Mutation = {
   updateSample?: Maybe<Sample>;
   /** Update a OktaSession. */
   updateSession?: Maybe<OktaSession>;
+  /** Update a SystemNotice. */
+  updateSystemNotice?: Maybe<SystemNotice>;
   /** Update a OktaSession. */
   updateUser?: Maybe<User>;
   /** Update a UserRoleCGAssetStore. */
@@ -656,12 +750,14 @@ export type Mutation = {
 
 export type MutationCreateCgaBroadcastingRightArgs = {
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
 
 export type MutationCreateCgaRegistrantAffiliationArgs = {
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -675,12 +771,14 @@ export type MutationCreateCgaRevisionHistoryArgs = {
 
 export type MutationCreateCgaSharedAreaArgs = {
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
 
 export type MutationCreateCgaViewingRestrictionArgs = {
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -705,6 +803,7 @@ export type MutationCreateCgAsset3DcgArgs = {
 export type MutationCreateCgAssetCateArgs = {
   code: CodeCgAssetCate;
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -721,10 +820,27 @@ export type MutationCreateCgAssetImageArgs = {
 };
 
 
+export type MutationCreateCgAssetSearchAppProdArgs = {
+  code: Scalars['String']['input'];
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+};
+
+
+export type MutationCreateCgAssetSearchTagArgs = {
+  code: Scalars['String']['input'];
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+};
+
+
 export type MutationCreateCgAssetTagArgs = {
   asset_db_id: Scalars['ID']['input'];
-  revised_user_id: Scalars['ID']['input'];
   tag: Scalars['String']['input'];
+  tag_add_edit_flg: Scalars['Boolean']['input'];
+  tagged_user_id: Scalars['ID']['input'];
 };
 
 
@@ -750,6 +866,14 @@ export type MutationCreateSessionArgs = {
 };
 
 
+export type MutationCreateSystemNoticeArgs = {
+  create_user_id: Scalars['ID']['input'];
+  message: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+};
+
+
 export type MutationCreateUserArgs = {
   user: CreateUserInput;
 };
@@ -757,6 +881,7 @@ export type MutationCreateUserArgs = {
 
 export type MutationCreateUserRoleCgAssetStoreArgs = {
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   role: RoleCgAssetStore;
   valid_flg: Scalars['Boolean']['input'];
 };
@@ -812,6 +937,16 @@ export type MutationDeleteCgAssetImageArgs = {
 };
 
 
+export type MutationDeleteCgAssetSearchAppProdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteCgAssetSearchTagArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationDeleteCgAssetTagArgs = {
   id: Scalars['ID']['input'];
 };
@@ -829,6 +964,11 @@ export type MutationDeleteSampleArgs = {
 
 export type MutationDeleteSessionArgs = {
   sessionToken: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteSystemNoticeArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -855,6 +995,7 @@ export type MutationUnlinkAccountArgs = {
 export type MutationUpdateCgaBroadcastingRightArgs = {
   desc: Scalars['String']['input'];
   id: Scalars['ID']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -862,6 +1003,7 @@ export type MutationUpdateCgaBroadcastingRightArgs = {
 export type MutationUpdateCgaRegistrantAffiliationArgs = {
   desc: Scalars['String']['input'];
   id: Scalars['ID']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -874,6 +1016,7 @@ export type MutationUpdateCgaRevisionHistoryArgs = {
 export type MutationUpdateCgaSharedAreaArgs = {
   desc: Scalars['String']['input'];
   id: Scalars['ID']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -881,6 +1024,7 @@ export type MutationUpdateCgaSharedAreaArgs = {
 export type MutationUpdateCgaViewingRestrictionArgs = {
   desc: Scalars['String']['input'];
   id: Scalars['ID']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -904,6 +1048,7 @@ export type MutationUpdateCgAssetCateArgs = {
   code: CodeCgAssetCate;
   desc: Scalars['String']['input'];
   id: Scalars['ID']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -915,6 +1060,24 @@ export type MutationUpdateCgAssetImageArgs = {
   thumb_file_path: Scalars['String']['input'];
   thumb_url: Scalars['String']['input'];
   url: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateCgAssetSearchAppProdArgs = {
+  code: Scalars['String']['input'];
+  desc: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+};
+
+
+export type MutationUpdateCgAssetSearchTagArgs = {
+  code: Scalars['String']['input'];
+  desc: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
 };
 
 
@@ -944,6 +1107,15 @@ export type MutationUpdateSessionArgs = {
 };
 
 
+export type MutationUpdateSystemNoticeArgs = {
+  id: Scalars['ID']['input'];
+  message: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  update_user_id?: InputMaybe<Scalars['ID']['input']>;
+  valid_flg: Scalars['Boolean']['input'];
+};
+
+
 export type MutationUpdateUserArgs = {
   user: UpdateUserInput;
 };
@@ -952,6 +1124,7 @@ export type MutationUpdateUserArgs = {
 export type MutationUpdateUserRoleCgAssetStoreArgs = {
   desc: Scalars['String']['input'];
   id: Scalars['ID']['input'];
+  order: Scalars['Int']['input'];
   role: RoleCgAssetStore;
   valid_flg: Scalars['Boolean']['input'];
 };
@@ -1118,6 +1291,18 @@ export type Query = {
   CGAssetImage?: Maybe<CgAssetImage>;
   /** List multiple CGAssetImage. */
   CGAssetImages: CgAssetImagePaginator;
+  /** Find a single CGAssetSearchAppProd by an identifying attribute. */
+  CGAssetSearchAppProd?: Maybe<CgAssetSearchAppProd>;
+  /** List multiple CGAssetSearchAppProd. */
+  CGAssetSearchAppProds: CgAssetSearchAppProdPaginator;
+  /** List all available CGAssetSearchAppProd. */
+  CGAssetSearchAppProdsValid: Array<CgAssetSearchAppProd>;
+  /** Find a single CGAssetSearchTag by an identifying attribute. */
+  CGAssetSearchTag?: Maybe<CgAssetSearchTag>;
+  /** List multiple CGAssetSearchTag. */
+  CGAssetSearchTags: CgAssetSearchTagPaginator;
+  /** List all available CGAssetSearchTag. */
+  CGAssetSearchTagsValid: Array<CgAssetSearchTag>;
   /** Find a single CGAssetTag by an identifying attribute. */
   CGAssetTag?: Maybe<CgAssetTag>;
   /** List multiple CGAssetTag. */
@@ -1132,6 +1317,12 @@ export type Query = {
   CGAssets: CgAssetPaginator;
   /** List all available CGAssetCate. */
   CGAssetsValid: CgAssetPaginator;
+  /** Find a single SystemNotice by an identifying attribute. */
+  SystemNotice?: Maybe<SystemNotice>;
+  /** List multiple SystemNotice. */
+  SystemNotices: SystemNoticePaginator;
+  /** List all available SystemNotice. */
+  SystemNoticesValid: Array<SystemNotice>;
   /** Find a single User by an identifying attribute. */
   User?: Maybe<User>;
   /** Find a single UserRoleCGAssetStore by an identifying attribute. */
@@ -1262,6 +1453,30 @@ export type QueryCgAssetImagesArgs = {
 };
 
 
+export type QueryCgAssetSearchAppProdArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryCgAssetSearchAppProdsArgs = {
+  desc?: InputMaybe<Scalars['String']['input']>;
+  first?: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryCgAssetSearchTagArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryCgAssetSearchTagsArgs = {
+  desc?: InputMaybe<Scalars['String']['input']>;
+  first?: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QueryCgAssetTagArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
 };
@@ -1299,6 +1514,24 @@ export type QueryCgAssetsValidArgs = {
   orderBy?: InputMaybe<Array<OrderByClause>>;
   page?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<CgAssetSearchFormValues>;
+};
+
+
+export type QuerySystemNoticeArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QuerySystemNoticesArgs = {
+  first?: Scalars['Int']['input'];
+  message?: InputMaybe<Scalars['String']['input']>;
+  orderBy?: InputMaybe<Array<OrderByClause>>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QuerySystemNoticesValidArgs = {
+  orderBy?: InputMaybe<Array<OrderByClause>>;
 };
 
 
@@ -1433,6 +1666,39 @@ export enum SortOrder {
   Desc = 'DESC'
 }
 
+/**
+ * SystemNotice.
+ * お知らせ
+ */
+export type SystemNotice = {
+  __typename?: 'SystemNotice';
+  /** When the SystemNotice was created. */
+  created_at: Scalars['DateTime']['output'];
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  /** お知らせ */
+  message: Scalars['String']['output'];
+  /** 表示順 */
+  order?: Maybe<Scalars['Int']['output']>;
+  /** When the SystemNotice was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  /** 登録ユーザ */
+  userCreate: User;
+  /** 更新ユーザ */
+  userUpdate?: Maybe<User>;
+  /** 有効フラグ */
+  valid_flg: Scalars['Boolean']['output'];
+};
+
+/** A paginated list of SystemNotice items. */
+export type SystemNoticePaginator = {
+  __typename?: 'SystemNoticePaginator';
+  /** A list of SystemNotice items. */
+  data: Array<SystemNotice>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+};
+
 /** Specify if you want to include or exclude trashed results from a query. */
 export enum Trashed {
   /** Only return trashed results. */
@@ -1469,6 +1735,8 @@ export type UpdateCgAssetInput = {
   asset_id?: InputMaybe<Scalars['String']['input']>;
   /** アップロード場所 */
   asset_media_base?: InputMaybe<Scalars['String']['input']>;
+  /** アセット名 */
+  asset_name?: InputMaybe<Scalars['String']['input']>;
   /** レンダラ */
   asset_renderer?: InputMaybe<Scalars['String']['input']>;
   /** サイズ */
@@ -1573,6 +1841,8 @@ export type UserRoleCgAssetStore = {
   desc: Scalars['String']['output'];
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  /** 表示順 */
+  order?: Maybe<Scalars['Int']['output']>;
   /** CGアセットストア ロール */
   role: RoleCgAssetStore;
   /** When the UserRoleCGAssetStore was last updated. */
@@ -1620,51 +1890,86 @@ export type WhereConditionsRelation = {
 
 export type CreateCgaBroadcastingRightMutationVariables = Exact<{
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type CreateCgaBroadcastingRightMutation = { __typename?: 'Mutation', createCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, valid_flg: boolean } | null };
+export type CreateCgaBroadcastingRightMutation = { __typename?: 'Mutation', createCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type CreateCgAssetMutationVariables = Exact<{
   input: CreateCgAssetInput;
 }>;
 
 
-export type CreateCgAssetMutation = { __typename?: 'Mutation', createCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type CreateCgAssetMutation = { __typename?: 'Mutation', createCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
 
 export type CreateCgAssetCateMutationVariables = Exact<{
   code: CodeCgAssetCate;
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type CreateCgAssetCateMutation = { __typename?: 'Mutation', createCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, valid_flg: boolean } | null };
+export type CreateCgAssetCateMutation = { __typename?: 'Mutation', createCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type CreateCgAssetSearchAppProdMutationVariables = Exact<{
+  code: Scalars['String']['input'];
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type CreateCgAssetSearchAppProdMutation = { __typename?: 'Mutation', createCGAssetSearchAppProd?: { __typename: 'CGAssetSearchAppProd', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type CreateCgAssetSearchTagMutationVariables = Exact<{
+  code: Scalars['String']['input'];
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type CreateCgAssetSearchTagMutation = { __typename?: 'Mutation', createCGAssetSearchTag?: { __typename: 'CGAssetSearchTag', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type CreateCgAssetTagMutationVariables = Exact<{
+  asset_db_id: Scalars['ID']['input'];
+  tag: Scalars['String']['input'];
+  tagged_user_id: Scalars['ID']['input'];
+  tag_add_edit_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type CreateCgAssetTagMutation = { __typename?: 'Mutation', createCGAssetTag?: { __typename: 'CGAssetTag', id: string, tag: string, created_at: any, cgAsset?: { __typename?: 'CGAsset', id: string, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null, taggedUser?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
 export type CreateCgaRegistrantAffiliationMutationVariables = Exact<{
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type CreateCgaRegistrantAffiliationMutation = { __typename?: 'Mutation', createCGARegistrantAffiliation?: { __typename: 'CGARegistrantAffiliation', id: string, desc: string, valid_flg: boolean } | null };
+export type CreateCgaRegistrantAffiliationMutation = { __typename?: 'Mutation', createCGARegistrantAffiliation?: { __typename: 'CGARegistrantAffiliation', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type CreateCgaSharedAreaMutationVariables = Exact<{
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type CreateCgaSharedAreaMutation = { __typename?: 'Mutation', createCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, valid_flg: boolean } | null };
+export type CreateCgaSharedAreaMutation = { __typename?: 'Mutation', createCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type CreateCgaViewingRestrictionMutationVariables = Exact<{
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type CreateCgaViewingRestrictionMutation = { __typename?: 'Mutation', createCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, valid_flg: boolean } | null };
+export type CreateCgaViewingRestrictionMutation = { __typename?: 'Mutation', createCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type CreateSampleMutationVariables = Exact<{
   text: Scalars['String']['input'];
@@ -1680,6 +1985,16 @@ export type CreateSessionMutationVariables = Exact<{
 
 export type CreateSessionMutation = { __typename?: 'Mutation', createSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
 
+export type CreateSystemNoticeMutationVariables = Exact<{
+  create_user_id: Scalars['ID']['input'];
+  message: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type CreateSystemNoticeMutation = { __typename?: 'Mutation', createSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
+
 export type CreateUserMutationVariables = Exact<{
   user: CreateUserInput;
 }>;
@@ -1690,11 +2005,12 @@ export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typ
 export type CreateUserRoleCgAssetStoreMutationVariables = Exact<{
   role: RoleCgAssetStore;
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type CreateUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', createUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, valid_flg: boolean } | null };
+export type CreateUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', createUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type CreateVerificationTokenMutationVariables = Exact<{
   input: CreateVerificationTokenInput;
@@ -1708,42 +2024,56 @@ export type DeleteCgaBroadcastingRightMutationVariables = Exact<{
 }>;
 
 
-export type DeleteCgaBroadcastingRightMutation = { __typename?: 'Mutation', deleteCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, valid_flg: boolean } | null };
+export type DeleteCgaBroadcastingRightMutation = { __typename?: 'Mutation', deleteCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type DeleteCgAssetMutationVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type DeleteCgAssetMutation = { __typename?: 'Mutation', deleteCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type DeleteCgAssetMutation = { __typename?: 'Mutation', deleteCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
 
 export type DeleteCgAssetCateMutationVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type DeleteCgAssetCateMutation = { __typename?: 'Mutation', deleteCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, valid_flg: boolean } | null };
+export type DeleteCgAssetCateMutation = { __typename?: 'Mutation', deleteCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type DeleteCgAssetSearchAppProdMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCgAssetSearchAppProdMutation = { __typename?: 'Mutation', deleteCGAssetSearchAppProd?: { __typename: 'CGAssetSearchAppProd', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type DeleteCgAssetSearchTagMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCgAssetSearchTagMutation = { __typename?: 'Mutation', deleteCGAssetSearchTag?: { __typename: 'CGAssetSearchTag', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type DeleteCgaRegistrantAffiliationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type DeleteCgaRegistrantAffiliationMutation = { __typename?: 'Mutation', deleteCGARegistrantAffiliation?: { __typename: 'CGARegistrantAffiliation', id: string, desc: string, valid_flg: boolean } | null };
+export type DeleteCgaRegistrantAffiliationMutation = { __typename?: 'Mutation', deleteCGARegistrantAffiliation?: { __typename: 'CGARegistrantAffiliation', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type DeleteCgaSharedAreaMutationVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type DeleteCgaSharedAreaMutation = { __typename?: 'Mutation', deleteCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, valid_flg: boolean } | null };
+export type DeleteCgaSharedAreaMutation = { __typename?: 'Mutation', deleteCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type DeleteCgaViewingRestrictionMutationVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type DeleteCgaViewingRestrictionMutation = { __typename?: 'Mutation', deleteCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, valid_flg: boolean } | null };
+export type DeleteCgaViewingRestrictionMutation = { __typename?: 'Mutation', deleteCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type DeleteSampleMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1759,6 +2089,13 @@ export type DeleteSessionMutationVariables = Exact<{
 
 export type DeleteSessionMutation = { __typename?: 'Mutation', deleteSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
 
+export type DeleteSystemNoticeMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteSystemNoticeMutation = { __typename?: 'Mutation', deleteSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
+
 export type DeleteUserMutationVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -1771,7 +2108,7 @@ export type DeleteUserRoleCgAssetStoreMutationVariables = Exact<{
 }>;
 
 
-export type DeleteUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', deleteUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, valid_flg: boolean } | null };
+export type DeleteUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', deleteUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type LinkAccountMutationVariables = Exact<{
   account: LinkAccountInput;
@@ -1790,55 +2127,82 @@ export type UnlinkAccountMutation = { __typename?: 'Mutation', unlinkAccount?: {
 export type UpdateCgaRegistrantAffiliationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateCgaRegistrantAffiliationMutation = { __typename?: 'Mutation', updateCGARegistrantAffiliation?: { __typename: 'CGARegistrantAffiliation', id: string, desc: string, valid_flg: boolean } | null };
+export type UpdateCgaRegistrantAffiliationMutation = { __typename?: 'Mutation', updateCGARegistrantAffiliation?: { __typename: 'CGARegistrantAffiliation', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type UpdateCgaSharedAreaMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateCgaSharedAreaMutation = { __typename?: 'Mutation', updateCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, valid_flg: boolean } | null };
+export type UpdateCgaSharedAreaMutation = { __typename?: 'Mutation', updateCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type UpdateCgaViewingRestrictionMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateCgaViewingRestrictionMutation = { __typename?: 'Mutation', updateCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, valid_flg: boolean } | null };
+export type UpdateCgaViewingRestrictionMutation = { __typename?: 'Mutation', updateCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type UpdateCgaBroadcastingRightMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateCgaBroadcastingRightMutation = { __typename?: 'Mutation', updateCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, valid_flg: boolean } | null };
+export type UpdateCgaBroadcastingRightMutation = { __typename?: 'Mutation', updateCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type UpdateCgAssetMutationVariables = Exact<{
   input: UpdateCgAssetInput;
 }>;
 
 
-export type UpdateCgAssetMutation = { __typename?: 'Mutation', updateCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
+export type UpdateCgAssetMutation = { __typename?: 'Mutation', updateCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
 
 export type UpdateCgAssetCateMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   code: CodeCgAssetCate;
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateCgAssetCateMutation = { __typename?: 'Mutation', updateCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, valid_flg: boolean } | null };
+export type UpdateCgAssetCateMutation = { __typename?: 'Mutation', updateCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type UpdateCgAssetSearchAppProdMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  code: Scalars['String']['input'];
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateCgAssetSearchAppProdMutation = { __typename?: 'Mutation', updateCGAssetSearchAppProd?: { __typename: 'CGAssetSearchAppProd', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type UpdateCgAssetSearchTagMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  code: Scalars['String']['input'];
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateCgAssetSearchTagMutation = { __typename?: 'Mutation', updateCGAssetSearchTag?: { __typename: 'CGAssetSearchTag', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type UpdateSessionMutationVariables = Exact<{
   input: UpdateSessionInput;
@@ -1846,6 +2210,17 @@ export type UpdateSessionMutationVariables = Exact<{
 
 
 export type UpdateSessionMutation = { __typename?: 'Mutation', updateSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+
+export type UpdateSystemNoticeMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  update_user_id: Scalars['ID']['input'];
+  message: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateSystemNoticeMutation = { __typename?: 'Mutation', updateSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
 export type UpdateUserMutationVariables = Exact<{
   user: UpdateUserInput;
@@ -1858,18 +2233,19 @@ export type UpdateUserRoleCgAssetStoreMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   role: RoleCgAssetStore;
   desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', updateUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, valid_flg: boolean } | null };
+export type UpdateUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', updateUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type GetCgaBroadcastingRightQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetCgaBroadcastingRightQuery = { __typename?: 'Query', CGABroadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string, valid_flg: boolean, created_at: any } | null };
+export type GetCgaBroadcastingRightQuery = { __typename?: 'Query', CGABroadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any } | null };
 
 export type GetCgaBroadcastingRightsQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -1877,14 +2253,14 @@ export type GetCgaBroadcastingRightsQueryVariables = Exact<{
 }>;
 
 
-export type GetCgaBroadcastingRightsQuery = { __typename?: 'Query', CGABroadcastingRights: { __typename?: 'CGABroadcastingRightPaginator', data: Array<{ __typename?: 'CGABroadcastingRight', id: string, desc: string, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgaBroadcastingRightsQuery = { __typename?: 'Query', CGABroadcastingRights: { __typename?: 'CGABroadcastingRightPaginator', data: Array<{ __typename?: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgaViewingRestrictionQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetCgaViewingRestrictionQuery = { __typename?: 'Query', CGAViewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string, valid_flg: boolean, created_at: any } | null };
+export type GetCgaViewingRestrictionQuery = { __typename?: 'Query', CGAViewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any } | null };
 
 export type GetCgaViewingRestrictionsQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -1892,21 +2268,21 @@ export type GetCgaViewingRestrictionsQueryVariables = Exact<{
 }>;
 
 
-export type GetCgaViewingRestrictionsQuery = { __typename?: 'Query', CGAViewingRestrictions: { __typename?: 'CGAViewingRestrictionPaginator', data: Array<{ __typename?: 'CGAViewingRestriction', id: string, desc: string, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgaViewingRestrictionsQuery = { __typename?: 'Query', CGAViewingRestrictions: { __typename?: 'CGAViewingRestrictionPaginator', data: Array<{ __typename?: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgAssetQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
+export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
 
 export type GetCgAssetCateQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetCgAssetCateQuery = { __typename?: 'Query', CGAssetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, valid_flg: boolean, created_at: any } | null };
+export type GetCgAssetCateQuery = { __typename?: 'Query', CGAssetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, order?: number | null, valid_flg: boolean, created_at: any } | null };
 
 export type GetCgAssetCatesQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -1914,12 +2290,52 @@ export type GetCgAssetCatesQueryVariables = Exact<{
 }>;
 
 
-export type GetCgAssetCatesQuery = { __typename?: 'Query', CGAssetCates: { __typename?: 'CGAssetCatePaginator', data: Array<{ __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgAssetCatesQuery = { __typename?: 'Query', CGAssetCates: { __typename?: 'CGAssetCatePaginator', data: Array<{ __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgAssetCatesValidQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetCgAssetCatesValidQuery = { __typename?: 'Query', CGAssetCatesValid: Array<{ __typename?: 'CGAssetCate', code: CodeCgAssetCate, desc: string, id: string }> };
+
+export type GetCgAssetSearchAppProdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetCgAssetSearchAppProdQuery = { __typename?: 'Query', CGAssetSearchAppProd?: { __typename?: 'CGAssetSearchAppProd', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any } | null };
+
+export type GetCgAssetSearchAppProdsQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetCgAssetSearchAppProdsQuery = { __typename?: 'Query', CGAssetSearchAppProds: { __typename?: 'CGAssetSearchAppProdPaginator', data: Array<{ __typename?: 'CGAssetSearchAppProd', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetCgAssetSearchAppProdsValidQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCgAssetSearchAppProdsValidQuery = { __typename?: 'Query', CGAssetSearchAppProdsValid: Array<{ __typename?: 'CGAssetSearchAppProd', code: string, desc: string, id: string }> };
+
+export type GetCgAssetSearchTagQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetCgAssetSearchTagQuery = { __typename?: 'Query', CGAssetSearchTag?: { __typename?: 'CGAssetSearchTag', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any } | null };
+
+export type GetCgAssetSearchTagsQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetCgAssetSearchTagsQuery = { __typename?: 'Query', CGAssetSearchTags: { __typename?: 'CGAssetSearchTagPaginator', data: Array<{ __typename?: 'CGAssetSearchTag', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetCgAssetSearchTagsValidQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCgAssetSearchTagsValidQuery = { __typename?: 'Query', CGAssetSearchTagsValid: Array<{ __typename?: 'CGAssetSearchTag', code: string, desc: string, id: string }> };
 
 export type GetCgAssetsQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -1928,7 +2344,7 @@ export type GetCgAssetsQueryVariables = Exact<{
 }>;
 
 
-export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgaBroadcastingRightsValidQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1940,7 +2356,7 @@ export type GetCgaRegistrantAffiliationQueryVariables = Exact<{
 }>;
 
 
-export type GetCgaRegistrantAffiliationQuery = { __typename?: 'Query', CGARegistrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string, valid_flg: boolean, created_at: any } | null };
+export type GetCgaRegistrantAffiliationQuery = { __typename?: 'Query', CGARegistrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any } | null };
 
 export type GetCgaRegistrantAffiliationsQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -1948,7 +2364,7 @@ export type GetCgaRegistrantAffiliationsQueryVariables = Exact<{
 }>;
 
 
-export type GetCgaRegistrantAffiliationsQuery = { __typename?: 'Query', CGARegistrantAffiliations: { __typename?: 'CGARegistrantAffiliationPaginator', data: Array<{ __typename?: 'CGARegistrantAffiliation', id: string, desc: string, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgaRegistrantAffiliationsQuery = { __typename?: 'Query', CGARegistrantAffiliations: { __typename?: 'CGARegistrantAffiliationPaginator', data: Array<{ __typename?: 'CGARegistrantAffiliation', id: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgaRegistrantAffilliationsValidQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1960,7 +2376,7 @@ export type GetCgaSharedAreaQueryVariables = Exact<{
 }>;
 
 
-export type GetCgaSharedAreaQuery = { __typename?: 'Query', CGASharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string, valid_flg: boolean, created_at: any } | null };
+export type GetCgaSharedAreaQuery = { __typename?: 'Query', CGASharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any } | null };
 
 export type GetCgaSharedAreasQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -1968,7 +2384,7 @@ export type GetCgaSharedAreasQueryVariables = Exact<{
 }>;
 
 
-export type GetCgaSharedAreasQuery = { __typename?: 'Query', CGASharedAreas: { __typename?: 'CGASharedAreaPaginator', data: Array<{ __typename?: 'CGASharedArea', id: string, desc: string, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgaSharedAreasQuery = { __typename?: 'Query', CGASharedAreas: { __typename?: 'CGASharedAreaPaginator', data: Array<{ __typename?: 'CGASharedArea', id: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgaSharedAreasValidQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1993,6 +2409,26 @@ export type GetSessionAndUserQueryVariables = Exact<{
 
 
 export type GetSessionAndUserQuery = { __typename?: 'Query', getSessionAndUser?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+
+export type GetSystemNoticeQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetSystemNoticeQuery = { __typename?: 'Query', SystemNotice?: { __typename?: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
+
+export type GetSystemNoticesQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetSystemNoticesQuery = { __typename?: 'Query', SystemNotices: { __typename?: 'SystemNoticePaginator', data: Array<{ __typename?: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetSystemNoticesValidQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSystemNoticesValidQuery = { __typename?: 'Query', SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2020,7 +2456,7 @@ export type GetUserRoleCgAssetStoreQueryVariables = Exact<{
 }>;
 
 
-export type GetUserRoleCgAssetStoreQuery = { __typename?: 'Query', UserRoleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, valid_flg: boolean, created_at: any } | null };
+export type GetUserRoleCgAssetStoreQuery = { __typename?: 'Query', UserRoleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean, created_at: any } | null };
 
 export type GetUserRoleCgAssetStoresQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -2028,7 +2464,7 @@ export type GetUserRoleCgAssetStoresQueryVariables = Exact<{
 }>;
 
 
-export type GetUserRoleCgAssetStoresQuery = { __typename?: 'Query', UserRoleCGAssetStores: { __typename?: 'UserRoleCGAssetStorePaginator', data: Array<{ __typename?: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetUserRoleCgAssetStoresQuery = { __typename?: 'Query', UserRoleCGAssetStores: { __typename?: 'UserRoleCGAssetStorePaginator', data: Array<{ __typename?: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetUserRoleCgAssetStoresValidQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2057,11 +2493,12 @@ export type UseVerificationTokenQuery = { __typename?: 'Query', useVerificationT
 
 
 export const CreateCgaBroadcastingRightDocument = gql`
-    mutation CreateCGABroadcastingRight($desc: String!, $valid_flg: Boolean!) {
-  createCGABroadcastingRight(desc: $desc, valid_flg: $valid_flg) {
+    mutation CreateCGABroadcastingRight($desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGABroadcastingRight(desc: $desc, order: $order, valid_flg: $valid_flg) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -2082,6 +2519,7 @@ export type CreateCgaBroadcastingRightMutationFn = Apollo.MutationFunction<Creat
  * const [createCgaBroadcastingRightMutation, { data, loading, error }] = useCreateCgaBroadcastingRightMutation({
  *   variables: {
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -2099,6 +2537,7 @@ export const CreateCgAssetDocument = gql`
     __typename
     id
     asset_id
+    asset_name
     assetCate {
       desc
     }
@@ -2195,12 +2634,18 @@ export type CreateCgAssetMutationHookResult = ReturnType<typeof useCreateCgAsset
 export type CreateCgAssetMutationResult = Apollo.MutationResult<CreateCgAssetMutation>;
 export type CreateCgAssetMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetMutation, CreateCgAssetMutationVariables>;
 export const CreateCgAssetCateDocument = gql`
-    mutation CreateCgAssetCate($code: CodeCGAssetCate!, $desc: String!, $valid_flg: Boolean!) {
-  createCGAssetCate(code: $code, desc: $desc, valid_flg: $valid_flg) {
+    mutation CreateCgAssetCate($code: CodeCGAssetCate!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGAssetCate(
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     code
     desc
+    order
     valid_flg
   }
 }
@@ -2222,6 +2667,7 @@ export type CreateCgAssetCateMutationFn = Apollo.MutationFunction<CreateCgAssetC
  *   variables: {
  *      code: // value for 'code'
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -2233,12 +2679,181 @@ export function useCreateCgAssetCateMutation(baseOptions?: Apollo.MutationHookOp
 export type CreateCgAssetCateMutationHookResult = ReturnType<typeof useCreateCgAssetCateMutation>;
 export type CreateCgAssetCateMutationResult = Apollo.MutationResult<CreateCgAssetCateMutation>;
 export type CreateCgAssetCateMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetCateMutation, CreateCgAssetCateMutationVariables>;
+export const CreateCgAssetSearchAppProdDocument = gql`
+    mutation CreateCgAssetSearchAppProd($code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGAssetSearchAppProd(
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type CreateCgAssetSearchAppProdMutationFn = Apollo.MutationFunction<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>;
+
+/**
+ * __useCreateCgAssetSearchAppProdMutation__
+ *
+ * To run a mutation, you first call `useCreateCgAssetSearchAppProdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgAssetSearchAppProdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgAssetSearchAppProdMutation, { data, loading, error }] = useCreateCgAssetSearchAppProdMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateCgAssetSearchAppProdMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>(CreateCgAssetSearchAppProdDocument, options);
+      }
+export type CreateCgAssetSearchAppProdMutationHookResult = ReturnType<typeof useCreateCgAssetSearchAppProdMutation>;
+export type CreateCgAssetSearchAppProdMutationResult = Apollo.MutationResult<CreateCgAssetSearchAppProdMutation>;
+export type CreateCgAssetSearchAppProdMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>;
+export const CreateCgAssetSearchTagDocument = gql`
+    mutation CreateCgAssetSearchTag($code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGAssetSearchTag(
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type CreateCgAssetSearchTagMutationFn = Apollo.MutationFunction<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>;
+
+/**
+ * __useCreateCgAssetSearchTagMutation__
+ *
+ * To run a mutation, you first call `useCreateCgAssetSearchTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgAssetSearchTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgAssetSearchTagMutation, { data, loading, error }] = useCreateCgAssetSearchTagMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateCgAssetSearchTagMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>(CreateCgAssetSearchTagDocument, options);
+      }
+export type CreateCgAssetSearchTagMutationHookResult = ReturnType<typeof useCreateCgAssetSearchTagMutation>;
+export type CreateCgAssetSearchTagMutationResult = Apollo.MutationResult<CreateCgAssetSearchTagMutation>;
+export type CreateCgAssetSearchTagMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>;
+export const CreateCgAssetTagDocument = gql`
+    mutation CreateCgAssetTag($asset_db_id: ID!, $tag: String!, $tagged_user_id: ID!, $tag_add_edit_flg: Boolean!) {
+  createCGAssetTag(
+    asset_db_id: $asset_db_id
+    tag: $tag
+    tagged_user_id: $tagged_user_id
+    tag_add_edit_flg: $tag_add_edit_flg
+  ) {
+    __typename
+    id
+    tag
+    cgAsset {
+      id
+      assetTags {
+        id
+        tag
+        tag_add_edit_flg
+        taggedUser {
+          name
+        }
+        created_at
+      }
+    }
+    taggedUser {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+  }
+}
+    `;
+export type CreateCgAssetTagMutationFn = Apollo.MutationFunction<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>;
+
+/**
+ * __useCreateCgAssetTagMutation__
+ *
+ * To run a mutation, you first call `useCreateCgAssetTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgAssetTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgAssetTagMutation, { data, loading, error }] = useCreateCgAssetTagMutation({
+ *   variables: {
+ *      asset_db_id: // value for 'asset_db_id'
+ *      tag: // value for 'tag'
+ *      tagged_user_id: // value for 'tagged_user_id'
+ *      tag_add_edit_flg: // value for 'tag_add_edit_flg'
+ *   },
+ * });
+ */
+export function useCreateCgAssetTagMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>(CreateCgAssetTagDocument, options);
+      }
+export type CreateCgAssetTagMutationHookResult = ReturnType<typeof useCreateCgAssetTagMutation>;
+export type CreateCgAssetTagMutationResult = Apollo.MutationResult<CreateCgAssetTagMutation>;
+export type CreateCgAssetTagMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>;
 export const CreateCgaRegistrantAffiliationDocument = gql`
-    mutation CreateCgaRegistrantAffiliation($desc: String!, $valid_flg: Boolean!) {
-  createCGARegistrantAffiliation(desc: $desc, valid_flg: $valid_flg) {
+    mutation CreateCgaRegistrantAffiliation($desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGARegistrantAffiliation(
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -2259,6 +2874,7 @@ export type CreateCgaRegistrantAffiliationMutationFn = Apollo.MutationFunction<C
  * const [createCgaRegistrantAffiliationMutation, { data, loading, error }] = useCreateCgaRegistrantAffiliationMutation({
  *   variables: {
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -2271,11 +2887,12 @@ export type CreateCgaRegistrantAffiliationMutationHookResult = ReturnType<typeof
 export type CreateCgaRegistrantAffiliationMutationResult = Apollo.MutationResult<CreateCgaRegistrantAffiliationMutation>;
 export type CreateCgaRegistrantAffiliationMutationOptions = Apollo.BaseMutationOptions<CreateCgaRegistrantAffiliationMutation, CreateCgaRegistrantAffiliationMutationVariables>;
 export const CreateCgaSharedAreaDocument = gql`
-    mutation CreateCgaSharedArea($desc: String!, $valid_flg: Boolean!) {
-  createCGASharedArea(desc: $desc, valid_flg: $valid_flg) {
+    mutation CreateCgaSharedArea($desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGASharedArea(desc: $desc, order: $order, valid_flg: $valid_flg) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -2296,6 +2913,7 @@ export type CreateCgaSharedAreaMutationFn = Apollo.MutationFunction<CreateCgaSha
  * const [createCgaSharedAreaMutation, { data, loading, error }] = useCreateCgaSharedAreaMutation({
  *   variables: {
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -2308,11 +2926,12 @@ export type CreateCgaSharedAreaMutationHookResult = ReturnType<typeof useCreateC
 export type CreateCgaSharedAreaMutationResult = Apollo.MutationResult<CreateCgaSharedAreaMutation>;
 export type CreateCgaSharedAreaMutationOptions = Apollo.BaseMutationOptions<CreateCgaSharedAreaMutation, CreateCgaSharedAreaMutationVariables>;
 export const CreateCgaViewingRestrictionDocument = gql`
-    mutation CreateCgaViewingRestriction($desc: String!, $valid_flg: Boolean!) {
-  createCGAViewingRestriction(desc: $desc, valid_flg: $valid_flg) {
+    mutation CreateCgaViewingRestriction($desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGAViewingRestriction(desc: $desc, order: $order, valid_flg: $valid_flg) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -2333,6 +2952,7 @@ export type CreateCgaViewingRestrictionMutationFn = Apollo.MutationFunction<Crea
  * const [createCgaViewingRestrictionMutation, { data, loading, error }] = useCreateCgaViewingRestrictionMutation({
  *   variables: {
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -2444,6 +3064,85 @@ export function useCreateSessionMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateSessionMutationHookResult = ReturnType<typeof useCreateSessionMutation>;
 export type CreateSessionMutationResult = Apollo.MutationResult<CreateSessionMutation>;
 export type CreateSessionMutationOptions = Apollo.BaseMutationOptions<CreateSessionMutation, CreateSessionMutationVariables>;
+export const CreateSystemNoticeDocument = gql`
+    mutation CreateSystemNotice($create_user_id: ID!, $message: String!, $order: Int!, $valid_flg: Boolean!) {
+  createSystemNotice(
+    create_user_id: $create_user_id
+    message: $message
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    message
+    order
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type CreateSystemNoticeMutationFn = Apollo.MutationFunction<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>;
+
+/**
+ * __useCreateSystemNoticeMutation__
+ *
+ * To run a mutation, you first call `useCreateSystemNoticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSystemNoticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSystemNoticeMutation, { data, loading, error }] = useCreateSystemNoticeMutation({
+ *   variables: {
+ *      create_user_id: // value for 'create_user_id'
+ *      message: // value for 'message'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateSystemNoticeMutation(baseOptions?: Apollo.MutationHookOptions<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>(CreateSystemNoticeDocument, options);
+      }
+export type CreateSystemNoticeMutationHookResult = ReturnType<typeof useCreateSystemNoticeMutation>;
+export type CreateSystemNoticeMutationResult = Apollo.MutationResult<CreateSystemNoticeMutation>;
+export type CreateSystemNoticeMutationOptions = Apollo.BaseMutationOptions<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($user: CreateUserInput!) {
   createUser(user: $user) {
@@ -2516,12 +3215,18 @@ export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutati
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
 export const CreateUserRoleCgAssetStoreDocument = gql`
-    mutation CreateUserRoleCGAssetStore($role: RoleCGAssetStore!, $desc: String!, $valid_flg: Boolean!) {
-  createUserRoleCGAssetStore(role: $role, desc: $desc, valid_flg: $valid_flg) {
+    mutation CreateUserRoleCGAssetStore($role: RoleCGAssetStore!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createUserRoleCGAssetStore(
+    role: $role
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     role
     desc
+    order
     valid_flg
   }
 }
@@ -2543,6 +3248,7 @@ export type CreateUserRoleCgAssetStoreMutationFn = Apollo.MutationFunction<Creat
  *   variables: {
  *      role: // value for 'role'
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -2631,6 +3337,7 @@ export const DeleteCgaBroadcastingRightDocument = gql`
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -2667,6 +3374,7 @@ export const DeleteCgAssetDocument = gql`
     __typename
     id
     asset_id
+    asset_name
     assetCate {
       desc
     }
@@ -2769,6 +3477,7 @@ export const DeleteCgAssetCateDocument = gql`
     id
     code
     desc
+    order
     valid_flg
   }
 }
@@ -2799,12 +3508,89 @@ export function useDeleteCgAssetCateMutation(baseOptions?: Apollo.MutationHookOp
 export type DeleteCgAssetCateMutationHookResult = ReturnType<typeof useDeleteCgAssetCateMutation>;
 export type DeleteCgAssetCateMutationResult = Apollo.MutationResult<DeleteCgAssetCateMutation>;
 export type DeleteCgAssetCateMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetCateMutation, DeleteCgAssetCateMutationVariables>;
+export const DeleteCgAssetSearchAppProdDocument = gql`
+    mutation DeleteCgAssetSearchAppProd($id: ID!) {
+  deleteCGAssetSearchAppProd(id: $id) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type DeleteCgAssetSearchAppProdMutationFn = Apollo.MutationFunction<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>;
+
+/**
+ * __useDeleteCgAssetSearchAppProdMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgAssetSearchAppProdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgAssetSearchAppProdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgAssetSearchAppProdMutation, { data, loading, error }] = useDeleteCgAssetSearchAppProdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgAssetSearchAppProdMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>(DeleteCgAssetSearchAppProdDocument, options);
+      }
+export type DeleteCgAssetSearchAppProdMutationHookResult = ReturnType<typeof useDeleteCgAssetSearchAppProdMutation>;
+export type DeleteCgAssetSearchAppProdMutationResult = Apollo.MutationResult<DeleteCgAssetSearchAppProdMutation>;
+export type DeleteCgAssetSearchAppProdMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>;
+export const DeleteCgAssetSearchTagDocument = gql`
+    mutation DeleteCgAssetSearchTag($id: ID!) {
+  deleteCGAssetSearchTag(id: $id) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type DeleteCgAssetSearchTagMutationFn = Apollo.MutationFunction<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>;
+
+/**
+ * __useDeleteCgAssetSearchTagMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgAssetSearchTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgAssetSearchTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgAssetSearchTagMutation, { data, loading, error }] = useDeleteCgAssetSearchTagMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgAssetSearchTagMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>(DeleteCgAssetSearchTagDocument, options);
+      }
+export type DeleteCgAssetSearchTagMutationHookResult = ReturnType<typeof useDeleteCgAssetSearchTagMutation>;
+export type DeleteCgAssetSearchTagMutationResult = Apollo.MutationResult<DeleteCgAssetSearchTagMutation>;
+export type DeleteCgAssetSearchTagMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>;
 export const DeleteCgaRegistrantAffiliationDocument = gql`
     mutation DeleteCgaRegistrantAffiliation($id: ID!) {
   deleteCGARegistrantAffiliation(id: $id) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -2841,6 +3627,7 @@ export const DeleteCgaSharedAreaDocument = gql`
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -2877,6 +3664,7 @@ export const DeleteCgaViewingRestrictionDocument = gql`
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -3013,6 +3801,77 @@ export function useDeleteSessionMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteSessionMutationHookResult = ReturnType<typeof useDeleteSessionMutation>;
 export type DeleteSessionMutationResult = Apollo.MutationResult<DeleteSessionMutation>;
 export type DeleteSessionMutationOptions = Apollo.BaseMutationOptions<DeleteSessionMutation, DeleteSessionMutationVariables>;
+export const DeleteSystemNoticeDocument = gql`
+    mutation DeleteSystemNotice($id: ID!) {
+  deleteSystemNotice(id: $id) {
+    __typename
+    id
+    message
+    order
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type DeleteSystemNoticeMutationFn = Apollo.MutationFunction<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>;
+
+/**
+ * __useDeleteSystemNoticeMutation__
+ *
+ * To run a mutation, you first call `useDeleteSystemNoticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSystemNoticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSystemNoticeMutation, { data, loading, error }] = useDeleteSystemNoticeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteSystemNoticeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>(DeleteSystemNoticeDocument, options);
+      }
+export type DeleteSystemNoticeMutationHookResult = ReturnType<typeof useDeleteSystemNoticeMutation>;
+export type DeleteSystemNoticeMutationResult = Apollo.MutationResult<DeleteSystemNoticeMutation>;
+export type DeleteSystemNoticeMutationOptions = Apollo.BaseMutationOptions<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>;
 export const DeleteUserDocument = gql`
     mutation DeleteUser($id: ID!) {
   deleteUser(id: $id) {
@@ -3091,6 +3950,7 @@ export const DeleteUserRoleCgAssetStoreDocument = gql`
     id
     role
     desc
+    order
     valid_flg
   }
 }
@@ -3264,11 +4124,17 @@ export type UnlinkAccountMutationHookResult = ReturnType<typeof useUnlinkAccount
 export type UnlinkAccountMutationResult = Apollo.MutationResult<UnlinkAccountMutation>;
 export type UnlinkAccountMutationOptions = Apollo.BaseMutationOptions<UnlinkAccountMutation, UnlinkAccountMutationVariables>;
 export const UpdateCgaRegistrantAffiliationDocument = gql`
-    mutation UpdateCGARegistrantAffiliation($id: ID!, $desc: String!, $valid_flg: Boolean!) {
-  updateCGARegistrantAffiliation(id: $id, desc: $desc, valid_flg: $valid_flg) {
+    mutation UpdateCGARegistrantAffiliation($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGARegistrantAffiliation(
+    id: $id
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -3290,6 +4156,7 @@ export type UpdateCgaRegistrantAffiliationMutationFn = Apollo.MutationFunction<U
  *   variables: {
  *      id: // value for 'id'
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -3302,11 +4169,12 @@ export type UpdateCgaRegistrantAffiliationMutationHookResult = ReturnType<typeof
 export type UpdateCgaRegistrantAffiliationMutationResult = Apollo.MutationResult<UpdateCgaRegistrantAffiliationMutation>;
 export type UpdateCgaRegistrantAffiliationMutationOptions = Apollo.BaseMutationOptions<UpdateCgaRegistrantAffiliationMutation, UpdateCgaRegistrantAffiliationMutationVariables>;
 export const UpdateCgaSharedAreaDocument = gql`
-    mutation UpdateCGASharedArea($id: ID!, $desc: String!, $valid_flg: Boolean!) {
-  updateCGASharedArea(id: $id, desc: $desc, valid_flg: $valid_flg) {
+    mutation UpdateCGASharedArea($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGASharedArea(id: $id, desc: $desc, order: $order, valid_flg: $valid_flg) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -3328,6 +4196,7 @@ export type UpdateCgaSharedAreaMutationFn = Apollo.MutationFunction<UpdateCgaSha
  *   variables: {
  *      id: // value for 'id'
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -3340,11 +4209,17 @@ export type UpdateCgaSharedAreaMutationHookResult = ReturnType<typeof useUpdateC
 export type UpdateCgaSharedAreaMutationResult = Apollo.MutationResult<UpdateCgaSharedAreaMutation>;
 export type UpdateCgaSharedAreaMutationOptions = Apollo.BaseMutationOptions<UpdateCgaSharedAreaMutation, UpdateCgaSharedAreaMutationVariables>;
 export const UpdateCgaViewingRestrictionDocument = gql`
-    mutation UpdateCGAViewingRestriction($id: ID!, $desc: String!, $valid_flg: Boolean!) {
-  updateCGAViewingRestriction(id: $id, desc: $desc, valid_flg: $valid_flg) {
+    mutation UpdateCGAViewingRestriction($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGAViewingRestriction(
+    id: $id
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -3366,6 +4241,7 @@ export type UpdateCgaViewingRestrictionMutationFn = Apollo.MutationFunction<Upda
  *   variables: {
  *      id: // value for 'id'
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -3378,11 +4254,17 @@ export type UpdateCgaViewingRestrictionMutationHookResult = ReturnType<typeof us
 export type UpdateCgaViewingRestrictionMutationResult = Apollo.MutationResult<UpdateCgaViewingRestrictionMutation>;
 export type UpdateCgaViewingRestrictionMutationOptions = Apollo.BaseMutationOptions<UpdateCgaViewingRestrictionMutation, UpdateCgaViewingRestrictionMutationVariables>;
 export const UpdateCgaBroadcastingRightDocument = gql`
-    mutation UpdateCGABroadcastingRight($id: ID!, $desc: String!, $valid_flg: Boolean!) {
-  updateCGABroadcastingRight(id: $id, desc: $desc, valid_flg: $valid_flg) {
+    mutation UpdateCGABroadcastingRight($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGABroadcastingRight(
+    id: $id
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     desc
+    order
     valid_flg
   }
 }
@@ -3404,6 +4286,7 @@ export type UpdateCgaBroadcastingRightMutationFn = Apollo.MutationFunction<Updat
  *   variables: {
  *      id: // value for 'id'
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -3421,6 +4304,7 @@ export const UpdateCgAssetDocument = gql`
     __typename
     id
     asset_id
+    asset_name
     assetCate {
       desc
     }
@@ -3549,12 +4433,19 @@ export type UpdateCgAssetMutationHookResult = ReturnType<typeof useUpdateCgAsset
 export type UpdateCgAssetMutationResult = Apollo.MutationResult<UpdateCgAssetMutation>;
 export type UpdateCgAssetMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetMutation, UpdateCgAssetMutationVariables>;
 export const UpdateCgAssetCateDocument = gql`
-    mutation UpdateCgAssetCate($id: ID!, $code: CodeCGAssetCate!, $desc: String!, $valid_flg: Boolean!) {
-  updateCGAssetCate(id: $id, code: $code, desc: $desc, valid_flg: $valid_flg) {
+    mutation UpdateCgAssetCate($id: ID!, $code: CodeCGAssetCate!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGAssetCate(
+    id: $id
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
     code
     desc
+    order
     valid_flg
   }
 }
@@ -3577,6 +4468,7 @@ export type UpdateCgAssetCateMutationFn = Apollo.MutationFunction<UpdateCgAssetC
  *      id: // value for 'id'
  *      code: // value for 'code'
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -3588,6 +4480,102 @@ export function useUpdateCgAssetCateMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdateCgAssetCateMutationHookResult = ReturnType<typeof useUpdateCgAssetCateMutation>;
 export type UpdateCgAssetCateMutationResult = Apollo.MutationResult<UpdateCgAssetCateMutation>;
 export type UpdateCgAssetCateMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetCateMutation, UpdateCgAssetCateMutationVariables>;
+export const UpdateCgAssetSearchAppProdDocument = gql`
+    mutation UpdateCgAssetSearchAppProd($id: ID!, $code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGAssetSearchAppProd(
+    id: $id
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type UpdateCgAssetSearchAppProdMutationFn = Apollo.MutationFunction<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>;
+
+/**
+ * __useUpdateCgAssetSearchAppProdMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgAssetSearchAppProdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgAssetSearchAppProdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgAssetSearchAppProdMutation, { data, loading, error }] = useUpdateCgAssetSearchAppProdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      code: // value for 'code'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateCgAssetSearchAppProdMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>(UpdateCgAssetSearchAppProdDocument, options);
+      }
+export type UpdateCgAssetSearchAppProdMutationHookResult = ReturnType<typeof useUpdateCgAssetSearchAppProdMutation>;
+export type UpdateCgAssetSearchAppProdMutationResult = Apollo.MutationResult<UpdateCgAssetSearchAppProdMutation>;
+export type UpdateCgAssetSearchAppProdMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>;
+export const UpdateCgAssetSearchTagDocument = gql`
+    mutation UpdateCgAssetSearchTag($id: ID!, $code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGAssetSearchTag(
+    id: $id
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type UpdateCgAssetSearchTagMutationFn = Apollo.MutationFunction<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>;
+
+/**
+ * __useUpdateCgAssetSearchTagMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgAssetSearchTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgAssetSearchTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgAssetSearchTagMutation, { data, loading, error }] = useUpdateCgAssetSearchTagMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      code: // value for 'code'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateCgAssetSearchTagMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>(UpdateCgAssetSearchTagDocument, options);
+      }
+export type UpdateCgAssetSearchTagMutationHookResult = ReturnType<typeof useUpdateCgAssetSearchTagMutation>;
+export type UpdateCgAssetSearchTagMutationResult = Apollo.MutationResult<UpdateCgAssetSearchTagMutation>;
+export type UpdateCgAssetSearchTagMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>;
 export const UpdateSessionDocument = gql`
     mutation UpdateSession($input: UpdateSessionInput!) {
   updateSession(input: $input) {
@@ -3659,6 +4647,87 @@ export function useUpdateSessionMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateSessionMutationHookResult = ReturnType<typeof useUpdateSessionMutation>;
 export type UpdateSessionMutationResult = Apollo.MutationResult<UpdateSessionMutation>;
 export type UpdateSessionMutationOptions = Apollo.BaseMutationOptions<UpdateSessionMutation, UpdateSessionMutationVariables>;
+export const UpdateSystemNoticeDocument = gql`
+    mutation UpdateSystemNotice($id: ID!, $update_user_id: ID!, $message: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateSystemNotice(
+    id: $id
+    update_user_id: $update_user_id
+    message: $message
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    message
+    order
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type UpdateSystemNoticeMutationFn = Apollo.MutationFunction<UpdateSystemNoticeMutation, UpdateSystemNoticeMutationVariables>;
+
+/**
+ * __useUpdateSystemNoticeMutation__
+ *
+ * To run a mutation, you first call `useUpdateSystemNoticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSystemNoticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSystemNoticeMutation, { data, loading, error }] = useUpdateSystemNoticeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      update_user_id: // value for 'update_user_id'
+ *      message: // value for 'message'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateSystemNoticeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSystemNoticeMutation, UpdateSystemNoticeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSystemNoticeMutation, UpdateSystemNoticeMutationVariables>(UpdateSystemNoticeDocument, options);
+      }
+export type UpdateSystemNoticeMutationHookResult = ReturnType<typeof useUpdateSystemNoticeMutation>;
+export type UpdateSystemNoticeMutationResult = Apollo.MutationResult<UpdateSystemNoticeMutation>;
+export type UpdateSystemNoticeMutationOptions = Apollo.BaseMutationOptions<UpdateSystemNoticeMutation, UpdateSystemNoticeMutationVariables>;
 export const UpdateUserDocument = gql`
     mutation UpdateUser($user: UpdateUserInput!) {
   updateUser(user: $user) {
@@ -3731,17 +4800,19 @@ export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutati
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const UpdateUserRoleCgAssetStoreDocument = gql`
-    mutation UpdateUserRoleCGAssetStore($id: ID!, $role: RoleCGAssetStore!, $desc: String!, $valid_flg: Boolean!) {
+    mutation UpdateUserRoleCGAssetStore($id: ID!, $role: RoleCGAssetStore!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
   updateUserRoleCGAssetStore(
     id: $id
     role: $role
     desc: $desc
+    order: $order
     valid_flg: $valid_flg
   ) {
     __typename
     id
     role
     desc
+    order
     valid_flg
   }
 }
@@ -3764,6 +4835,7 @@ export type UpdateUserRoleCgAssetStoreMutationFn = Apollo.MutationFunction<Updat
  *      id: // value for 'id'
  *      role: // value for 'role'
  *      desc: // value for 'desc'
+ *      order: // value for 'order'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -3780,6 +4852,7 @@ export const GetCgaBroadcastingRightDocument = gql`
   CGABroadcastingRight(id: $id) {
     id
     desc
+    order
     valid_flg
     created_at
   }
@@ -3819,6 +4892,7 @@ export const GetCgaBroadcastingRightsDocument = gql`
     data {
       id
       desc
+      order
       valid_flg
       created_at
     }
@@ -3865,6 +4939,7 @@ export const GetCgaViewingRestrictionDocument = gql`
   CGAViewingRestriction(id: $id) {
     id
     desc
+    order
     valid_flg
     created_at
   }
@@ -3904,6 +4979,7 @@ export const GetCgaViewingRestrictionsDocument = gql`
     data {
       id
       desc
+      order
       valid_flg
       created_at
     }
@@ -3950,6 +5026,7 @@ export const GetCgAssetDocument = gql`
   CGAsset(id: $id) {
     id
     asset_id
+    asset_name
     assetCate {
       id
       code
@@ -4096,6 +5173,7 @@ export const GetCgAssetCateDocument = gql`
     id
     code
     desc
+    order
     valid_flg
     created_at
   }
@@ -4136,6 +5214,7 @@ export const GetCgAssetCatesDocument = gql`
       id
       code
       desc
+      order
       valid_flg
       created_at
     }
@@ -4213,6 +5292,256 @@ export function useGetCgAssetCatesValidLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetCgAssetCatesValidQueryHookResult = ReturnType<typeof useGetCgAssetCatesValidQuery>;
 export type GetCgAssetCatesValidLazyQueryHookResult = ReturnType<typeof useGetCgAssetCatesValidLazyQuery>;
 export type GetCgAssetCatesValidQueryResult = Apollo.QueryResult<GetCgAssetCatesValidQuery, GetCgAssetCatesValidQueryVariables>;
+export const GetCgAssetSearchAppProdDocument = gql`
+    query GetCgAssetSearchAppProd($id: ID!) {
+  CGAssetSearchAppProd(id: $id) {
+    id
+    code
+    desc
+    order
+    valid_flg
+    created_at
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetSearchAppProdQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetSearchAppProdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetSearchAppProdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetSearchAppProdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetCgAssetSearchAppProdQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetSearchAppProdQuery, GetCgAssetSearchAppProdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetSearchAppProdQuery, GetCgAssetSearchAppProdQueryVariables>(GetCgAssetSearchAppProdDocument, options);
+      }
+export function useGetCgAssetSearchAppProdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetSearchAppProdQuery, GetCgAssetSearchAppProdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetSearchAppProdQuery, GetCgAssetSearchAppProdQueryVariables>(GetCgAssetSearchAppProdDocument, options);
+        }
+export type GetCgAssetSearchAppProdQueryHookResult = ReturnType<typeof useGetCgAssetSearchAppProdQuery>;
+export type GetCgAssetSearchAppProdLazyQueryHookResult = ReturnType<typeof useGetCgAssetSearchAppProdLazyQuery>;
+export type GetCgAssetSearchAppProdQueryResult = Apollo.QueryResult<GetCgAssetSearchAppProdQuery, GetCgAssetSearchAppProdQueryVariables>;
+export const GetCgAssetSearchAppProdsDocument = gql`
+    query GetCgAssetSearchAppProds($first: Int!, $page: Int!) {
+  CGAssetSearchAppProds(first: $first, page: $page) {
+    data {
+      id
+      code
+      desc
+      order
+      valid_flg
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetSearchAppProdsQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetSearchAppProdsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetSearchAppProdsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetSearchAppProdsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetCgAssetSearchAppProdsQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetSearchAppProdsQuery, GetCgAssetSearchAppProdsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetSearchAppProdsQuery, GetCgAssetSearchAppProdsQueryVariables>(GetCgAssetSearchAppProdsDocument, options);
+      }
+export function useGetCgAssetSearchAppProdsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetSearchAppProdsQuery, GetCgAssetSearchAppProdsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetSearchAppProdsQuery, GetCgAssetSearchAppProdsQueryVariables>(GetCgAssetSearchAppProdsDocument, options);
+        }
+export type GetCgAssetSearchAppProdsQueryHookResult = ReturnType<typeof useGetCgAssetSearchAppProdsQuery>;
+export type GetCgAssetSearchAppProdsLazyQueryHookResult = ReturnType<typeof useGetCgAssetSearchAppProdsLazyQuery>;
+export type GetCgAssetSearchAppProdsQueryResult = Apollo.QueryResult<GetCgAssetSearchAppProdsQuery, GetCgAssetSearchAppProdsQueryVariables>;
+export const GetCgAssetSearchAppProdsValidDocument = gql`
+    query GetCgAssetSearchAppProdsValid {
+  CGAssetSearchAppProdsValid {
+    code
+    desc
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetSearchAppProdsValidQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetSearchAppProdsValidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetSearchAppProdsValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetSearchAppProdsValidQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCgAssetSearchAppProdsValidQuery(baseOptions?: Apollo.QueryHookOptions<GetCgAssetSearchAppProdsValidQuery, GetCgAssetSearchAppProdsValidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetSearchAppProdsValidQuery, GetCgAssetSearchAppProdsValidQueryVariables>(GetCgAssetSearchAppProdsValidDocument, options);
+      }
+export function useGetCgAssetSearchAppProdsValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetSearchAppProdsValidQuery, GetCgAssetSearchAppProdsValidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetSearchAppProdsValidQuery, GetCgAssetSearchAppProdsValidQueryVariables>(GetCgAssetSearchAppProdsValidDocument, options);
+        }
+export type GetCgAssetSearchAppProdsValidQueryHookResult = ReturnType<typeof useGetCgAssetSearchAppProdsValidQuery>;
+export type GetCgAssetSearchAppProdsValidLazyQueryHookResult = ReturnType<typeof useGetCgAssetSearchAppProdsValidLazyQuery>;
+export type GetCgAssetSearchAppProdsValidQueryResult = Apollo.QueryResult<GetCgAssetSearchAppProdsValidQuery, GetCgAssetSearchAppProdsValidQueryVariables>;
+export const GetCgAssetSearchTagDocument = gql`
+    query GetCgAssetSearchTag($id: ID!) {
+  CGAssetSearchTag(id: $id) {
+    id
+    code
+    desc
+    order
+    valid_flg
+    created_at
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetSearchTagQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetSearchTagQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetSearchTagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetSearchTagQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetCgAssetSearchTagQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetSearchTagQuery, GetCgAssetSearchTagQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetSearchTagQuery, GetCgAssetSearchTagQueryVariables>(GetCgAssetSearchTagDocument, options);
+      }
+export function useGetCgAssetSearchTagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetSearchTagQuery, GetCgAssetSearchTagQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetSearchTagQuery, GetCgAssetSearchTagQueryVariables>(GetCgAssetSearchTagDocument, options);
+        }
+export type GetCgAssetSearchTagQueryHookResult = ReturnType<typeof useGetCgAssetSearchTagQuery>;
+export type GetCgAssetSearchTagLazyQueryHookResult = ReturnType<typeof useGetCgAssetSearchTagLazyQuery>;
+export type GetCgAssetSearchTagQueryResult = Apollo.QueryResult<GetCgAssetSearchTagQuery, GetCgAssetSearchTagQueryVariables>;
+export const GetCgAssetSearchTagsDocument = gql`
+    query GetCgAssetSearchTags($first: Int!, $page: Int!) {
+  CGAssetSearchTags(first: $first, page: $page) {
+    data {
+      id
+      code
+      desc
+      order
+      valid_flg
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetSearchTagsQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetSearchTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetSearchTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetSearchTagsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetCgAssetSearchTagsQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetSearchTagsQuery, GetCgAssetSearchTagsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetSearchTagsQuery, GetCgAssetSearchTagsQueryVariables>(GetCgAssetSearchTagsDocument, options);
+      }
+export function useGetCgAssetSearchTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetSearchTagsQuery, GetCgAssetSearchTagsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetSearchTagsQuery, GetCgAssetSearchTagsQueryVariables>(GetCgAssetSearchTagsDocument, options);
+        }
+export type GetCgAssetSearchTagsQueryHookResult = ReturnType<typeof useGetCgAssetSearchTagsQuery>;
+export type GetCgAssetSearchTagsLazyQueryHookResult = ReturnType<typeof useGetCgAssetSearchTagsLazyQuery>;
+export type GetCgAssetSearchTagsQueryResult = Apollo.QueryResult<GetCgAssetSearchTagsQuery, GetCgAssetSearchTagsQueryVariables>;
+export const GetCgAssetSearchTagsValidDocument = gql`
+    query GetCgAssetSearchTagsValid {
+  CGAssetSearchTagsValid {
+    code
+    desc
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetSearchTagsValidQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetSearchTagsValidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetSearchTagsValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetSearchTagsValidQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCgAssetSearchTagsValidQuery(baseOptions?: Apollo.QueryHookOptions<GetCgAssetSearchTagsValidQuery, GetCgAssetSearchTagsValidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetSearchTagsValidQuery, GetCgAssetSearchTagsValidQueryVariables>(GetCgAssetSearchTagsValidDocument, options);
+      }
+export function useGetCgAssetSearchTagsValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetSearchTagsValidQuery, GetCgAssetSearchTagsValidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetSearchTagsValidQuery, GetCgAssetSearchTagsValidQueryVariables>(GetCgAssetSearchTagsValidDocument, options);
+        }
+export type GetCgAssetSearchTagsValidQueryHookResult = ReturnType<typeof useGetCgAssetSearchTagsValidQuery>;
+export type GetCgAssetSearchTagsValidLazyQueryHookResult = ReturnType<typeof useGetCgAssetSearchTagsValidLazyQuery>;
+export type GetCgAssetSearchTagsValidQueryResult = Apollo.QueryResult<GetCgAssetSearchTagsValidQuery, GetCgAssetSearchTagsValidQueryVariables>;
 export const GetCgAssetsDocument = gql`
     query GetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
   CGAssets(
@@ -4224,6 +5553,7 @@ export const GetCgAssetsDocument = gql`
     data {
       id
       asset_id
+      asset_name
       assetCate {
         id
         code
@@ -4413,6 +5743,7 @@ export const GetCgaRegistrantAffiliationDocument = gql`
   CGARegistrantAffiliation(id: $id) {
     id
     desc
+    order
     valid_flg
     created_at
   }
@@ -4452,6 +5783,7 @@ export const GetCgaRegistrantAffiliationsDocument = gql`
     data {
       id
       desc
+      order
       valid_flg
       created_at
     }
@@ -4533,6 +5865,7 @@ export const GetCgaSharedAreaDocument = gql`
   CGASharedArea(id: $id) {
     id
     desc
+    order
     valid_flg
     created_at
   }
@@ -4572,6 +5905,7 @@ export const GetCgaSharedAreasDocument = gql`
     data {
       id
       desc
+      order
       valid_flg
       created_at
     }
@@ -4793,6 +6127,233 @@ export function useGetSessionAndUserLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetSessionAndUserQueryHookResult = ReturnType<typeof useGetSessionAndUserQuery>;
 export type GetSessionAndUserLazyQueryHookResult = ReturnType<typeof useGetSessionAndUserLazyQuery>;
 export type GetSessionAndUserQueryResult = Apollo.QueryResult<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>;
+export const GetSystemNoticeDocument = gql`
+    query GetSystemNotice($id: ID!) {
+  SystemNotice(id: $id) {
+    id
+    message
+    order
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetSystemNoticeQuery__
+ *
+ * To run a query within a React component, call `useGetSystemNoticeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSystemNoticeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSystemNoticeQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetSystemNoticeQuery(baseOptions: Apollo.QueryHookOptions<GetSystemNoticeQuery, GetSystemNoticeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSystemNoticeQuery, GetSystemNoticeQueryVariables>(GetSystemNoticeDocument, options);
+      }
+export function useGetSystemNoticeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSystemNoticeQuery, GetSystemNoticeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSystemNoticeQuery, GetSystemNoticeQueryVariables>(GetSystemNoticeDocument, options);
+        }
+export type GetSystemNoticeQueryHookResult = ReturnType<typeof useGetSystemNoticeQuery>;
+export type GetSystemNoticeLazyQueryHookResult = ReturnType<typeof useGetSystemNoticeLazyQuery>;
+export type GetSystemNoticeQueryResult = Apollo.QueryResult<GetSystemNoticeQuery, GetSystemNoticeQueryVariables>;
+export const GetSystemNoticesDocument = gql`
+    query GetSystemNotices($first: Int!, $page: Int!) {
+  SystemNotices(
+    first: $first
+    page: $page
+    orderBy: [{column: "order", order: ASC}, {column: "created_at", order: DESC}]
+  ) {
+    data {
+      id
+      message
+      order
+      userCreate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      userUpdate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSystemNoticesQuery__
+ *
+ * To run a query within a React component, call `useGetSystemNoticesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSystemNoticesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSystemNoticesQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetSystemNoticesQuery(baseOptions: Apollo.QueryHookOptions<GetSystemNoticesQuery, GetSystemNoticesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSystemNoticesQuery, GetSystemNoticesQueryVariables>(GetSystemNoticesDocument, options);
+      }
+export function useGetSystemNoticesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSystemNoticesQuery, GetSystemNoticesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSystemNoticesQuery, GetSystemNoticesQueryVariables>(GetSystemNoticesDocument, options);
+        }
+export type GetSystemNoticesQueryHookResult = ReturnType<typeof useGetSystemNoticesQuery>;
+export type GetSystemNoticesLazyQueryHookResult = ReturnType<typeof useGetSystemNoticesLazyQuery>;
+export type GetSystemNoticesQueryResult = Apollo.QueryResult<GetSystemNoticesQuery, GetSystemNoticesQueryVariables>;
+export const GetSystemNoticesValidDocument = gql`
+    query GetSystemNoticesValid {
+  SystemNoticesValid(
+    orderBy: [{column: "order", order: ASC}, {column: "created_at", order: DESC}]
+  ) {
+    message
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetSystemNoticesValidQuery__
+ *
+ * To run a query within a React component, call `useGetSystemNoticesValidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSystemNoticesValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSystemNoticesValidQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSystemNoticesValidQuery(baseOptions?: Apollo.QueryHookOptions<GetSystemNoticesValidQuery, GetSystemNoticesValidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSystemNoticesValidQuery, GetSystemNoticesValidQueryVariables>(GetSystemNoticesValidDocument, options);
+      }
+export function useGetSystemNoticesValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSystemNoticesValidQuery, GetSystemNoticesValidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSystemNoticesValidQuery, GetSystemNoticesValidQueryVariables>(GetSystemNoticesValidDocument, options);
+        }
+export type GetSystemNoticesValidQueryHookResult = ReturnType<typeof useGetSystemNoticesValidQuery>;
+export type GetSystemNoticesValidLazyQueryHookResult = ReturnType<typeof useGetSystemNoticesValidLazyQuery>;
+export type GetSystemNoticesValidQueryResult = Apollo.QueryResult<GetSystemNoticesValidQuery, GetSystemNoticesValidQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser($id: ID!) {
   getUser(id: $id) {
@@ -5018,6 +6579,7 @@ export const GetUserRoleCgAssetStoreDocument = gql`
     id
     role
     desc
+    order
     valid_flg
     created_at
   }
@@ -5058,6 +6620,7 @@ export const GetUserRoleCgAssetStoresDocument = gql`
       id
       role
       desc
+      order
       valid_flg
       created_at
     }

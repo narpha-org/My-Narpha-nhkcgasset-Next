@@ -7,6 +7,7 @@ import { CellAction } from "./cell-action"
 export type CGaBroadcastingRightColumn = {
   id: string
   desc: string;
+  order: number;
   valid_flg: string;
   created_at: string;
 }
@@ -15,6 +16,10 @@ export const columns: ColumnDef<CGaBroadcastingRightColumn>[] = [
   {
     accessorKey: "desc",
     header: "放送権利",
+  },
+  {
+    accessorKey: "order",
+    header: "表示順",
   },
   {
     accessorKey: "valid_flg",

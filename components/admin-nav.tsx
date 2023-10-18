@@ -4,6 +4,8 @@ import Link from "next/link"
 import { useParams, usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils"
+import { SearchItemToggle } from "./admin-search-item-toggle";
+import { AssetItemToggle } from "./admin-asset-item-toggle";
 
 export function AdminNav({
   className,
@@ -24,34 +26,17 @@ export function AdminNav({
       active: pathname === `/admin/users`,
     },
     {
-      href: `/admin/user_role_c_g_asset_stores`,
-      label: 'CGアセットストアロール',
-      active: pathname === `/admin/user_role_c_g_asset_stores`,
+      href: ``,
+      label: 'SearchItemToggle',
     },
     {
-      href: `/admin/c_g_asset_cates`,
-      label: 'アセット種別',
-      active: pathname === `/admin/c_g_asset_cates`,
+      href: ``,
+      label: 'AssetItemToggle',
     },
     {
-      href: `/admin/c_g_a_registrant_affiliations`,
-      label: '登録者所属',
-      active: pathname === `/admin/c_g_a_registrant_affiliations`,
-    },
-    {
-      href: `/admin/c_g_a_viewing_restrictions`,
-      label: '閲覧制限',
-      active: pathname === `/admin/c_g_a_viewing_restrictions`,
-    },
-    {
-      href: `/admin/c_g_a_broadcasting_rights`,
-      label: '放送権利',
-      active: pathname === `/admin/c_g_a_broadcasting_rights`,
-    },
-    {
-      href: `/admin/c_g_a_shared_areas`,
-      label: '公開エリア',
-      active: pathname === `/admin/c_g_a_shared_areas`,
+      href: `/admin/system_notices`,
+      label: 'お知らせ',
+      active: pathname === `/admin/system_notices`,
     },
     {
       href: `/`,
@@ -61,22 +46,32 @@ export function AdminNav({
   ]
 
   return (
-    <nav
-      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
-      {...props}
-    >
-      {routes.map((route) => (
-        <Link
-          key={route.href}
-          href={route.href}
-          className={cn(
-            'text-sm font-medium transition-colors hover:text-primary',
-            route.active ? 'text-black dark:text-white' : 'text-muted-foreground'
-          )}
-        >
-          {route.label}
-        </Link>
-      ))}
-    </nav>
+    <>
+      <nav
+        className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+        {...props}
+      >
+        {routes.map((route) => {
+
+          if (route.label === 'SearchItemToggle') {
+            return <div key={route.label}><SearchItemToggle /></div>
+          }
+          if (route.label === 'AssetItemToggle') {
+            return <div key={route.label}><AssetItemToggle /></div>
+          }
+
+          return <Link
+            key={route.href}
+            href={route.href}
+            className={cn(
+              'text-sm font-medium transition-colors hover:text-primary',
+              route.active ? 'text-black dark:text-white' : 'text-muted-foreground'
+            )}
+          >
+            {route.label}
+          </Link>
+        })}
+      </nav>
+    </>
   )
 };
