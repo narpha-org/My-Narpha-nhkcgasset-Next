@@ -10,7 +10,7 @@ import { UserRoleCgAssetStoreForm } from "./components/user_role_c_g_asset_store
 const UserRoleCgAssetStorePage = async ({
   params
 }: {
-  params: { userRoleCgAssetStoreId: string }
+  params: { userRoleCGAssetStoreId: string }
 }) => {
   const ret: ApolloQueryResult<{
     UserRoleCGAssetStore: UserRoleCgAssetStore

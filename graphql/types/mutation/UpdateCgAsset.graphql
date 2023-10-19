@@ -60,7 +60,7 @@ mutation UpdateCgAsset($input: UpdateCGAssetInput!) {
       }
       created_at
     }
-    revisionHistory {
+    revisionHistories {
       created_at
       desc
       revisedUser {

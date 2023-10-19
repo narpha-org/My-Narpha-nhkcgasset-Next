@@ -69,7 +69,7 @@ query GetCgAsset($id: ID!) {
       }
       created_at
     }
-    revisionHistory {
+    revisionHistories {
       id
       created_at
       desc

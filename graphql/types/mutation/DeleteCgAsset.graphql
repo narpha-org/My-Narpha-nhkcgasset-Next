@@ -60,7 +60,7 @@ mutation DeleteCgAsset($id: ID!) {
       }
       created_at
     }
-    revisionHistory {
+    revisionHistories {
       created_at
       desc
       revisedUser {

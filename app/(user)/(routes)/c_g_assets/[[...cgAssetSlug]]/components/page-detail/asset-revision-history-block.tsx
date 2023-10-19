@@ -17,7 +17,7 @@ const AssetRevisionHistoryBlock: React.FC<AssetRevisionHistoryBlockProps> = ({
         修正履歴
       </div>
       <div className="flex-grow h-full overflow-y-auto">
-        {cgAsset.revisionHistory?.map((elem: CgaRevisionHistory | null) => {
+        {cgAsset.revisionHistories?.map((elem: CgaRevisionHistory | null) => {
 
           if (elem) {
             return <div key={elem.id} className="flex flex-wrap justify-between mb-5">

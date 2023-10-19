@@ -78,7 +78,7 @@ query GetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
         }
         created_at
       }
-      revisionHistory {
+      revisionHistories {
         id
         created_at
         desc

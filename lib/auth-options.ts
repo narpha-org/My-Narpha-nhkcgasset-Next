@@ -7,6 +7,7 @@ import { Adapter } from "next-auth/adapters";
 import { MyApolloAdapter } from "@/lib/auth-adp-my-apollo-adapter";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { unknown } from "zod";
+import { UpdateUserAuthCustomDocument } from "@/graphql/generated/graphql";
 // import { PrismaAdapter } from "@auth/prisma-adapter";
 // import { PrismaAdapter } from "@/lib/auth-adp-prisma-adapter";
 // import prisma from "@/lib/prisma";
@@ -62,6 +63,49 @@ export const authOptions: NextAuthOptions = {
       }
       if (account) {
         // token.accessToken = account.access_token;
+      }
+      if (profile) {
+        token.cg_asset_store_role_desc = (
+          profile as { cgAssetStoreRoleDesc: string }
+        ).cgAssetStoreRoleDesc;
+        token.cg_asset_store_rgst_affi_desc = (
+          profile as { cgAssetStoreRgstAffiDesc: string }
+        ).cgAssetStoreRgstAffiDesc;
+        token.cg_asset_store_rgst_affi_code = (
+          profile as { cgAssetStoreRgstAffiCode: string }
+        ).cgAssetStoreRgstAffiCode;
+      }
+
+      if (
+        token.userId &&
+        (token.cg_asset_store_role_desc ||
+          token.cg_asset_store_rgst_affi_desc ||
+          token.cg_asset_store_rgst_affi_code)
+      ) {
+        const ret = await apolloServer().mutate({
+          mutation: UpdateUserAuthCustomDocument,
+          variables: {
+            user: {
+              id: token.userId,
+              cg_asset_store_role_desc: token.cg_asset_store_role_desc,
+              cg_asset_store_rgst_affi_desc:
+                token.cg_asset_store_rgst_affi_desc,
+              cg_asset_store_rgst_affi_code:
+                token.cg_asset_store_rgst_affi_code,
+            },
+          },
+        });
+
+        const updU = ret.data.updateUserAuthCustom;
+
+        token.role = updU.roleCGAssetStore.role;
+        token.roleDesc = updU.roleCGAssetStore
+          ? updU.roleCGAssetStore.desc
+          : "";
+        token.rgstAffiDesc = updU.registrantAffiliation
+          ? updU.registrantAffiliation.desc
+          : "";
+        token.rgstAffiCode = updU.regist_affili_code;
       }
 
       let yourToken = token;

@@ -1,0 +1,43 @@
+mutation UpdateUserAuthCustom($user: UpdateUserAuthCustomInput!) {
+  updateUserAuthCustom(user: $user) {
+    id
+    name
+    email
+    emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
+    roleCGAssetStore {
+      id
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}

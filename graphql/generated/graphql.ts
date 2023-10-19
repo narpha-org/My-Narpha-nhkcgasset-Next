@@ -30,11 +30,129 @@ export type Scalars = {
 };
 
 /**
+ * ApplyDownload.
+ * ダウンロード申請
+ */
+export type ApplyDownload = {
+  __typename?: 'ApplyDownload';
+  /** コメント */
+  applyDownloadComments?: Maybe<Array<Maybe<ApplyDownloadComment>>>;
+  /** 申請ユーザ */
+  applyUser?: Maybe<User>;
+  /** 申請日 */
+  apply_date?: Maybe<Scalars['DateTime']['output']>;
+  /** 申請メール送信済 */
+  apply_mail_sent?: Maybe<Scalars['Boolean']['output']>;
+  /** 承認ユーザ */
+  approvalUser?: Maybe<User>;
+  /** 承認日 */
+  approval_date?: Maybe<Scalars['DateTime']['output']>;
+  /** 承認メール送信済 */
+  approval_mail_sent?: Maybe<Scalars['Boolean']['output']>;
+  /** データ送付ユーザ */
+  boxDeliverUser?: Maybe<User>;
+  /** データ送付日 */
+  box_deliver_date?: Maybe<Scalars['DateTime']['output']>;
+  /** データ送付メール送信済 */
+  box_deliver_mail_sent?: Maybe<Scalars['Boolean']['output']>;
+  /** CGアセット */
+  cgAsset: CgAsset;
+  /** When the ApplyDownload was created. */
+  created_at: Scalars['DateTime']['output'];
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  /** データ削除ユーザ */
+  removalUser?: Maybe<User>;
+  /** データ削除日 */
+  removal_date?: Maybe<Scalars['DateTime']['output']>;
+  /** データ削除期限日 */
+  removal_limit_date?: Maybe<Scalars['DateTime']['output']>;
+  /** データ削除メール送信済 */
+  removal_mail_sent?: Maybe<Scalars['Boolean']['output']>;
+  /** ステータス */
+  status: StatusApplyDownload;
+  /** When the ApplyDownload was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  /** 有効フラグ */
+  valid_flg: Scalars['Boolean']['output'];
+};
+
+/**
+ * ApplyDownloadComment.
+ * ダウンロード申請コメント
+ */
+export type ApplyDownloadComment = {
+  __typename?: 'ApplyDownloadComment';
+  /** ダウンロード申請 */
+  applyDownload: ApplyDownload;
+  /** コメント */
+  comment: Scalars['String']['output'];
+  /** When the ApplyDownloadComment was created. */
+  created_at: Scalars['DateTime']['output'];
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  /** ステータス */
+  status: StatusApplyDownload;
+  /** When the ApplyDownloadComment was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  /** コメントユーザ */
+  user?: Maybe<User>;
+  /** 有効フラグ */
+  valid_flg: Scalars['Boolean']['output'];
+};
+
+/** A paginated list of ApplyDownloadComment items. */
+export type ApplyDownloadCommentPaginator = {
+  __typename?: 'ApplyDownloadCommentPaginator';
+  /** A list of ApplyDownloadComment items. */
+  data: Array<ApplyDownloadComment>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+};
+
+/**
+ * ApplyDownloadMailTpl.
+ * ダウンロード申請メールテンプレート
+ */
+export type ApplyDownloadMailTpl = {
+  __typename?: 'ApplyDownloadMailTpl';
+  /** BCCメールアドレス */
+  bcc_mail?: Maybe<Scalars['String']['output']>;
+  /** メール本文 */
+  body_tpl: Scalars['String']['output'];
+  /** When the ApplyDownloadMailTpl was created. */
+  created_at: Scalars['DateTime']['output'];
+  /** 送信元メールアドレス */
+  from_mail?: Maybe<Scalars['String']['output']>;
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  /** ステータス */
+  status: StatusApplyDownload;
+  /** メール題名 */
+  subject_tpl: Scalars['String']['output'];
+  /** When the ApplyDownloadMailTpl was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  /** 有効フラグ */
+  valid_flg: Scalars['Boolean']['output'];
+};
+
+/** A paginated list of ApplyDownloadMailTpl items. */
+export type ApplyDownloadMailTplPaginator = {
+  __typename?: 'ApplyDownloadMailTplPaginator';
+  /** A list of ApplyDownloadMailTpl items. */
+  data: Array<ApplyDownloadMailTpl>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+};
+
+/**
  * CGABroadcastingRight.
  * 放送権利
  */
 export type CgaBroadcastingRight = {
   __typename?: 'CGABroadcastingRight';
+  /** CGアセット */
+  cgAssets?: Maybe<Array<Maybe<CgAsset>>>;
   /** When the CGABroadcastingRight was created. */
   created_at: Scalars['DateTime']['output'];
   /** 表記 */
@@ -64,6 +182,8 @@ export type CgaBroadcastingRightPaginator = {
  */
 export type CgaRegistrantAffiliation = {
   __typename?: 'CGARegistrantAffiliation';
+  /** CGアセット */
+  cgAssets?: Maybe<Array<Maybe<CgAsset>>>;
   /** When the CGARegistrantAffiliation was created. */
   created_at: Scalars['DateTime']['output'];
   /** 表記 */
@@ -93,7 +213,7 @@ export type CgaRegistrantAffiliationPaginator = {
  */
 export type CgaRevisionHistory = {
   __typename?: 'CGARevisionHistory';
-  /** CGアセットID */
+  /** CGアセット */
   cgAsset?: Maybe<CgAsset>;
   /** When the CGARevisionHistory was created. */
   created_at: Scalars['DateTime']['output'];
@@ -105,6 +225,8 @@ export type CgaRevisionHistory = {
   revisedUser?: Maybe<User>;
   /** When the CGARevisionHistory was last updated. */
   updated_at: Scalars['DateTime']['output'];
+  /** 有効フラグ */
+  valid_flg: Scalars['Boolean']['output'];
 };
 
 /** A paginated list of CGARevisionHistory items. */
@@ -122,6 +244,8 @@ export type CgaRevisionHistoryPaginator = {
  */
 export type CgaSharedArea = {
   __typename?: 'CGASharedArea';
+  /** CGアセット */
+  cgAssets?: Maybe<Array<Maybe<CgAsset>>>;
   /** When the CGASharedArea was created. */
   created_at: Scalars['DateTime']['output'];
   /** 表記 */
@@ -151,6 +275,8 @@ export type CgaSharedAreaPaginator = {
  */
 export type CgaViewingRestriction = {
   __typename?: 'CGAViewingRestriction';
+  /** CGアセット */
+  cgAssets?: Maybe<Array<Maybe<CgAsset>>>;
   /** When the CGAViewingRestriction was created. */
   created_at: Scalars['DateTime']['output'];
   /** 表記 */
@@ -182,7 +308,7 @@ export type CgAsset = {
   __typename?: 'CGAsset';
   /** アセット3DCG */
   asset3DCGs?: Maybe<Array<Maybe<CgAsset3Dcg>>>;
-  /** アセット種別ID */
+  /** アセット種別 */
   assetCate?: Maybe<CgAssetCate>;
   /** アセット画像 */
   assetImages?: Maybe<Array<Maybe<CgAssetImage>>>;
@@ -206,7 +332,7 @@ export type CgAsset = {
   asset_renderer?: Maybe<Scalars['String']['output']>;
   /** サイズ */
   asset_size?: Maybe<Scalars['String']['output']>;
-  /** 放送権利ID */
+  /** 放送権利 */
   broadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** When the CGAsset was created. */
   created_at: Scalars['DateTime']['output'];
@@ -216,13 +342,13 @@ export type CgAsset = {
   program_id?: Maybe<Scalars['String']['output']>;
   /** 番組名 */
   program_name?: Maybe<Scalars['String']['output']>;
-  /** 登録者所属ID */
+  /** 登録者所属 */
   registrantAffiliation?: Maybe<CgaRegistrantAffiliation>;
   /** 修正履歴 */
-  revisionHistory?: Maybe<Array<Maybe<CgaRevisionHistory>>>;
+  revisionHistories?: Maybe<Array<Maybe<CgaRevisionHistory>>>;
   /** 権利補足（使用上の注意） */
   rights_supplement?: Maybe<Scalars['String']['output']>;
-  /** 公開エリアID */
+  /** 公開エリア */
   sharedArea?: Maybe<CgaSharedArea>;
   /** When the CGAsset was last updated. */
   updated_at: Scalars['DateTime']['output'];
@@ -232,7 +358,7 @@ export type CgAsset = {
   userUpdate: User;
   /** 有効フラグ */
   valid_flg: Scalars['Boolean']['output'];
-  /** 閲覧制限ID */
+  /** 閲覧制限 */
   viewingRestriction?: Maybe<CgaViewingRestriction>;
 };
 
@@ -292,6 +418,8 @@ export type CgAsset3DcgPaginator = {
  */
 export type CgAssetCate = {
   __typename?: 'CGAssetCate';
+  /** CGアセット */
+  cgAssets?: Maybe<Array<Maybe<CgAsset>>>;
   /** アセット種別 区分 */
   code: CodeCgAssetCate;
   /** When the CGAssetCate was created. */
@@ -372,6 +500,37 @@ export type CgAssetPaginator = {
   __typename?: 'CGAssetPaginator';
   /** A list of CGAsset items. */
   data: Array<CgAsset>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+};
+
+/**
+ * CGAssetReview.
+ * コメント・レビュー
+ */
+export type CgAssetReview = {
+  __typename?: 'CGAssetReview';
+  /** CGアセット */
+  cgAsset?: Maybe<CgAsset>;
+  /** When the CGAssetReview was created. */
+  created_at: Scalars['DateTime']['output'];
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  /** コメント・レビュー内容 */
+  review: Scalars['String']['output'];
+  /** コメント・レビューユーザID */
+  reviewedUser?: Maybe<User>;
+  /** When the CGAssetReview was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  /** 有効フラグ */
+  valid_flg: Scalars['Boolean']['output'];
+};
+
+/** A paginated list of CGAssetReview items. */
+export type CgAssetReviewPaginator = {
+  __typename?: 'CGAssetReviewPaginator';
+  /** A list of CGAssetReview items. */
+  data: Array<CgAssetReview>;
   /** Pagination information about the list of items. */
   paginatorInfo: PaginatorInfo;
 };
@@ -477,6 +636,35 @@ export type CgAssetTagPaginator = {
 };
 
 /**
+ * CGAssetUploadDir.
+ * アップロード場所
+ */
+export type CgAssetUploadDir = {
+  __typename?: 'CGAssetUploadDir';
+  /** パス */
+  base_path: Scalars['String']['output'];
+  /** When the CGAssetUploadDir was created. */
+  created_at: Scalars['DateTime']['output'];
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  /** 表示順 */
+  order?: Maybe<Scalars['Int']['output']>;
+  /** When the CGAssetUploadDir was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  /** 有効フラグ */
+  valid_flg: Scalars['Boolean']['output'];
+};
+
+/** A paginated list of CGAssetUploadDir items. */
+export type CgAssetUploadDirPaginator = {
+  __typename?: 'CGAssetUploadDirPaginator';
+  /** A list of CGAssetUploadDir items. */
+  data: Array<CgAssetUploadDir>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+};
+
+/**
  * CGAssetVideo.
  * アセット動画
  */
@@ -531,6 +719,12 @@ export enum CodeCgAssetCate {
   C3D = 'C3D',
   Img = 'IMG'
 }
+
+export type CreateApplyDownloadArgs = {
+  asset_db_id: Scalars['ID']['input'];
+  comment: Scalars['String']['input'];
+  user_id: Scalars['ID']['input'];
+};
 
 export type CreateCgAssetInput = {
   /** アセット3DCG */
@@ -631,6 +825,12 @@ export type LinkAccountInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** ダウンロード申請登録 */
+  createApplyDownload?: Maybe<ApplyDownload>;
+  /** Create a ApplyDownloadComment. */
+  createApplyDownloadComment?: Maybe<ApplyDownloadComment>;
+  /** Create a ApplyDownloadMailTpl. */
+  createApplyDownloadMailTpl?: Maybe<ApplyDownloadMailTpl>;
   /** Create a CGABroadcastingRight. */
   createCGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** Create a CGARegistrantAffiliation. */
@@ -649,12 +849,16 @@ export type Mutation = {
   createCGAssetCate?: Maybe<CgAssetCate>;
   /** Create a CGAssetImage. */
   createCGAssetImage?: Maybe<CgAssetImage>;
+  /** Create a CGAssetReview. */
+  createCGAssetReview?: Maybe<CgAssetReview>;
   /** Create a CGAssetSearchAppProd. */
   createCGAssetSearchAppProd?: Maybe<CgAssetSearchAppProd>;
   /** Create a CGAssetSearchTag. */
   createCGAssetSearchTag?: Maybe<CgAssetSearchTag>;
   /** Create a CGAssetTag. */
   createCGAssetTag?: Maybe<CgAssetTag>;
+  /** Create a CGAssetUploadDir. */
+  createCGAssetUploadDir?: Maybe<CgAssetUploadDir>;
   /** Create a CGAssetVideo. */
   createCGAssetVideo?: Maybe<CgAssetVideo>;
   /** Create a Sample. */
@@ -669,6 +873,12 @@ export type Mutation = {
   createUserRoleCGAssetStore?: Maybe<UserRoleCgAssetStore>;
   /** Create a OktaVerificationToken. */
   createVerificationToken?: Maybe<OktaVerificationToken>;
+  /** Delete a ApplyDownload. */
+  deleteApplyDownload?: Maybe<ApplyDownload>;
+  /** Delete a ApplyDownloadComment. */
+  deleteApplyDownloadComment?: Maybe<ApplyDownloadComment>;
+  /** Delete a ApplyDownloadMailTpl. */
+  deleteApplyDownloadMailTpl?: Maybe<ApplyDownloadMailTpl>;
   /** Delete a CGABroadcastingRight. */
   deleteCGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** Delete a CGARegistrantAffiliation. */
@@ -687,12 +897,16 @@ export type Mutation = {
   deleteCGAssetCate?: Maybe<CgAssetCate>;
   /** Delete a CGAssetImage. */
   deleteCGAssetImage?: Maybe<CgAssetImage>;
+  /** Delete a CGAssetReview. */
+  deleteCGAssetReview?: Maybe<CgAssetReview>;
   /** Delete a CGAssetSearchAppProd. */
   deleteCGAssetSearchAppProd?: Maybe<CgAssetSearchAppProd>;
   /** Delete a CGAssetSearchTag. */
   deleteCGAssetSearchTag?: Maybe<CgAssetSearchTag>;
   /** Delete a CGAssetTag. */
   deleteCGAssetTag?: Maybe<CgAssetTag>;
+  /** Delete a CGAssetUploadDir. */
+  deleteCGAssetUploadDir?: Maybe<CgAssetUploadDir>;
   /** Delete a CGAssetVideo. */
   deleteCGAssetVideo?: Maybe<CgAssetVideo>;
   /** Delete a Sample. */
@@ -709,6 +923,16 @@ export type Mutation = {
   linkAccount?: Maybe<OktaAccount>;
   /** Unlink a OktaAccount. */
   unlinkAccount?: Maybe<OktaAccount>;
+  /** ダウンロード承認 */
+  updateApplyDownloadApproval?: Maybe<ApplyDownload>;
+  /** データ送付 */
+  updateApplyDownloadBoxDeliver?: Maybe<ApplyDownload>;
+  /** Update a ApplyDownloadComment. */
+  updateApplyDownloadComment?: Maybe<ApplyDownloadComment>;
+  /** Update a ApplyDownloadMailTpl. */
+  updateApplyDownloadMailTpl?: Maybe<ApplyDownloadMailTpl>;
+  /** データ削除 */
+  updateApplyDownloadRemoval?: Maybe<ApplyDownload>;
   /** Update a CGABroadcastingRight. */
   updateCGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** Update a CGARegistrantAffiliation. */
@@ -727,12 +951,16 @@ export type Mutation = {
   updateCGAssetCate?: Maybe<CgAssetCate>;
   /** Update a CGAssetImage. */
   updateCGAssetImage?: Maybe<CgAssetImage>;
+  /** Update a CGAssetReview. */
+  updateCGAssetReview?: Maybe<CgAssetReview>;
   /** Update a CGAssetSearchAppProd. */
   updateCGAssetSearchAppProd?: Maybe<CgAssetSearchAppProd>;
   /** Update a CGAssetSearchTag. */
   updateCGAssetSearchTag?: Maybe<CgAssetSearchTag>;
   /** Update a CGAssetTag. */
   updateCGAssetTag?: Maybe<CgAssetTag>;
+  /** Update a CGAssetUploadDir. */
+  updateCGAssetUploadDir?: Maybe<CgAssetUploadDir>;
   /** Update a CGAssetVideo. */
   updateCGAssetVideo?: Maybe<CgAssetVideo>;
   /** Update a Sample. */
@@ -743,8 +971,34 @@ export type Mutation = {
   updateSystemNotice?: Maybe<SystemNotice>;
   /** Update a OktaSession. */
   updateUser?: Maybe<User>;
+  /** Update a User info after init auth. */
+  updateUserAuthCustom?: Maybe<User>;
   /** Update a UserRoleCGAssetStore. */
   updateUserRoleCGAssetStore?: Maybe<UserRoleCgAssetStore>;
+};
+
+
+export type MutationCreateApplyDownloadArgs = {
+  input: CreateApplyDownloadArgs;
+};
+
+
+export type MutationCreateApplyDownloadCommentArgs = {
+  apply_download_id: Scalars['ID']['input'];
+  comment: Scalars['String']['input'];
+  status: StatusApplyDownload;
+  user_id: Scalars['ID']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+};
+
+
+export type MutationCreateApplyDownloadMailTplArgs = {
+  bcc_mail?: InputMaybe<Scalars['String']['input']>;
+  body_tpl: Scalars['String']['input'];
+  from_mail?: InputMaybe<Scalars['String']['input']>;
+  status: StatusApplyDownload;
+  subject_tpl: Scalars['String']['input'];
+  valid_flg: Scalars['Boolean']['input'];
 };
 
 
@@ -820,6 +1074,13 @@ export type MutationCreateCgAssetImageArgs = {
 };
 
 
+export type MutationCreateCgAssetReviewArgs = {
+  asset_db_id: Scalars['ID']['input'];
+  review: Scalars['String']['input'];
+  revised_user_id: Scalars['ID']['input'];
+};
+
+
 export type MutationCreateCgAssetSearchAppProdArgs = {
   code: Scalars['String']['input'];
   desc: Scalars['String']['input'];
@@ -841,6 +1102,13 @@ export type MutationCreateCgAssetTagArgs = {
   tag: Scalars['String']['input'];
   tag_add_edit_flg: Scalars['Boolean']['input'];
   tagged_user_id: Scalars['ID']['input'];
+};
+
+
+export type MutationCreateCgAssetUploadDirArgs = {
+  base_path: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
 };
 
 
@@ -892,6 +1160,21 @@ export type MutationCreateVerificationTokenArgs = {
 };
 
 
+export type MutationDeleteApplyDownloadArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteApplyDownloadCommentArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteApplyDownloadMailTplArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationDeleteCgaBroadcastingRightArgs = {
   id: Scalars['ID']['input'];
 };
@@ -937,6 +1220,11 @@ export type MutationDeleteCgAssetImageArgs = {
 };
 
 
+export type MutationDeleteCgAssetReviewArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationDeleteCgAssetSearchAppProdArgs = {
   id: Scalars['ID']['input'];
 };
@@ -948,6 +1236,11 @@ export type MutationDeleteCgAssetSearchTagArgs = {
 
 
 export type MutationDeleteCgAssetTagArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteCgAssetUploadDirArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -989,6 +1282,39 @@ export type MutationLinkAccountArgs = {
 
 export type MutationUnlinkAccountArgs = {
   input: UnlinkAccountInput;
+};
+
+
+export type MutationUpdateApplyDownloadApprovalArgs = {
+  input: UpdateApplyDownloadApprovalArgs;
+};
+
+
+export type MutationUpdateApplyDownloadBoxDeliverArgs = {
+  input: UpdateApplyDownloadBoxDeliverArgs;
+};
+
+
+export type MutationUpdateApplyDownloadCommentArgs = {
+  comment: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+};
+
+
+export type MutationUpdateApplyDownloadMailTplArgs = {
+  bcc_mail?: InputMaybe<Scalars['String']['input']>;
+  body_tpl: Scalars['String']['input'];
+  from_mail?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  status: StatusApplyDownload;
+  subject_tpl: Scalars['String']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+};
+
+
+export type MutationUpdateApplyDownloadRemovalArgs = {
+  input: UpdateApplyDownloadRemovalArgs;
 };
 
 
@@ -1063,6 +1389,11 @@ export type MutationUpdateCgAssetImageArgs = {
 };
 
 
+export type MutationUpdateCgAssetReviewArgs = {
+  review: Scalars['String']['input'];
+};
+
+
 export type MutationUpdateCgAssetSearchAppProdArgs = {
   code: Scalars['String']['input'];
   desc: Scalars['String']['input'];
@@ -1083,6 +1414,14 @@ export type MutationUpdateCgAssetSearchTagArgs = {
 
 export type MutationUpdateCgAssetTagArgs = {
   tag: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateCgAssetUploadDirArgs = {
+  base_path: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
 };
 
 
@@ -1118,6 +1457,11 @@ export type MutationUpdateSystemNoticeArgs = {
 
 export type MutationUpdateUserArgs = {
   user: UpdateUserInput;
+};
+
+
+export type MutationUpdateUserAuthCustomArgs = {
+  user: UpdateUserAuthCustomInput;
 };
 
 
@@ -1245,6 +1589,26 @@ export type PaginatorInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  /** Find a single ApplyDownload by an identifying attribute. */
+  ApplyDownload?: Maybe<ApplyDownload>;
+  /** Find a single ApplyDownloadComment by an identifying attribute. */
+  ApplyDownloadComment?: Maybe<ApplyDownloadComment>;
+  /** List multiple ApplyDownloadComment. */
+  ApplyDownloadComments: ApplyDownloadCommentPaginator;
+  /** List all available ApplyDownloadComment. */
+  ApplyDownloadCommentsValid: Array<ApplyDownloadComment>;
+  /** Find a single ApplyDownloadMailTpl by an identifying attribute. */
+  ApplyDownloadMailTpl?: Maybe<ApplyDownloadMailTpl>;
+  /** List multiple ApplyDownloadMailTpl. */
+  ApplyDownloadMailTpls: ApplyDownloadMailTplPaginator;
+  /** List all available ApplyDownloadMailTpl. */
+  ApplyDownloadMailTplsValid: Array<ApplyDownloadMailTpl>;
+  /** 承認一覧 */
+  ApplyDownloadsApproval: Array<ApplyDownload>;
+  /** 申請一覧 */
+  ApplyDownloadsEntry: Array<ApplyDownload>;
+  /** ダウンロード申請一覧 */
+  ApplyDownloadsNoRemoval: Array<ApplyDownload>;
   /** Find a single CGABroadcastingRight by an identifying attribute. */
   CGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** List multiple CGABroadcastingRight. */
@@ -1291,6 +1655,12 @@ export type Query = {
   CGAssetImage?: Maybe<CgAssetImage>;
   /** List multiple CGAssetImage. */
   CGAssetImages: CgAssetImagePaginator;
+  /** Find a single CGAssetReview by an identifying attribute. */
+  CGAssetReview?: Maybe<CgAssetReview>;
+  /** List multiple CGAssetReview. */
+  CGAssetReviews: CgAssetReviewPaginator;
+  /** List all available CGAssetReview. */
+  CGAssetReviewsValid: Array<CgAssetReview>;
   /** Find a single CGAssetSearchAppProd by an identifying attribute. */
   CGAssetSearchAppProd?: Maybe<CgAssetSearchAppProd>;
   /** List multiple CGAssetSearchAppProd. */
@@ -1309,6 +1679,12 @@ export type Query = {
   CGAssetTags: CgAssetTagPaginator;
   /** List all available CGAssetTag. */
   CGAssetTagsValid: Array<CgAssetTag>;
+  /** Find a single CGAssetUploadDir by an identifying attribute. */
+  CGAssetUploadDir?: Maybe<CgAssetUploadDir>;
+  /** List multiple CGAssetUploadDir. */
+  CGAssetUploadDirs: CgAssetUploadDirPaginator;
+  /** List all available CGAssetUploadDir. */
+  CGAssetUploadDirsValid: Array<CgAssetUploadDir>;
   /** Find a single CGAssetVideo by an identifying attribute. */
   CGAssetVideo?: Maybe<CgAssetVideo>;
   /** List multiple CGAssetVideo. */
@@ -1349,6 +1725,35 @@ export type Query = {
   samplesAll: Array<Sample>;
   /** Find a single OktaVerificationToken by an identifying attribute. */
   useVerificationToken?: Maybe<OktaVerificationToken>;
+};
+
+
+export type QueryApplyDownloadArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryApplyDownloadCommentArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryApplyDownloadCommentsArgs = {
+  comment?: InputMaybe<Scalars['String']['input']>;
+  first?: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryApplyDownloadMailTplArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryApplyDownloadMailTplsArgs = {
+  body_tpl?: InputMaybe<Scalars['String']['input']>;
+  first?: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1453,6 +1858,18 @@ export type QueryCgAssetImagesArgs = {
 };
 
 
+export type QueryCgAssetReviewArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryCgAssetReviewsArgs = {
+  first?: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
+  review?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QueryCgAssetSearchAppProdArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
 };
@@ -1486,6 +1903,18 @@ export type QueryCgAssetTagsArgs = {
   first?: Scalars['Int']['input'];
   page?: InputMaybe<Scalars['Int']['input']>;
   tag?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryCgAssetUploadDirArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryCgAssetUploadDirsArgs = {
+  base_path?: InputMaybe<Scalars['String']['input']>;
+  first?: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1666,6 +2095,13 @@ export enum SortOrder {
   Desc = 'DESC'
 }
 
+export enum StatusApplyDownload {
+  Apply = 'APPLY',
+  Approval = 'APPROVAL',
+  BoxDeliver = 'BOX_DELIVER',
+  Removal = 'REMOVAL'
+}
+
 /**
  * SystemNotice.
  * お知らせ
@@ -1712,6 +2148,21 @@ export enum Trashed {
 export type UnlinkAccountInput = {
   provider?: InputMaybe<Scalars['String']['input']>;
   providerAccountId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateApplyDownloadApprovalArgs = {
+  comment: Scalars['String']['input'];
+  user_id: Scalars['ID']['input'];
+};
+
+export type UpdateApplyDownloadBoxDeliverArgs = {
+  comment: Scalars['String']['input'];
+  user_id: Scalars['ID']['input'];
+};
+
+export type UpdateApplyDownloadRemovalArgs = {
+  comment: Scalars['String']['input'];
+  user_id: Scalars['ID']['input'];
 };
 
 export type UpdateCgAssetInput = {
@@ -1766,6 +2217,14 @@ export type UpdateSessionInput = {
   sessionToken?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UpdateUserAuthCustomInput = {
+  cg_asset_store_rgst_affi_code?: InputMaybe<Scalars['String']['input']>;
+  cg_asset_store_rgst_affi_desc?: InputMaybe<Scalars['String']['input']>;
+  cg_asset_store_role_desc?: InputMaybe<Scalars['String']['input']>;
+  /** Unique primary key. */
+  id: Scalars['ID']['input'];
+};
+
 export type UpdateUserInput = {
   /** Unique email address. */
   email: Scalars['String']['input'];
@@ -1795,7 +2254,24 @@ export type UseVerificationTokenInput = {
  */
 export type User = {
   __typename?: 'User';
+  /** ユーザーアカウント（Next.js） */
   accounts?: Maybe<Array<Maybe<OktaAccount>>>;
+  /** ダウンロード申請 */
+  applyDownloadApplies?: Maybe<Array<Maybe<ApplyDownload>>>;
+  /** ダウンロード承認 */
+  applyDownloadApprovals?: Maybe<Array<Maybe<ApplyDownload>>>;
+  /** ダウンロード送付 */
+  applyDownloadBoxDelivers?: Maybe<Array<Maybe<ApplyDownload>>>;
+  /** コメント */
+  applyDownloadComments?: Maybe<Array<Maybe<ApplyDownloadComment>>>;
+  /** ダウンロード消去 */
+  applyDownloadRemovals?: Maybe<Array<Maybe<ApplyDownload>>>;
+  /** アセットタグ */
+  assetTags?: Maybe<Array<Maybe<CgAssetTag>>>;
+  /** CGアセット登録 */
+  cgAssetCreates?: Maybe<Array<Maybe<CgAsset>>>;
+  /** CGアセット更新 */
+  cgAssetUpdates?: Maybe<Array<Maybe<CgAsset>>>;
   /** When the account was created. */
   created_at: Scalars['DateTime']['output'];
   /** Unique email address. */
@@ -1812,11 +2288,21 @@ export type User = {
   regist_affili_code?: Maybe<Scalars['String']['output']>;
   /** 主所属名 */
   registrantAffiliation?: Maybe<CgaRegistrantAffiliation>;
+  /** コメント・レビュー */
+  reviews?: Maybe<Array<Maybe<CgAssetReview>>>;
+  /** 修正履歴 */
+  revisionHistories?: Maybe<Array<Maybe<CgaRevisionHistory>>>;
   /** CGアセットストア ロール */
   roleCGAssetStore?: Maybe<UserRoleCgAssetStore>;
+  /** ユーザーセッション（Next.js） */
   sessions?: Maybe<Array<Maybe<OktaSession>>>;
+  /** お知らせ登録 */
+  systemNoticeCreates?: Maybe<Array<Maybe<SystemNotice>>>;
+  /** お知らせ更新 */
+  systemNoticeUpdates?: Maybe<Array<Maybe<SystemNotice>>>;
   /** When the account was last updated. */
   updated_at: Scalars['DateTime']['output'];
+  /** 認証トークン（Next.js） */
   verificationTokens?: Maybe<Array<Maybe<OktaVerificationToken>>>;
 };
 
@@ -1902,7 +2388,7 @@ export type CreateCgAssetMutationVariables = Exact<{
 }>;
 
 
-export type CreateCgAssetMutation = { __typename?: 'Mutation', createCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type CreateCgAssetMutation = { __typename?: 'Mutation', createCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
 
 export type CreateCgAssetCateMutationVariables = Exact<{
   code: CodeCgAssetCate;
@@ -2031,7 +2517,7 @@ export type DeleteCgAssetMutationVariables = Exact<{
 }>;
 
 
-export type DeleteCgAssetMutation = { __typename?: 'Mutation', deleteCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type DeleteCgAssetMutation = { __typename?: 'Mutation', deleteCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
 
 export type DeleteCgAssetCateMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2169,7 +2655,7 @@ export type UpdateCgAssetMutationVariables = Exact<{
 }>;
 
 
-export type UpdateCgAssetMutation = { __typename?: 'Mutation', updateCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
+export type UpdateCgAssetMutation = { __typename?: 'Mutation', updateCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
 
 export type UpdateCgAssetCateMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2229,6 +2715,13 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
 
+export type UpdateUserAuthCustomMutationVariables = Exact<{
+  user: UpdateUserAuthCustomInput;
+}>;
+
+
+export type UpdateUserAuthCustomMutation = { __typename?: 'Mutation', updateUserAuthCustom?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
 export type UpdateUserRoleCgAssetStoreMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   role: RoleCgAssetStore;
@@ -2275,7 +2768,7 @@ export type GetCgAssetQueryVariables = Exact<{
 }>;
 
 
-export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
+export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
 
 export type GetCgAssetCateQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2344,7 +2837,7 @@ export type GetCgAssetsQueryVariables = Exact<{
 }>;
 
 
-export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistory?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgaBroadcastingRightsValidQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2594,7 +3087,7 @@ export const CreateCgAssetDocument = gql`
       }
       created_at
     }
-    revisionHistory {
+    revisionHistories {
       created_at
       desc
       revisedUser {
@@ -3431,7 +3924,7 @@ export const DeleteCgAssetDocument = gql`
       }
       created_at
     }
-    revisionHistory {
+    revisionHistories {
       created_at
       desc
       revisedUser {
@@ -4361,7 +4854,7 @@ export const UpdateCgAssetDocument = gql`
       }
       created_at
     }
-    revisionHistory {
+    revisionHistories {
       created_at
       desc
       revisedUser {
@@ -4799,6 +5292,77 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UpdateUserAuthCustomDocument = gql`
+    mutation UpdateUserAuthCustom($user: UpdateUserAuthCustomInput!) {
+  updateUserAuthCustom(user: $user) {
+    id
+    name
+    email
+    emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
+    roleCGAssetStore {
+      id
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+export type UpdateUserAuthCustomMutationFn = Apollo.MutationFunction<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>;
+
+/**
+ * __useUpdateUserAuthCustomMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserAuthCustomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserAuthCustomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserAuthCustomMutation, { data, loading, error }] = useUpdateUserAuthCustomMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useUpdateUserAuthCustomMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>(UpdateUserAuthCustomDocument, options);
+      }
+export type UpdateUserAuthCustomMutationHookResult = ReturnType<typeof useUpdateUserAuthCustomMutation>;
+export type UpdateUserAuthCustomMutationResult = Apollo.MutationResult<UpdateUserAuthCustomMutation>;
+export type UpdateUserAuthCustomMutationOptions = Apollo.BaseMutationOptions<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>;
 export const UpdateUserRoleCgAssetStoreDocument = gql`
     mutation UpdateUserRoleCGAssetStore($id: ID!, $role: RoleCGAssetStore!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
   updateUserRoleCGAssetStore(
@@ -5093,7 +5657,7 @@ export const GetCgAssetDocument = gql`
       }
       created_at
     }
-    revisionHistory {
+    revisionHistories {
       id
       created_at
       desc
@@ -5620,7 +6184,7 @@ export const GetCgAssetsDocument = gql`
         }
         created_at
       }
-      revisionHistory {
+      revisionHistories {
         id
         created_at
         desc

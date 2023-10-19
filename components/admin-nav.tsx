@@ -40,7 +40,7 @@ export function AdminNav({
     },
     {
       href: `/`,
-      label: 'TOP',
+      label: 'ユーザTOP',
       active: pathname === `/`,
     },
   ]
