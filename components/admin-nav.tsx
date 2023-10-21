@@ -39,6 +39,11 @@ export function AdminNav({
       active: pathname === `/admin/system_notices`,
     },
     {
+      href: `/admin/apply_download_mail_tpls`,
+      label: 'メール雛形',
+      active: pathname === `/admin/apply_download_mail_tpls`,
+    },
+    {
       href: `/`,
       label: 'ユーザTOP',
       active: pathname === `/`,

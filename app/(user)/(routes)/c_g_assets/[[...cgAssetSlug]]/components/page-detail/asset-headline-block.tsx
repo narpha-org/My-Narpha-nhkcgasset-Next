@@ -13,7 +13,7 @@ const AssetHeadlineBlock: React.FC<AssetHeadlineBlockProps> = ({
   return (
     <>
       <div className="block text-lg font-semibold py-2 px-2">
-        {cgAsset.asset_media_base}
+        {cgAsset.uploadDir?.base_path}
       </div>
       <div className="block text-lg font-semibold py-2 px-2">
         {cgAsset.asset_name}

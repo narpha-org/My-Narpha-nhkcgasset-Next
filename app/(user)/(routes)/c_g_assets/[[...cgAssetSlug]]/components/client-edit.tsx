@@ -15,6 +15,8 @@ import {
   GetCgaBroadcastingRightsValidDocument,
   CgaSharedArea,
   GetCgaSharedAreasValidDocument,
+  CgAssetUploadDir,
+  GetCgAssetUploadDirsValidDocument,
 } from "@/graphql/generated/graphql";
 
 import { CGAssetForm } from "./page-edit/c_g_asset-form";
@@ -117,6 +119,14 @@ const CGAssetEditClient: React.FC<CGAssetPageProps> = async ({ params }) => {
     });
   const sharedAreas = retSharedArea.data.CGASharedAreasValid;
 
+  const retUploadDir: ApolloQueryResult<{
+    CGAssetUploadDirsValid: CgAssetUploadDir[]
+  }> = await apolloServer()
+    .query({
+      query: GetCgAssetUploadDirsValidDocument,
+    });
+  const uploadDirs = retUploadDir.data.CGAssetUploadDirsValid;
+
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
@@ -127,6 +137,7 @@ const CGAssetEditClient: React.FC<CGAssetPageProps> = async ({ params }) => {
           viewingRestrictions={viewingRestrictions}
           broadcastingRights={broadcastingRights}
           sharedAreas={sharedAreas}
+          uploadDirs={uploadDirs}
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
-mutation UpdateCgAsset($input: UpdateCGAssetInput!) {
-  updateCGAsset(input: $input) {
+mutation CreateCgAsset($input: CreateCGAssetInput!) {
+  createCGAsset(input: $input) {
     __typename
     id
     asset_id
@@ -28,6 +28,10 @@ mutation UpdateCgAsset($input: UpdateCGAssetInput!) {
     rights_supplement
     asset_detail
     asset_media_base
+    uploadDir {
+      id
+      base_path
+    }
     assetImages {
       file_name
       url
@@ -67,36 +71,12 @@ mutation UpdateCgAsset($input: UpdateCGAssetInput!) {
         name
       }
     }
-    userCreate {
+    reviews {
       id
-      name
-      email
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-    }
-    userUpdate {
-      id
-      name
-      email
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
+      created_at
+      review
+      reviewedUser {
+        name
       }
     }
     valid_flg

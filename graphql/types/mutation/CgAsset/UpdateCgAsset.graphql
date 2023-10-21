@@ -1,11 +1,10 @@
-query GetCgAsset($id: ID!) {
-  CGAsset(id: $id) {
+mutation UpdateCgAsset($input: UpdateCGAssetInput!) {
+  updateCGAsset(input: $input) {
+    __typename
     id
     asset_id
     asset_name
     assetCate {
-      id
-      code
       desc
     }
     asset_app_prod
@@ -15,26 +14,25 @@ query GetCgAsset($id: ID!) {
     program_id
     program_name
     registrantAffiliation {
-      id
       desc
     }
     viewingRestriction {
-      id
       desc
     }
     broadcastingRight {
-      id
       desc
     }
     sharedArea {
-      id
       desc
     }
     rights_supplement
     asset_detail
     asset_media_base
-    assetImages {
+    uploadDir {
       id
+      base_path
+    }
+    assetImages {
       file_name
       url
       file_path
@@ -43,7 +41,6 @@ query GetCgAsset($id: ID!) {
       thumb_file_path
     }
     assetVideos {
-      id
       file_name
       url
       file_path
@@ -52,7 +49,6 @@ query GetCgAsset($id: ID!) {
       thumb_file_path
     }
     asset3DCGs {
-      id
       file_name
       url
       file_path
@@ -61,7 +57,6 @@ query GetCgAsset($id: ID!) {
       thumb_file_path
     }
     assetTags {
-      id
       tag
       tag_add_edit_flg
       taggedUser {
@@ -70,10 +65,17 @@ query GetCgAsset($id: ID!) {
       created_at
     }
     revisionHistories {
-      id
       created_at
       desc
       revisedUser {
+        name
+      }
+    }
+    reviews {
+      id
+      created_at
+      review
+      reviewedUser {
         name
       }
     }

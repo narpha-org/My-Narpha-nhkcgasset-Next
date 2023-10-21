@@ -344,6 +344,8 @@ export type CgAsset = {
   program_name?: Maybe<Scalars['String']['output']>;
   /** 登録者所属 */
   registrantAffiliation?: Maybe<CgaRegistrantAffiliation>;
+  /** コメント・レビュー */
+  reviews?: Maybe<Array<Maybe<CgAssetReview>>>;
   /** 修正履歴 */
   revisionHistories?: Maybe<Array<Maybe<CgaRevisionHistory>>>;
   /** 権利補足（使用上の注意） */
@@ -352,6 +354,8 @@ export type CgAsset = {
   sharedArea?: Maybe<CgaSharedArea>;
   /** When the CGAsset was last updated. */
   updated_at: Scalars['DateTime']['output'];
+  /** アップロード場所 */
+  uploadDir?: Maybe<CgAssetUploadDir>;
   /** 登録ユーザ */
   userCreate: User;
   /** 更新ユーザ */
@@ -763,10 +767,14 @@ export type CreateCgAssetInput = {
   program_name?: InputMaybe<Scalars['String']['input']>;
   /** 登録者所属ID */
   registrantAffiliationId?: InputMaybe<Scalars['ID']['input']>;
+  /** 修正履歴 */
+  revision_history?: InputMaybe<Scalars['String']['input']>;
   /** 権利補足（使用上の注意） */
   rights_supplement?: InputMaybe<Scalars['String']['input']>;
   /** 公開エリアID */
   sharedAreaId?: InputMaybe<Scalars['ID']['input']>;
+  /** アップロード場所ID */
+  uploadDirId?: InputMaybe<Scalars['ID']['input']>;
   /** 有効フラグ */
   valid_flg?: InputMaybe<Scalars['Boolean']['input']>;
   /** 閲覧制限ID */
@@ -1077,7 +1085,7 @@ export type MutationCreateCgAssetImageArgs = {
 export type MutationCreateCgAssetReviewArgs = {
   asset_db_id: Scalars['ID']['input'];
   review: Scalars['String']['input'];
-  revised_user_id: Scalars['ID']['input'];
+  reviewed_user_id: Scalars['ID']['input'];
 };
 
 
@@ -2201,12 +2209,16 @@ export type UpdateCgAssetInput = {
   program_name?: InputMaybe<Scalars['String']['input']>;
   /** 登録者所属ID */
   registrantAffiliationId?: InputMaybe<Scalars['ID']['input']>;
+  /** 修正履歴 */
+  revision_history?: InputMaybe<Scalars['String']['input']>;
   /** 権利補足（使用上の注意） */
   rights_supplement?: InputMaybe<Scalars['String']['input']>;
   /** 公開エリアID */
   sharedAreaId?: InputMaybe<Scalars['ID']['input']>;
   /** 更新ユーザID */
   update_user_id: Scalars['ID']['input'];
+  /** アップロード場所ID */
+  uploadDirId?: InputMaybe<Scalars['ID']['input']>;
   /** 有効フラグ */
   valid_flg?: InputMaybe<Scalars['Boolean']['input']>;
   /** 閲覧制限ID */
@@ -2374,6 +2386,134 @@ export type WhereConditionsRelation = {
   relation: Scalars['String']['input'];
 };
 
+export type CreateApplyDownloadMailTplMutationVariables = Exact<{
+  status: StatusApplyDownload;
+  subject_tpl: Scalars['String']['input'];
+  body_tpl: Scalars['String']['input'];
+  from_mail?: InputMaybe<Scalars['String']['input']>;
+  bcc_mail?: InputMaybe<Scalars['String']['input']>;
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type CreateApplyDownloadMailTplMutation = { __typename?: 'Mutation', createApplyDownloadMailTpl?: { __typename: 'ApplyDownloadMailTpl', id: string, status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+
+export type DeleteApplyDownloadMailTplMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteApplyDownloadMailTplMutation = { __typename?: 'Mutation', deleteApplyDownloadMailTpl?: { __typename: 'ApplyDownloadMailTpl', id: string, status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+
+export type UpdateApplyDownloadMailTplMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  status: StatusApplyDownload;
+  subject_tpl: Scalars['String']['input'];
+  body_tpl: Scalars['String']['input'];
+  from_mail?: InputMaybe<Scalars['String']['input']>;
+  bcc_mail?: InputMaybe<Scalars['String']['input']>;
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateApplyDownloadMailTplMutation = { __typename?: 'Mutation', updateApplyDownloadMailTpl?: { __typename: 'ApplyDownloadMailTpl', id: string, status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+
+export type CreateSessionMutationVariables = Exact<{
+  input: CreateSessionInput;
+}>;
+
+
+export type CreateSessionMutation = { __typename?: 'Mutation', createSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+
+export type CreateVerificationTokenMutationVariables = Exact<{
+  input: CreateVerificationTokenInput;
+}>;
+
+
+export type CreateVerificationTokenMutation = { __typename?: 'Mutation', createVerificationToken?: { __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null } | null } | null };
+
+export type DeleteSessionMutationVariables = Exact<{
+  sessionToken: Scalars['String']['input'];
+}>;
+
+
+export type DeleteSessionMutation = { __typename?: 'Mutation', deleteSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+
+export type LinkAccountMutationVariables = Exact<{
+  account: LinkAccountInput;
+}>;
+
+
+export type LinkAccountMutation = { __typename?: 'Mutation', linkAccount?: { __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string, user: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } } | null };
+
+export type UnlinkAccountMutationVariables = Exact<{
+  input: UnlinkAccountInput;
+}>;
+
+
+export type UnlinkAccountMutation = { __typename?: 'Mutation', unlinkAccount?: { __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string, user: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } } | null };
+
+export type UpdateSessionMutationVariables = Exact<{
+  input: UpdateSessionInput;
+}>;
+
+
+export type UpdateSessionMutation = { __typename?: 'Mutation', updateSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+
+export type UpdateUserAuthCustomMutationVariables = Exact<{
+  user: UpdateUserAuthCustomInput;
+}>;
+
+
+export type UpdateUserAuthCustomMutation = { __typename?: 'Mutation', updateUserAuthCustom?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
+export type CreateUserMutationVariables = Exact<{
+  user: CreateUserInput;
+}>;
+
+
+export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
+export type DeleteUserMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
+export type UpdateUserMutationVariables = Exact<{
+  user: UpdateUserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
+export type CreateCgAssetUploadDirMutationVariables = Exact<{
+  base_path: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type CreateCgAssetUploadDirMutation = { __typename?: 'Mutation', createCGAssetUploadDir?: { __typename: 'CGAssetUploadDir', id: string, base_path: string, order?: number | null, valid_flg: boolean } | null };
+
+export type DeleteCgAssetUploadDirMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCgAssetUploadDirMutation = { __typename?: 'Mutation', deleteCGAssetUploadDir?: { __typename: 'CGAssetUploadDir', id: string, base_path: string, order?: number | null, valid_flg: boolean } | null };
+
+export type UpdateCgAssetUploadDirMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  base_path: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateCgAssetUploadDirMutation = { __typename?: 'Mutation', updateCGAssetUploadDir?: { __typename: 'CGAssetUploadDir', id: string, base_path: string, order?: number | null, valid_flg: boolean } | null };
+
 export type CreateCgaBroadcastingRightMutationVariables = Exact<{
   desc: Scalars['String']['input'];
   order: Scalars['Int']['input'];
@@ -2383,12 +2523,43 @@ export type CreateCgaBroadcastingRightMutationVariables = Exact<{
 
 export type CreateCgaBroadcastingRightMutation = { __typename?: 'Mutation', createCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
+export type DeleteCgaBroadcastingRightMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCgaBroadcastingRightMutation = { __typename?: 'Mutation', deleteCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type UpdateCgaBroadcastingRightMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateCgaBroadcastingRightMutation = { __typename?: 'Mutation', updateCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
 export type CreateCgAssetMutationVariables = Exact<{
   input: CreateCgAssetInput;
 }>;
 
 
-export type CreateCgAssetMutation = { __typename?: 'Mutation', createCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+export type CreateCgAssetMutation = { __typename?: 'Mutation', createCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+
+export type DeleteCgAssetMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCgAssetMutation = { __typename?: 'Mutation', deleteCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
+
+export type UpdateCgAssetMutationVariables = Exact<{
+  input: UpdateCgAssetInput;
+}>;
+
+
+export type UpdateCgAssetMutation = { __typename?: 'Mutation', updateCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
 
 export type CreateCgAssetCateMutationVariables = Exact<{
   code: CodeCgAssetCate;
@@ -2400,6 +2571,33 @@ export type CreateCgAssetCateMutationVariables = Exact<{
 
 export type CreateCgAssetCateMutation = { __typename?: 'Mutation', createCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, order?: number | null, valid_flg: boolean } | null };
 
+export type DeleteCgAssetCateMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCgAssetCateMutation = { __typename?: 'Mutation', deleteCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type UpdateCgAssetCateMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  code: CodeCgAssetCate;
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateCgAssetCateMutation = { __typename?: 'Mutation', updateCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type CreateCgAssetReviewMutationVariables = Exact<{
+  asset_db_id: Scalars['ID']['input'];
+  review: Scalars['String']['input'];
+  reviewed_user_id: Scalars['ID']['input'];
+}>;
+
+
+export type CreateCgAssetReviewMutation = { __typename?: 'Mutation', createCGAssetReview?: { __typename: 'CGAssetReview', id: string, review: string, created_at: any, cgAsset?: { __typename?: 'CGAsset', id: string, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, review: string, created_at: any, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null, reviewedUser?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
+
 export type CreateCgAssetSearchAppProdMutationVariables = Exact<{
   code: Scalars['String']['input'];
   desc: Scalars['String']['input'];
@@ -2410,6 +2608,24 @@ export type CreateCgAssetSearchAppProdMutationVariables = Exact<{
 
 export type CreateCgAssetSearchAppProdMutation = { __typename?: 'Mutation', createCGAssetSearchAppProd?: { __typename: 'CGAssetSearchAppProd', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
+export type DeleteCgAssetSearchAppProdMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCgAssetSearchAppProdMutation = { __typename?: 'Mutation', deleteCGAssetSearchAppProd?: { __typename: 'CGAssetSearchAppProd', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type UpdateCgAssetSearchAppProdMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  code: Scalars['String']['input'];
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateCgAssetSearchAppProdMutation = { __typename?: 'Mutation', updateCGAssetSearchAppProd?: { __typename: 'CGAssetSearchAppProd', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
 export type CreateCgAssetSearchTagMutationVariables = Exact<{
   code: Scalars['String']['input'];
   desc: Scalars['String']['input'];
@@ -2419,6 +2635,24 @@ export type CreateCgAssetSearchTagMutationVariables = Exact<{
 
 
 export type CreateCgAssetSearchTagMutation = { __typename?: 'Mutation', createCGAssetSearchTag?: { __typename: 'CGAssetSearchTag', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type DeleteCgAssetSearchTagMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCgAssetSearchTagMutation = { __typename?: 'Mutation', deleteCGAssetSearchTag?: { __typename: 'CGAssetSearchTag', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type UpdateCgAssetSearchTagMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  code: Scalars['String']['input'];
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateCgAssetSearchTagMutation = { __typename?: 'Mutation', updateCGAssetSearchTag?: { __typename: 'CGAssetSearchTag', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type CreateCgAssetTagMutationVariables = Exact<{
   asset_db_id: Scalars['ID']['input'];
@@ -2439,176 +2673,12 @@ export type CreateCgaRegistrantAffiliationMutationVariables = Exact<{
 
 export type CreateCgaRegistrantAffiliationMutation = { __typename?: 'Mutation', createCGARegistrantAffiliation?: { __typename: 'CGARegistrantAffiliation', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
-export type CreateCgaSharedAreaMutationVariables = Exact<{
-  desc: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
-  valid_flg: Scalars['Boolean']['input'];
-}>;
-
-
-export type CreateCgaSharedAreaMutation = { __typename?: 'Mutation', createCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type CreateCgaViewingRestrictionMutationVariables = Exact<{
-  desc: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
-  valid_flg: Scalars['Boolean']['input'];
-}>;
-
-
-export type CreateCgaViewingRestrictionMutation = { __typename?: 'Mutation', createCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type CreateSampleMutationVariables = Exact<{
-  text: Scalars['String']['input'];
-}>;
-
-
-export type CreateSampleMutation = { __typename?: 'Mutation', createSample?: { __typename: 'Sample', id: string, text: string } | null };
-
-export type CreateSessionMutationVariables = Exact<{
-  input: CreateSessionInput;
-}>;
-
-
-export type CreateSessionMutation = { __typename?: 'Mutation', createSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
-
-export type CreateSystemNoticeMutationVariables = Exact<{
-  create_user_id: Scalars['ID']['input'];
-  message: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
-  valid_flg: Scalars['Boolean']['input'];
-}>;
-
-
-export type CreateSystemNoticeMutation = { __typename?: 'Mutation', createSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
-
-export type CreateUserMutationVariables = Exact<{
-  user: CreateUserInput;
-}>;
-
-
-export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
-
-export type CreateUserRoleCgAssetStoreMutationVariables = Exact<{
-  role: RoleCgAssetStore;
-  desc: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
-  valid_flg: Scalars['Boolean']['input'];
-}>;
-
-
-export type CreateUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', createUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type CreateVerificationTokenMutationVariables = Exact<{
-  input: CreateVerificationTokenInput;
-}>;
-
-
-export type CreateVerificationTokenMutation = { __typename?: 'Mutation', createVerificationToken?: { __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null } | null } | null };
-
-export type DeleteCgaBroadcastingRightMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteCgaBroadcastingRightMutation = { __typename?: 'Mutation', deleteCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type DeleteCgAssetMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteCgAssetMutation = { __typename?: 'Mutation', deleteCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null } | null };
-
-export type DeleteCgAssetCateMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteCgAssetCateMutation = { __typename?: 'Mutation', deleteCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type DeleteCgAssetSearchAppProdMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteCgAssetSearchAppProdMutation = { __typename?: 'Mutation', deleteCGAssetSearchAppProd?: { __typename: 'CGAssetSearchAppProd', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type DeleteCgAssetSearchTagMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteCgAssetSearchTagMutation = { __typename?: 'Mutation', deleteCGAssetSearchTag?: { __typename: 'CGAssetSearchTag', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
-
 export type DeleteCgaRegistrantAffiliationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
 export type DeleteCgaRegistrantAffiliationMutation = { __typename?: 'Mutation', deleteCGARegistrantAffiliation?: { __typename: 'CGARegistrantAffiliation', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type DeleteCgaSharedAreaMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteCgaSharedAreaMutation = { __typename?: 'Mutation', deleteCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type DeleteCgaViewingRestrictionMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteCgaViewingRestrictionMutation = { __typename?: 'Mutation', deleteCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type DeleteSampleMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteSampleMutation = { __typename?: 'Mutation', deleteSample?: { __typename: 'Sample', id: string, text: string } | null };
-
-export type DeleteSessionMutationVariables = Exact<{
-  sessionToken: Scalars['String']['input'];
-}>;
-
-
-export type DeleteSessionMutation = { __typename?: 'Mutation', deleteSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
-
-export type DeleteSystemNoticeMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteSystemNoticeMutation = { __typename?: 'Mutation', deleteSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
-
-export type DeleteUserMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
-
-export type DeleteUserRoleCgAssetStoreMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type DeleteUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', deleteUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type LinkAccountMutationVariables = Exact<{
-  account: LinkAccountInput;
-}>;
-
-
-export type LinkAccountMutation = { __typename?: 'Mutation', linkAccount?: { __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string, user: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } } | null };
-
-export type UnlinkAccountMutationVariables = Exact<{
-  input: UnlinkAccountInput;
-}>;
-
-
-export type UnlinkAccountMutation = { __typename?: 'Mutation', unlinkAccount?: { __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string, user: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } } | null };
 
 export type UpdateCgaRegistrantAffiliationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2620,6 +2690,22 @@ export type UpdateCgaRegistrantAffiliationMutationVariables = Exact<{
 
 export type UpdateCgaRegistrantAffiliationMutation = { __typename?: 'Mutation', updateCGARegistrantAffiliation?: { __typename: 'CGARegistrantAffiliation', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
+export type CreateCgaSharedAreaMutationVariables = Exact<{
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type CreateCgaSharedAreaMutation = { __typename?: 'Mutation', createCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type DeleteCgaSharedAreaMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCgaSharedAreaMutation = { __typename?: 'Mutation', deleteCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
 export type UpdateCgaSharedAreaMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   desc: Scalars['String']['input'];
@@ -2629,6 +2715,22 @@ export type UpdateCgaSharedAreaMutationVariables = Exact<{
 
 
 export type UpdateCgaSharedAreaMutation = { __typename?: 'Mutation', updateCGASharedArea?: { __typename: 'CGASharedArea', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type CreateCgaViewingRestrictionMutationVariables = Exact<{
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type CreateCgaViewingRestrictionMutation = { __typename?: 'Mutation', createCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type DeleteCgaViewingRestrictionMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCgaViewingRestrictionMutation = { __typename?: 'Mutation', deleteCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type UpdateCgaViewingRestrictionMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2640,62 +2742,36 @@ export type UpdateCgaViewingRestrictionMutationVariables = Exact<{
 
 export type UpdateCgaViewingRestrictionMutation = { __typename?: 'Mutation', updateCGAViewingRestriction?: { __typename: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
 
-export type UpdateCgaBroadcastingRightMutationVariables = Exact<{
+export type CreateSampleMutationVariables = Exact<{
+  text: Scalars['String']['input'];
+}>;
+
+
+export type CreateSampleMutation = { __typename?: 'Mutation', createSample?: { __typename: 'Sample', id: string, text: string } | null };
+
+export type DeleteSampleMutationVariables = Exact<{
   id: Scalars['ID']['input'];
-  desc: Scalars['String']['input'];
+}>;
+
+
+export type DeleteSampleMutation = { __typename?: 'Mutation', deleteSample?: { __typename: 'Sample', id: string, text: string } | null };
+
+export type CreateSystemNoticeMutationVariables = Exact<{
+  create_user_id: Scalars['ID']['input'];
+  message: Scalars['String']['input'];
   order: Scalars['Int']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateCgaBroadcastingRightMutation = { __typename?: 'Mutation', updateCGABroadcastingRight?: { __typename: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean } | null };
+export type CreateSystemNoticeMutation = { __typename?: 'Mutation', createSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
-export type UpdateCgAssetMutationVariables = Exact<{
-  input: UpdateCgAssetInput;
-}>;
-
-
-export type UpdateCgAssetMutation = { __typename?: 'Mutation', updateCGAsset?: { __typename: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
-
-export type UpdateCgAssetCateMutationVariables = Exact<{
+export type DeleteSystemNoticeMutationVariables = Exact<{
   id: Scalars['ID']['input'];
-  code: CodeCgAssetCate;
-  desc: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
-  valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateCgAssetCateMutation = { __typename?: 'Mutation', updateCGAssetCate?: { __typename: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type UpdateCgAssetSearchAppProdMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-  code: Scalars['String']['input'];
-  desc: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
-  valid_flg: Scalars['Boolean']['input'];
-}>;
-
-
-export type UpdateCgAssetSearchAppProdMutation = { __typename?: 'Mutation', updateCGAssetSearchAppProd?: { __typename: 'CGAssetSearchAppProd', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type UpdateCgAssetSearchTagMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-  code: Scalars['String']['input'];
-  desc: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
-  valid_flg: Scalars['Boolean']['input'];
-}>;
-
-
-export type UpdateCgAssetSearchTagMutation = { __typename?: 'Mutation', updateCGAssetSearchTag?: { __typename: 'CGAssetSearchTag', id: string, code: string, desc: string, order?: number | null, valid_flg: boolean } | null };
-
-export type UpdateSessionMutationVariables = Exact<{
-  input: UpdateSessionInput;
-}>;
-
-
-export type UpdateSessionMutation = { __typename?: 'Mutation', updateSession?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+export type DeleteSystemNoticeMutation = { __typename?: 'Mutation', deleteSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
 export type UpdateSystemNoticeMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2708,19 +2784,22 @@ export type UpdateSystemNoticeMutationVariables = Exact<{
 
 export type UpdateSystemNoticeMutation = { __typename?: 'Mutation', updateSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
-export type UpdateUserMutationVariables = Exact<{
-  user: UpdateUserInput;
+export type CreateUserRoleCgAssetStoreMutationVariables = Exact<{
+  role: RoleCgAssetStore;
+  desc: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
+  valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+export type CreateUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', createUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean } | null };
 
-export type UpdateUserAuthCustomMutationVariables = Exact<{
-  user: UpdateUserAuthCustomInput;
+export type DeleteUserRoleCgAssetStoreMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
 }>;
 
 
-export type UpdateUserAuthCustomMutation = { __typename?: 'Mutation', updateUserAuthCustom?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+export type DeleteUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', deleteUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean } | null };
 
 export type UpdateUserRoleCgAssetStoreMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2732,6 +2811,89 @@ export type UpdateUserRoleCgAssetStoreMutationVariables = Exact<{
 
 
 export type UpdateUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', updateUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean } | null };
+
+export type GetApplyDownloadMailTplQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetApplyDownloadMailTplQuery = { __typename?: 'Query', ApplyDownloadMailTpl?: { __typename?: 'ApplyDownloadMailTpl', id: string, status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+
+export type GetApplyDownloadMailTplsQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetApplyDownloadMailTplsQuery = { __typename?: 'Query', ApplyDownloadMailTpls: { __typename?: 'ApplyDownloadMailTplPaginator', data: Array<{ __typename?: 'ApplyDownloadMailTpl', id: string, status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetApplyDownloadMailTplsValidQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetApplyDownloadMailTplsValidQuery = { __typename?: 'Query', ApplyDownloadMailTplsValid: Array<{ __typename?: 'ApplyDownloadMailTpl', status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, created_at: any, id: string }> };
+
+export type GetSessionAndUserQueryVariables = Exact<{
+  sessionToken: Scalars['String']['input'];
+}>;
+
+
+export type GetSessionAndUserQuery = { __typename?: 'Query', getSessionAndUser?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+
+export type GetUserByAccountQueryVariables = Exact<{
+  input: GetUserByAccountInput;
+}>;
+
+
+export type GetUserByAccountQuery = { __typename?: 'Query', getUserByAccount?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
+export type GetUserByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
+export type UseVerificationTokenQueryVariables = Exact<{
+  input: UseVerificationTokenInput;
+}>;
+
+
+export type UseVerificationTokenQuery = { __typename?: 'Query', useVerificationToken?: { __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null } | null } | null };
+
+export type GetUserQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
+
+export type GetUsersQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetUsersQuery = { __typename?: 'Query', Users: { __typename?: 'UserPaginator', data: Array<{ __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, created_at: any, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetCgAssetUploadDirQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetCgAssetUploadDirQuery = { __typename?: 'Query', CGAssetUploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string, order?: number | null, valid_flg: boolean, created_at: any } | null };
+
+export type GetCgAssetUploadDirsQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetCgAssetUploadDirsQuery = { __typename?: 'Query', CGAssetUploadDirs: { __typename?: 'CGAssetUploadDirPaginator', data: Array<{ __typename?: 'CGAssetUploadDir', id: string, base_path: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetCgAssetUploadDirsValidQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCgAssetUploadDirsValidQuery = { __typename?: 'Query', CGAssetUploadDirsValid: Array<{ __typename?: 'CGAssetUploadDir', base_path: string, id: string }> };
 
 export type GetCgaBroadcastingRightQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2748,6 +2910,11 @@ export type GetCgaBroadcastingRightsQueryVariables = Exact<{
 
 export type GetCgaBroadcastingRightsQuery = { __typename?: 'Query', CGABroadcastingRights: { __typename?: 'CGABroadcastingRightPaginator', data: Array<{ __typename?: 'CGABroadcastingRight', id: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
+export type GetCgaBroadcastingRightsValidQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCgaBroadcastingRightsValidQuery = { __typename?: 'Query', CGABroadcastingRightsValid: Array<{ __typename?: 'CGABroadcastingRight', desc: string, id: string }> };
+
 export type GetCgaViewingRestrictionQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -2763,12 +2930,26 @@ export type GetCgaViewingRestrictionsQueryVariables = Exact<{
 
 export type GetCgaViewingRestrictionsQuery = { __typename?: 'Query', CGAViewingRestrictions: { __typename?: 'CGAViewingRestrictionPaginator', data: Array<{ __typename?: 'CGAViewingRestriction', id: string, desc: string, order?: number | null, valid_flg: boolean, created_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
+export type GetCgaViewingRestrictionsValidQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCgaViewingRestrictionsValidQuery = { __typename?: 'Query', CGAViewingRestrictionsValid: Array<{ __typename?: 'CGAViewingRestriction', desc: string, id: string }> };
+
 export type GetCgAssetQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
+export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } } | null };
+
+export type GetCgAssetsQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+  search?: InputMaybe<CgAssetSearchFormValues>;
+}>;
+
+
+export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgAssetCateQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2830,20 +3011,6 @@ export type GetCgAssetSearchTagsValidQueryVariables = Exact<{ [key: string]: nev
 
 export type GetCgAssetSearchTagsValidQuery = { __typename?: 'Query', CGAssetSearchTagsValid: Array<{ __typename?: 'CGAssetSearchTag', code: string, desc: string, id: string }> };
 
-export type GetCgAssetsQueryVariables = Exact<{
-  first: Scalars['Int']['input'];
-  page: Scalars['Int']['input'];
-  search?: InputMaybe<CgAssetSearchFormValues>;
-}>;
-
-
-export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
-
-export type GetCgaBroadcastingRightsValidQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetCgaBroadcastingRightsValidQuery = { __typename?: 'Query', CGABroadcastingRightsValid: Array<{ __typename?: 'CGABroadcastingRight', desc: string, id: string }> };
-
 export type GetCgaRegistrantAffiliationQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -2884,11 +3051,6 @@ export type GetCgaSharedAreasValidQueryVariables = Exact<{ [key: string]: never;
 
 export type GetCgaSharedAreasValidQuery = { __typename?: 'Query', CGASharedAreasValid: Array<{ __typename?: 'CGASharedArea', desc: string, id: string }> };
 
-export type GetCgaViewingRestrictionsValidQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetCgaViewingRestrictionsValidQuery = { __typename?: 'Query', CGAViewingRestrictionsValid: Array<{ __typename?: 'CGAViewingRestriction', desc: string, id: string }> };
-
 export type GetSampleQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -2896,12 +3058,10 @@ export type GetSampleQueryVariables = Exact<{
 
 export type GetSampleQuery = { __typename?: 'Query', sample?: { __typename?: 'Sample', created_at: any, id: string, text: string } | null };
 
-export type GetSessionAndUserQueryVariables = Exact<{
-  sessionToken: Scalars['String']['input'];
-}>;
+export type SamplesAllQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSessionAndUserQuery = { __typename?: 'Query', getSessionAndUser?: { __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null } | null };
+export type SamplesAllQuery = { __typename?: 'Query', samplesAll: Array<{ __typename?: 'Sample', id: string, text: string }> };
 
 export type GetSystemNoticeQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2923,27 +3083,6 @@ export type GetSystemNoticesValidQueryVariables = Exact<{ [key: string]: never; 
 
 export type GetSystemNoticesValidQuery = { __typename?: 'Query', SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
 
-export type GetUserQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
-
-export type GetUserByAccountQueryVariables = Exact<{
-  input: GetUserByAccountInput;
-}>;
-
-
-export type GetUserByAccountQuery = { __typename?: 'Query', getUserByAccount?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
-
-export type GetUserByEmailQueryVariables = Exact<{
-  email: Scalars['String']['input'];
-}>;
-
-
-export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null } | null };
-
 export type GetUserRoleCgAssetStoreQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -2964,534 +3103,159 @@ export type GetUserRoleCgAssetStoresValidQueryVariables = Exact<{ [key: string]:
 
 export type GetUserRoleCgAssetStoresValidQuery = { __typename?: 'Query', UserRoleCGAssetStoresValid: Array<{ __typename?: 'UserRoleCGAssetStore', desc: string, id: string }> };
 
-export type GetUsersQueryVariables = Exact<{
-  first: Scalars['Int']['input'];
-  page: Scalars['Int']['input'];
-}>;
 
-
-export type GetUsersQuery = { __typename?: 'Query', Users: { __typename?: 'UserPaginator', data: Array<{ __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, created_at: any, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null, verificationTokens?: Array<{ __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
-
-export type SamplesAllQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type SamplesAllQuery = { __typename?: 'Query', samplesAll: Array<{ __typename?: 'Sample', id: string, text: string }> };
-
-export type UseVerificationTokenQueryVariables = Exact<{
-  input: UseVerificationTokenInput;
-}>;
-
-
-export type UseVerificationTokenQuery = { __typename?: 'Query', useVerificationToken?: { __typename?: 'OktaVerificationToken', identifier?: string | null, expires?: any | null, token?: string | null, user?: { __typename?: 'User', id: string, name: string, email: string, emailVerified?: any | null, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null, accounts?: Array<{ __typename?: 'OktaAccount', access_token?: string | null, expires_at?: number | null, id_token?: string | null, oauth_token?: string | null, oauth_token_secret?: string | null, provider: string, providerAccountId: string, refresh_token?: string | null, refresh_token_expires_in?: number | null, scope?: string | null, session_state?: string | null, token_type?: string | null, type: string } | null> | null, sessions?: Array<{ __typename?: 'OktaSession', expires?: any | null, sessionToken?: string | null } | null> | null } | null } | null };
-
-
-export const CreateCgaBroadcastingRightDocument = gql`
-    mutation CreateCGABroadcastingRight($desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  createCGABroadcastingRight(desc: $desc, order: $order, valid_flg: $valid_flg) {
+export const CreateApplyDownloadMailTplDocument = gql`
+    mutation CreateApplyDownloadMailTpl($status: StatusApplyDownload!, $subject_tpl: String!, $body_tpl: String!, $from_mail: String, $bcc_mail: String, $valid_flg: Boolean!) {
+  createApplyDownloadMailTpl(
+    status: $status
+    subject_tpl: $subject_tpl
+    body_tpl: $body_tpl
+    from_mail: $from_mail
+    bcc_mail: $bcc_mail
+    valid_flg: $valid_flg
+  ) {
     __typename
     id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type CreateCgaBroadcastingRightMutationFn = Apollo.MutationFunction<CreateCgaBroadcastingRightMutation, CreateCgaBroadcastingRightMutationVariables>;
-
-/**
- * __useCreateCgaBroadcastingRightMutation__
- *
- * To run a mutation, you first call `useCreateCgaBroadcastingRightMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCgaBroadcastingRightMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCgaBroadcastingRightMutation, { data, loading, error }] = useCreateCgaBroadcastingRightMutation({
- *   variables: {
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useCreateCgaBroadcastingRightMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgaBroadcastingRightMutation, CreateCgaBroadcastingRightMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCgaBroadcastingRightMutation, CreateCgaBroadcastingRightMutationVariables>(CreateCgaBroadcastingRightDocument, options);
-      }
-export type CreateCgaBroadcastingRightMutationHookResult = ReturnType<typeof useCreateCgaBroadcastingRightMutation>;
-export type CreateCgaBroadcastingRightMutationResult = Apollo.MutationResult<CreateCgaBroadcastingRightMutation>;
-export type CreateCgaBroadcastingRightMutationOptions = Apollo.BaseMutationOptions<CreateCgaBroadcastingRightMutation, CreateCgaBroadcastingRightMutationVariables>;
-export const CreateCgAssetDocument = gql`
-    mutation CreateCgAsset($input: CreateCGAssetInput!) {
-  createCGAsset(input: $input) {
-    __typename
-    id
-    asset_id
-    asset_name
-    assetCate {
-      desc
-    }
-    asset_app_prod
-    asset_format
-    asset_size
-    asset_renderer
-    program_id
-    program_name
-    registrantAffiliation {
-      desc
-    }
-    viewingRestriction {
-      desc
-    }
-    broadcastingRight {
-      desc
-    }
-    sharedArea {
-      desc
-    }
-    rights_supplement
-    asset_detail
-    asset_media_base
-    assetImages {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    assetVideos {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    asset3DCGs {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    assetTags {
-      tag
-      tag_add_edit_flg
-      taggedUser {
-        name
-      }
-      created_at
-    }
-    revisionHistories {
-      created_at
-      desc
-      revisedUser {
-        name
-      }
-    }
+    status
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
     valid_flg
     created_at
     updated_at
   }
 }
     `;
-export type CreateCgAssetMutationFn = Apollo.MutationFunction<CreateCgAssetMutation, CreateCgAssetMutationVariables>;
+export type CreateApplyDownloadMailTplMutationFn = Apollo.MutationFunction<CreateApplyDownloadMailTplMutation, CreateApplyDownloadMailTplMutationVariables>;
 
 /**
- * __useCreateCgAssetMutation__
+ * __useCreateApplyDownloadMailTplMutation__
  *
- * To run a mutation, you first call `useCreateCgAssetMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCgAssetMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateApplyDownloadMailTplMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateApplyDownloadMailTplMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createCgAssetMutation, { data, loading, error }] = useCreateCgAssetMutation({
+ * const [createApplyDownloadMailTplMutation, { data, loading, error }] = useCreateApplyDownloadMailTplMutation({
  *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateCgAssetMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetMutation, CreateCgAssetMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCgAssetMutation, CreateCgAssetMutationVariables>(CreateCgAssetDocument, options);
-      }
-export type CreateCgAssetMutationHookResult = ReturnType<typeof useCreateCgAssetMutation>;
-export type CreateCgAssetMutationResult = Apollo.MutationResult<CreateCgAssetMutation>;
-export type CreateCgAssetMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetMutation, CreateCgAssetMutationVariables>;
-export const CreateCgAssetCateDocument = gql`
-    mutation CreateCgAssetCate($code: CodeCGAssetCate!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  createCGAssetCate(
-    code: $code
-    desc: $desc
-    order: $order
-    valid_flg: $valid_flg
-  ) {
-    __typename
-    id
-    code
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type CreateCgAssetCateMutationFn = Apollo.MutationFunction<CreateCgAssetCateMutation, CreateCgAssetCateMutationVariables>;
-
-/**
- * __useCreateCgAssetCateMutation__
- *
- * To run a mutation, you first call `useCreateCgAssetCateMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCgAssetCateMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCgAssetCateMutation, { data, loading, error }] = useCreateCgAssetCateMutation({
- *   variables: {
- *      code: // value for 'code'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
+ *      status: // value for 'status'
+ *      subject_tpl: // value for 'subject_tpl'
+ *      body_tpl: // value for 'body_tpl'
+ *      from_mail: // value for 'from_mail'
+ *      bcc_mail: // value for 'bcc_mail'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
  */
-export function useCreateCgAssetCateMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetCateMutation, CreateCgAssetCateMutationVariables>) {
+export function useCreateApplyDownloadMailTplMutation(baseOptions?: Apollo.MutationHookOptions<CreateApplyDownloadMailTplMutation, CreateApplyDownloadMailTplMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCgAssetCateMutation, CreateCgAssetCateMutationVariables>(CreateCgAssetCateDocument, options);
+        return Apollo.useMutation<CreateApplyDownloadMailTplMutation, CreateApplyDownloadMailTplMutationVariables>(CreateApplyDownloadMailTplDocument, options);
       }
-export type CreateCgAssetCateMutationHookResult = ReturnType<typeof useCreateCgAssetCateMutation>;
-export type CreateCgAssetCateMutationResult = Apollo.MutationResult<CreateCgAssetCateMutation>;
-export type CreateCgAssetCateMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetCateMutation, CreateCgAssetCateMutationVariables>;
-export const CreateCgAssetSearchAppProdDocument = gql`
-    mutation CreateCgAssetSearchAppProd($code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  createCGAssetSearchAppProd(
-    code: $code
-    desc: $desc
-    order: $order
-    valid_flg: $valid_flg
-  ) {
+export type CreateApplyDownloadMailTplMutationHookResult = ReturnType<typeof useCreateApplyDownloadMailTplMutation>;
+export type CreateApplyDownloadMailTplMutationResult = Apollo.MutationResult<CreateApplyDownloadMailTplMutation>;
+export type CreateApplyDownloadMailTplMutationOptions = Apollo.BaseMutationOptions<CreateApplyDownloadMailTplMutation, CreateApplyDownloadMailTplMutationVariables>;
+export const DeleteApplyDownloadMailTplDocument = gql`
+    mutation DeleteApplyDownloadMailTpl($id: ID!) {
+  deleteApplyDownloadMailTpl(id: $id) {
     __typename
     id
-    code
-    desc
-    order
+    status
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
     valid_flg
-  }
-}
-    `;
-export type CreateCgAssetSearchAppProdMutationFn = Apollo.MutationFunction<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>;
-
-/**
- * __useCreateCgAssetSearchAppProdMutation__
- *
- * To run a mutation, you first call `useCreateCgAssetSearchAppProdMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCgAssetSearchAppProdMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCgAssetSearchAppProdMutation, { data, loading, error }] = useCreateCgAssetSearchAppProdMutation({
- *   variables: {
- *      code: // value for 'code'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useCreateCgAssetSearchAppProdMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>(CreateCgAssetSearchAppProdDocument, options);
-      }
-export type CreateCgAssetSearchAppProdMutationHookResult = ReturnType<typeof useCreateCgAssetSearchAppProdMutation>;
-export type CreateCgAssetSearchAppProdMutationResult = Apollo.MutationResult<CreateCgAssetSearchAppProdMutation>;
-export type CreateCgAssetSearchAppProdMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>;
-export const CreateCgAssetSearchTagDocument = gql`
-    mutation CreateCgAssetSearchTag($code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  createCGAssetSearchTag(
-    code: $code
-    desc: $desc
-    order: $order
-    valid_flg: $valid_flg
-  ) {
-    __typename
-    id
-    code
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type CreateCgAssetSearchTagMutationFn = Apollo.MutationFunction<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>;
-
-/**
- * __useCreateCgAssetSearchTagMutation__
- *
- * To run a mutation, you first call `useCreateCgAssetSearchTagMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCgAssetSearchTagMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCgAssetSearchTagMutation, { data, loading, error }] = useCreateCgAssetSearchTagMutation({
- *   variables: {
- *      code: // value for 'code'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useCreateCgAssetSearchTagMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>(CreateCgAssetSearchTagDocument, options);
-      }
-export type CreateCgAssetSearchTagMutationHookResult = ReturnType<typeof useCreateCgAssetSearchTagMutation>;
-export type CreateCgAssetSearchTagMutationResult = Apollo.MutationResult<CreateCgAssetSearchTagMutation>;
-export type CreateCgAssetSearchTagMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>;
-export const CreateCgAssetTagDocument = gql`
-    mutation CreateCgAssetTag($asset_db_id: ID!, $tag: String!, $tagged_user_id: ID!, $tag_add_edit_flg: Boolean!) {
-  createCGAssetTag(
-    asset_db_id: $asset_db_id
-    tag: $tag
-    tagged_user_id: $tagged_user_id
-    tag_add_edit_flg: $tag_add_edit_flg
-  ) {
-    __typename
-    id
-    tag
-    cgAsset {
-      id
-      assetTags {
-        id
-        tag
-        tag_add_edit_flg
-        taggedUser {
-          name
-        }
-        created_at
-      }
-    }
-    taggedUser {
-      id
-      name
-      email
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-    }
     created_at
+    updated_at
   }
 }
     `;
-export type CreateCgAssetTagMutationFn = Apollo.MutationFunction<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>;
+export type DeleteApplyDownloadMailTplMutationFn = Apollo.MutationFunction<DeleteApplyDownloadMailTplMutation, DeleteApplyDownloadMailTplMutationVariables>;
 
 /**
- * __useCreateCgAssetTagMutation__
+ * __useDeleteApplyDownloadMailTplMutation__
  *
- * To run a mutation, you first call `useCreateCgAssetTagMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCgAssetTagMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteApplyDownloadMailTplMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteApplyDownloadMailTplMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createCgAssetTagMutation, { data, loading, error }] = useCreateCgAssetTagMutation({
+ * const [deleteApplyDownloadMailTplMutation, { data, loading, error }] = useDeleteApplyDownloadMailTplMutation({
  *   variables: {
- *      asset_db_id: // value for 'asset_db_id'
- *      tag: // value for 'tag'
- *      tagged_user_id: // value for 'tagged_user_id'
- *      tag_add_edit_flg: // value for 'tag_add_edit_flg'
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useCreateCgAssetTagMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>) {
+export function useDeleteApplyDownloadMailTplMutation(baseOptions?: Apollo.MutationHookOptions<DeleteApplyDownloadMailTplMutation, DeleteApplyDownloadMailTplMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>(CreateCgAssetTagDocument, options);
+        return Apollo.useMutation<DeleteApplyDownloadMailTplMutation, DeleteApplyDownloadMailTplMutationVariables>(DeleteApplyDownloadMailTplDocument, options);
       }
-export type CreateCgAssetTagMutationHookResult = ReturnType<typeof useCreateCgAssetTagMutation>;
-export type CreateCgAssetTagMutationResult = Apollo.MutationResult<CreateCgAssetTagMutation>;
-export type CreateCgAssetTagMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>;
-export const CreateCgaRegistrantAffiliationDocument = gql`
-    mutation CreateCgaRegistrantAffiliation($desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  createCGARegistrantAffiliation(
-    desc: $desc
-    order: $order
+export type DeleteApplyDownloadMailTplMutationHookResult = ReturnType<typeof useDeleteApplyDownloadMailTplMutation>;
+export type DeleteApplyDownloadMailTplMutationResult = Apollo.MutationResult<DeleteApplyDownloadMailTplMutation>;
+export type DeleteApplyDownloadMailTplMutationOptions = Apollo.BaseMutationOptions<DeleteApplyDownloadMailTplMutation, DeleteApplyDownloadMailTplMutationVariables>;
+export const UpdateApplyDownloadMailTplDocument = gql`
+    mutation UpdateApplyDownloadMailTpl($id: ID!, $status: StatusApplyDownload!, $subject_tpl: String!, $body_tpl: String!, $from_mail: String, $bcc_mail: String, $valid_flg: Boolean!) {
+  updateApplyDownloadMailTpl(
+    id: $id
+    status: $status
+    subject_tpl: $subject_tpl
+    body_tpl: $body_tpl
+    from_mail: $from_mail
+    bcc_mail: $bcc_mail
     valid_flg: $valid_flg
   ) {
     __typename
     id
-    desc
-    order
+    status
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
     valid_flg
+    created_at
+    updated_at
   }
 }
     `;
-export type CreateCgaRegistrantAffiliationMutationFn = Apollo.MutationFunction<CreateCgaRegistrantAffiliationMutation, CreateCgaRegistrantAffiliationMutationVariables>;
+export type UpdateApplyDownloadMailTplMutationFn = Apollo.MutationFunction<UpdateApplyDownloadMailTplMutation, UpdateApplyDownloadMailTplMutationVariables>;
 
 /**
- * __useCreateCgaRegistrantAffiliationMutation__
+ * __useUpdateApplyDownloadMailTplMutation__
  *
- * To run a mutation, you first call `useCreateCgaRegistrantAffiliationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCgaRegistrantAffiliationMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateApplyDownloadMailTplMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApplyDownloadMailTplMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createCgaRegistrantAffiliationMutation, { data, loading, error }] = useCreateCgaRegistrantAffiliationMutation({
+ * const [updateApplyDownloadMailTplMutation, { data, loading, error }] = useUpdateApplyDownloadMailTplMutation({
  *   variables: {
- *      desc: // value for 'desc'
- *      order: // value for 'order'
+ *      id: // value for 'id'
+ *      status: // value for 'status'
+ *      subject_tpl: // value for 'subject_tpl'
+ *      body_tpl: // value for 'body_tpl'
+ *      from_mail: // value for 'from_mail'
+ *      bcc_mail: // value for 'bcc_mail'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
  */
-export function useCreateCgaRegistrantAffiliationMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgaRegistrantAffiliationMutation, CreateCgaRegistrantAffiliationMutationVariables>) {
+export function useUpdateApplyDownloadMailTplMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplyDownloadMailTplMutation, UpdateApplyDownloadMailTplMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCgaRegistrantAffiliationMutation, CreateCgaRegistrantAffiliationMutationVariables>(CreateCgaRegistrantAffiliationDocument, options);
+        return Apollo.useMutation<UpdateApplyDownloadMailTplMutation, UpdateApplyDownloadMailTplMutationVariables>(UpdateApplyDownloadMailTplDocument, options);
       }
-export type CreateCgaRegistrantAffiliationMutationHookResult = ReturnType<typeof useCreateCgaRegistrantAffiliationMutation>;
-export type CreateCgaRegistrantAffiliationMutationResult = Apollo.MutationResult<CreateCgaRegistrantAffiliationMutation>;
-export type CreateCgaRegistrantAffiliationMutationOptions = Apollo.BaseMutationOptions<CreateCgaRegistrantAffiliationMutation, CreateCgaRegistrantAffiliationMutationVariables>;
-export const CreateCgaSharedAreaDocument = gql`
-    mutation CreateCgaSharedArea($desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  createCGASharedArea(desc: $desc, order: $order, valid_flg: $valid_flg) {
-    __typename
-    id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type CreateCgaSharedAreaMutationFn = Apollo.MutationFunction<CreateCgaSharedAreaMutation, CreateCgaSharedAreaMutationVariables>;
-
-/**
- * __useCreateCgaSharedAreaMutation__
- *
- * To run a mutation, you first call `useCreateCgaSharedAreaMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCgaSharedAreaMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCgaSharedAreaMutation, { data, loading, error }] = useCreateCgaSharedAreaMutation({
- *   variables: {
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useCreateCgaSharedAreaMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgaSharedAreaMutation, CreateCgaSharedAreaMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCgaSharedAreaMutation, CreateCgaSharedAreaMutationVariables>(CreateCgaSharedAreaDocument, options);
-      }
-export type CreateCgaSharedAreaMutationHookResult = ReturnType<typeof useCreateCgaSharedAreaMutation>;
-export type CreateCgaSharedAreaMutationResult = Apollo.MutationResult<CreateCgaSharedAreaMutation>;
-export type CreateCgaSharedAreaMutationOptions = Apollo.BaseMutationOptions<CreateCgaSharedAreaMutation, CreateCgaSharedAreaMutationVariables>;
-export const CreateCgaViewingRestrictionDocument = gql`
-    mutation CreateCgaViewingRestriction($desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  createCGAViewingRestriction(desc: $desc, order: $order, valid_flg: $valid_flg) {
-    __typename
-    id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type CreateCgaViewingRestrictionMutationFn = Apollo.MutationFunction<CreateCgaViewingRestrictionMutation, CreateCgaViewingRestrictionMutationVariables>;
-
-/**
- * __useCreateCgaViewingRestrictionMutation__
- *
- * To run a mutation, you first call `useCreateCgaViewingRestrictionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCgaViewingRestrictionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCgaViewingRestrictionMutation, { data, loading, error }] = useCreateCgaViewingRestrictionMutation({
- *   variables: {
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useCreateCgaViewingRestrictionMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgaViewingRestrictionMutation, CreateCgaViewingRestrictionMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCgaViewingRestrictionMutation, CreateCgaViewingRestrictionMutationVariables>(CreateCgaViewingRestrictionDocument, options);
-      }
-export type CreateCgaViewingRestrictionMutationHookResult = ReturnType<typeof useCreateCgaViewingRestrictionMutation>;
-export type CreateCgaViewingRestrictionMutationResult = Apollo.MutationResult<CreateCgaViewingRestrictionMutation>;
-export type CreateCgaViewingRestrictionMutationOptions = Apollo.BaseMutationOptions<CreateCgaViewingRestrictionMutation, CreateCgaViewingRestrictionMutationVariables>;
-export const CreateSampleDocument = gql`
-    mutation CreateSample($text: String!) {
-  createSample(text: $text) {
-    __typename
-    id
-    text
-  }
-}
-    `;
-export type CreateSampleMutationFn = Apollo.MutationFunction<CreateSampleMutation, CreateSampleMutationVariables>;
-
-/**
- * __useCreateSampleMutation__
- *
- * To run a mutation, you first call `useCreateSampleMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateSampleMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createSampleMutation, { data, loading, error }] = useCreateSampleMutation({
- *   variables: {
- *      text: // value for 'text'
- *   },
- * });
- */
-export function useCreateSampleMutation(baseOptions?: Apollo.MutationHookOptions<CreateSampleMutation, CreateSampleMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateSampleMutation, CreateSampleMutationVariables>(CreateSampleDocument, options);
-      }
-export type CreateSampleMutationHookResult = ReturnType<typeof useCreateSampleMutation>;
-export type CreateSampleMutationResult = Apollo.MutationResult<CreateSampleMutation>;
-export type CreateSampleMutationOptions = Apollo.BaseMutationOptions<CreateSampleMutation, CreateSampleMutationVariables>;
+export type UpdateApplyDownloadMailTplMutationHookResult = ReturnType<typeof useUpdateApplyDownloadMailTplMutation>;
+export type UpdateApplyDownloadMailTplMutationResult = Apollo.MutationResult<UpdateApplyDownloadMailTplMutation>;
+export type UpdateApplyDownloadMailTplMutationOptions = Apollo.BaseMutationOptions<UpdateApplyDownloadMailTplMutation, UpdateApplyDownloadMailTplMutationVariables>;
 export const CreateSessionDocument = gql`
     mutation CreateSession($input: CreateSessionInput!) {
   createSession(input: $input) {
@@ -3557,202 +3321,6 @@ export function useCreateSessionMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateSessionMutationHookResult = ReturnType<typeof useCreateSessionMutation>;
 export type CreateSessionMutationResult = Apollo.MutationResult<CreateSessionMutation>;
 export type CreateSessionMutationOptions = Apollo.BaseMutationOptions<CreateSessionMutation, CreateSessionMutationVariables>;
-export const CreateSystemNoticeDocument = gql`
-    mutation CreateSystemNotice($create_user_id: ID!, $message: String!, $order: Int!, $valid_flg: Boolean!) {
-  createSystemNotice(
-    create_user_id: $create_user_id
-    message: $message
-    order: $order
-    valid_flg: $valid_flg
-  ) {
-    __typename
-    id
-    message
-    order
-    userCreate {
-      id
-      name
-      email
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-    }
-    userUpdate {
-      id
-      name
-      email
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-    }
-    valid_flg
-    created_at
-    updated_at
-  }
-}
-    `;
-export type CreateSystemNoticeMutationFn = Apollo.MutationFunction<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>;
-
-/**
- * __useCreateSystemNoticeMutation__
- *
- * To run a mutation, you first call `useCreateSystemNoticeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateSystemNoticeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createSystemNoticeMutation, { data, loading, error }] = useCreateSystemNoticeMutation({
- *   variables: {
- *      create_user_id: // value for 'create_user_id'
- *      message: // value for 'message'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useCreateSystemNoticeMutation(baseOptions?: Apollo.MutationHookOptions<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>(CreateSystemNoticeDocument, options);
-      }
-export type CreateSystemNoticeMutationHookResult = ReturnType<typeof useCreateSystemNoticeMutation>;
-export type CreateSystemNoticeMutationResult = Apollo.MutationResult<CreateSystemNoticeMutation>;
-export type CreateSystemNoticeMutationOptions = Apollo.BaseMutationOptions<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>;
-export const CreateUserDocument = gql`
-    mutation CreateUser($user: CreateUserInput!) {
-  createUser(user: $user) {
-    id
-    name
-    email
-    emailVerified
-    registrantAffiliation {
-      id
-      desc
-    }
-    regist_affili_code
-    roleCGAssetStore {
-      id
-      desc
-      role
-      valid_flg
-    }
-    accounts {
-      access_token
-      expires_at
-      id_token
-      oauth_token
-      oauth_token_secret
-      provider
-      providerAccountId
-      refresh_token
-      refresh_token_expires_in
-      scope
-      session_state
-      token_type
-      type
-    }
-    sessions {
-      expires
-      sessionToken
-    }
-    verificationTokens {
-      identifier
-      expires
-      token
-    }
-  }
-}
-    `;
-export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
-
-/**
- * __useCreateUserMutation__
- *
- * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
- *   variables: {
- *      user: // value for 'user'
- *   },
- * });
- */
-export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
-      }
-export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
-export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
-export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
-export const CreateUserRoleCgAssetStoreDocument = gql`
-    mutation CreateUserRoleCGAssetStore($role: RoleCGAssetStore!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  createUserRoleCGAssetStore(
-    role: $role
-    desc: $desc
-    order: $order
-    valid_flg: $valid_flg
-  ) {
-    __typename
-    id
-    role
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type CreateUserRoleCgAssetStoreMutationFn = Apollo.MutationFunction<CreateUserRoleCgAssetStoreMutation, CreateUserRoleCgAssetStoreMutationVariables>;
-
-/**
- * __useCreateUserRoleCgAssetStoreMutation__
- *
- * To run a mutation, you first call `useCreateUserRoleCgAssetStoreMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateUserRoleCgAssetStoreMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createUserRoleCgAssetStoreMutation, { data, loading, error }] = useCreateUserRoleCgAssetStoreMutation({
- *   variables: {
- *      role: // value for 'role'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useCreateUserRoleCgAssetStoreMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserRoleCgAssetStoreMutation, CreateUserRoleCgAssetStoreMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUserRoleCgAssetStoreMutation, CreateUserRoleCgAssetStoreMutationVariables>(CreateUserRoleCgAssetStoreDocument, options);
-      }
-export type CreateUserRoleCgAssetStoreMutationHookResult = ReturnType<typeof useCreateUserRoleCgAssetStoreMutation>;
-export type CreateUserRoleCgAssetStoreMutationResult = Apollo.MutationResult<CreateUserRoleCgAssetStoreMutation>;
-export type CreateUserRoleCgAssetStoreMutationOptions = Apollo.BaseMutationOptions<CreateUserRoleCgAssetStoreMutation, CreateUserRoleCgAssetStoreMutationVariables>;
 export const CreateVerificationTokenDocument = gql`
     mutation CreateVerificationToken($input: CreateVerificationTokenInput!) {
   createVerificationToken(input: $input) {
@@ -3824,405 +3392,6 @@ export function useCreateVerificationTokenMutation(baseOptions?: Apollo.Mutation
 export type CreateVerificationTokenMutationHookResult = ReturnType<typeof useCreateVerificationTokenMutation>;
 export type CreateVerificationTokenMutationResult = Apollo.MutationResult<CreateVerificationTokenMutation>;
 export type CreateVerificationTokenMutationOptions = Apollo.BaseMutationOptions<CreateVerificationTokenMutation, CreateVerificationTokenMutationVariables>;
-export const DeleteCgaBroadcastingRightDocument = gql`
-    mutation DeleteCGABroadcastingRight($id: ID!) {
-  deleteCGABroadcastingRight(id: $id) {
-    __typename
-    id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type DeleteCgaBroadcastingRightMutationFn = Apollo.MutationFunction<DeleteCgaBroadcastingRightMutation, DeleteCgaBroadcastingRightMutationVariables>;
-
-/**
- * __useDeleteCgaBroadcastingRightMutation__
- *
- * To run a mutation, you first call `useDeleteCgaBroadcastingRightMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteCgaBroadcastingRightMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteCgaBroadcastingRightMutation, { data, loading, error }] = useDeleteCgaBroadcastingRightMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteCgaBroadcastingRightMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgaBroadcastingRightMutation, DeleteCgaBroadcastingRightMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteCgaBroadcastingRightMutation, DeleteCgaBroadcastingRightMutationVariables>(DeleteCgaBroadcastingRightDocument, options);
-      }
-export type DeleteCgaBroadcastingRightMutationHookResult = ReturnType<typeof useDeleteCgaBroadcastingRightMutation>;
-export type DeleteCgaBroadcastingRightMutationResult = Apollo.MutationResult<DeleteCgaBroadcastingRightMutation>;
-export type DeleteCgaBroadcastingRightMutationOptions = Apollo.BaseMutationOptions<DeleteCgaBroadcastingRightMutation, DeleteCgaBroadcastingRightMutationVariables>;
-export const DeleteCgAssetDocument = gql`
-    mutation DeleteCgAsset($id: ID!) {
-  deleteCGAsset(id: $id) {
-    __typename
-    id
-    asset_id
-    asset_name
-    assetCate {
-      desc
-    }
-    asset_app_prod
-    asset_format
-    asset_size
-    asset_renderer
-    program_id
-    program_name
-    registrantAffiliation {
-      desc
-    }
-    viewingRestriction {
-      desc
-    }
-    broadcastingRight {
-      desc
-    }
-    sharedArea {
-      desc
-    }
-    rights_supplement
-    asset_detail
-    asset_media_base
-    assetImages {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    assetVideos {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    asset3DCGs {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    assetTags {
-      tag
-      tag_add_edit_flg
-      taggedUser {
-        name
-      }
-      created_at
-    }
-    revisionHistories {
-      created_at
-      desc
-      revisedUser {
-        name
-      }
-    }
-    valid_flg
-    created_at
-    updated_at
-  }
-}
-    `;
-export type DeleteCgAssetMutationFn = Apollo.MutationFunction<DeleteCgAssetMutation, DeleteCgAssetMutationVariables>;
-
-/**
- * __useDeleteCgAssetMutation__
- *
- * To run a mutation, you first call `useDeleteCgAssetMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteCgAssetMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteCgAssetMutation, { data, loading, error }] = useDeleteCgAssetMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteCgAssetMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetMutation, DeleteCgAssetMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteCgAssetMutation, DeleteCgAssetMutationVariables>(DeleteCgAssetDocument, options);
-      }
-export type DeleteCgAssetMutationHookResult = ReturnType<typeof useDeleteCgAssetMutation>;
-export type DeleteCgAssetMutationResult = Apollo.MutationResult<DeleteCgAssetMutation>;
-export type DeleteCgAssetMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetMutation, DeleteCgAssetMutationVariables>;
-export const DeleteCgAssetCateDocument = gql`
-    mutation DeleteCgAssetCate($id: ID!) {
-  deleteCGAssetCate(id: $id) {
-    __typename
-    id
-    code
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type DeleteCgAssetCateMutationFn = Apollo.MutationFunction<DeleteCgAssetCateMutation, DeleteCgAssetCateMutationVariables>;
-
-/**
- * __useDeleteCgAssetCateMutation__
- *
- * To run a mutation, you first call `useDeleteCgAssetCateMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteCgAssetCateMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteCgAssetCateMutation, { data, loading, error }] = useDeleteCgAssetCateMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteCgAssetCateMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetCateMutation, DeleteCgAssetCateMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteCgAssetCateMutation, DeleteCgAssetCateMutationVariables>(DeleteCgAssetCateDocument, options);
-      }
-export type DeleteCgAssetCateMutationHookResult = ReturnType<typeof useDeleteCgAssetCateMutation>;
-export type DeleteCgAssetCateMutationResult = Apollo.MutationResult<DeleteCgAssetCateMutation>;
-export type DeleteCgAssetCateMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetCateMutation, DeleteCgAssetCateMutationVariables>;
-export const DeleteCgAssetSearchAppProdDocument = gql`
-    mutation DeleteCgAssetSearchAppProd($id: ID!) {
-  deleteCGAssetSearchAppProd(id: $id) {
-    __typename
-    id
-    code
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type DeleteCgAssetSearchAppProdMutationFn = Apollo.MutationFunction<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>;
-
-/**
- * __useDeleteCgAssetSearchAppProdMutation__
- *
- * To run a mutation, you first call `useDeleteCgAssetSearchAppProdMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteCgAssetSearchAppProdMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteCgAssetSearchAppProdMutation, { data, loading, error }] = useDeleteCgAssetSearchAppProdMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteCgAssetSearchAppProdMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>(DeleteCgAssetSearchAppProdDocument, options);
-      }
-export type DeleteCgAssetSearchAppProdMutationHookResult = ReturnType<typeof useDeleteCgAssetSearchAppProdMutation>;
-export type DeleteCgAssetSearchAppProdMutationResult = Apollo.MutationResult<DeleteCgAssetSearchAppProdMutation>;
-export type DeleteCgAssetSearchAppProdMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>;
-export const DeleteCgAssetSearchTagDocument = gql`
-    mutation DeleteCgAssetSearchTag($id: ID!) {
-  deleteCGAssetSearchTag(id: $id) {
-    __typename
-    id
-    code
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type DeleteCgAssetSearchTagMutationFn = Apollo.MutationFunction<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>;
-
-/**
- * __useDeleteCgAssetSearchTagMutation__
- *
- * To run a mutation, you first call `useDeleteCgAssetSearchTagMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteCgAssetSearchTagMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteCgAssetSearchTagMutation, { data, loading, error }] = useDeleteCgAssetSearchTagMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteCgAssetSearchTagMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>(DeleteCgAssetSearchTagDocument, options);
-      }
-export type DeleteCgAssetSearchTagMutationHookResult = ReturnType<typeof useDeleteCgAssetSearchTagMutation>;
-export type DeleteCgAssetSearchTagMutationResult = Apollo.MutationResult<DeleteCgAssetSearchTagMutation>;
-export type DeleteCgAssetSearchTagMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>;
-export const DeleteCgaRegistrantAffiliationDocument = gql`
-    mutation DeleteCgaRegistrantAffiliation($id: ID!) {
-  deleteCGARegistrantAffiliation(id: $id) {
-    __typename
-    id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type DeleteCgaRegistrantAffiliationMutationFn = Apollo.MutationFunction<DeleteCgaRegistrantAffiliationMutation, DeleteCgaRegistrantAffiliationMutationVariables>;
-
-/**
- * __useDeleteCgaRegistrantAffiliationMutation__
- *
- * To run a mutation, you first call `useDeleteCgaRegistrantAffiliationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteCgaRegistrantAffiliationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteCgaRegistrantAffiliationMutation, { data, loading, error }] = useDeleteCgaRegistrantAffiliationMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteCgaRegistrantAffiliationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgaRegistrantAffiliationMutation, DeleteCgaRegistrantAffiliationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteCgaRegistrantAffiliationMutation, DeleteCgaRegistrantAffiliationMutationVariables>(DeleteCgaRegistrantAffiliationDocument, options);
-      }
-export type DeleteCgaRegistrantAffiliationMutationHookResult = ReturnType<typeof useDeleteCgaRegistrantAffiliationMutation>;
-export type DeleteCgaRegistrantAffiliationMutationResult = Apollo.MutationResult<DeleteCgaRegistrantAffiliationMutation>;
-export type DeleteCgaRegistrantAffiliationMutationOptions = Apollo.BaseMutationOptions<DeleteCgaRegistrantAffiliationMutation, DeleteCgaRegistrantAffiliationMutationVariables>;
-export const DeleteCgaSharedAreaDocument = gql`
-    mutation DeleteCgaSharedArea($id: ID!) {
-  deleteCGASharedArea(id: $id) {
-    __typename
-    id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type DeleteCgaSharedAreaMutationFn = Apollo.MutationFunction<DeleteCgaSharedAreaMutation, DeleteCgaSharedAreaMutationVariables>;
-
-/**
- * __useDeleteCgaSharedAreaMutation__
- *
- * To run a mutation, you first call `useDeleteCgaSharedAreaMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteCgaSharedAreaMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteCgaSharedAreaMutation, { data, loading, error }] = useDeleteCgaSharedAreaMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteCgaSharedAreaMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgaSharedAreaMutation, DeleteCgaSharedAreaMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteCgaSharedAreaMutation, DeleteCgaSharedAreaMutationVariables>(DeleteCgaSharedAreaDocument, options);
-      }
-export type DeleteCgaSharedAreaMutationHookResult = ReturnType<typeof useDeleteCgaSharedAreaMutation>;
-export type DeleteCgaSharedAreaMutationResult = Apollo.MutationResult<DeleteCgaSharedAreaMutation>;
-export type DeleteCgaSharedAreaMutationOptions = Apollo.BaseMutationOptions<DeleteCgaSharedAreaMutation, DeleteCgaSharedAreaMutationVariables>;
-export const DeleteCgaViewingRestrictionDocument = gql`
-    mutation DeleteCgaViewingRestriction($id: ID!) {
-  deleteCGAViewingRestriction(id: $id) {
-    __typename
-    id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type DeleteCgaViewingRestrictionMutationFn = Apollo.MutationFunction<DeleteCgaViewingRestrictionMutation, DeleteCgaViewingRestrictionMutationVariables>;
-
-/**
- * __useDeleteCgaViewingRestrictionMutation__
- *
- * To run a mutation, you first call `useDeleteCgaViewingRestrictionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteCgaViewingRestrictionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteCgaViewingRestrictionMutation, { data, loading, error }] = useDeleteCgaViewingRestrictionMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteCgaViewingRestrictionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgaViewingRestrictionMutation, DeleteCgaViewingRestrictionMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteCgaViewingRestrictionMutation, DeleteCgaViewingRestrictionMutationVariables>(DeleteCgaViewingRestrictionDocument, options);
-      }
-export type DeleteCgaViewingRestrictionMutationHookResult = ReturnType<typeof useDeleteCgaViewingRestrictionMutation>;
-export type DeleteCgaViewingRestrictionMutationResult = Apollo.MutationResult<DeleteCgaViewingRestrictionMutation>;
-export type DeleteCgaViewingRestrictionMutationOptions = Apollo.BaseMutationOptions<DeleteCgaViewingRestrictionMutation, DeleteCgaViewingRestrictionMutationVariables>;
-export const DeleteSampleDocument = gql`
-    mutation DeleteSample($id: ID!) {
-  deleteSample(id: $id) {
-    __typename
-    id
-    text
-  }
-}
-    `;
-export type DeleteSampleMutationFn = Apollo.MutationFunction<DeleteSampleMutation, DeleteSampleMutationVariables>;
-
-/**
- * __useDeleteSampleMutation__
- *
- * To run a mutation, you first call `useDeleteSampleMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteSampleMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteSampleMutation, { data, loading, error }] = useDeleteSampleMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteSampleMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSampleMutation, DeleteSampleMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteSampleMutation, DeleteSampleMutationVariables>(DeleteSampleDocument, options);
-      }
-export type DeleteSampleMutationHookResult = ReturnType<typeof useDeleteSampleMutation>;
-export type DeleteSampleMutationResult = Apollo.MutationResult<DeleteSampleMutation>;
-export type DeleteSampleMutationOptions = Apollo.BaseMutationOptions<DeleteSampleMutation, DeleteSampleMutationVariables>;
 export const DeleteSessionDocument = gql`
     mutation DeleteSession($sessionToken: String!) {
   deleteSession(sessionToken: $sessionToken) {
@@ -4294,186 +3463,6 @@ export function useDeleteSessionMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteSessionMutationHookResult = ReturnType<typeof useDeleteSessionMutation>;
 export type DeleteSessionMutationResult = Apollo.MutationResult<DeleteSessionMutation>;
 export type DeleteSessionMutationOptions = Apollo.BaseMutationOptions<DeleteSessionMutation, DeleteSessionMutationVariables>;
-export const DeleteSystemNoticeDocument = gql`
-    mutation DeleteSystemNotice($id: ID!) {
-  deleteSystemNotice(id: $id) {
-    __typename
-    id
-    message
-    order
-    userCreate {
-      id
-      name
-      email
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-    }
-    userUpdate {
-      id
-      name
-      email
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-    }
-    valid_flg
-    created_at
-    updated_at
-  }
-}
-    `;
-export type DeleteSystemNoticeMutationFn = Apollo.MutationFunction<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>;
-
-/**
- * __useDeleteSystemNoticeMutation__
- *
- * To run a mutation, you first call `useDeleteSystemNoticeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteSystemNoticeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteSystemNoticeMutation, { data, loading, error }] = useDeleteSystemNoticeMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteSystemNoticeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>(DeleteSystemNoticeDocument, options);
-      }
-export type DeleteSystemNoticeMutationHookResult = ReturnType<typeof useDeleteSystemNoticeMutation>;
-export type DeleteSystemNoticeMutationResult = Apollo.MutationResult<DeleteSystemNoticeMutation>;
-export type DeleteSystemNoticeMutationOptions = Apollo.BaseMutationOptions<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>;
-export const DeleteUserDocument = gql`
-    mutation DeleteUser($id: ID!) {
-  deleteUser(id: $id) {
-    id
-    name
-    email
-    emailVerified
-    registrantAffiliation {
-      id
-      desc
-    }
-    regist_affili_code
-    roleCGAssetStore {
-      id
-      desc
-      role
-      valid_flg
-    }
-    accounts {
-      access_token
-      expires_at
-      id_token
-      oauth_token
-      oauth_token_secret
-      provider
-      providerAccountId
-      refresh_token
-      refresh_token_expires_in
-      scope
-      session_state
-      token_type
-      type
-    }
-    sessions {
-      expires
-      sessionToken
-    }
-    verificationTokens {
-      identifier
-      expires
-      token
-    }
-  }
-}
-    `;
-export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
-
-/**
- * __useDeleteUserMutation__
- *
- * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserMutation, DeleteUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, options);
-      }
-export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
-export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
-export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
-export const DeleteUserRoleCgAssetStoreDocument = gql`
-    mutation DeleteUserRoleCGAssetStore($id: ID!) {
-  deleteUserRoleCGAssetStore(id: $id) {
-    __typename
-    id
-    role
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type DeleteUserRoleCgAssetStoreMutationFn = Apollo.MutationFunction<DeleteUserRoleCgAssetStoreMutation, DeleteUserRoleCgAssetStoreMutationVariables>;
-
-/**
- * __useDeleteUserRoleCgAssetStoreMutation__
- *
- * To run a mutation, you first call `useDeleteUserRoleCgAssetStoreMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteUserRoleCgAssetStoreMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteUserRoleCgAssetStoreMutation, { data, loading, error }] = useDeleteUserRoleCgAssetStoreMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteUserRoleCgAssetStoreMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserRoleCgAssetStoreMutation, DeleteUserRoleCgAssetStoreMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteUserRoleCgAssetStoreMutation, DeleteUserRoleCgAssetStoreMutationVariables>(DeleteUserRoleCgAssetStoreDocument, options);
-      }
-export type DeleteUserRoleCgAssetStoreMutationHookResult = ReturnType<typeof useDeleteUserRoleCgAssetStoreMutation>;
-export type DeleteUserRoleCgAssetStoreMutationResult = Apollo.MutationResult<DeleteUserRoleCgAssetStoreMutation>;
-export type DeleteUserRoleCgAssetStoreMutationOptions = Apollo.BaseMutationOptions<DeleteUserRoleCgAssetStoreMutation, DeleteUserRoleCgAssetStoreMutationVariables>;
 export const LinkAccountDocument = gql`
     mutation LinkAccount($account: LinkAccountInput!) {
   linkAccount(account: $account) {
@@ -4616,459 +3605,6 @@ export function useUnlinkAccountMutation(baseOptions?: Apollo.MutationHookOption
 export type UnlinkAccountMutationHookResult = ReturnType<typeof useUnlinkAccountMutation>;
 export type UnlinkAccountMutationResult = Apollo.MutationResult<UnlinkAccountMutation>;
 export type UnlinkAccountMutationOptions = Apollo.BaseMutationOptions<UnlinkAccountMutation, UnlinkAccountMutationVariables>;
-export const UpdateCgaRegistrantAffiliationDocument = gql`
-    mutation UpdateCGARegistrantAffiliation($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  updateCGARegistrantAffiliation(
-    id: $id
-    desc: $desc
-    order: $order
-    valid_flg: $valid_flg
-  ) {
-    __typename
-    id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type UpdateCgaRegistrantAffiliationMutationFn = Apollo.MutationFunction<UpdateCgaRegistrantAffiliationMutation, UpdateCgaRegistrantAffiliationMutationVariables>;
-
-/**
- * __useUpdateCgaRegistrantAffiliationMutation__
- *
- * To run a mutation, you first call `useUpdateCgaRegistrantAffiliationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCgaRegistrantAffiliationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateCgaRegistrantAffiliationMutation, { data, loading, error }] = useUpdateCgaRegistrantAffiliationMutation({
- *   variables: {
- *      id: // value for 'id'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useUpdateCgaRegistrantAffiliationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgaRegistrantAffiliationMutation, UpdateCgaRegistrantAffiliationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCgaRegistrantAffiliationMutation, UpdateCgaRegistrantAffiliationMutationVariables>(UpdateCgaRegistrantAffiliationDocument, options);
-      }
-export type UpdateCgaRegistrantAffiliationMutationHookResult = ReturnType<typeof useUpdateCgaRegistrantAffiliationMutation>;
-export type UpdateCgaRegistrantAffiliationMutationResult = Apollo.MutationResult<UpdateCgaRegistrantAffiliationMutation>;
-export type UpdateCgaRegistrantAffiliationMutationOptions = Apollo.BaseMutationOptions<UpdateCgaRegistrantAffiliationMutation, UpdateCgaRegistrantAffiliationMutationVariables>;
-export const UpdateCgaSharedAreaDocument = gql`
-    mutation UpdateCGASharedArea($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  updateCGASharedArea(id: $id, desc: $desc, order: $order, valid_flg: $valid_flg) {
-    __typename
-    id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type UpdateCgaSharedAreaMutationFn = Apollo.MutationFunction<UpdateCgaSharedAreaMutation, UpdateCgaSharedAreaMutationVariables>;
-
-/**
- * __useUpdateCgaSharedAreaMutation__
- *
- * To run a mutation, you first call `useUpdateCgaSharedAreaMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCgaSharedAreaMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateCgaSharedAreaMutation, { data, loading, error }] = useUpdateCgaSharedAreaMutation({
- *   variables: {
- *      id: // value for 'id'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useUpdateCgaSharedAreaMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgaSharedAreaMutation, UpdateCgaSharedAreaMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCgaSharedAreaMutation, UpdateCgaSharedAreaMutationVariables>(UpdateCgaSharedAreaDocument, options);
-      }
-export type UpdateCgaSharedAreaMutationHookResult = ReturnType<typeof useUpdateCgaSharedAreaMutation>;
-export type UpdateCgaSharedAreaMutationResult = Apollo.MutationResult<UpdateCgaSharedAreaMutation>;
-export type UpdateCgaSharedAreaMutationOptions = Apollo.BaseMutationOptions<UpdateCgaSharedAreaMutation, UpdateCgaSharedAreaMutationVariables>;
-export const UpdateCgaViewingRestrictionDocument = gql`
-    mutation UpdateCGAViewingRestriction($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  updateCGAViewingRestriction(
-    id: $id
-    desc: $desc
-    order: $order
-    valid_flg: $valid_flg
-  ) {
-    __typename
-    id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type UpdateCgaViewingRestrictionMutationFn = Apollo.MutationFunction<UpdateCgaViewingRestrictionMutation, UpdateCgaViewingRestrictionMutationVariables>;
-
-/**
- * __useUpdateCgaViewingRestrictionMutation__
- *
- * To run a mutation, you first call `useUpdateCgaViewingRestrictionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCgaViewingRestrictionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateCgaViewingRestrictionMutation, { data, loading, error }] = useUpdateCgaViewingRestrictionMutation({
- *   variables: {
- *      id: // value for 'id'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useUpdateCgaViewingRestrictionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgaViewingRestrictionMutation, UpdateCgaViewingRestrictionMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCgaViewingRestrictionMutation, UpdateCgaViewingRestrictionMutationVariables>(UpdateCgaViewingRestrictionDocument, options);
-      }
-export type UpdateCgaViewingRestrictionMutationHookResult = ReturnType<typeof useUpdateCgaViewingRestrictionMutation>;
-export type UpdateCgaViewingRestrictionMutationResult = Apollo.MutationResult<UpdateCgaViewingRestrictionMutation>;
-export type UpdateCgaViewingRestrictionMutationOptions = Apollo.BaseMutationOptions<UpdateCgaViewingRestrictionMutation, UpdateCgaViewingRestrictionMutationVariables>;
-export const UpdateCgaBroadcastingRightDocument = gql`
-    mutation UpdateCGABroadcastingRight($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  updateCGABroadcastingRight(
-    id: $id
-    desc: $desc
-    order: $order
-    valid_flg: $valid_flg
-  ) {
-    __typename
-    id
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type UpdateCgaBroadcastingRightMutationFn = Apollo.MutationFunction<UpdateCgaBroadcastingRightMutation, UpdateCgaBroadcastingRightMutationVariables>;
-
-/**
- * __useUpdateCgaBroadcastingRightMutation__
- *
- * To run a mutation, you first call `useUpdateCgaBroadcastingRightMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCgaBroadcastingRightMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateCgaBroadcastingRightMutation, { data, loading, error }] = useUpdateCgaBroadcastingRightMutation({
- *   variables: {
- *      id: // value for 'id'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useUpdateCgaBroadcastingRightMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgaBroadcastingRightMutation, UpdateCgaBroadcastingRightMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCgaBroadcastingRightMutation, UpdateCgaBroadcastingRightMutationVariables>(UpdateCgaBroadcastingRightDocument, options);
-      }
-export type UpdateCgaBroadcastingRightMutationHookResult = ReturnType<typeof useUpdateCgaBroadcastingRightMutation>;
-export type UpdateCgaBroadcastingRightMutationResult = Apollo.MutationResult<UpdateCgaBroadcastingRightMutation>;
-export type UpdateCgaBroadcastingRightMutationOptions = Apollo.BaseMutationOptions<UpdateCgaBroadcastingRightMutation, UpdateCgaBroadcastingRightMutationVariables>;
-export const UpdateCgAssetDocument = gql`
-    mutation UpdateCgAsset($input: UpdateCGAssetInput!) {
-  updateCGAsset(input: $input) {
-    __typename
-    id
-    asset_id
-    asset_name
-    assetCate {
-      desc
-    }
-    asset_app_prod
-    asset_format
-    asset_size
-    asset_renderer
-    program_id
-    program_name
-    registrantAffiliation {
-      desc
-    }
-    viewingRestriction {
-      desc
-    }
-    broadcastingRight {
-      desc
-    }
-    sharedArea {
-      desc
-    }
-    rights_supplement
-    asset_detail
-    asset_media_base
-    assetImages {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    assetVideos {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    asset3DCGs {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    assetTags {
-      tag
-      tag_add_edit_flg
-      taggedUser {
-        name
-      }
-      created_at
-    }
-    revisionHistories {
-      created_at
-      desc
-      revisedUser {
-        name
-      }
-    }
-    userCreate {
-      id
-      name
-      email
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-    }
-    userUpdate {
-      id
-      name
-      email
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-    }
-    valid_flg
-    created_at
-    updated_at
-  }
-}
-    `;
-export type UpdateCgAssetMutationFn = Apollo.MutationFunction<UpdateCgAssetMutation, UpdateCgAssetMutationVariables>;
-
-/**
- * __useUpdateCgAssetMutation__
- *
- * To run a mutation, you first call `useUpdateCgAssetMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCgAssetMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateCgAssetMutation, { data, loading, error }] = useUpdateCgAssetMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpdateCgAssetMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetMutation, UpdateCgAssetMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCgAssetMutation, UpdateCgAssetMutationVariables>(UpdateCgAssetDocument, options);
-      }
-export type UpdateCgAssetMutationHookResult = ReturnType<typeof useUpdateCgAssetMutation>;
-export type UpdateCgAssetMutationResult = Apollo.MutationResult<UpdateCgAssetMutation>;
-export type UpdateCgAssetMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetMutation, UpdateCgAssetMutationVariables>;
-export const UpdateCgAssetCateDocument = gql`
-    mutation UpdateCgAssetCate($id: ID!, $code: CodeCGAssetCate!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  updateCGAssetCate(
-    id: $id
-    code: $code
-    desc: $desc
-    order: $order
-    valid_flg: $valid_flg
-  ) {
-    __typename
-    id
-    code
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type UpdateCgAssetCateMutationFn = Apollo.MutationFunction<UpdateCgAssetCateMutation, UpdateCgAssetCateMutationVariables>;
-
-/**
- * __useUpdateCgAssetCateMutation__
- *
- * To run a mutation, you first call `useUpdateCgAssetCateMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCgAssetCateMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateCgAssetCateMutation, { data, loading, error }] = useUpdateCgAssetCateMutation({
- *   variables: {
- *      id: // value for 'id'
- *      code: // value for 'code'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useUpdateCgAssetCateMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetCateMutation, UpdateCgAssetCateMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCgAssetCateMutation, UpdateCgAssetCateMutationVariables>(UpdateCgAssetCateDocument, options);
-      }
-export type UpdateCgAssetCateMutationHookResult = ReturnType<typeof useUpdateCgAssetCateMutation>;
-export type UpdateCgAssetCateMutationResult = Apollo.MutationResult<UpdateCgAssetCateMutation>;
-export type UpdateCgAssetCateMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetCateMutation, UpdateCgAssetCateMutationVariables>;
-export const UpdateCgAssetSearchAppProdDocument = gql`
-    mutation UpdateCgAssetSearchAppProd($id: ID!, $code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  updateCGAssetSearchAppProd(
-    id: $id
-    code: $code
-    desc: $desc
-    order: $order
-    valid_flg: $valid_flg
-  ) {
-    __typename
-    id
-    code
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type UpdateCgAssetSearchAppProdMutationFn = Apollo.MutationFunction<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>;
-
-/**
- * __useUpdateCgAssetSearchAppProdMutation__
- *
- * To run a mutation, you first call `useUpdateCgAssetSearchAppProdMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCgAssetSearchAppProdMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateCgAssetSearchAppProdMutation, { data, loading, error }] = useUpdateCgAssetSearchAppProdMutation({
- *   variables: {
- *      id: // value for 'id'
- *      code: // value for 'code'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useUpdateCgAssetSearchAppProdMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>(UpdateCgAssetSearchAppProdDocument, options);
-      }
-export type UpdateCgAssetSearchAppProdMutationHookResult = ReturnType<typeof useUpdateCgAssetSearchAppProdMutation>;
-export type UpdateCgAssetSearchAppProdMutationResult = Apollo.MutationResult<UpdateCgAssetSearchAppProdMutation>;
-export type UpdateCgAssetSearchAppProdMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>;
-export const UpdateCgAssetSearchTagDocument = gql`
-    mutation UpdateCgAssetSearchTag($id: ID!, $code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
-  updateCGAssetSearchTag(
-    id: $id
-    code: $code
-    desc: $desc
-    order: $order
-    valid_flg: $valid_flg
-  ) {
-    __typename
-    id
-    code
-    desc
-    order
-    valid_flg
-  }
-}
-    `;
-export type UpdateCgAssetSearchTagMutationFn = Apollo.MutationFunction<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>;
-
-/**
- * __useUpdateCgAssetSearchTagMutation__
- *
- * To run a mutation, you first call `useUpdateCgAssetSearchTagMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCgAssetSearchTagMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateCgAssetSearchTagMutation, { data, loading, error }] = useUpdateCgAssetSearchTagMutation({
- *   variables: {
- *      id: // value for 'id'
- *      code: // value for 'code'
- *      desc: // value for 'desc'
- *      order: // value for 'order'
- *      valid_flg: // value for 'valid_flg'
- *   },
- * });
- */
-export function useUpdateCgAssetSearchTagMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>(UpdateCgAssetSearchTagDocument, options);
-      }
-export type UpdateCgAssetSearchTagMutationHookResult = ReturnType<typeof useUpdateCgAssetSearchTagMutation>;
-export type UpdateCgAssetSearchTagMutationResult = Apollo.MutationResult<UpdateCgAssetSearchTagMutation>;
-export type UpdateCgAssetSearchTagMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>;
 export const UpdateSessionDocument = gql`
     mutation UpdateSession($input: UpdateSessionInput!) {
   updateSession(input: $input) {
@@ -5140,6 +3676,2029 @@ export function useUpdateSessionMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateSessionMutationHookResult = ReturnType<typeof useUpdateSessionMutation>;
 export type UpdateSessionMutationResult = Apollo.MutationResult<UpdateSessionMutation>;
 export type UpdateSessionMutationOptions = Apollo.BaseMutationOptions<UpdateSessionMutation, UpdateSessionMutationVariables>;
+export const UpdateUserAuthCustomDocument = gql`
+    mutation UpdateUserAuthCustom($user: UpdateUserAuthCustomInput!) {
+  updateUserAuthCustom(user: $user) {
+    id
+    name
+    email
+    emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
+    roleCGAssetStore {
+      id
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+export type UpdateUserAuthCustomMutationFn = Apollo.MutationFunction<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>;
+
+/**
+ * __useUpdateUserAuthCustomMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserAuthCustomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserAuthCustomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserAuthCustomMutation, { data, loading, error }] = useUpdateUserAuthCustomMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useUpdateUserAuthCustomMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>(UpdateUserAuthCustomDocument, options);
+      }
+export type UpdateUserAuthCustomMutationHookResult = ReturnType<typeof useUpdateUserAuthCustomMutation>;
+export type UpdateUserAuthCustomMutationResult = Apollo.MutationResult<UpdateUserAuthCustomMutation>;
+export type UpdateUserAuthCustomMutationOptions = Apollo.BaseMutationOptions<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>;
+export const CreateUserDocument = gql`
+    mutation CreateUser($user: CreateUserInput!) {
+  createUser(user: $user) {
+    id
+    name
+    email
+    emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
+    roleCGAssetStore {
+      id
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
+      }
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const DeleteUserDocument = gql`
+    mutation DeleteUser($id: ID!) {
+  deleteUser(id: $id) {
+    id
+    name
+    email
+    emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
+    roleCGAssetStore {
+      id
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
+
+/**
+ * __useDeleteUserMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserMutation, DeleteUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, options);
+      }
+export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
+export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
+export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($user: UpdateUserInput!) {
+  updateUser(user: $user) {
+    id
+    name
+    email
+    emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
+    roleCGAssetStore {
+      id
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const CreateCgAssetUploadDirDocument = gql`
+    mutation CreateCGAssetUploadDir($base_path: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGAssetUploadDir(
+    base_path: $base_path
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    base_path
+    order
+    valid_flg
+  }
+}
+    `;
+export type CreateCgAssetUploadDirMutationFn = Apollo.MutationFunction<CreateCgAssetUploadDirMutation, CreateCgAssetUploadDirMutationVariables>;
+
+/**
+ * __useCreateCgAssetUploadDirMutation__
+ *
+ * To run a mutation, you first call `useCreateCgAssetUploadDirMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgAssetUploadDirMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgAssetUploadDirMutation, { data, loading, error }] = useCreateCgAssetUploadDirMutation({
+ *   variables: {
+ *      base_path: // value for 'base_path'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateCgAssetUploadDirMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetUploadDirMutation, CreateCgAssetUploadDirMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgAssetUploadDirMutation, CreateCgAssetUploadDirMutationVariables>(CreateCgAssetUploadDirDocument, options);
+      }
+export type CreateCgAssetUploadDirMutationHookResult = ReturnType<typeof useCreateCgAssetUploadDirMutation>;
+export type CreateCgAssetUploadDirMutationResult = Apollo.MutationResult<CreateCgAssetUploadDirMutation>;
+export type CreateCgAssetUploadDirMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetUploadDirMutation, CreateCgAssetUploadDirMutationVariables>;
+export const DeleteCgAssetUploadDirDocument = gql`
+    mutation DeleteCGAssetUploadDir($id: ID!) {
+  deleteCGAssetUploadDir(id: $id) {
+    __typename
+    id
+    base_path
+    order
+    valid_flg
+  }
+}
+    `;
+export type DeleteCgAssetUploadDirMutationFn = Apollo.MutationFunction<DeleteCgAssetUploadDirMutation, DeleteCgAssetUploadDirMutationVariables>;
+
+/**
+ * __useDeleteCgAssetUploadDirMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgAssetUploadDirMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgAssetUploadDirMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgAssetUploadDirMutation, { data, loading, error }] = useDeleteCgAssetUploadDirMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgAssetUploadDirMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetUploadDirMutation, DeleteCgAssetUploadDirMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgAssetUploadDirMutation, DeleteCgAssetUploadDirMutationVariables>(DeleteCgAssetUploadDirDocument, options);
+      }
+export type DeleteCgAssetUploadDirMutationHookResult = ReturnType<typeof useDeleteCgAssetUploadDirMutation>;
+export type DeleteCgAssetUploadDirMutationResult = Apollo.MutationResult<DeleteCgAssetUploadDirMutation>;
+export type DeleteCgAssetUploadDirMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetUploadDirMutation, DeleteCgAssetUploadDirMutationVariables>;
+export const UpdateCgAssetUploadDirDocument = gql`
+    mutation UpdateCGAssetUploadDir($id: ID!, $base_path: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGAssetUploadDir(
+    id: $id
+    base_path: $base_path
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    base_path
+    order
+    valid_flg
+  }
+}
+    `;
+export type UpdateCgAssetUploadDirMutationFn = Apollo.MutationFunction<UpdateCgAssetUploadDirMutation, UpdateCgAssetUploadDirMutationVariables>;
+
+/**
+ * __useUpdateCgAssetUploadDirMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgAssetUploadDirMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgAssetUploadDirMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgAssetUploadDirMutation, { data, loading, error }] = useUpdateCgAssetUploadDirMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      base_path: // value for 'base_path'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateCgAssetUploadDirMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetUploadDirMutation, UpdateCgAssetUploadDirMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgAssetUploadDirMutation, UpdateCgAssetUploadDirMutationVariables>(UpdateCgAssetUploadDirDocument, options);
+      }
+export type UpdateCgAssetUploadDirMutationHookResult = ReturnType<typeof useUpdateCgAssetUploadDirMutation>;
+export type UpdateCgAssetUploadDirMutationResult = Apollo.MutationResult<UpdateCgAssetUploadDirMutation>;
+export type UpdateCgAssetUploadDirMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetUploadDirMutation, UpdateCgAssetUploadDirMutationVariables>;
+export const CreateCgaBroadcastingRightDocument = gql`
+    mutation CreateCGABroadcastingRight($desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGABroadcastingRight(desc: $desc, order: $order, valid_flg: $valid_flg) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type CreateCgaBroadcastingRightMutationFn = Apollo.MutationFunction<CreateCgaBroadcastingRightMutation, CreateCgaBroadcastingRightMutationVariables>;
+
+/**
+ * __useCreateCgaBroadcastingRightMutation__
+ *
+ * To run a mutation, you first call `useCreateCgaBroadcastingRightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgaBroadcastingRightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgaBroadcastingRightMutation, { data, loading, error }] = useCreateCgaBroadcastingRightMutation({
+ *   variables: {
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateCgaBroadcastingRightMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgaBroadcastingRightMutation, CreateCgaBroadcastingRightMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgaBroadcastingRightMutation, CreateCgaBroadcastingRightMutationVariables>(CreateCgaBroadcastingRightDocument, options);
+      }
+export type CreateCgaBroadcastingRightMutationHookResult = ReturnType<typeof useCreateCgaBroadcastingRightMutation>;
+export type CreateCgaBroadcastingRightMutationResult = Apollo.MutationResult<CreateCgaBroadcastingRightMutation>;
+export type CreateCgaBroadcastingRightMutationOptions = Apollo.BaseMutationOptions<CreateCgaBroadcastingRightMutation, CreateCgaBroadcastingRightMutationVariables>;
+export const DeleteCgaBroadcastingRightDocument = gql`
+    mutation DeleteCGABroadcastingRight($id: ID!) {
+  deleteCGABroadcastingRight(id: $id) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type DeleteCgaBroadcastingRightMutationFn = Apollo.MutationFunction<DeleteCgaBroadcastingRightMutation, DeleteCgaBroadcastingRightMutationVariables>;
+
+/**
+ * __useDeleteCgaBroadcastingRightMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgaBroadcastingRightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgaBroadcastingRightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgaBroadcastingRightMutation, { data, loading, error }] = useDeleteCgaBroadcastingRightMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgaBroadcastingRightMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgaBroadcastingRightMutation, DeleteCgaBroadcastingRightMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgaBroadcastingRightMutation, DeleteCgaBroadcastingRightMutationVariables>(DeleteCgaBroadcastingRightDocument, options);
+      }
+export type DeleteCgaBroadcastingRightMutationHookResult = ReturnType<typeof useDeleteCgaBroadcastingRightMutation>;
+export type DeleteCgaBroadcastingRightMutationResult = Apollo.MutationResult<DeleteCgaBroadcastingRightMutation>;
+export type DeleteCgaBroadcastingRightMutationOptions = Apollo.BaseMutationOptions<DeleteCgaBroadcastingRightMutation, DeleteCgaBroadcastingRightMutationVariables>;
+export const UpdateCgaBroadcastingRightDocument = gql`
+    mutation UpdateCGABroadcastingRight($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGABroadcastingRight(
+    id: $id
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type UpdateCgaBroadcastingRightMutationFn = Apollo.MutationFunction<UpdateCgaBroadcastingRightMutation, UpdateCgaBroadcastingRightMutationVariables>;
+
+/**
+ * __useUpdateCgaBroadcastingRightMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgaBroadcastingRightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgaBroadcastingRightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgaBroadcastingRightMutation, { data, loading, error }] = useUpdateCgaBroadcastingRightMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateCgaBroadcastingRightMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgaBroadcastingRightMutation, UpdateCgaBroadcastingRightMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgaBroadcastingRightMutation, UpdateCgaBroadcastingRightMutationVariables>(UpdateCgaBroadcastingRightDocument, options);
+      }
+export type UpdateCgaBroadcastingRightMutationHookResult = ReturnType<typeof useUpdateCgaBroadcastingRightMutation>;
+export type UpdateCgaBroadcastingRightMutationResult = Apollo.MutationResult<UpdateCgaBroadcastingRightMutation>;
+export type UpdateCgaBroadcastingRightMutationOptions = Apollo.BaseMutationOptions<UpdateCgaBroadcastingRightMutation, UpdateCgaBroadcastingRightMutationVariables>;
+export const CreateCgAssetDocument = gql`
+    mutation CreateCgAsset($input: CreateCGAssetInput!) {
+  createCGAsset(input: $input) {
+    __typename
+    id
+    asset_id
+    asset_name
+    assetCate {
+      desc
+    }
+    asset_app_prod
+    asset_format
+    asset_size
+    asset_renderer
+    program_id
+    program_name
+    registrantAffiliation {
+      desc
+    }
+    viewingRestriction {
+      desc
+    }
+    broadcastingRight {
+      desc
+    }
+    sharedArea {
+      desc
+    }
+    rights_supplement
+    asset_detail
+    asset_media_base
+    uploadDir {
+      id
+      base_path
+    }
+    assetImages {
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetVideos {
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    asset3DCGs {
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetTags {
+      tag
+      tag_add_edit_flg
+      taggedUser {
+        name
+      }
+      created_at
+    }
+    revisionHistories {
+      created_at
+      desc
+      revisedUser {
+        name
+      }
+    }
+    reviews {
+      id
+      created_at
+      review
+      reviewedUser {
+        name
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type CreateCgAssetMutationFn = Apollo.MutationFunction<CreateCgAssetMutation, CreateCgAssetMutationVariables>;
+
+/**
+ * __useCreateCgAssetMutation__
+ *
+ * To run a mutation, you first call `useCreateCgAssetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgAssetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgAssetMutation, { data, loading, error }] = useCreateCgAssetMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateCgAssetMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetMutation, CreateCgAssetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgAssetMutation, CreateCgAssetMutationVariables>(CreateCgAssetDocument, options);
+      }
+export type CreateCgAssetMutationHookResult = ReturnType<typeof useCreateCgAssetMutation>;
+export type CreateCgAssetMutationResult = Apollo.MutationResult<CreateCgAssetMutation>;
+export type CreateCgAssetMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetMutation, CreateCgAssetMutationVariables>;
+export const DeleteCgAssetDocument = gql`
+    mutation DeleteCgAsset($id: ID!) {
+  deleteCGAsset(id: $id) {
+    __typename
+    id
+    asset_id
+    asset_name
+    assetCate {
+      desc
+    }
+    asset_app_prod
+    asset_format
+    asset_size
+    asset_renderer
+    program_id
+    program_name
+    registrantAffiliation {
+      desc
+    }
+    viewingRestriction {
+      desc
+    }
+    broadcastingRight {
+      desc
+    }
+    sharedArea {
+      desc
+    }
+    rights_supplement
+    asset_detail
+    asset_media_base
+    uploadDir {
+      id
+      base_path
+    }
+    assetImages {
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetVideos {
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    asset3DCGs {
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetTags {
+      tag
+      tag_add_edit_flg
+      taggedUser {
+        name
+      }
+      created_at
+    }
+    revisionHistories {
+      created_at
+      desc
+      revisedUser {
+        name
+      }
+    }
+    reviews {
+      id
+      created_at
+      review
+      reviewedUser {
+        name
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type DeleteCgAssetMutationFn = Apollo.MutationFunction<DeleteCgAssetMutation, DeleteCgAssetMutationVariables>;
+
+/**
+ * __useDeleteCgAssetMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgAssetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgAssetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgAssetMutation, { data, loading, error }] = useDeleteCgAssetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgAssetMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetMutation, DeleteCgAssetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgAssetMutation, DeleteCgAssetMutationVariables>(DeleteCgAssetDocument, options);
+      }
+export type DeleteCgAssetMutationHookResult = ReturnType<typeof useDeleteCgAssetMutation>;
+export type DeleteCgAssetMutationResult = Apollo.MutationResult<DeleteCgAssetMutation>;
+export type DeleteCgAssetMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetMutation, DeleteCgAssetMutationVariables>;
+export const UpdateCgAssetDocument = gql`
+    mutation UpdateCgAsset($input: UpdateCGAssetInput!) {
+  updateCGAsset(input: $input) {
+    __typename
+    id
+    asset_id
+    asset_name
+    assetCate {
+      desc
+    }
+    asset_app_prod
+    asset_format
+    asset_size
+    asset_renderer
+    program_id
+    program_name
+    registrantAffiliation {
+      desc
+    }
+    viewingRestriction {
+      desc
+    }
+    broadcastingRight {
+      desc
+    }
+    sharedArea {
+      desc
+    }
+    rights_supplement
+    asset_detail
+    asset_media_base
+    uploadDir {
+      id
+      base_path
+    }
+    assetImages {
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetVideos {
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    asset3DCGs {
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetTags {
+      tag
+      tag_add_edit_flg
+      taggedUser {
+        name
+      }
+      created_at
+    }
+    revisionHistories {
+      created_at
+      desc
+      revisedUser {
+        name
+      }
+    }
+    reviews {
+      id
+      created_at
+      review
+      reviewedUser {
+        name
+      }
+    }
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type UpdateCgAssetMutationFn = Apollo.MutationFunction<UpdateCgAssetMutation, UpdateCgAssetMutationVariables>;
+
+/**
+ * __useUpdateCgAssetMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgAssetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgAssetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgAssetMutation, { data, loading, error }] = useUpdateCgAssetMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateCgAssetMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetMutation, UpdateCgAssetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgAssetMutation, UpdateCgAssetMutationVariables>(UpdateCgAssetDocument, options);
+      }
+export type UpdateCgAssetMutationHookResult = ReturnType<typeof useUpdateCgAssetMutation>;
+export type UpdateCgAssetMutationResult = Apollo.MutationResult<UpdateCgAssetMutation>;
+export type UpdateCgAssetMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetMutation, UpdateCgAssetMutationVariables>;
+export const CreateCgAssetCateDocument = gql`
+    mutation CreateCgAssetCate($code: CodeCGAssetCate!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGAssetCate(
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type CreateCgAssetCateMutationFn = Apollo.MutationFunction<CreateCgAssetCateMutation, CreateCgAssetCateMutationVariables>;
+
+/**
+ * __useCreateCgAssetCateMutation__
+ *
+ * To run a mutation, you first call `useCreateCgAssetCateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgAssetCateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgAssetCateMutation, { data, loading, error }] = useCreateCgAssetCateMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateCgAssetCateMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetCateMutation, CreateCgAssetCateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgAssetCateMutation, CreateCgAssetCateMutationVariables>(CreateCgAssetCateDocument, options);
+      }
+export type CreateCgAssetCateMutationHookResult = ReturnType<typeof useCreateCgAssetCateMutation>;
+export type CreateCgAssetCateMutationResult = Apollo.MutationResult<CreateCgAssetCateMutation>;
+export type CreateCgAssetCateMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetCateMutation, CreateCgAssetCateMutationVariables>;
+export const DeleteCgAssetCateDocument = gql`
+    mutation DeleteCgAssetCate($id: ID!) {
+  deleteCGAssetCate(id: $id) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type DeleteCgAssetCateMutationFn = Apollo.MutationFunction<DeleteCgAssetCateMutation, DeleteCgAssetCateMutationVariables>;
+
+/**
+ * __useDeleteCgAssetCateMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgAssetCateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgAssetCateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgAssetCateMutation, { data, loading, error }] = useDeleteCgAssetCateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgAssetCateMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetCateMutation, DeleteCgAssetCateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgAssetCateMutation, DeleteCgAssetCateMutationVariables>(DeleteCgAssetCateDocument, options);
+      }
+export type DeleteCgAssetCateMutationHookResult = ReturnType<typeof useDeleteCgAssetCateMutation>;
+export type DeleteCgAssetCateMutationResult = Apollo.MutationResult<DeleteCgAssetCateMutation>;
+export type DeleteCgAssetCateMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetCateMutation, DeleteCgAssetCateMutationVariables>;
+export const UpdateCgAssetCateDocument = gql`
+    mutation UpdateCgAssetCate($id: ID!, $code: CodeCGAssetCate!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGAssetCate(
+    id: $id
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type UpdateCgAssetCateMutationFn = Apollo.MutationFunction<UpdateCgAssetCateMutation, UpdateCgAssetCateMutationVariables>;
+
+/**
+ * __useUpdateCgAssetCateMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgAssetCateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgAssetCateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgAssetCateMutation, { data, loading, error }] = useUpdateCgAssetCateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      code: // value for 'code'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateCgAssetCateMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetCateMutation, UpdateCgAssetCateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgAssetCateMutation, UpdateCgAssetCateMutationVariables>(UpdateCgAssetCateDocument, options);
+      }
+export type UpdateCgAssetCateMutationHookResult = ReturnType<typeof useUpdateCgAssetCateMutation>;
+export type UpdateCgAssetCateMutationResult = Apollo.MutationResult<UpdateCgAssetCateMutation>;
+export type UpdateCgAssetCateMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetCateMutation, UpdateCgAssetCateMutationVariables>;
+export const CreateCgAssetReviewDocument = gql`
+    mutation CreateCgAssetReview($asset_db_id: ID!, $review: String!, $reviewed_user_id: ID!) {
+  createCGAssetReview(
+    asset_db_id: $asset_db_id
+    review: $review
+    reviewed_user_id: $reviewed_user_id
+  ) {
+    __typename
+    id
+    review
+    cgAsset {
+      id
+      reviews {
+        id
+        review
+        reviewedUser {
+          name
+        }
+        created_at
+      }
+    }
+    reviewedUser {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+  }
+}
+    `;
+export type CreateCgAssetReviewMutationFn = Apollo.MutationFunction<CreateCgAssetReviewMutation, CreateCgAssetReviewMutationVariables>;
+
+/**
+ * __useCreateCgAssetReviewMutation__
+ *
+ * To run a mutation, you first call `useCreateCgAssetReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgAssetReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgAssetReviewMutation, { data, loading, error }] = useCreateCgAssetReviewMutation({
+ *   variables: {
+ *      asset_db_id: // value for 'asset_db_id'
+ *      review: // value for 'review'
+ *      reviewed_user_id: // value for 'reviewed_user_id'
+ *   },
+ * });
+ */
+export function useCreateCgAssetReviewMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetReviewMutation, CreateCgAssetReviewMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgAssetReviewMutation, CreateCgAssetReviewMutationVariables>(CreateCgAssetReviewDocument, options);
+      }
+export type CreateCgAssetReviewMutationHookResult = ReturnType<typeof useCreateCgAssetReviewMutation>;
+export type CreateCgAssetReviewMutationResult = Apollo.MutationResult<CreateCgAssetReviewMutation>;
+export type CreateCgAssetReviewMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetReviewMutation, CreateCgAssetReviewMutationVariables>;
+export const CreateCgAssetSearchAppProdDocument = gql`
+    mutation CreateCgAssetSearchAppProd($code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGAssetSearchAppProd(
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type CreateCgAssetSearchAppProdMutationFn = Apollo.MutationFunction<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>;
+
+/**
+ * __useCreateCgAssetSearchAppProdMutation__
+ *
+ * To run a mutation, you first call `useCreateCgAssetSearchAppProdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgAssetSearchAppProdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgAssetSearchAppProdMutation, { data, loading, error }] = useCreateCgAssetSearchAppProdMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateCgAssetSearchAppProdMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>(CreateCgAssetSearchAppProdDocument, options);
+      }
+export type CreateCgAssetSearchAppProdMutationHookResult = ReturnType<typeof useCreateCgAssetSearchAppProdMutation>;
+export type CreateCgAssetSearchAppProdMutationResult = Apollo.MutationResult<CreateCgAssetSearchAppProdMutation>;
+export type CreateCgAssetSearchAppProdMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetSearchAppProdMutation, CreateCgAssetSearchAppProdMutationVariables>;
+export const DeleteCgAssetSearchAppProdDocument = gql`
+    mutation DeleteCgAssetSearchAppProd($id: ID!) {
+  deleteCGAssetSearchAppProd(id: $id) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type DeleteCgAssetSearchAppProdMutationFn = Apollo.MutationFunction<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>;
+
+/**
+ * __useDeleteCgAssetSearchAppProdMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgAssetSearchAppProdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgAssetSearchAppProdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgAssetSearchAppProdMutation, { data, loading, error }] = useDeleteCgAssetSearchAppProdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgAssetSearchAppProdMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>(DeleteCgAssetSearchAppProdDocument, options);
+      }
+export type DeleteCgAssetSearchAppProdMutationHookResult = ReturnType<typeof useDeleteCgAssetSearchAppProdMutation>;
+export type DeleteCgAssetSearchAppProdMutationResult = Apollo.MutationResult<DeleteCgAssetSearchAppProdMutation>;
+export type DeleteCgAssetSearchAppProdMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetSearchAppProdMutation, DeleteCgAssetSearchAppProdMutationVariables>;
+export const UpdateCgAssetSearchAppProdDocument = gql`
+    mutation UpdateCgAssetSearchAppProd($id: ID!, $code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGAssetSearchAppProd(
+    id: $id
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type UpdateCgAssetSearchAppProdMutationFn = Apollo.MutationFunction<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>;
+
+/**
+ * __useUpdateCgAssetSearchAppProdMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgAssetSearchAppProdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgAssetSearchAppProdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgAssetSearchAppProdMutation, { data, loading, error }] = useUpdateCgAssetSearchAppProdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      code: // value for 'code'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateCgAssetSearchAppProdMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>(UpdateCgAssetSearchAppProdDocument, options);
+      }
+export type UpdateCgAssetSearchAppProdMutationHookResult = ReturnType<typeof useUpdateCgAssetSearchAppProdMutation>;
+export type UpdateCgAssetSearchAppProdMutationResult = Apollo.MutationResult<UpdateCgAssetSearchAppProdMutation>;
+export type UpdateCgAssetSearchAppProdMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetSearchAppProdMutation, UpdateCgAssetSearchAppProdMutationVariables>;
+export const CreateCgAssetSearchTagDocument = gql`
+    mutation CreateCgAssetSearchTag($code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGAssetSearchTag(
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type CreateCgAssetSearchTagMutationFn = Apollo.MutationFunction<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>;
+
+/**
+ * __useCreateCgAssetSearchTagMutation__
+ *
+ * To run a mutation, you first call `useCreateCgAssetSearchTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgAssetSearchTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgAssetSearchTagMutation, { data, loading, error }] = useCreateCgAssetSearchTagMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateCgAssetSearchTagMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>(CreateCgAssetSearchTagDocument, options);
+      }
+export type CreateCgAssetSearchTagMutationHookResult = ReturnType<typeof useCreateCgAssetSearchTagMutation>;
+export type CreateCgAssetSearchTagMutationResult = Apollo.MutationResult<CreateCgAssetSearchTagMutation>;
+export type CreateCgAssetSearchTagMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetSearchTagMutation, CreateCgAssetSearchTagMutationVariables>;
+export const DeleteCgAssetSearchTagDocument = gql`
+    mutation DeleteCgAssetSearchTag($id: ID!) {
+  deleteCGAssetSearchTag(id: $id) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type DeleteCgAssetSearchTagMutationFn = Apollo.MutationFunction<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>;
+
+/**
+ * __useDeleteCgAssetSearchTagMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgAssetSearchTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgAssetSearchTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgAssetSearchTagMutation, { data, loading, error }] = useDeleteCgAssetSearchTagMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgAssetSearchTagMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>(DeleteCgAssetSearchTagDocument, options);
+      }
+export type DeleteCgAssetSearchTagMutationHookResult = ReturnType<typeof useDeleteCgAssetSearchTagMutation>;
+export type DeleteCgAssetSearchTagMutationResult = Apollo.MutationResult<DeleteCgAssetSearchTagMutation>;
+export type DeleteCgAssetSearchTagMutationOptions = Apollo.BaseMutationOptions<DeleteCgAssetSearchTagMutation, DeleteCgAssetSearchTagMutationVariables>;
+export const UpdateCgAssetSearchTagDocument = gql`
+    mutation UpdateCgAssetSearchTag($id: ID!, $code: String!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGAssetSearchTag(
+    id: $id
+    code: $code
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type UpdateCgAssetSearchTagMutationFn = Apollo.MutationFunction<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>;
+
+/**
+ * __useUpdateCgAssetSearchTagMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgAssetSearchTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgAssetSearchTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgAssetSearchTagMutation, { data, loading, error }] = useUpdateCgAssetSearchTagMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      code: // value for 'code'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateCgAssetSearchTagMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>(UpdateCgAssetSearchTagDocument, options);
+      }
+export type UpdateCgAssetSearchTagMutationHookResult = ReturnType<typeof useUpdateCgAssetSearchTagMutation>;
+export type UpdateCgAssetSearchTagMutationResult = Apollo.MutationResult<UpdateCgAssetSearchTagMutation>;
+export type UpdateCgAssetSearchTagMutationOptions = Apollo.BaseMutationOptions<UpdateCgAssetSearchTagMutation, UpdateCgAssetSearchTagMutationVariables>;
+export const CreateCgAssetTagDocument = gql`
+    mutation CreateCgAssetTag($asset_db_id: ID!, $tag: String!, $tagged_user_id: ID!, $tag_add_edit_flg: Boolean!) {
+  createCGAssetTag(
+    asset_db_id: $asset_db_id
+    tag: $tag
+    tagged_user_id: $tagged_user_id
+    tag_add_edit_flg: $tag_add_edit_flg
+  ) {
+    __typename
+    id
+    tag
+    cgAsset {
+      id
+      assetTags {
+        id
+        tag
+        tag_add_edit_flg
+        taggedUser {
+          name
+        }
+        created_at
+      }
+    }
+    taggedUser {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+  }
+}
+    `;
+export type CreateCgAssetTagMutationFn = Apollo.MutationFunction<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>;
+
+/**
+ * __useCreateCgAssetTagMutation__
+ *
+ * To run a mutation, you first call `useCreateCgAssetTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgAssetTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgAssetTagMutation, { data, loading, error }] = useCreateCgAssetTagMutation({
+ *   variables: {
+ *      asset_db_id: // value for 'asset_db_id'
+ *      tag: // value for 'tag'
+ *      tagged_user_id: // value for 'tagged_user_id'
+ *      tag_add_edit_flg: // value for 'tag_add_edit_flg'
+ *   },
+ * });
+ */
+export function useCreateCgAssetTagMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>(CreateCgAssetTagDocument, options);
+      }
+export type CreateCgAssetTagMutationHookResult = ReturnType<typeof useCreateCgAssetTagMutation>;
+export type CreateCgAssetTagMutationResult = Apollo.MutationResult<CreateCgAssetTagMutation>;
+export type CreateCgAssetTagMutationOptions = Apollo.BaseMutationOptions<CreateCgAssetTagMutation, CreateCgAssetTagMutationVariables>;
+export const CreateCgaRegistrantAffiliationDocument = gql`
+    mutation CreateCgaRegistrantAffiliation($desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGARegistrantAffiliation(
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type CreateCgaRegistrantAffiliationMutationFn = Apollo.MutationFunction<CreateCgaRegistrantAffiliationMutation, CreateCgaRegistrantAffiliationMutationVariables>;
+
+/**
+ * __useCreateCgaRegistrantAffiliationMutation__
+ *
+ * To run a mutation, you first call `useCreateCgaRegistrantAffiliationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgaRegistrantAffiliationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgaRegistrantAffiliationMutation, { data, loading, error }] = useCreateCgaRegistrantAffiliationMutation({
+ *   variables: {
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateCgaRegistrantAffiliationMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgaRegistrantAffiliationMutation, CreateCgaRegistrantAffiliationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgaRegistrantAffiliationMutation, CreateCgaRegistrantAffiliationMutationVariables>(CreateCgaRegistrantAffiliationDocument, options);
+      }
+export type CreateCgaRegistrantAffiliationMutationHookResult = ReturnType<typeof useCreateCgaRegistrantAffiliationMutation>;
+export type CreateCgaRegistrantAffiliationMutationResult = Apollo.MutationResult<CreateCgaRegistrantAffiliationMutation>;
+export type CreateCgaRegistrantAffiliationMutationOptions = Apollo.BaseMutationOptions<CreateCgaRegistrantAffiliationMutation, CreateCgaRegistrantAffiliationMutationVariables>;
+export const DeleteCgaRegistrantAffiliationDocument = gql`
+    mutation DeleteCgaRegistrantAffiliation($id: ID!) {
+  deleteCGARegistrantAffiliation(id: $id) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type DeleteCgaRegistrantAffiliationMutationFn = Apollo.MutationFunction<DeleteCgaRegistrantAffiliationMutation, DeleteCgaRegistrantAffiliationMutationVariables>;
+
+/**
+ * __useDeleteCgaRegistrantAffiliationMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgaRegistrantAffiliationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgaRegistrantAffiliationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgaRegistrantAffiliationMutation, { data, loading, error }] = useDeleteCgaRegistrantAffiliationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgaRegistrantAffiliationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgaRegistrantAffiliationMutation, DeleteCgaRegistrantAffiliationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgaRegistrantAffiliationMutation, DeleteCgaRegistrantAffiliationMutationVariables>(DeleteCgaRegistrantAffiliationDocument, options);
+      }
+export type DeleteCgaRegistrantAffiliationMutationHookResult = ReturnType<typeof useDeleteCgaRegistrantAffiliationMutation>;
+export type DeleteCgaRegistrantAffiliationMutationResult = Apollo.MutationResult<DeleteCgaRegistrantAffiliationMutation>;
+export type DeleteCgaRegistrantAffiliationMutationOptions = Apollo.BaseMutationOptions<DeleteCgaRegistrantAffiliationMutation, DeleteCgaRegistrantAffiliationMutationVariables>;
+export const UpdateCgaRegistrantAffiliationDocument = gql`
+    mutation UpdateCGARegistrantAffiliation($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGARegistrantAffiliation(
+    id: $id
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type UpdateCgaRegistrantAffiliationMutationFn = Apollo.MutationFunction<UpdateCgaRegistrantAffiliationMutation, UpdateCgaRegistrantAffiliationMutationVariables>;
+
+/**
+ * __useUpdateCgaRegistrantAffiliationMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgaRegistrantAffiliationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgaRegistrantAffiliationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgaRegistrantAffiliationMutation, { data, loading, error }] = useUpdateCgaRegistrantAffiliationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateCgaRegistrantAffiliationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgaRegistrantAffiliationMutation, UpdateCgaRegistrantAffiliationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgaRegistrantAffiliationMutation, UpdateCgaRegistrantAffiliationMutationVariables>(UpdateCgaRegistrantAffiliationDocument, options);
+      }
+export type UpdateCgaRegistrantAffiliationMutationHookResult = ReturnType<typeof useUpdateCgaRegistrantAffiliationMutation>;
+export type UpdateCgaRegistrantAffiliationMutationResult = Apollo.MutationResult<UpdateCgaRegistrantAffiliationMutation>;
+export type UpdateCgaRegistrantAffiliationMutationOptions = Apollo.BaseMutationOptions<UpdateCgaRegistrantAffiliationMutation, UpdateCgaRegistrantAffiliationMutationVariables>;
+export const CreateCgaSharedAreaDocument = gql`
+    mutation CreateCgaSharedArea($desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGASharedArea(desc: $desc, order: $order, valid_flg: $valid_flg) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type CreateCgaSharedAreaMutationFn = Apollo.MutationFunction<CreateCgaSharedAreaMutation, CreateCgaSharedAreaMutationVariables>;
+
+/**
+ * __useCreateCgaSharedAreaMutation__
+ *
+ * To run a mutation, you first call `useCreateCgaSharedAreaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgaSharedAreaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgaSharedAreaMutation, { data, loading, error }] = useCreateCgaSharedAreaMutation({
+ *   variables: {
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateCgaSharedAreaMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgaSharedAreaMutation, CreateCgaSharedAreaMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgaSharedAreaMutation, CreateCgaSharedAreaMutationVariables>(CreateCgaSharedAreaDocument, options);
+      }
+export type CreateCgaSharedAreaMutationHookResult = ReturnType<typeof useCreateCgaSharedAreaMutation>;
+export type CreateCgaSharedAreaMutationResult = Apollo.MutationResult<CreateCgaSharedAreaMutation>;
+export type CreateCgaSharedAreaMutationOptions = Apollo.BaseMutationOptions<CreateCgaSharedAreaMutation, CreateCgaSharedAreaMutationVariables>;
+export const DeleteCgaSharedAreaDocument = gql`
+    mutation DeleteCgaSharedArea($id: ID!) {
+  deleteCGASharedArea(id: $id) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type DeleteCgaSharedAreaMutationFn = Apollo.MutationFunction<DeleteCgaSharedAreaMutation, DeleteCgaSharedAreaMutationVariables>;
+
+/**
+ * __useDeleteCgaSharedAreaMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgaSharedAreaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgaSharedAreaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgaSharedAreaMutation, { data, loading, error }] = useDeleteCgaSharedAreaMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgaSharedAreaMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgaSharedAreaMutation, DeleteCgaSharedAreaMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgaSharedAreaMutation, DeleteCgaSharedAreaMutationVariables>(DeleteCgaSharedAreaDocument, options);
+      }
+export type DeleteCgaSharedAreaMutationHookResult = ReturnType<typeof useDeleteCgaSharedAreaMutation>;
+export type DeleteCgaSharedAreaMutationResult = Apollo.MutationResult<DeleteCgaSharedAreaMutation>;
+export type DeleteCgaSharedAreaMutationOptions = Apollo.BaseMutationOptions<DeleteCgaSharedAreaMutation, DeleteCgaSharedAreaMutationVariables>;
+export const UpdateCgaSharedAreaDocument = gql`
+    mutation UpdateCGASharedArea($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGASharedArea(id: $id, desc: $desc, order: $order, valid_flg: $valid_flg) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type UpdateCgaSharedAreaMutationFn = Apollo.MutationFunction<UpdateCgaSharedAreaMutation, UpdateCgaSharedAreaMutationVariables>;
+
+/**
+ * __useUpdateCgaSharedAreaMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgaSharedAreaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgaSharedAreaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgaSharedAreaMutation, { data, loading, error }] = useUpdateCgaSharedAreaMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateCgaSharedAreaMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgaSharedAreaMutation, UpdateCgaSharedAreaMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgaSharedAreaMutation, UpdateCgaSharedAreaMutationVariables>(UpdateCgaSharedAreaDocument, options);
+      }
+export type UpdateCgaSharedAreaMutationHookResult = ReturnType<typeof useUpdateCgaSharedAreaMutation>;
+export type UpdateCgaSharedAreaMutationResult = Apollo.MutationResult<UpdateCgaSharedAreaMutation>;
+export type UpdateCgaSharedAreaMutationOptions = Apollo.BaseMutationOptions<UpdateCgaSharedAreaMutation, UpdateCgaSharedAreaMutationVariables>;
+export const CreateCgaViewingRestrictionDocument = gql`
+    mutation CreateCgaViewingRestriction($desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createCGAViewingRestriction(desc: $desc, order: $order, valid_flg: $valid_flg) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type CreateCgaViewingRestrictionMutationFn = Apollo.MutationFunction<CreateCgaViewingRestrictionMutation, CreateCgaViewingRestrictionMutationVariables>;
+
+/**
+ * __useCreateCgaViewingRestrictionMutation__
+ *
+ * To run a mutation, you first call `useCreateCgaViewingRestrictionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCgaViewingRestrictionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCgaViewingRestrictionMutation, { data, loading, error }] = useCreateCgaViewingRestrictionMutation({
+ *   variables: {
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateCgaViewingRestrictionMutation(baseOptions?: Apollo.MutationHookOptions<CreateCgaViewingRestrictionMutation, CreateCgaViewingRestrictionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCgaViewingRestrictionMutation, CreateCgaViewingRestrictionMutationVariables>(CreateCgaViewingRestrictionDocument, options);
+      }
+export type CreateCgaViewingRestrictionMutationHookResult = ReturnType<typeof useCreateCgaViewingRestrictionMutation>;
+export type CreateCgaViewingRestrictionMutationResult = Apollo.MutationResult<CreateCgaViewingRestrictionMutation>;
+export type CreateCgaViewingRestrictionMutationOptions = Apollo.BaseMutationOptions<CreateCgaViewingRestrictionMutation, CreateCgaViewingRestrictionMutationVariables>;
+export const DeleteCgaViewingRestrictionDocument = gql`
+    mutation DeleteCgaViewingRestriction($id: ID!) {
+  deleteCGAViewingRestriction(id: $id) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type DeleteCgaViewingRestrictionMutationFn = Apollo.MutationFunction<DeleteCgaViewingRestrictionMutation, DeleteCgaViewingRestrictionMutationVariables>;
+
+/**
+ * __useDeleteCgaViewingRestrictionMutation__
+ *
+ * To run a mutation, you first call `useDeleteCgaViewingRestrictionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCgaViewingRestrictionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCgaViewingRestrictionMutation, { data, loading, error }] = useDeleteCgaViewingRestrictionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCgaViewingRestrictionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCgaViewingRestrictionMutation, DeleteCgaViewingRestrictionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCgaViewingRestrictionMutation, DeleteCgaViewingRestrictionMutationVariables>(DeleteCgaViewingRestrictionDocument, options);
+      }
+export type DeleteCgaViewingRestrictionMutationHookResult = ReturnType<typeof useDeleteCgaViewingRestrictionMutation>;
+export type DeleteCgaViewingRestrictionMutationResult = Apollo.MutationResult<DeleteCgaViewingRestrictionMutation>;
+export type DeleteCgaViewingRestrictionMutationOptions = Apollo.BaseMutationOptions<DeleteCgaViewingRestrictionMutation, DeleteCgaViewingRestrictionMutationVariables>;
+export const UpdateCgaViewingRestrictionDocument = gql`
+    mutation UpdateCGAViewingRestriction($id: ID!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  updateCGAViewingRestriction(
+    id: $id
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    desc
+    order
+    valid_flg
+  }
+}
+    `;
+export type UpdateCgaViewingRestrictionMutationFn = Apollo.MutationFunction<UpdateCgaViewingRestrictionMutation, UpdateCgaViewingRestrictionMutationVariables>;
+
+/**
+ * __useUpdateCgaViewingRestrictionMutation__
+ *
+ * To run a mutation, you first call `useUpdateCgaViewingRestrictionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCgaViewingRestrictionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCgaViewingRestrictionMutation, { data, loading, error }] = useUpdateCgaViewingRestrictionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateCgaViewingRestrictionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCgaViewingRestrictionMutation, UpdateCgaViewingRestrictionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCgaViewingRestrictionMutation, UpdateCgaViewingRestrictionMutationVariables>(UpdateCgaViewingRestrictionDocument, options);
+      }
+export type UpdateCgaViewingRestrictionMutationHookResult = ReturnType<typeof useUpdateCgaViewingRestrictionMutation>;
+export type UpdateCgaViewingRestrictionMutationResult = Apollo.MutationResult<UpdateCgaViewingRestrictionMutation>;
+export type UpdateCgaViewingRestrictionMutationOptions = Apollo.BaseMutationOptions<UpdateCgaViewingRestrictionMutation, UpdateCgaViewingRestrictionMutationVariables>;
+export const CreateSampleDocument = gql`
+    mutation CreateSample($text: String!) {
+  createSample(text: $text) {
+    __typename
+    id
+    text
+  }
+}
+    `;
+export type CreateSampleMutationFn = Apollo.MutationFunction<CreateSampleMutation, CreateSampleMutationVariables>;
+
+/**
+ * __useCreateSampleMutation__
+ *
+ * To run a mutation, you first call `useCreateSampleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSampleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSampleMutation, { data, loading, error }] = useCreateSampleMutation({
+ *   variables: {
+ *      text: // value for 'text'
+ *   },
+ * });
+ */
+export function useCreateSampleMutation(baseOptions?: Apollo.MutationHookOptions<CreateSampleMutation, CreateSampleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSampleMutation, CreateSampleMutationVariables>(CreateSampleDocument, options);
+      }
+export type CreateSampleMutationHookResult = ReturnType<typeof useCreateSampleMutation>;
+export type CreateSampleMutationResult = Apollo.MutationResult<CreateSampleMutation>;
+export type CreateSampleMutationOptions = Apollo.BaseMutationOptions<CreateSampleMutation, CreateSampleMutationVariables>;
+export const DeleteSampleDocument = gql`
+    mutation DeleteSample($id: ID!) {
+  deleteSample(id: $id) {
+    __typename
+    id
+    text
+  }
+}
+    `;
+export type DeleteSampleMutationFn = Apollo.MutationFunction<DeleteSampleMutation, DeleteSampleMutationVariables>;
+
+/**
+ * __useDeleteSampleMutation__
+ *
+ * To run a mutation, you first call `useDeleteSampleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSampleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSampleMutation, { data, loading, error }] = useDeleteSampleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteSampleMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSampleMutation, DeleteSampleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSampleMutation, DeleteSampleMutationVariables>(DeleteSampleDocument, options);
+      }
+export type DeleteSampleMutationHookResult = ReturnType<typeof useDeleteSampleMutation>;
+export type DeleteSampleMutationResult = Apollo.MutationResult<DeleteSampleMutation>;
+export type DeleteSampleMutationOptions = Apollo.BaseMutationOptions<DeleteSampleMutation, DeleteSampleMutationVariables>;
+export const CreateSystemNoticeDocument = gql`
+    mutation CreateSystemNotice($create_user_id: ID!, $message: String!, $order: Int!, $valid_flg: Boolean!) {
+  createSystemNotice(
+    create_user_id: $create_user_id
+    message: $message
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    message
+    order
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type CreateSystemNoticeMutationFn = Apollo.MutationFunction<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>;
+
+/**
+ * __useCreateSystemNoticeMutation__
+ *
+ * To run a mutation, you first call `useCreateSystemNoticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSystemNoticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSystemNoticeMutation, { data, loading, error }] = useCreateSystemNoticeMutation({
+ *   variables: {
+ *      create_user_id: // value for 'create_user_id'
+ *      message: // value for 'message'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateSystemNoticeMutation(baseOptions?: Apollo.MutationHookOptions<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>(CreateSystemNoticeDocument, options);
+      }
+export type CreateSystemNoticeMutationHookResult = ReturnType<typeof useCreateSystemNoticeMutation>;
+export type CreateSystemNoticeMutationResult = Apollo.MutationResult<CreateSystemNoticeMutation>;
+export type CreateSystemNoticeMutationOptions = Apollo.BaseMutationOptions<CreateSystemNoticeMutation, CreateSystemNoticeMutationVariables>;
+export const DeleteSystemNoticeDocument = gql`
+    mutation DeleteSystemNotice($id: ID!) {
+  deleteSystemNotice(id: $id) {
+    __typename
+    id
+    message
+    order
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type DeleteSystemNoticeMutationFn = Apollo.MutationFunction<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>;
+
+/**
+ * __useDeleteSystemNoticeMutation__
+ *
+ * To run a mutation, you first call `useDeleteSystemNoticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSystemNoticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSystemNoticeMutation, { data, loading, error }] = useDeleteSystemNoticeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteSystemNoticeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>(DeleteSystemNoticeDocument, options);
+      }
+export type DeleteSystemNoticeMutationHookResult = ReturnType<typeof useDeleteSystemNoticeMutation>;
+export type DeleteSystemNoticeMutationResult = Apollo.MutationResult<DeleteSystemNoticeMutation>;
+export type DeleteSystemNoticeMutationOptions = Apollo.BaseMutationOptions<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>;
 export const UpdateSystemNoticeDocument = gql`
     mutation UpdateSystemNotice($id: ID!, $update_user_id: ID!, $message: String!, $order: Int!, $valid_flg: Boolean!) {
   updateSystemNotice(
@@ -5221,148 +5780,90 @@ export function useUpdateSystemNoticeMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateSystemNoticeMutationHookResult = ReturnType<typeof useUpdateSystemNoticeMutation>;
 export type UpdateSystemNoticeMutationResult = Apollo.MutationResult<UpdateSystemNoticeMutation>;
 export type UpdateSystemNoticeMutationOptions = Apollo.BaseMutationOptions<UpdateSystemNoticeMutation, UpdateSystemNoticeMutationVariables>;
-export const UpdateUserDocument = gql`
-    mutation UpdateUser($user: UpdateUserInput!) {
-  updateUser(user: $user) {
+export const CreateUserRoleCgAssetStoreDocument = gql`
+    mutation CreateUserRoleCGAssetStore($role: RoleCGAssetStore!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
+  createUserRoleCGAssetStore(
+    role: $role
+    desc: $desc
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
     id
-    name
-    email
-    emailVerified
-    registrantAffiliation {
-      id
-      desc
-    }
-    regist_affili_code
-    roleCGAssetStore {
-      id
-      desc
-      role
-      valid_flg
-    }
-    accounts {
-      access_token
-      expires_at
-      id_token
-      oauth_token
-      oauth_token_secret
-      provider
-      providerAccountId
-      refresh_token
-      refresh_token_expires_in
-      scope
-      session_state
-      token_type
-      type
-    }
-    sessions {
-      expires
-      sessionToken
-    }
-    verificationTokens {
-      identifier
-      expires
-      token
-    }
+    role
+    desc
+    order
+    valid_flg
   }
 }
     `;
-export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+export type CreateUserRoleCgAssetStoreMutationFn = Apollo.MutationFunction<CreateUserRoleCgAssetStoreMutation, CreateUserRoleCgAssetStoreMutationVariables>;
 
 /**
- * __useUpdateUserMutation__
+ * __useCreateUserRoleCgAssetStoreMutation__
  *
- * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateUserRoleCgAssetStoreMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserRoleCgAssetStoreMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ * const [createUserRoleCgAssetStoreMutation, { data, loading, error }] = useCreateUserRoleCgAssetStoreMutation({
  *   variables: {
- *      user: // value for 'user'
+ *      role: // value for 'role'
+ *      desc: // value for 'desc'
+ *      order: // value for 'order'
+ *      valid_flg: // value for 'valid_flg'
  *   },
  * });
  */
-export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+export function useCreateUserRoleCgAssetStoreMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserRoleCgAssetStoreMutation, CreateUserRoleCgAssetStoreMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+        return Apollo.useMutation<CreateUserRoleCgAssetStoreMutation, CreateUserRoleCgAssetStoreMutationVariables>(CreateUserRoleCgAssetStoreDocument, options);
       }
-export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
-export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
-export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
-export const UpdateUserAuthCustomDocument = gql`
-    mutation UpdateUserAuthCustom($user: UpdateUserAuthCustomInput!) {
-  updateUserAuthCustom(user: $user) {
+export type CreateUserRoleCgAssetStoreMutationHookResult = ReturnType<typeof useCreateUserRoleCgAssetStoreMutation>;
+export type CreateUserRoleCgAssetStoreMutationResult = Apollo.MutationResult<CreateUserRoleCgAssetStoreMutation>;
+export type CreateUserRoleCgAssetStoreMutationOptions = Apollo.BaseMutationOptions<CreateUserRoleCgAssetStoreMutation, CreateUserRoleCgAssetStoreMutationVariables>;
+export const DeleteUserRoleCgAssetStoreDocument = gql`
+    mutation DeleteUserRoleCGAssetStore($id: ID!) {
+  deleteUserRoleCGAssetStore(id: $id) {
+    __typename
     id
-    name
-    email
-    emailVerified
-    registrantAffiliation {
-      id
-      desc
-    }
-    regist_affili_code
-    roleCGAssetStore {
-      id
-      desc
-      role
-      valid_flg
-    }
-    accounts {
-      access_token
-      expires_at
-      id_token
-      oauth_token
-      oauth_token_secret
-      provider
-      providerAccountId
-      refresh_token
-      refresh_token_expires_in
-      scope
-      session_state
-      token_type
-      type
-    }
-    sessions {
-      expires
-      sessionToken
-    }
-    verificationTokens {
-      identifier
-      expires
-      token
-    }
+    role
+    desc
+    order
+    valid_flg
   }
 }
     `;
-export type UpdateUserAuthCustomMutationFn = Apollo.MutationFunction<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>;
+export type DeleteUserRoleCgAssetStoreMutationFn = Apollo.MutationFunction<DeleteUserRoleCgAssetStoreMutation, DeleteUserRoleCgAssetStoreMutationVariables>;
 
 /**
- * __useUpdateUserAuthCustomMutation__
+ * __useDeleteUserRoleCgAssetStoreMutation__
  *
- * To run a mutation, you first call `useUpdateUserAuthCustomMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateUserAuthCustomMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteUserRoleCgAssetStoreMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserRoleCgAssetStoreMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateUserAuthCustomMutation, { data, loading, error }] = useUpdateUserAuthCustomMutation({
+ * const [deleteUserRoleCgAssetStoreMutation, { data, loading, error }] = useDeleteUserRoleCgAssetStoreMutation({
  *   variables: {
- *      user: // value for 'user'
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useUpdateUserAuthCustomMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>) {
+export function useDeleteUserRoleCgAssetStoreMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserRoleCgAssetStoreMutation, DeleteUserRoleCgAssetStoreMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>(UpdateUserAuthCustomDocument, options);
+        return Apollo.useMutation<DeleteUserRoleCgAssetStoreMutation, DeleteUserRoleCgAssetStoreMutationVariables>(DeleteUserRoleCgAssetStoreDocument, options);
       }
-export type UpdateUserAuthCustomMutationHookResult = ReturnType<typeof useUpdateUserAuthCustomMutation>;
-export type UpdateUserAuthCustomMutationResult = Apollo.MutationResult<UpdateUserAuthCustomMutation>;
-export type UpdateUserAuthCustomMutationOptions = Apollo.BaseMutationOptions<UpdateUserAuthCustomMutation, UpdateUserAuthCustomMutationVariables>;
+export type DeleteUserRoleCgAssetStoreMutationHookResult = ReturnType<typeof useDeleteUserRoleCgAssetStoreMutation>;
+export type DeleteUserRoleCgAssetStoreMutationResult = Apollo.MutationResult<DeleteUserRoleCgAssetStoreMutation>;
+export type DeleteUserRoleCgAssetStoreMutationOptions = Apollo.BaseMutationOptions<DeleteUserRoleCgAssetStoreMutation, DeleteUserRoleCgAssetStoreMutationVariables>;
 export const UpdateUserRoleCgAssetStoreDocument = gql`
     mutation UpdateUserRoleCGAssetStore($id: ID!, $role: RoleCGAssetStore!, $desc: String!, $order: Int!, $valid_flg: Boolean!) {
   updateUserRoleCGAssetStore(
@@ -5411,6 +5912,715 @@ export function useUpdateUserRoleCgAssetStoreMutation(baseOptions?: Apollo.Mutat
 export type UpdateUserRoleCgAssetStoreMutationHookResult = ReturnType<typeof useUpdateUserRoleCgAssetStoreMutation>;
 export type UpdateUserRoleCgAssetStoreMutationResult = Apollo.MutationResult<UpdateUserRoleCgAssetStoreMutation>;
 export type UpdateUserRoleCgAssetStoreMutationOptions = Apollo.BaseMutationOptions<UpdateUserRoleCgAssetStoreMutation, UpdateUserRoleCgAssetStoreMutationVariables>;
+export const GetApplyDownloadMailTplDocument = gql`
+    query GetApplyDownloadMailTpl($id: ID!) {
+  ApplyDownloadMailTpl(id: $id) {
+    id
+    status
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetApplyDownloadMailTplQuery__
+ *
+ * To run a query within a React component, call `useGetApplyDownloadMailTplQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadMailTplQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetApplyDownloadMailTplQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetApplyDownloadMailTplQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadMailTplQuery, GetApplyDownloadMailTplQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetApplyDownloadMailTplQuery, GetApplyDownloadMailTplQueryVariables>(GetApplyDownloadMailTplDocument, options);
+      }
+export function useGetApplyDownloadMailTplLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadMailTplQuery, GetApplyDownloadMailTplQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetApplyDownloadMailTplQuery, GetApplyDownloadMailTplQueryVariables>(GetApplyDownloadMailTplDocument, options);
+        }
+export type GetApplyDownloadMailTplQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplQuery>;
+export type GetApplyDownloadMailTplLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplLazyQuery>;
+export type GetApplyDownloadMailTplQueryResult = Apollo.QueryResult<GetApplyDownloadMailTplQuery, GetApplyDownloadMailTplQueryVariables>;
+export const GetApplyDownloadMailTplsDocument = gql`
+    query GetApplyDownloadMailTpls($first: Int!, $page: Int!) {
+  ApplyDownloadMailTpls(first: $first, page: $page) {
+    data {
+      id
+      status
+      subject_tpl
+      body_tpl
+      from_mail
+      bcc_mail
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetApplyDownloadMailTplsQuery__
+ *
+ * To run a query within a React component, call `useGetApplyDownloadMailTplsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadMailTplsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetApplyDownloadMailTplsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetApplyDownloadMailTplsQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadMailTplsQuery, GetApplyDownloadMailTplsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetApplyDownloadMailTplsQuery, GetApplyDownloadMailTplsQueryVariables>(GetApplyDownloadMailTplsDocument, options);
+      }
+export function useGetApplyDownloadMailTplsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadMailTplsQuery, GetApplyDownloadMailTplsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetApplyDownloadMailTplsQuery, GetApplyDownloadMailTplsQueryVariables>(GetApplyDownloadMailTplsDocument, options);
+        }
+export type GetApplyDownloadMailTplsQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplsQuery>;
+export type GetApplyDownloadMailTplsLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplsLazyQuery>;
+export type GetApplyDownloadMailTplsQueryResult = Apollo.QueryResult<GetApplyDownloadMailTplsQuery, GetApplyDownloadMailTplsQueryVariables>;
+export const GetApplyDownloadMailTplsValidDocument = gql`
+    query GetApplyDownloadMailTplsValid {
+  ApplyDownloadMailTplsValid {
+    status
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    created_at
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetApplyDownloadMailTplsValidQuery__
+ *
+ * To run a query within a React component, call `useGetApplyDownloadMailTplsValidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadMailTplsValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetApplyDownloadMailTplsValidQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetApplyDownloadMailTplsValidQuery(baseOptions?: Apollo.QueryHookOptions<GetApplyDownloadMailTplsValidQuery, GetApplyDownloadMailTplsValidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetApplyDownloadMailTplsValidQuery, GetApplyDownloadMailTplsValidQueryVariables>(GetApplyDownloadMailTplsValidDocument, options);
+      }
+export function useGetApplyDownloadMailTplsValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadMailTplsValidQuery, GetApplyDownloadMailTplsValidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetApplyDownloadMailTplsValidQuery, GetApplyDownloadMailTplsValidQueryVariables>(GetApplyDownloadMailTplsValidDocument, options);
+        }
+export type GetApplyDownloadMailTplsValidQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplsValidQuery>;
+export type GetApplyDownloadMailTplsValidLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplsValidLazyQuery>;
+export type GetApplyDownloadMailTplsValidQueryResult = Apollo.QueryResult<GetApplyDownloadMailTplsValidQuery, GetApplyDownloadMailTplsValidQueryVariables>;
+export const GetSessionAndUserDocument = gql`
+    query GetSessionAndUser($sessionToken: String!) {
+  getSessionAndUser(sessionToken: $sessionToken) {
+    expires
+    sessionToken
+    user {
+      id
+      name
+      email
+      emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+      accounts {
+        access_token
+        expires_at
+        id_token
+        oauth_token
+        oauth_token_secret
+        provider
+        providerAccountId
+        refresh_token
+        refresh_token_expires_in
+        scope
+        session_state
+        token_type
+        type
+      }
+      verificationTokens {
+        identifier
+        expires
+        token
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSessionAndUserQuery__
+ *
+ * To run a query within a React component, call `useGetSessionAndUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSessionAndUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSessionAndUserQuery({
+ *   variables: {
+ *      sessionToken: // value for 'sessionToken'
+ *   },
+ * });
+ */
+export function useGetSessionAndUserQuery(baseOptions: Apollo.QueryHookOptions<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>(GetSessionAndUserDocument, options);
+      }
+export function useGetSessionAndUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>(GetSessionAndUserDocument, options);
+        }
+export type GetSessionAndUserQueryHookResult = ReturnType<typeof useGetSessionAndUserQuery>;
+export type GetSessionAndUserLazyQueryHookResult = ReturnType<typeof useGetSessionAndUserLazyQuery>;
+export type GetSessionAndUserQueryResult = Apollo.QueryResult<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>;
+export const GetUserByAccountDocument = gql`
+    query GetUserByAccount($input: GetUserByAccountInput!) {
+  getUserByAccount(input: $input) {
+    id
+    name
+    email
+    emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
+    roleCGAssetStore {
+      id
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserByAccountQuery__
+ *
+ * To run a query within a React component, call `useGetUserByAccountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByAccountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByAccountQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetUserByAccountQuery(baseOptions: Apollo.QueryHookOptions<GetUserByAccountQuery, GetUserByAccountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByAccountQuery, GetUserByAccountQueryVariables>(GetUserByAccountDocument, options);
+      }
+export function useGetUserByAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByAccountQuery, GetUserByAccountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByAccountQuery, GetUserByAccountQueryVariables>(GetUserByAccountDocument, options);
+        }
+export type GetUserByAccountQueryHookResult = ReturnType<typeof useGetUserByAccountQuery>;
+export type GetUserByAccountLazyQueryHookResult = ReturnType<typeof useGetUserByAccountLazyQuery>;
+export type GetUserByAccountQueryResult = Apollo.QueryResult<GetUserByAccountQuery, GetUserByAccountQueryVariables>;
+export const GetUserByEmailDocument = gql`
+    query GetUserByEmail($email: String!) {
+  getUserByEmail(email: $email) {
+    id
+    name
+    email
+    emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
+    roleCGAssetStore {
+      id
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserByEmailQuery__
+ *
+ * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByEmailQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+      }
+export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+        }
+export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
+export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
+export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
+export const UseVerificationTokenDocument = gql`
+    query UseVerificationToken($input: UseVerificationTokenInput!) {
+  useVerificationToken(input: $input) {
+    identifier
+    expires
+    token
+    user {
+      id
+      name
+      email
+      emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+      accounts {
+        access_token
+        expires_at
+        id_token
+        oauth_token
+        oauth_token_secret
+        provider
+        providerAccountId
+        refresh_token
+        refresh_token_expires_in
+        scope
+        session_state
+        token_type
+        type
+      }
+      sessions {
+        expires
+        sessionToken
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useUseVerificationTokenQuery__
+ *
+ * To run a query within a React component, call `useUseVerificationTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUseVerificationTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUseVerificationTokenQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUseVerificationTokenQuery(baseOptions: Apollo.QueryHookOptions<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>(UseVerificationTokenDocument, options);
+      }
+export function useUseVerificationTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>(UseVerificationTokenDocument, options);
+        }
+export type UseVerificationTokenQueryHookResult = ReturnType<typeof useUseVerificationTokenQuery>;
+export type UseVerificationTokenLazyQueryHookResult = ReturnType<typeof useUseVerificationTokenLazyQuery>;
+export type UseVerificationTokenQueryResult = Apollo.QueryResult<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>;
+export const GetUserDocument = gql`
+    query GetUser($id: ID!) {
+  getUser(id: $id) {
+    id
+    name
+    email
+    emailVerified
+    registrantAffiliation {
+      id
+      desc
+    }
+    regist_affili_code
+    roleCGAssetStore {
+      id
+      desc
+      role
+      valid_flg
+    }
+    accounts {
+      access_token
+      expires_at
+      id_token
+      oauth_token
+      oauth_token_secret
+      provider
+      providerAccountId
+      refresh_token
+      refresh_token_expires_in
+      scope
+      session_state
+      token_type
+      type
+    }
+    sessions {
+      expires
+      sessionToken
+    }
+    verificationTokens {
+      identifier
+      expires
+      token
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserQuery__
+ *
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+      }
+export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+        }
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetUsersDocument = gql`
+    query GetUsers($first: Int!, $page: Int!) {
+  Users(
+    first: $first
+    page: $page
+    orderBy: [{column: "created_at", order: DESC}, {column: "name", order: ASC}]
+  ) {
+    data {
+      id
+      name
+      email
+      emailVerified
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+      accounts {
+        access_token
+        expires_at
+        id_token
+        oauth_token
+        oauth_token_secret
+        provider
+        providerAccountId
+        refresh_token
+        refresh_token_expires_in
+        scope
+        session_state
+        token_type
+        type
+      }
+      sessions {
+        expires
+        sessionToken
+      }
+      verificationTokens {
+        identifier
+        expires
+        token
+      }
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUsersQuery__
+ *
+ * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetUsersQuery(baseOptions: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+      }
+export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+        }
+export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
+export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
+export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
+export const GetCgAssetUploadDirDocument = gql`
+    query GetCGAssetUploadDir($id: ID!) {
+  CGAssetUploadDir(id: $id) {
+    id
+    base_path
+    order
+    valid_flg
+    created_at
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetUploadDirQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetUploadDirQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetUploadDirQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetUploadDirQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetCgAssetUploadDirQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetUploadDirQuery, GetCgAssetUploadDirQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetUploadDirQuery, GetCgAssetUploadDirQueryVariables>(GetCgAssetUploadDirDocument, options);
+      }
+export function useGetCgAssetUploadDirLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetUploadDirQuery, GetCgAssetUploadDirQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetUploadDirQuery, GetCgAssetUploadDirQueryVariables>(GetCgAssetUploadDirDocument, options);
+        }
+export type GetCgAssetUploadDirQueryHookResult = ReturnType<typeof useGetCgAssetUploadDirQuery>;
+export type GetCgAssetUploadDirLazyQueryHookResult = ReturnType<typeof useGetCgAssetUploadDirLazyQuery>;
+export type GetCgAssetUploadDirQueryResult = Apollo.QueryResult<GetCgAssetUploadDirQuery, GetCgAssetUploadDirQueryVariables>;
+export const GetCgAssetUploadDirsDocument = gql`
+    query GetCGAssetUploadDirs($first: Int!, $page: Int!) {
+  CGAssetUploadDirs(first: $first, page: $page) {
+    data {
+      id
+      base_path
+      order
+      valid_flg
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetUploadDirsQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetUploadDirsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetUploadDirsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetUploadDirsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetCgAssetUploadDirsQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetUploadDirsQuery, GetCgAssetUploadDirsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetUploadDirsQuery, GetCgAssetUploadDirsQueryVariables>(GetCgAssetUploadDirsDocument, options);
+      }
+export function useGetCgAssetUploadDirsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetUploadDirsQuery, GetCgAssetUploadDirsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetUploadDirsQuery, GetCgAssetUploadDirsQueryVariables>(GetCgAssetUploadDirsDocument, options);
+        }
+export type GetCgAssetUploadDirsQueryHookResult = ReturnType<typeof useGetCgAssetUploadDirsQuery>;
+export type GetCgAssetUploadDirsLazyQueryHookResult = ReturnType<typeof useGetCgAssetUploadDirsLazyQuery>;
+export type GetCgAssetUploadDirsQueryResult = Apollo.QueryResult<GetCgAssetUploadDirsQuery, GetCgAssetUploadDirsQueryVariables>;
+export const GetCgAssetUploadDirsValidDocument = gql`
+    query GetCGAssetUploadDirsValid {
+  CGAssetUploadDirsValid {
+    base_path
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetUploadDirsValidQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetUploadDirsValidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetUploadDirsValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetUploadDirsValidQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCgAssetUploadDirsValidQuery(baseOptions?: Apollo.QueryHookOptions<GetCgAssetUploadDirsValidQuery, GetCgAssetUploadDirsValidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetUploadDirsValidQuery, GetCgAssetUploadDirsValidQueryVariables>(GetCgAssetUploadDirsValidDocument, options);
+      }
+export function useGetCgAssetUploadDirsValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetUploadDirsValidQuery, GetCgAssetUploadDirsValidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetUploadDirsValidQuery, GetCgAssetUploadDirsValidQueryVariables>(GetCgAssetUploadDirsValidDocument, options);
+        }
+export type GetCgAssetUploadDirsValidQueryHookResult = ReturnType<typeof useGetCgAssetUploadDirsValidQuery>;
+export type GetCgAssetUploadDirsValidLazyQueryHookResult = ReturnType<typeof useGetCgAssetUploadDirsValidLazyQuery>;
+export type GetCgAssetUploadDirsValidQueryResult = Apollo.QueryResult<GetCgAssetUploadDirsValidQuery, GetCgAssetUploadDirsValidQueryVariables>;
 export const GetCgaBroadcastingRightDocument = gql`
     query GetCGABroadcastingRight($id: ID!) {
   CGABroadcastingRight(id: $id) {
@@ -5498,6 +6708,41 @@ export function useGetCgaBroadcastingRightsLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetCgaBroadcastingRightsQueryHookResult = ReturnType<typeof useGetCgaBroadcastingRightsQuery>;
 export type GetCgaBroadcastingRightsLazyQueryHookResult = ReturnType<typeof useGetCgaBroadcastingRightsLazyQuery>;
 export type GetCgaBroadcastingRightsQueryResult = Apollo.QueryResult<GetCgaBroadcastingRightsQuery, GetCgaBroadcastingRightsQueryVariables>;
+export const GetCgaBroadcastingRightsValidDocument = gql`
+    query GetCgaBroadcastingRightsValid {
+  CGABroadcastingRightsValid {
+    desc
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetCgaBroadcastingRightsValidQuery__
+ *
+ * To run a query within a React component, call `useGetCgaBroadcastingRightsValidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgaBroadcastingRightsValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgaBroadcastingRightsValidQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCgaBroadcastingRightsValidQuery(baseOptions?: Apollo.QueryHookOptions<GetCgaBroadcastingRightsValidQuery, GetCgaBroadcastingRightsValidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgaBroadcastingRightsValidQuery, GetCgaBroadcastingRightsValidQueryVariables>(GetCgaBroadcastingRightsValidDocument, options);
+      }
+export function useGetCgaBroadcastingRightsValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgaBroadcastingRightsValidQuery, GetCgaBroadcastingRightsValidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgaBroadcastingRightsValidQuery, GetCgaBroadcastingRightsValidQueryVariables>(GetCgaBroadcastingRightsValidDocument, options);
+        }
+export type GetCgaBroadcastingRightsValidQueryHookResult = ReturnType<typeof useGetCgaBroadcastingRightsValidQuery>;
+export type GetCgaBroadcastingRightsValidLazyQueryHookResult = ReturnType<typeof useGetCgaBroadcastingRightsValidLazyQuery>;
+export type GetCgaBroadcastingRightsValidQueryResult = Apollo.QueryResult<GetCgaBroadcastingRightsValidQuery, GetCgaBroadcastingRightsValidQueryVariables>;
 export const GetCgaViewingRestrictionDocument = gql`
     query GetCgaViewingRestriction($id: ID!) {
   CGAViewingRestriction(id: $id) {
@@ -5585,6 +6830,41 @@ export function useGetCgaViewingRestrictionsLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetCgaViewingRestrictionsQueryHookResult = ReturnType<typeof useGetCgaViewingRestrictionsQuery>;
 export type GetCgaViewingRestrictionsLazyQueryHookResult = ReturnType<typeof useGetCgaViewingRestrictionsLazyQuery>;
 export type GetCgaViewingRestrictionsQueryResult = Apollo.QueryResult<GetCgaViewingRestrictionsQuery, GetCgaViewingRestrictionsQueryVariables>;
+export const GetCgaViewingRestrictionsValidDocument = gql`
+    query GetCgaViewingRestrictionsValid {
+  CGAViewingRestrictionsValid {
+    desc
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetCgaViewingRestrictionsValidQuery__
+ *
+ * To run a query within a React component, call `useGetCgaViewingRestrictionsValidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgaViewingRestrictionsValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgaViewingRestrictionsValidQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCgaViewingRestrictionsValidQuery(baseOptions?: Apollo.QueryHookOptions<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>(GetCgaViewingRestrictionsValidDocument, options);
+      }
+export function useGetCgaViewingRestrictionsValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>(GetCgaViewingRestrictionsValidDocument, options);
+        }
+export type GetCgaViewingRestrictionsValidQueryHookResult = ReturnType<typeof useGetCgaViewingRestrictionsValidQuery>;
+export type GetCgaViewingRestrictionsValidLazyQueryHookResult = ReturnType<typeof useGetCgaViewingRestrictionsValidLazyQuery>;
+export type GetCgaViewingRestrictionsValidQueryResult = Apollo.QueryResult<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>;
 export const GetCgAssetDocument = gql`
     query GetCgAsset($id: ID!) {
   CGAsset(id: $id) {
@@ -5621,6 +6901,10 @@ export const GetCgAssetDocument = gql`
     rights_supplement
     asset_detail
     asset_media_base
+    uploadDir {
+      id
+      base_path
+    }
     assetImages {
       id
       file_name
@@ -5662,6 +6946,14 @@ export const GetCgAssetDocument = gql`
       created_at
       desc
       revisedUser {
+        name
+      }
+    }
+    reviews {
+      id
+      created_at
+      review
+      reviewedUser {
         name
       }
     }
@@ -5731,6 +7023,179 @@ export function useGetCgAssetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetCgAssetQueryHookResult = ReturnType<typeof useGetCgAssetQuery>;
 export type GetCgAssetLazyQueryHookResult = ReturnType<typeof useGetCgAssetLazyQuery>;
 export type GetCgAssetQueryResult = Apollo.QueryResult<GetCgAssetQuery, GetCgAssetQueryVariables>;
+export const GetCgAssetsDocument = gql`
+    query GetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
+  CGAssets(
+    first: $first
+    page: $page
+    orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+    search: $search
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      assetCate {
+        id
+        code
+        desc
+      }
+      asset_app_prod
+      asset_format
+      asset_size
+      asset_renderer
+      program_id
+      program_name
+      registrantAffiliation {
+        id
+        desc
+      }
+      viewingRestriction {
+        id
+        desc
+      }
+      broadcastingRight {
+        id
+        desc
+      }
+      sharedArea {
+        id
+        desc
+      }
+      rights_supplement
+      asset_detail
+      asset_media_base
+      uploadDir {
+        id
+        base_path
+      }
+      assetImages {
+        id
+        file_name
+        url
+        file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
+      }
+      assetVideos {
+        id
+        file_name
+        url
+        file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
+      }
+      asset3DCGs {
+        id
+        file_name
+        url
+        file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
+      }
+      assetTags {
+        id
+        tag
+        tag_add_edit_flg
+        taggedUser {
+          name
+        }
+        created_at
+      }
+      revisionHistories {
+        id
+        created_at
+        desc
+        revisedUser {
+          name
+        }
+      }
+      reviews {
+        id
+        created_at
+        review
+        reviewedUser {
+          name
+        }
+      }
+      userCreate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      userUpdate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetsQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useGetCgAssetsQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetsQuery, GetCgAssetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetsQuery, GetCgAssetsQueryVariables>(GetCgAssetsDocument, options);
+      }
+export function useGetCgAssetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetsQuery, GetCgAssetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetsQuery, GetCgAssetsQueryVariables>(GetCgAssetsDocument, options);
+        }
+export type GetCgAssetsQueryHookResult = ReturnType<typeof useGetCgAssetsQuery>;
+export type GetCgAssetsLazyQueryHookResult = ReturnType<typeof useGetCgAssetsLazyQuery>;
+export type GetCgAssetsQueryResult = Apollo.QueryResult<GetCgAssetsQuery, GetCgAssetsQueryVariables>;
 export const GetCgAssetCateDocument = gql`
     query GetCgAssetCate($id: ID!) {
   CGAssetCate(id: $id) {
@@ -6106,202 +7571,6 @@ export function useGetCgAssetSearchTagsValidLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetCgAssetSearchTagsValidQueryHookResult = ReturnType<typeof useGetCgAssetSearchTagsValidQuery>;
 export type GetCgAssetSearchTagsValidLazyQueryHookResult = ReturnType<typeof useGetCgAssetSearchTagsValidLazyQuery>;
 export type GetCgAssetSearchTagsValidQueryResult = Apollo.QueryResult<GetCgAssetSearchTagsValidQuery, GetCgAssetSearchTagsValidQueryVariables>;
-export const GetCgAssetsDocument = gql`
-    query GetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
-  CGAssets(
-    first: $first
-    page: $page
-    orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
-    search: $search
-  ) {
-    data {
-      id
-      asset_id
-      asset_name
-      assetCate {
-        id
-        code
-        desc
-      }
-      asset_app_prod
-      asset_format
-      asset_size
-      asset_renderer
-      program_id
-      program_name
-      registrantAffiliation {
-        id
-        desc
-      }
-      viewingRestriction {
-        id
-        desc
-      }
-      broadcastingRight {
-        id
-        desc
-      }
-      sharedArea {
-        id
-        desc
-      }
-      rights_supplement
-      asset_detail
-      asset_media_base
-      assetImages {
-        id
-        file_name
-        url
-        file_path
-        thumb_file_name
-        thumb_url
-        thumb_file_path
-      }
-      assetVideos {
-        id
-        file_name
-        url
-        file_path
-        thumb_file_name
-        thumb_url
-        thumb_file_path
-      }
-      asset3DCGs {
-        id
-        file_name
-        url
-        file_path
-        thumb_file_name
-        thumb_url
-        thumb_file_path
-      }
-      assetTags {
-        id
-        tag
-        tag_add_edit_flg
-        taggedUser {
-          name
-        }
-        created_at
-      }
-      revisionHistories {
-        id
-        created_at
-        desc
-        revisedUser {
-          name
-        }
-      }
-      userCreate {
-        id
-        name
-        email
-        registrantAffiliation {
-          id
-          desc
-        }
-        regist_affili_code
-        roleCGAssetStore {
-          id
-          desc
-          role
-          valid_flg
-        }
-      }
-      userUpdate {
-        id
-        name
-        email
-        registrantAffiliation {
-          id
-          desc
-        }
-        regist_affili_code
-        roleCGAssetStore {
-          id
-          desc
-          role
-          valid_flg
-        }
-      }
-      valid_flg
-      created_at
-      updated_at
-    }
-    paginatorInfo {
-      count
-      currentPage
-      hasMorePages
-      total
-    }
-  }
-}
-    `;
-
-/**
- * __useGetCgAssetsQuery__
- *
- * To run a query within a React component, call `useGetCgAssetsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCgAssetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCgAssetsQuery({
- *   variables: {
- *      first: // value for 'first'
- *      page: // value for 'page'
- *      search: // value for 'search'
- *   },
- * });
- */
-export function useGetCgAssetsQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetsQuery, GetCgAssetsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCgAssetsQuery, GetCgAssetsQueryVariables>(GetCgAssetsDocument, options);
-      }
-export function useGetCgAssetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetsQuery, GetCgAssetsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCgAssetsQuery, GetCgAssetsQueryVariables>(GetCgAssetsDocument, options);
-        }
-export type GetCgAssetsQueryHookResult = ReturnType<typeof useGetCgAssetsQuery>;
-export type GetCgAssetsLazyQueryHookResult = ReturnType<typeof useGetCgAssetsLazyQuery>;
-export type GetCgAssetsQueryResult = Apollo.QueryResult<GetCgAssetsQuery, GetCgAssetsQueryVariables>;
-export const GetCgaBroadcastingRightsValidDocument = gql`
-    query GetCgaBroadcastingRightsValid {
-  CGABroadcastingRightsValid {
-    desc
-    id
-  }
-}
-    `;
-
-/**
- * __useGetCgaBroadcastingRightsValidQuery__
- *
- * To run a query within a React component, call `useGetCgaBroadcastingRightsValidQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCgaBroadcastingRightsValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCgaBroadcastingRightsValidQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetCgaBroadcastingRightsValidQuery(baseOptions?: Apollo.QueryHookOptions<GetCgaBroadcastingRightsValidQuery, GetCgaBroadcastingRightsValidQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCgaBroadcastingRightsValidQuery, GetCgaBroadcastingRightsValidQueryVariables>(GetCgaBroadcastingRightsValidDocument, options);
-      }
-export function useGetCgaBroadcastingRightsValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgaBroadcastingRightsValidQuery, GetCgaBroadcastingRightsValidQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCgaBroadcastingRightsValidQuery, GetCgaBroadcastingRightsValidQueryVariables>(GetCgaBroadcastingRightsValidDocument, options);
-        }
-export type GetCgaBroadcastingRightsValidQueryHookResult = ReturnType<typeof useGetCgaBroadcastingRightsValidQuery>;
-export type GetCgaBroadcastingRightsValidLazyQueryHookResult = ReturnType<typeof useGetCgaBroadcastingRightsValidLazyQuery>;
-export type GetCgaBroadcastingRightsValidQueryResult = Apollo.QueryResult<GetCgaBroadcastingRightsValidQuery, GetCgaBroadcastingRightsValidQueryVariables>;
 export const GetCgaRegistrantAffiliationDocument = gql`
     query GetCgaRegistrantAffiliation($id: ID!) {
   CGARegistrantAffiliation(id: $id) {
@@ -6546,41 +7815,6 @@ export function useGetCgaSharedAreasValidLazyQuery(baseOptions?: Apollo.LazyQuer
 export type GetCgaSharedAreasValidQueryHookResult = ReturnType<typeof useGetCgaSharedAreasValidQuery>;
 export type GetCgaSharedAreasValidLazyQueryHookResult = ReturnType<typeof useGetCgaSharedAreasValidLazyQuery>;
 export type GetCgaSharedAreasValidQueryResult = Apollo.QueryResult<GetCgaSharedAreasValidQuery, GetCgaSharedAreasValidQueryVariables>;
-export const GetCgaViewingRestrictionsValidDocument = gql`
-    query GetCgaViewingRestrictionsValid {
-  CGAViewingRestrictionsValid {
-    desc
-    id
-  }
-}
-    `;
-
-/**
- * __useGetCgaViewingRestrictionsValidQuery__
- *
- * To run a query within a React component, call `useGetCgaViewingRestrictionsValidQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCgaViewingRestrictionsValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCgaViewingRestrictionsValidQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetCgaViewingRestrictionsValidQuery(baseOptions?: Apollo.QueryHookOptions<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>(GetCgaViewingRestrictionsValidDocument, options);
-      }
-export function useGetCgaViewingRestrictionsValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>(GetCgaViewingRestrictionsValidDocument, options);
-        }
-export type GetCgaViewingRestrictionsValidQueryHookResult = ReturnType<typeof useGetCgaViewingRestrictionsValidQuery>;
-export type GetCgaViewingRestrictionsValidLazyQueryHookResult = ReturnType<typeof useGetCgaViewingRestrictionsValidLazyQuery>;
-export type GetCgaViewingRestrictionsValidQueryResult = Apollo.QueryResult<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>;
 export const GetSampleDocument = gql`
     query GetSample($id: ID!) {
   sample(id: $id) {
@@ -6618,79 +7852,41 @@ export function useGetSampleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetSampleQueryHookResult = ReturnType<typeof useGetSampleQuery>;
 export type GetSampleLazyQueryHookResult = ReturnType<typeof useGetSampleLazyQuery>;
 export type GetSampleQueryResult = Apollo.QueryResult<GetSampleQuery, GetSampleQueryVariables>;
-export const GetSessionAndUserDocument = gql`
-    query GetSessionAndUser($sessionToken: String!) {
-  getSessionAndUser(sessionToken: $sessionToken) {
-    expires
-    sessionToken
-    user {
-      id
-      name
-      email
-      emailVerified
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-      accounts {
-        access_token
-        expires_at
-        id_token
-        oauth_token
-        oauth_token_secret
-        provider
-        providerAccountId
-        refresh_token
-        refresh_token_expires_in
-        scope
-        session_state
-        token_type
-        type
-      }
-      verificationTokens {
-        identifier
-        expires
-        token
-      }
-    }
+export const SamplesAllDocument = gql`
+    query SamplesAll {
+  samplesAll {
+    id
+    text
   }
 }
     `;
 
 /**
- * __useGetSessionAndUserQuery__
+ * __useSamplesAllQuery__
  *
- * To run a query within a React component, call `useGetSessionAndUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetSessionAndUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useSamplesAllQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSamplesAllQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetSessionAndUserQuery({
+ * const { data, loading, error } = useSamplesAllQuery({
  *   variables: {
- *      sessionToken: // value for 'sessionToken'
  *   },
  * });
  */
-export function useGetSessionAndUserQuery(baseOptions: Apollo.QueryHookOptions<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>) {
+export function useSamplesAllQuery(baseOptions?: Apollo.QueryHookOptions<SamplesAllQuery, SamplesAllQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>(GetSessionAndUserDocument, options);
+        return Apollo.useQuery<SamplesAllQuery, SamplesAllQueryVariables>(SamplesAllDocument, options);
       }
-export function useGetSessionAndUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>) {
+export function useSamplesAllLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SamplesAllQuery, SamplesAllQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>(GetSessionAndUserDocument, options);
+          return Apollo.useLazyQuery<SamplesAllQuery, SamplesAllQueryVariables>(SamplesAllDocument, options);
         }
-export type GetSessionAndUserQueryHookResult = ReturnType<typeof useGetSessionAndUserQuery>;
-export type GetSessionAndUserLazyQueryHookResult = ReturnType<typeof useGetSessionAndUserLazyQuery>;
-export type GetSessionAndUserQueryResult = Apollo.QueryResult<GetSessionAndUserQuery, GetSessionAndUserQueryVariables>;
+export type SamplesAllQueryHookResult = ReturnType<typeof useSamplesAllQuery>;
+export type SamplesAllLazyQueryHookResult = ReturnType<typeof useSamplesAllLazyQuery>;
+export type SamplesAllQueryResult = Apollo.QueryResult<SamplesAllQuery, SamplesAllQueryVariables>;
 export const GetSystemNoticeDocument = gql`
     query GetSystemNotice($id: ID!) {
   SystemNotice(id: $id) {
@@ -6918,225 +8114,6 @@ export function useGetSystemNoticesValidLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetSystemNoticesValidQueryHookResult = ReturnType<typeof useGetSystemNoticesValidQuery>;
 export type GetSystemNoticesValidLazyQueryHookResult = ReturnType<typeof useGetSystemNoticesValidLazyQuery>;
 export type GetSystemNoticesValidQueryResult = Apollo.QueryResult<GetSystemNoticesValidQuery, GetSystemNoticesValidQueryVariables>;
-export const GetUserDocument = gql`
-    query GetUser($id: ID!) {
-  getUser(id: $id) {
-    id
-    name
-    email
-    emailVerified
-    registrantAffiliation {
-      id
-      desc
-    }
-    regist_affili_code
-    roleCGAssetStore {
-      id
-      desc
-      role
-      valid_flg
-    }
-    accounts {
-      access_token
-      expires_at
-      id_token
-      oauth_token
-      oauth_token_secret
-      provider
-      providerAccountId
-      refresh_token
-      refresh_token_expires_in
-      scope
-      session_state
-      token_type
-      type
-    }
-    sessions {
-      expires
-      sessionToken
-    }
-    verificationTokens {
-      identifier
-      expires
-      token
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUserQuery__
- *
- * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
-      }
-export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
-        }
-export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
-export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
-export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
-export const GetUserByAccountDocument = gql`
-    query GetUserByAccount($input: GetUserByAccountInput!) {
-  getUserByAccount(input: $input) {
-    id
-    name
-    email
-    emailVerified
-    registrantAffiliation {
-      id
-      desc
-    }
-    regist_affili_code
-    roleCGAssetStore {
-      id
-      desc
-      role
-      valid_flg
-    }
-    accounts {
-      access_token
-      expires_at
-      id_token
-      oauth_token
-      oauth_token_secret
-      provider
-      providerAccountId
-      refresh_token
-      refresh_token_expires_in
-      scope
-      session_state
-      token_type
-      type
-    }
-    sessions {
-      expires
-      sessionToken
-    }
-    verificationTokens {
-      identifier
-      expires
-      token
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUserByAccountQuery__
- *
- * To run a query within a React component, call `useGetUserByAccountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserByAccountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserByAccountQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useGetUserByAccountQuery(baseOptions: Apollo.QueryHookOptions<GetUserByAccountQuery, GetUserByAccountQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserByAccountQuery, GetUserByAccountQueryVariables>(GetUserByAccountDocument, options);
-      }
-export function useGetUserByAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByAccountQuery, GetUserByAccountQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserByAccountQuery, GetUserByAccountQueryVariables>(GetUserByAccountDocument, options);
-        }
-export type GetUserByAccountQueryHookResult = ReturnType<typeof useGetUserByAccountQuery>;
-export type GetUserByAccountLazyQueryHookResult = ReturnType<typeof useGetUserByAccountLazyQuery>;
-export type GetUserByAccountQueryResult = Apollo.QueryResult<GetUserByAccountQuery, GetUserByAccountQueryVariables>;
-export const GetUserByEmailDocument = gql`
-    query GetUserByEmail($email: String!) {
-  getUserByEmail(email: $email) {
-    id
-    name
-    email
-    emailVerified
-    registrantAffiliation {
-      id
-      desc
-    }
-    regist_affili_code
-    roleCGAssetStore {
-      id
-      desc
-      role
-      valid_flg
-    }
-    accounts {
-      access_token
-      expires_at
-      id_token
-      oauth_token
-      oauth_token_secret
-      provider
-      providerAccountId
-      refresh_token
-      refresh_token_expires_in
-      scope
-      session_state
-      token_type
-      type
-    }
-    sessions {
-      expires
-      sessionToken
-    }
-    verificationTokens {
-      identifier
-      expires
-      token
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUserByEmailQuery__
- *
- * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserByEmailQuery({
- *   variables: {
- *      email: // value for 'email'
- *   },
- * });
- */
-export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-      }
-export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-        }
-export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
-export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
-export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
 export const GetUserRoleCgAssetStoreDocument = gql`
     query GetUserRoleCGAssetStore($id: ID!) {
   UserRoleCGAssetStore(id: $id) {
@@ -7261,198 +8238,3 @@ export function useGetUserRoleCgAssetStoresValidLazyQuery(baseOptions?: Apollo.L
 export type GetUserRoleCgAssetStoresValidQueryHookResult = ReturnType<typeof useGetUserRoleCgAssetStoresValidQuery>;
 export type GetUserRoleCgAssetStoresValidLazyQueryHookResult = ReturnType<typeof useGetUserRoleCgAssetStoresValidLazyQuery>;
 export type GetUserRoleCgAssetStoresValidQueryResult = Apollo.QueryResult<GetUserRoleCgAssetStoresValidQuery, GetUserRoleCgAssetStoresValidQueryVariables>;
-export const GetUsersDocument = gql`
-    query GetUsers($first: Int!, $page: Int!) {
-  Users(
-    first: $first
-    page: $page
-    orderBy: [{column: "created_at", order: DESC}, {column: "name", order: ASC}]
-  ) {
-    data {
-      id
-      name
-      email
-      emailVerified
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-      accounts {
-        access_token
-        expires_at
-        id_token
-        oauth_token
-        oauth_token_secret
-        provider
-        providerAccountId
-        refresh_token
-        refresh_token_expires_in
-        scope
-        session_state
-        token_type
-        type
-      }
-      sessions {
-        expires
-        sessionToken
-      }
-      verificationTokens {
-        identifier
-        expires
-        token
-      }
-      created_at
-    }
-    paginatorInfo {
-      count
-      currentPage
-      hasMorePages
-      total
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUsersQuery__
- *
- * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUsersQuery({
- *   variables: {
- *      first: // value for 'first'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useGetUsersQuery(baseOptions: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
-      }
-export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
-        }
-export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
-export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
-export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
-export const SamplesAllDocument = gql`
-    query SamplesAll {
-  samplesAll {
-    id
-    text
-  }
-}
-    `;
-
-/**
- * __useSamplesAllQuery__
- *
- * To run a query within a React component, call `useSamplesAllQuery` and pass it any options that fit your needs.
- * When your component renders, `useSamplesAllQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSamplesAllQuery({
- *   variables: {
- *   },
- * });
- */
-export function useSamplesAllQuery(baseOptions?: Apollo.QueryHookOptions<SamplesAllQuery, SamplesAllQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SamplesAllQuery, SamplesAllQueryVariables>(SamplesAllDocument, options);
-      }
-export function useSamplesAllLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SamplesAllQuery, SamplesAllQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SamplesAllQuery, SamplesAllQueryVariables>(SamplesAllDocument, options);
-        }
-export type SamplesAllQueryHookResult = ReturnType<typeof useSamplesAllQuery>;
-export type SamplesAllLazyQueryHookResult = ReturnType<typeof useSamplesAllLazyQuery>;
-export type SamplesAllQueryResult = Apollo.QueryResult<SamplesAllQuery, SamplesAllQueryVariables>;
-export const UseVerificationTokenDocument = gql`
-    query UseVerificationToken($input: UseVerificationTokenInput!) {
-  useVerificationToken(input: $input) {
-    identifier
-    expires
-    token
-    user {
-      id
-      name
-      email
-      emailVerified
-      registrantAffiliation {
-        id
-        desc
-      }
-      regist_affili_code
-      roleCGAssetStore {
-        id
-        desc
-        role
-        valid_flg
-      }
-      accounts {
-        access_token
-        expires_at
-        id_token
-        oauth_token
-        oauth_token_secret
-        provider
-        providerAccountId
-        refresh_token
-        refresh_token_expires_in
-        scope
-        session_state
-        token_type
-        type
-      }
-      sessions {
-        expires
-        sessionToken
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useUseVerificationTokenQuery__
- *
- * To run a query within a React component, call `useUseVerificationTokenQuery` and pass it any options that fit your needs.
- * When your component renders, `useUseVerificationTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUseVerificationTokenQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUseVerificationTokenQuery(baseOptions: Apollo.QueryHookOptions<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>(UseVerificationTokenDocument, options);
-      }
-export function useUseVerificationTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>(UseVerificationTokenDocument, options);
-        }
-export type UseVerificationTokenQueryHookResult = ReturnType<typeof useUseVerificationTokenQuery>;
-export type UseVerificationTokenLazyQueryHookResult = ReturnType<typeof useUseVerificationTokenLazyQuery>;
-export type UseVerificationTokenQueryResult = Apollo.QueryResult<UseVerificationTokenQuery, UseVerificationTokenQueryVariables>;

@@ -40,7 +40,7 @@ const SignIn = ({ params, searchParams }: SignInPageParams) => {
     router.push(`/`);
   }
 
-  if (!isMounted) {
+  if (!isMounted || session) {
     return null;
   }
 

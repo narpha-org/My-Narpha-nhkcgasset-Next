@@ -641,7 +641,7 @@ type Mutation {
   createCGAssetReview(
     asset_db_id: ID!
     review: String!
-    revised_user_id: ID!
+    reviewed_user_id: ID!
   ): CGAssetReview
 
   "Update a CGAssetReview."
@@ -1182,6 +1182,9 @@ type CGAsset {
   "アップロード場所"
   asset_media_base: String!
 
+  "アップロード場所"
+  uploadDir: CGAssetUploadDir
+
   "アセット画像"
   assetImages: [CGAssetImage]
 
@@ -1196,6 +1199,9 @@ type CGAsset {
 
   "修正履歴"
   revisionHistories: [CGARevisionHistory]
+
+  "コメント・レビュー"
+  reviews: [CGAssetReview]
 
   "登録ユーザ"
   userCreate: User!
@@ -1272,6 +1278,9 @@ input CreateCGAssetInput {
   "アップロード場所"
   asset_media_base: String
 
+  "アップロード場所ID"
+  uploadDirId: ID
+
   "アセット画像"
   assetImages: [CGAssetImageInput]
 
@@ -1283,6 +1292,9 @@ input CreateCGAssetInput {
 
   "アセットタグ文字列"
   assetTagsStr: String
+
+  "修正履歴"
+  revision_history: String
 
   "有効フラグ"
   valid_flg: Boolean
@@ -1342,6 +1354,9 @@ input UpdateCGAssetInput {
   "アップロード場所"
   asset_media_base: String
 
+  "アップロード場所ID"
+  uploadDirId: ID
+
   "アセット画像"
   assetImages: [CGAssetImageInput]
 
@@ -1353,6 +1368,9 @@ input UpdateCGAssetInput {
 
   "アセットタグ文字列"
   assetTagsStr: String
+
+  "修正履歴"
+  revision_history: String
 
   "有効フラグ"
   valid_flg: Boolean

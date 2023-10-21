@@ -28,6 +28,10 @@ mutation DeleteCgAsset($id: ID!) {
     rights_supplement
     asset_detail
     asset_media_base
+    uploadDir {
+      id
+      base_path
+    }
     assetImages {
       file_name
       url
@@ -64,6 +68,14 @@ mutation DeleteCgAsset($id: ID!) {
       created_at
       desc
       revisedUser {
+        name
+      }
+    }
+    reviews {
+      id
+      created_at
+      review
+      reviewedUser {
         name
       }
     }

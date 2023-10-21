@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import {
   CgAsset,
 } from "@/graphql/generated/graphql";
@@ -18,7 +19,11 @@ const AssetRightsSupplementBlock: React.FC<AssetRightsSupplementBlockProps> = ({
       </div>
       <div className="flex-grow h-full overflow-y-auto">
         <slot>
-          {cgAsset.rights_supplement}
+          {cgAsset.rights_supplement?.split("\n").map((item, index) => {
+            return (
+              <Fragment key={index}>{item}<br /></Fragment>
+            );
+          })}
         </slot>
       </div>
     </>

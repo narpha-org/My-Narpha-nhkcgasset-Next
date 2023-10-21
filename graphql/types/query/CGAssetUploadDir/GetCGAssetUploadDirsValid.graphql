@@ -1,0 +1,6 @@
+query GetCGAssetUploadDirsValid {
+  CGAssetUploadDirsValid {
+    base_path
+    id
+  }
+}

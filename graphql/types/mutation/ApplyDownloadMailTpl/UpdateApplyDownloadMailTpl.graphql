@@ -1,0 +1,30 @@
+mutation UpdateApplyDownloadMailTpl(
+  $id: ID!
+  $status: StatusApplyDownload!
+  $subject_tpl: String!
+  $body_tpl: String!
+  $from_mail: String
+  $bcc_mail: String
+  $valid_flg: Boolean!
+) {
+  updateApplyDownloadMailTpl(
+    id: $id
+    status: $status
+    subject_tpl: $subject_tpl
+    body_tpl: $body_tpl
+    from_mail: $from_mail
+    bcc_mail: $bcc_mail
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    status
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    valid_flg
+    created_at
+    updated_at
+  }
+}

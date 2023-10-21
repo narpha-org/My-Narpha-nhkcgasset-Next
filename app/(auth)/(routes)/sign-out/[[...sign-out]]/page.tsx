@@ -31,7 +31,7 @@ const SignOut = () => {
     router.push(`/`);
   }
 
-  if (!isMounted) {
+  if (!isMounted || !session) {
     return null;
   }
 

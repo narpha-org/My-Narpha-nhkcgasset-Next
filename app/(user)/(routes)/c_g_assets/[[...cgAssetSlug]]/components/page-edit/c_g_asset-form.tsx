@@ -25,6 +25,7 @@ import {
   CreateCgAssetDocument,
   UpdateCgAssetDocument,
   DeleteCgAssetDocument,
+  CgAssetUploadDir,
 } from "@/graphql/generated/graphql";
 
 import { Input } from "@/components/ui/input"
@@ -81,29 +82,32 @@ const formSchema = z.object({
     .min(1, {
       message: "必須入力",
     })
-    .max(200, {
-      message: "権利補足（使用上の注意）は最大 200 文字以内でご入力ください。",
+    .max(500, {
+      message: "権利補足（使用上の注意）は最大 500 文字以内でご入力ください。",
     }),
   asset_detail: z
     .string()
     .min(1, {
       message: "必須入力",
     })
-    .max(200, {
-      message: "アセット詳細説明 は最大 200 文字以内でご入力ください。",
+    .max(1000, {
+      message: "アセット詳細説明 は最大 1000 文字以内でご入力ください。",
     }),
   assetTagsStr: z.string().min(0),
-  asset_media_base: z
-    .string()
-    .min(1, {
-      message: "必須入力",
-    })
-    .max(1000, {
-      message: "アップロード場所 は最大 1000 文字以内でご入力ください。",
-    })
-    .regex(/^[^/].+[^/]$/, {
-      message: "アップロード場所 は最初と最後に / は使用できません。",
-    }),
+  // asset_media_base: z
+  //   .string()
+  //   .min(1, {
+  //     message: "必須入力",
+  //   })
+  //   .max(1000, {
+  //     message: "アップロード場所 は最大 1000 文字以内でご入力ください。",
+  //   })
+  //   .regex(/^[^/].+[^/]$/, {
+  //     message: "アップロード場所 は最初と最後に / は使用できません。",
+  //   }),
+  uploadDirId: z.string().min(1, {
+    message: "必須選択",
+  }),
   assetImages: z.object({
     file_name: z.string(),
     url: z.string(),
@@ -128,6 +132,7 @@ const formSchema = z.object({
     thumb_url: z.string().min(0),
     thumb_file_path: z.string().min(0)
   }).array(),
+  revision_history: z.string().optional(),
   valid_flg: z.boolean().default(true).optional(),
 });
 
@@ -140,6 +145,7 @@ interface CGAssetFormProps {
   viewingRestrictions: CgaViewingRestriction[];
   broadcastingRights: CgaBroadcastingRight[];
   sharedAreas: CgaSharedArea[];
+  uploadDirs: CgAssetUploadDir[];
 };
 
 export const CGAssetForm: React.FC<CGAssetFormProps> = ({
@@ -149,6 +155,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
   viewingRestrictions,
   broadcastingRights,
   sharedAreas,
+  uploadDirs
 }) => {
   const params = useParams() as unknown as CGAssetPageProps['params'];
   const router = useRouter();
@@ -180,7 +187,8 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
     assetTagsStr: initialData?.assetTags?.map((assetTag: CgAssetTag | null) => {
       return assetTag?.tag
     }).join(','),
-    asset_media_base: initialData?.asset_media_base as string | undefined,
+    // asset_media_base: initialData?.asset_media_base as string | undefined,
+    uploadDirId: initialData?.uploadDir?.id,
     assetImages: initialData?.assetImages as UploadImageProps[],
     assetVideos: initialData?.assetVideos as UploadImageProps[],
     asset3DCGs: initialData?.asset3DCGs as UploadFileProps[]
@@ -201,10 +209,12 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
     rights_supplement: '',
     asset_detail: '',
     assetTagsStr: '',
-    asset_media_base: '',
+    // asset_media_base: '',
+    uploadDirId: '',
     assetImages: [],
     assetVideos: [],
     asset3DCGs: [],
+    revision_history: '',
     valid_flg: true,
   }
 
@@ -579,7 +589,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
             />
           </div>
           <div className="md:grid md:grid-cols-1 gap-8">
-            <FormField
+            {/* <FormField
               control={form.control}
               name="asset_media_base"
               render={({ field }) => (
@@ -588,6 +598,28 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                   <FormControl>
                     <Input disabled={loading} placeholder="3DModels/乗り物/飛行機" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+            <FormField
+              control={form.control}
+              name="uploadDirId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>アップロード場所</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="アップロード場所を選択" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {uploadDirs && uploadDirs.map((uploadDir) => (
+                        <SelectItem key={uploadDir.id} value={uploadDir.id}>{uploadDir.base_path}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -684,6 +716,26 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                       }])}
                       onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
                       poster="/images/asset_3dcg.png"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="md:grid md:grid-cols-3 gap-8">
+            <FormField
+              control={form.control}
+              name="revision_history"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>修正内容</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      disabled={loading}
+                      placeholder="修正した内容を記述"
+                      className=""
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />

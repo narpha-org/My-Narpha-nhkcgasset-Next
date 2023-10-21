@@ -1,0 +1,43 @@
+mutation CreateCgAssetReview(
+  $asset_db_id: ID!
+  $review: String!
+  $reviewed_user_id: ID!
+) {
+  createCGAssetReview(
+    asset_db_id: $asset_db_id
+    review: $review
+    reviewed_user_id: $reviewed_user_id
+  ) {
+    __typename
+    id
+    review
+    cgAsset {
+      id
+      reviews {
+        id
+        review
+        reviewedUser {
+          name
+        }
+        created_at
+      }
+    }
+    reviewedUser {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+  }
+}

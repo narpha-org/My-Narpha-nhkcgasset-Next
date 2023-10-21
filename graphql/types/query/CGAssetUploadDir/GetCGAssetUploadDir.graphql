@@ -1,0 +1,9 @@
+query GetCGAssetUploadDir($id: ID!) {
+  CGAssetUploadDir(id: $id) {
+    id
+    base_path
+    order
+    valid_flg
+    created_at
+  }
+}

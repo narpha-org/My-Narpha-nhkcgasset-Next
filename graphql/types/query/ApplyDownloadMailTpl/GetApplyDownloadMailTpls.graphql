@@ -1,0 +1,21 @@
+query GetApplyDownloadMailTpls($first: Int!, $page: Int!) {
+  ApplyDownloadMailTpls(first: $first, page: $page) {
+    data {
+      id
+      status
+      subject_tpl
+      body_tpl
+      from_mail
+      bcc_mail
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}

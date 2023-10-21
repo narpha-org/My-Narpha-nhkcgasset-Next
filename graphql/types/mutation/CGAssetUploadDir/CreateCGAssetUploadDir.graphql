@@ -1,0 +1,17 @@
+mutation CreateCGAssetUploadDir(
+  $base_path: String!
+  $order: Int!
+  $valid_flg: Boolean!
+) {
+  createCGAssetUploadDir(
+    base_path: $base_path
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    base_path
+    order
+    valid_flg
+  }
+}

@@ -1,0 +1,11 @@
+query GetApplyDownloadMailTplsValid {
+  ApplyDownloadMailTplsValid {
+    status
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    created_at
+    id
+  }
+}

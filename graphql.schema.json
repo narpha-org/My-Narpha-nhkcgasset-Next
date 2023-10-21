@@ -1801,6 +1801,22 @@
             "deprecationReason": null
           },
           {
+            "name": "reviews",
+            "description": "コメント・レビュー",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CGAssetReview",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "revisionHistories",
             "description": "修正履歴",
             "args": [],
@@ -1852,6 +1868,18 @@
                 "name": "DateTime",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "uploadDir",
+            "description": "アップロード場所",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CGAssetUploadDir",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -4322,6 +4350,18 @@
             "deprecationReason": null
           },
           {
+            "name": "revision_history",
+            "description": "修正履歴",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "rights_supplement",
             "description": "権利補足（使用上の注意）",
             "type": {
@@ -4336,6 +4376,18 @@
           {
             "name": "sharedAreaId",
             "description": "公開エリアID",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "uploadDirId",
+            "description": "アップロード場所ID",
             "type": {
               "kind": "SCALAR",
               "name": "ID",
@@ -5817,7 +5869,7 @@
                 "deprecationReason": null
               },
               {
-                "name": "revised_user_id",
+                "name": "reviewed_user_id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -13071,6 +13123,18 @@
             "deprecationReason": null
           },
           {
+            "name": "revision_history",
+            "description": "修正履歴",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "rights_supplement",
             "description": "権利補足（使用上の注意）",
             "type": {
@@ -13105,6 +13169,18 @@
                 "name": "ID",
                 "ofType": null
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "uploadDirId",
+            "description": "アップロード場所ID",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,

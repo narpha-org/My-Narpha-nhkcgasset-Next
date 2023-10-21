@@ -1,0 +1,13 @@
+query GetApplyDownloadMailTpl($id: ID!) {
+  ApplyDownloadMailTpl(id: $id) {
+    id
+    status
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    valid_flg
+    created_at
+    updated_at
+  }
+}

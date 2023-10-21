@@ -1,0 +1,19 @@
+mutation UpdateCGAssetUploadDir(
+  $id: ID!
+  $base_path: String!
+  $order: Int!
+  $valid_flg: Boolean!
+) {
+  updateCGAssetUploadDir(
+    id: $id
+    base_path: $base_path
+    order: $order
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    base_path
+    order
+    valid_flg
+  }
+}

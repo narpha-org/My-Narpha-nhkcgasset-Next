@@ -42,6 +42,10 @@ query GetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
       rights_supplement
       asset_detail
       asset_media_base
+      uploadDir {
+        id
+        base_path
+      }
       assetImages {
         id
         file_name
@@ -83,6 +87,14 @@ query GetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
         created_at
         desc
         revisedUser {
+          name
+        }
+      }
+      reviews {
+        id
+        created_at
+        review
+        reviewedUser {
           name
         }
       }

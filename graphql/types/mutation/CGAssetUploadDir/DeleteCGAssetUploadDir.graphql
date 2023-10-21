@@ -1,0 +1,9 @@
+mutation DeleteCGAssetUploadDir($id: ID!) {
+  deleteCGAssetUploadDir(id: $id) {
+    __typename
+    id
+    base_path
+    order
+    valid_flg
+  }
+}

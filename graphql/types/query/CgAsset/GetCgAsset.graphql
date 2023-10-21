@@ -1,10 +1,11 @@
-mutation CreateCgAsset($input: CreateCGAssetInput!) {
-  createCGAsset(input: $input) {
-    __typename
+query GetCgAsset($id: ID!) {
+  CGAsset(id: $id) {
     id
     asset_id
     asset_name
     assetCate {
+      id
+      code
       desc
     }
     asset_app_prod
@@ -14,21 +15,30 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
     program_id
     program_name
     registrantAffiliation {
+      id
       desc
     }
     viewingRestriction {
+      id
       desc
     }
     broadcastingRight {
+      id
       desc
     }
     sharedArea {
+      id
       desc
     }
     rights_supplement
     asset_detail
     asset_media_base
+    uploadDir {
+      id
+      base_path
+    }
     assetImages {
+      id
       file_name
       url
       file_path
@@ -37,6 +47,7 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
       thumb_file_path
     }
     assetVideos {
+      id
       file_name
       url
       file_path
@@ -45,6 +56,7 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
       thumb_file_path
     }
     asset3DCGs {
+      id
       file_name
       url
       file_path
@@ -53,6 +65,7 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
       thumb_file_path
     }
     assetTags {
+      id
       tag
       tag_add_edit_flg
       taggedUser {
@@ -61,10 +74,51 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
       created_at
     }
     revisionHistories {
+      id
       created_at
       desc
       revisedUser {
         name
+      }
+    }
+    reviews {
+      id
+      created_at
+      review
+      reviewedUser {
+        name
+      }
+    }
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
       }
     }
     valid_flg

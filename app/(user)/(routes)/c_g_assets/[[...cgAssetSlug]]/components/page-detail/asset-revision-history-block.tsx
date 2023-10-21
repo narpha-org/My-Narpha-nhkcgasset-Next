@@ -1,3 +1,5 @@
+
+import { Fragment } from "react";
 import {
   CgAsset, CgaRevisionHistory,
 } from "@/graphql/generated/graphql";
@@ -22,7 +24,11 @@ const AssetRevisionHistoryBlock: React.FC<AssetRevisionHistoryBlockProps> = ({
           if (elem) {
             return <div key={elem.id} className="flex flex-wrap justify-between mb-5">
               <div className="">{elem.created_at}</div>
-              <div className="ml-2">{elem.desc}</div>
+              <div className="ml-2 w-full">{elem.desc.split("\n").map((item, index) => {
+                return (
+                  <Fragment key={index}>{item}<br /></Fragment>
+                );
+              })}</div>
               {/* <div>{elem.revisedUser?.name}</div> */}
             </div>
           }
