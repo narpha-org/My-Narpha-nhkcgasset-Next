@@ -102,8 +102,10 @@ export const UserForm: React.FC<UserFormProps> = ({
   const onSubmit = async (data: UserFormValues) => {
     try {
       setLoading(true);
+
+      let ret: FetchResult;
       if (initialData) {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: UpdateUserDocument,
             variables: {
@@ -112,9 +114,11 @@ export const UserForm: React.FC<UserFormProps> = ({
                 ...data
               },
             },
-          })
+          }) as FetchResult<{
+            updateUser: User;
+          }>
       } else {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: CreateUserDocument,
             variables: {
@@ -122,8 +126,26 @@ export const UserForm: React.FC<UserFormProps> = ({
                 ...data
               },
             },
-          })
+          }) as FetchResult<{
+            createUser: User;
+          }>
       }
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
       router.push(`/admin/users`);
       toast.success(toastMessage, {

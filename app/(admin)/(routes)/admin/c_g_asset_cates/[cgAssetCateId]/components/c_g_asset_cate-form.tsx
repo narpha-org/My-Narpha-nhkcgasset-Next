@@ -34,7 +34,7 @@ import { AlertModal } from "@/components/modals/alert-modal"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 
-import { codeCGAssetCates } from "../../components/columns"
+import { codeCGAssetCates } from "@/lib/enums"
 
 const formSchema = z.object({
   code: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
@@ -85,29 +85,55 @@ export const CGAssetCateForm: React.FC<CGAssetCateFormProps> = ({
   const onSubmit = async (data: CGAssetCateFormValues) => {
     try {
       setLoading(true);
+
+      let ret: FetchResult;
       if (initialData) {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: UpdateCgAssetCateDocument,
             variables: {
               id: params.cgAssetCateId,
               ...data
             },
-          })
+          }) as FetchResult<{
+            updateCgAssetCate: CgAssetCate;
+          }>
       } else {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: CreateCgAssetCateDocument,
             variables: {
               ...data
             },
-          })
+          }) as FetchResult<{
+            createCgAssetCate: CgAssetCate;
+          }>
       }
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
       router.push(`/admin/c_g_asset_cates`);
       toast.success(toastMessage);
     } catch (error: any) {
-      toast.error('Something went wrong.');
+      if (error.message === "_CODE_IS_NOT_UNIQUE_OR_INVALID_") {
+        toast.error("登録済みのアセット区分です。");
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setLoading(false);
     }

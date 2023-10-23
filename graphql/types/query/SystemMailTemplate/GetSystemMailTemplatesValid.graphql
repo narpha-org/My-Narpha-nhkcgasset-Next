@@ -1,6 +1,6 @@
-query GetApplyDownloadMailTplsValid {
-  ApplyDownloadMailTplsValid {
-    status
+query GetSystemMailTemplatesValid {
+  SystemMailTemplatesValid {
+    code
     subject_tpl
     body_tpl
     from_mail

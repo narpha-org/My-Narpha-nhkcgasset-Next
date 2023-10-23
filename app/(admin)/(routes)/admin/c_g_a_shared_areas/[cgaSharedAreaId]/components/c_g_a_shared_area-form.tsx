@@ -78,24 +78,46 @@ export const CGASharedAreaForm: React.FC<CGASharedAreaFormProps> = ({
   const onSubmit = async (data: CGASharedAreaFormValues) => {
     try {
       setLoading(true);
+
+      let ret: FetchResult;
       if (initialData) {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: UpdateCgaSharedAreaDocument,
             variables: {
               id: params.cgaSharedAreaId,
               ...data
             },
-          })
+          }) as FetchResult<{
+            updateCgaSharedArea: CgaSharedArea;
+          }>
       } else {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: CreateCgaSharedAreaDocument,
             variables: {
               ...data
             },
-          })
+          }) as FetchResult<{
+            createCgaSharedArea: CgaSharedArea;
+          }>
       }
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
       router.push(`/admin/c_g_a_shared_areas`);
       toast.success(toastMessage);

@@ -4,9 +4,8 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  UserRoleCgAssetStore,
   GetUserRoleCgAssetStoresDocument,
-  PaginatorInfo,
+  UserRoleCgAssetStorePaginator,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
@@ -29,10 +28,7 @@ const UserRoleCgAssetStoresPage = async ({
   params: {}
 }) => {
   const ret: ApolloQueryResult<{
-    UserRoleCGAssetStores: {
-      data: UserRoleCgAssetStore[];
-      paginatorInfo: PaginatorInfo;
-    }
+    UserRoleCGAssetStores: UserRoleCgAssetStorePaginator
   }> = await apolloServer()
     .query({
       query: GetUserRoleCgAssetStoresDocument,

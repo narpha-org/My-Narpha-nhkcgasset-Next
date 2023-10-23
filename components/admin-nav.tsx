@@ -6,6 +6,7 @@ import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils"
 import { SearchItemToggle } from "./admin-search-item-toggle";
 import { AssetItemToggle } from "./admin-asset-item-toggle";
+import { SystemItemToggle } from "./admin-system-item-toggle";
 
 export function AdminNav({
   className,
@@ -21,11 +22,6 @@ export function AdminNav({
       active: pathname === `/admin/`,
     },
     {
-      href: `/admin/users`,
-      label: 'Oktaユーザ',
-      active: pathname === `/admin/users`,
-    },
-    {
       href: ``,
       label: 'SearchItemToggle',
     },
@@ -34,14 +30,8 @@ export function AdminNav({
       label: 'AssetItemToggle',
     },
     {
-      href: `/admin/system_notices`,
-      label: 'お知らせ',
-      active: pathname === `/admin/system_notices`,
-    },
-    {
-      href: `/admin/apply_download_mail_tpls`,
-      label: 'メール雛形',
-      active: pathname === `/admin/apply_download_mail_tpls`,
+      href: ``,
+      label: 'SystemItemToggle',
     },
     {
       href: `/`,
@@ -63,6 +53,9 @@ export function AdminNav({
           }
           if (route.label === 'AssetItemToggle') {
             return <div key={route.label}><AssetItemToggle /></div>
+          }
+          if (route.label === 'SystemItemToggle') {
+            return <div key={route.label}><SystemItemToggle /></div>
           }
 
           return <Link

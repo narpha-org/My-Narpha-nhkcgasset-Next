@@ -3,9 +3,8 @@
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgAsset,
+  CgAssetPaginator,
   GetCgAssetsDocument,
-  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
 import { CGAssetSearchFormValues } from "@/hooks/use-search-form";
@@ -18,10 +17,7 @@ interface FetchDataProps {
 
 export async function fetchData(params: FetchDataProps) {
   const ret: ApolloQueryResult<{
-    CGAssets: {
-      data: CgAsset[];
-      paginatorInfo: PaginatorInfo;
-    };
+    CGAssets: CgAssetPaginator;
   }> = await apolloClient.query({
     query: GetCgAssetsDocument,
     variables: params,

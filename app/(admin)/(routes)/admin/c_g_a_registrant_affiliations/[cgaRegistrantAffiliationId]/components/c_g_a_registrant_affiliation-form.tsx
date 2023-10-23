@@ -78,24 +78,46 @@ export const CGARegistrantAffiliationForm: React.FC<CGARegistrantAffiliationForm
   const onSubmit = async (data: CGARegistrantAffiliationFormValues) => {
     try {
       setLoading(true);
+
+      let ret: FetchResult;
       if (initialData) {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: UpdateCgaRegistrantAffiliationDocument,
             variables: {
               id: params.cgaRegistrantAffiliationId,
               ...data
             },
-          })
+          }) as FetchResult<{
+            updateCgaRegistrantAffiliation: CgaRegistrantAffiliation;
+          }>
       } else {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: CreateCgaRegistrantAffiliationDocument,
             variables: {
               ...data
             },
-          })
+          }) as FetchResult<{
+            createCgaRegistrantAffiliation: CgaRegistrantAffiliation;
+          }>
       }
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
       router.push(`/admin/c_g_a_registrant_affiliations`);
       toast.success(toastMessage);

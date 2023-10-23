@@ -15,7 +15,6 @@
     "@auth/firebase-adapter": "^1.0.1",
     "@auth/prisma-adapter": "^1.0.3",
     "@hookform/resolvers": "^3.1.1",
-    "@okta/okta-react": "^6.7.0",
     "@prisma/client": "^5.4.2",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-checkbox": "^1.0.4",

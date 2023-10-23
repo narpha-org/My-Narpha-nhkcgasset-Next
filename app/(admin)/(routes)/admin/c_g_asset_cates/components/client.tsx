@@ -9,7 +9,8 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { PaginatorInfo } from "@/graphql/generated/graphql";
 
-import { columns, CGAssetCateColumn, formatCode } from "./columns";
+import { columns, CGAssetCateColumn } from "./columns";
+import { formatCodeCGAssetCate } from "@/lib/enums"
 
 interface CGAssetCateClientProps {
   data: CGAssetCateColumn[];
@@ -23,7 +24,7 @@ export const CGAssetCateClient: React.FC<CGAssetCateClientProps> = ({
   const router = useRouter();
 
   data.map(elem => {
-    elem.code = formatCode(elem.code)
+    elem.code = formatCodeCGAssetCate(elem.code)
   })
 
   return (

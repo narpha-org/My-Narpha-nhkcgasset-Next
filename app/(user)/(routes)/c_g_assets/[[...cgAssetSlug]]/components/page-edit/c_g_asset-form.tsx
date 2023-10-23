@@ -230,7 +230,9 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
       const additionalData = {}
 
       if (initialData) {
-        await apolloClient
+        const ret: FetchResult<{
+          updateCGAsset: CgAsset;
+        }> = await apolloClient
           .mutate({
             mutation: UpdateCgAssetDocument,
             variables: {
@@ -242,6 +244,21 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
               }
             },
           })
+
+        // console.log("ret", ret);
+        if (
+          ret.errors &&
+          ret.errors[0] &&
+          ret.errors[0].extensions &&
+          ret.errors[0].extensions.debugMessage
+        ) {
+          throw new Error(ret.errors[0].extensions.debugMessage as string)
+        } else if (
+          ret.errors &&
+          ret.errors[0]
+        ) {
+          throw new Error(ret.errors[0].message as string)
+        }
 
         router.refresh();
         router.push(`/c_g_assets/${params.cgAssetSlug[0]}`);
@@ -261,6 +278,21 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
             },
           });
         const newCgAssetId = ret.data?.createCGAsset.id;
+
+        // console.log("ret", ret);
+        if (
+          ret.errors &&
+          ret.errors[0] &&
+          ret.errors[0].extensions &&
+          ret.errors[0].extensions.debugMessage
+        ) {
+          throw new Error(ret.errors[0].extensions.debugMessage as string)
+        } else if (
+          ret.errors &&
+          ret.errors[0]
+        ) {
+          throw new Error(ret.errors[0].message as string)
+        }
 
         router.refresh();
         router.push(`/c_g_assets/${newCgAssetId}`);
@@ -543,7 +575,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                     <Textarea
                       disabled={loading}
                       placeholder="権利補足（使用上の注意）"
-                      className=""
+                      className="h-60"
                       {...field}
                     />
                   </FormControl>
@@ -561,7 +593,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                     <Textarea
                       disabled={loading}
                       placeholder="アセット詳細説明"
-                      className=""
+                      className="h-80"
                       {...field}
                     />
                   </FormControl>

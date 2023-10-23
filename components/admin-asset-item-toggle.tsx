@@ -17,8 +17,6 @@ export function AssetItemToggle() {
   const pathname = usePathname();
 
   const active = [
-    `/admin/user_role_c_g_asset_stores`,
-    `/admin/c_g_a_registrant_affiliations`,
     `/admin/c_g_a_viewing_restrictions`,
     `/admin/c_g_a_broadcasting_rights`,
     `/admin/c_g_a_shared_areas`,
@@ -35,12 +33,6 @@ export function AssetItemToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => router.push(`/admin/user_role_c_g_asset_stores`)}>
-          CGアセットストアロール
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push(`/admin/c_g_a_registrant_affiliations`)}>
-          登録者所属
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/c_g_a_viewing_restrictions`)}>
           閲覧制限
         </DropdownMenuItem>

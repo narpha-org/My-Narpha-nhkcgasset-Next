@@ -78,24 +78,46 @@ export const CGaBroadcastingRightForm: React.FC<CGaBroadcastingRightFormProps> =
   const onSubmit = async (data: CGaBroadcastingRightFormValues) => {
     try {
       setLoading(true);
+
+      let ret: FetchResult;
       if (initialData) {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: UpdateCgaBroadcastingRightDocument,
             variables: {
               id: params.cgaBroadcastingRightId,
               ...data
             },
-          })
+          }) as FetchResult<{
+            UpdateCgaBroadcastingRight: CgaBroadcastingRight;
+          }>
       } else {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: CreateCgaBroadcastingRightDocument,
             variables: {
               ...data
             },
-          })
+          }) as FetchResult<{
+            CreateCgaBroadcastingRight: CgaBroadcastingRight;
+          }>
       }
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
       router.push(`/admin/c_g_a_broadcasting_rights`);
       toast.success(toastMessage);

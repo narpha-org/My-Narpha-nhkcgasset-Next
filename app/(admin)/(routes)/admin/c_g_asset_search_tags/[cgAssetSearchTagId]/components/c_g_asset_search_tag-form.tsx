@@ -83,24 +83,46 @@ export const CGAssetSearchTagForm: React.FC<CGAssetSearchTagFormProps> = ({
   const onSubmit = async (data: CGAssetSearchTagFormValues) => {
     try {
       setLoading(true);
+
+      let ret: FetchResult;
       if (initialData) {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: UpdateCgAssetSearchTagDocument,
             variables: {
               id: params.cgAssetSearchTagId,
               ...data
             },
-          })
+          }) as FetchResult<{
+            updateCgAssetSearchTag: CgAssetSearchTag;
+          }>
       } else {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: CreateCgAssetSearchTagDocument,
             variables: {
               ...data
             },
-          })
+          }) as FetchResult<{
+            createCgAssetSearchTag: CgAssetSearchTag;
+          }>
       }
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
       router.push(`/admin/c_g_asset_search_tags`);
       toast.success(toastMessage);

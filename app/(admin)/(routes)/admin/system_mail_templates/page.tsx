@@ -4,50 +4,46 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  ApplyDownloadMailTpl,
-  GetApplyDownloadMailTplsDocument,
-  PaginatorInfo,
+  SystemMailTemplatePaginator,
+  GetSystemMailTemplatesDocument,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
 
-import { ApplyDownloadMailTplClient } from "./components/client";
-import { ApplyDownloadMailTplColumn } from "./components/columns";
+import { SystemMailTemplateClient } from "./components/client";
+import { SystemMailTemplateColumn } from "./components/columns";
 
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 export const metadata: Metadata = {
-  title: '申請メールテンプレート',
+  title: 'メールテンプレート',
   openGraph: {
-    title: '申請メールテンプレート',
+    title: 'メールテンプレート',
     ...commonMetadataOpenGraph,
   }
 }
 
-const ApplyDownloadMailTplsPage = async ({
+const SystemMailTemplatesPage = async ({
   params
 }: {
   params: {}
 }) => {
   const ret: ApolloQueryResult<{
-    ApplyDownloadMailTpls: {
-      data: ApplyDownloadMailTpl[];
-      paginatorInfo: PaginatorInfo;
-    }
+    SystemMailTemplates: SystemMailTemplatePaginator
   }> = await apolloServer()
     .query({
-      query: GetApplyDownloadMailTplsDocument,
+      query: GetSystemMailTemplatesDocument,
       variables: {
         first: 999,
         page: 1
       },
       fetchPolicy: 'network-only'
     });
-  const ApplyDownloadMailTpls = ret.data.ApplyDownloadMailTpls.data;
-  const paginatorInfo = ret.data.ApplyDownloadMailTpls.paginatorInfo;
+  const SystemMailTemplates = ret.data.SystemMailTemplates.data;
+  const paginatorInfo = ret.data.SystemMailTemplates.paginatorInfo;
 
-  const formattedApplyDownloadMailTpls: ApplyDownloadMailTplColumn[] = ApplyDownloadMailTpls.map((item) => ({
+  const formattedSystemMailTemplates: SystemMailTemplateColumn[] = SystemMailTemplates.map((item) => ({
     id: item.id,
-    status: item.status,
+    code: item.code,
     subject_tpl: item.subject_tpl,
     body_tpl: item.body_tpl,
     from_mail: item.from_mail as string,
@@ -58,10 +54,10 @@ const ApplyDownloadMailTplsPage = async ({
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <ApplyDownloadMailTplClient data={formattedApplyDownloadMailTpls} paginatorInfo={paginatorInfo} />
+        <SystemMailTemplateClient data={formattedSystemMailTemplates} paginatorInfo={paginatorInfo} />
       </div>
     </div>
   );
 };
 
-export default ApplyDownloadMailTplsPage;
+export default SystemMailTemplatesPage;

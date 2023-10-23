@@ -4,9 +4,8 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgaViewingRestriction,
+  CgaViewingRestrictionPaginator,
   GetCgaViewingRestrictionsDocument,
-  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
@@ -29,10 +28,7 @@ const CGAViewingRestrictionsPage = async ({
   params: {}
 }) => {
   const ret: ApolloQueryResult<{
-    CGAViewingRestrictions: {
-      data: CgaViewingRestriction[];
-      paginatorInfo: PaginatorInfo;
-    }
+    CGAViewingRestrictions: CgaViewingRestrictionPaginator
   }> = await apolloServer()
     .query({
       query: GetCgaViewingRestrictionsDocument,

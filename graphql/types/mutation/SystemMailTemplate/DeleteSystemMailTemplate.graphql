@@ -1,7 +1,8 @@
-query GetApplyDownloadMailTpl($id: ID!) {
-  ApplyDownloadMailTpl(id: $id) {
+mutation DeleteSystemMailTemplate($id: ID!) {
+  deleteSystemMailTemplate(id: $id) {
+    __typename
     id
-    status
+    code
     subject_tpl
     body_tpl
     from_mail

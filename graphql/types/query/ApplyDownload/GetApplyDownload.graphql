@@ -1,0 +1,12 @@
+query GetApplyDownload($id: ID!) {
+  ApplyDownload(id: $id) {
+    id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
+    status
+    created_at
+  }
+}

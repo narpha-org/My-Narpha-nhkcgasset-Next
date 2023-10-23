@@ -5,7 +5,6 @@ import { signIn, signOut } from "next-auth/react";
 import { Session } from "next-auth";
 import { toast } from "react-hot-toast"
 import { LogIn, LogOut } from "lucide-react";
-// import { useOktaAuth } from '@okta/okta-react';
 
 import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal"
@@ -37,7 +36,6 @@ export const LoginButton = () => {
 
 // ログアウトボタン
 export const LogoutButton = (props: { session: Session | null }) => {
-  // const { oktaAuth } = useOktaAuth();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -45,7 +43,6 @@ export const LogoutButton = (props: { session: Session | null }) => {
     setLoading(true);
 
     signOut().then(() => {
-      // await oktaAuth.signOut();
       if (!process.env.OKTA_LOGOUT) {
         return;
       }

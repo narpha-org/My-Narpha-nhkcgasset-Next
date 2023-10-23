@@ -1,13 +1,13 @@
-mutation CreateApplyDownloadMailTpl(
-  $status: StatusApplyDownload!
+mutation CreateSystemMailTemplate(
+  $code: CodeMailTemplate!
   $subject_tpl: String!
   $body_tpl: String!
   $from_mail: String
   $bcc_mail: String
   $valid_flg: Boolean!
 ) {
-  createApplyDownloadMailTpl(
-    status: $status
+  createSystemMailTemplate(
+    code: $code
     subject_tpl: $subject_tpl
     body_tpl: $body_tpl
     from_mail: $from_mail
@@ -16,7 +16,7 @@ mutation CreateApplyDownloadMailTpl(
   ) {
     __typename
     id
-    status
+    code
     subject_tpl
     body_tpl
     from_mail

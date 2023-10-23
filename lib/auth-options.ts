@@ -65,33 +65,34 @@ export const authOptions: NextAuthOptions = {
         // token.accessToken = account.access_token;
       }
       if (profile) {
-        token.cg_asset_store_role_desc = (
+        token.OktaRoleDesc = (
           profile as { cgAssetStoreRoleDesc: string }
         ).cgAssetStoreRoleDesc;
-        token.cg_asset_store_rgst_affi_desc = (
+        token.OktaRgstAffiDesc = (
           profile as { cgAssetStoreRgstAffiDesc: string }
         ).cgAssetStoreRgstAffiDesc;
-        token.cg_asset_store_rgst_affi_code = (
+        token.OktaRgstAffiCode = (
           profile as { cgAssetStoreRgstAffiCode: string }
         ).cgAssetStoreRgstAffiCode;
       }
 
       if (
         token.userId &&
-        (token.cg_asset_store_role_desc ||
-          token.cg_asset_store_rgst_affi_desc ||
-          token.cg_asset_store_rgst_affi_code)
+        (token.OktaRoleDesc ||
+          token.OktaRgstAffiDesc ||
+          token.OktaRgstAffiCode) &&
+        (token.OktaRoleDesc !== token.roleDesc ||
+          token.OktaRgstAffiDesc != token.rgstAffiDesc ||
+          token.OktaRgstAffiCode !== token.rgstAffiCode)
       ) {
         const ret = await apolloServer().mutate({
           mutation: UpdateUserAuthCustomDocument,
           variables: {
             user: {
               id: token.userId,
-              cg_asset_store_role_desc: token.cg_asset_store_role_desc,
-              cg_asset_store_rgst_affi_desc:
-                token.cg_asset_store_rgst_affi_desc,
-              cg_asset_store_rgst_affi_code:
-                token.cg_asset_store_rgst_affi_code,
+              cg_asset_store_role_desc: token.OktaRoleDesc,
+              cg_asset_store_rgst_affi_desc: token.OktaRgstAffiDesc,
+              cg_asset_store_rgst_affi_code: token.OktaRgstAffiCode,
             },
           },
         });

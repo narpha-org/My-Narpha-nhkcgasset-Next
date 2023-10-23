@@ -4,9 +4,8 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  User,
   GetUsersDocument,
-  PaginatorInfo,
+  UserPaginator,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
@@ -29,15 +28,12 @@ const UsersPage = async ({
   params: {}
 }) => {
   const ret: ApolloQueryResult<{
-    Users: {
-      data: User[];
-      paginatorInfo: PaginatorInfo;
-    }
+    Users: UserPaginator
   }> = await apolloServer()
     .query({
       query: GetUsersDocument,
       variables: {
-        first: 99999,
+        first: 9999,
         page: 1
       },
       fetchPolicy: 'network-only'

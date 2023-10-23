@@ -11,10 +11,10 @@ import { useParams, useRouter } from "next/navigation"
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  ApplyDownloadMailTpl,
-  CreateApplyDownloadMailTplDocument,
-  UpdateApplyDownloadMailTplDocument,
-  DeleteApplyDownloadMailTplDocument,
+  SystemMailTemplate,
+  CreateSystemMailTemplateDocument,
+  UpdateSystemMailTemplateDocument,
+  DeleteSystemMailTemplateDocument,
 } from "@/graphql/generated/graphql";
 
 import { Input } from "@/components/ui/input"
@@ -35,10 +35,10 @@ import { Textarea } from "@/components/ui/text-area"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 
-import { statusApplyDownloads } from "../../components/columns"
+import { codeMailTemplates } from "../../components/columns"
 
 const formSchema = z.object({
-  status: z.string({ required_error: '必須選択', invalid_type_error: '入力値に誤りがります' }).min(1, {
+  code: z.string({ required_error: '必須選択', invalid_type_error: '入力値に誤りがります' }).min(1, {
     message: "必須選択",
   }),
   subject_tpl: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
@@ -47,18 +47,18 @@ const formSchema = z.object({
   body_tpl: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
     message: "必須入力",
   }),
-  from_mail: z.string().optional(),
-  bcc_mail: z.string().optional(),
+  from_mail: z.string().nullish(),
+  bcc_mail: z.string().nullish(),
   valid_flg: z.boolean().default(false).optional(),
 });
 
-type ApplyDownloadMailTplFormValues = z.infer<typeof formSchema>
+type SystemMailTemplateFormValues = z.infer<typeof formSchema>
 
-interface ApplyDownloadMailTplFormProps {
-  initialData: ApplyDownloadMailTpl | null;
+interface SystemMailTemplateFormProps {
+  initialData: SystemMailTemplate | null;
 };
 
-export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> = ({
+export const SystemMailTemplateForm: React.FC<SystemMailTemplateFormProps> = ({
   initialData
 }) => {
   const params = useParams();
@@ -67,9 +67,9 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? 'ホーム画面: 申請メールテンプレート 編集' : 'ホーム画面: 申請メールテンプレート 新規追加';
-  const description = initialData ? '指定申請メールテンプレートの編集' : '新規申請メールテンプレートの追加';
-  const toastMessage = initialData ? '申請メールテンプレートが更新されました。' : '申請メールテンプレートが新規追加されました。';
+  const title = initialData ? 'メールテンプレート 編集' : 'メールテンプレート 新規追加';
+  const description = initialData ? '指定メールテンプレートの編集' : '新規メールテンプレートの追加';
+  const toastMessage = initialData ? 'メールテンプレートが更新されました。' : 'メールテンプレートが新規追加されました。';
   const action = initialData ? '更新' : '追加';
 
   const defaultValues = initialData ? {
@@ -77,7 +77,7 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
     from_mail: initialData?.from_mail as string | undefined,
     bcc_mail: initialData?.bcc_mail as string | undefined,
   } : {
-    status: '',
+    code: '',
     subject_tpl: '',
     body_tpl: '',
     from_mail: '',
@@ -85,37 +85,63 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
     valid_flg: false,
   }
 
-  const form = useForm<ApplyDownloadMailTplFormValues>({
+  const form = useForm<SystemMailTemplateFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues
   });
 
-  const onSubmit = async (data: ApplyDownloadMailTplFormValues) => {
+  const onSubmit = async (data: SystemMailTemplateFormValues) => {
     try {
       setLoading(true);
+
+      let ret: FetchResult;
       if (initialData) {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
-            mutation: UpdateApplyDownloadMailTplDocument,
+            mutation: UpdateSystemMailTemplateDocument,
             variables: {
-              id: params.applyDownloadMailTplId,
+              id: params.systemMailTemplateId,
               ...data
             },
-          })
+          }) as FetchResult<{
+            updateSystemMailTemplate: SystemMailTemplate;
+          }>
       } else {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
-            mutation: CreateApplyDownloadMailTplDocument,
+            mutation: CreateSystemMailTemplateDocument,
             variables: {
               ...data
             },
-          })
+          }) as FetchResult<{
+            createSystemMailTemplate: SystemMailTemplate;
+          }>
       }
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
-      router.push(`/admin/apply_download_mail_tpls`);
+      router.push(`/admin/system_mail_templates`);
       toast.success(toastMessage);
     } catch (error: any) {
-      toast.error('Something went wrong.');
+      if (error.message === "_CODE_IS_NOT_UNIQUE_OR_INVALID_") {
+        toast.error("登録済みのメール区分です。");
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setLoading(false);
     }
@@ -126,9 +152,9 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
       setLoading(true);
       const ret = await apolloClient
         .mutate({
-          mutation: DeleteApplyDownloadMailTplDocument,
+          mutation: DeleteSystemMailTemplateDocument,
           variables: {
-            id: params.applyDownloadMailTplId,
+            id: params.systemMailTemplateId,
           },
         })
 
@@ -138,8 +164,8 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
       }
 
       router.refresh();
-      router.push(`/admin/apply_download_mail_tpls`);
-      toast.success('申請メールテンプレートが削除されました。');
+      router.push(`/admin/system_mail_templates`);
+      toast.success('メールテンプレートが削除されました。');
     } catch (error: any) {
       toast.error('削除できません。');
     } finally {
@@ -175,19 +201,19 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
           <div className="md:grid md:grid-cols-5 gap-8">
             <FormField
               control={form.control}
-              name="status"
+              name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>申請ステータス</FormLabel>
+                  <FormLabel>メール区分</FormLabel>
                   <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue defaultValue={field.value} placeholder="申請ステータスの選択" />
+                        <SelectValue defaultValue={field.value} placeholder="メール区分の選択" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {statusApplyDownloads.map((statusApplyDownload) => (
-                        <SelectItem key={statusApplyDownload.key} value={statusApplyDownload.key}>{statusApplyDownload.key} ({statusApplyDownload.value})</SelectItem>
+                      {codeMailTemplates.map((codeMailTemplate) => (
+                        <SelectItem key={codeMailTemplate.key} value={codeMailTemplate.key}>{codeMailTemplate.value}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -206,9 +232,10 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
                   </FormControl>
                   <FormMessage />
                   <FormDescription>
+                    アセットID: %ASSET_ID%<br />
                     アセット名: %ASSET_NAME%<br />
-                    申請するユーザ名: %ASSET_USER_NAME%<br />
-                    申請先ユーザ名: %ADMIN_USER_NAME%<br />
+                    FROMユーザ名: %FROM_USER_NAME%<br />
+                    TOユーザ名: %TO_USER_NAME%<br />
                   </FormDescription>
                 </FormItem>
               )}
@@ -223,16 +250,19 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
                     <Textarea
                       disabled={loading}
                       placeholder="メール本文"
-                      className=""
+                      className="h-80"
                       {...field}
                     />
                   </FormControl>
                   <FormMessage />
                   <FormDescription>
+                    アセットID: %ASSET_ID%<br />
                     アセット名: %ASSET_NAME%<br />
-                    申請するユーザ名: %ASSET_USER_NAME%<br />
-                    申請先ユーザ名: %ADMIN_USER_NAME%<br />
-                    申請者メッセージ: %ASSET_USER_MESSAGE%<br />
+                    FROMユーザ名: %FROM_USER_NAME%<br />
+                    TOユーザ名: %TO_USER_NAME%<br />
+                    発信メッセージ: %ASSET_USER_MESSAGE%<br />
+                    アセットURL: %ASSET_URL%<br />
+                    未決リスト: %PENDING_LIST%<br />
                   </FormDescription>
                 </FormItem>
               )}
@@ -244,6 +274,7 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
                 <FormItem>
                   <FormLabel>送信元メールアドレス</FormLabel>
                   <FormControl>
+                    {/* @ts-ignore */}
                     <Input type="email" disabled={loading} placeholder="info@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
@@ -257,6 +288,7 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
                 <FormItem>
                   <FormLabel>BCCメールアドレス</FormLabel>
                   <FormControl>
+                    {/* @ts-ignore */}
                     <Input type="email" disabled={loading} placeholder="admin@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
@@ -280,7 +312,7 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
                       有効フラグ
                     </FormLabel>
                     <FormDescription>
-                      この申請メールテンプレートを選択項目として有効にする
+                      このメールテンプレートを選択項目として有効にする
                     </FormDescription>
                   </div>
                 </FormItem>
@@ -288,7 +320,7 @@ export const ApplyDownloadMailTplForm: React.FC<ApplyDownloadMailTplFormProps> =
             />
           </div>
           <Button disabled={loading} className="ml-auto mr-2" variant="outline" type="button"
-            onClick={() => router.push(`/admin/apply_download_mail_tpls`)}>
+            onClick={() => router.push(`/admin/system_mail_templates`)}>
             キャンセル
           </Button>
           <Button disabled={loading} className="ml-auto" type="submit">

@@ -4,9 +4,8 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgaSharedArea,
+  CgaSharedAreaPaginator,
   GetCgaSharedAreasDocument,
-  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
@@ -29,10 +28,7 @@ const CGASharedAreasPage = async ({
   params: {}
 }) => {
   const ret: ApolloQueryResult<{
-    CGASharedAreas: {
-      data: CgaSharedArea[];
-      paginatorInfo: PaginatorInfo;
-    }
+    CGASharedAreas: CgaSharedAreaPaginator
   }> = await apolloServer()
     .query({
       query: GetCgaSharedAreasDocument,

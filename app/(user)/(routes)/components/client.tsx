@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useSearchForm } from "@/hooks/use-search-form";
 import {
   SystemNotice,
+  ApplyDownload,
 } from "@/graphql/generated/graphql";
 
 import { Heading } from "@/components/ui/heading";
@@ -15,10 +16,16 @@ import UserInfoBlock from "./user-info-block";
 
 interface HomeDashboardClientProps {
   systemNotices: SystemNotice[]
+  downloadNoRemovals: ApplyDownload[]
+  downloadEntries: ApplyDownload[]
+  downloadApprovals: ApplyDownload[]
 }
 
 export const HomeDashboardClient: React.FC<HomeDashboardClientProps> = ({
-  systemNotices
+  systemNotices,
+  downloadNoRemovals,
+  downloadEntries,
+  downloadApprovals,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -52,7 +59,11 @@ export const HomeDashboardClient: React.FC<HomeDashboardClientProps> = ({
             />
           </div>
           <div className="flex flex-col w-full px-3 py-2">
-            <AssetInfoBlock />
+            <AssetInfoBlock
+              downloadNoRemovals={downloadNoRemovals}
+              downloadEntries={downloadEntries}
+              downloadApprovals={downloadApprovals}
+            />
           </div>
         </div>
         <div className="basis-1/3">

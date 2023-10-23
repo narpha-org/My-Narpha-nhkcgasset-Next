@@ -4,9 +4,8 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgAssetSearchAppProd,
+  CgAssetSearchAppProdPaginator,
   GetCgAssetSearchAppProdsDocument,
-  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
@@ -29,10 +28,7 @@ const CGAssetSearchAppProdsPage = async ({
   params: {}
 }) => {
   const ret: ApolloQueryResult<{
-    CGAssetSearchAppProds: {
-      data: CgAssetSearchAppProd[];
-      paginatorInfo: PaginatorInfo;
-    }
+    CGAssetSearchAppProds: CgAssetSearchAppProdPaginator
   }> = await apolloServer()
     .query({
       query: GetCgAssetSearchAppProdsDocument,

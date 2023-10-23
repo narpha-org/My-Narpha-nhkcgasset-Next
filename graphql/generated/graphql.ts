@@ -110,37 +110,11 @@ export type ApplyDownloadCommentPaginator = {
   paginatorInfo: PaginatorInfo;
 };
 
-/**
- * ApplyDownloadMailTpl.
- * ダウンロード申請メールテンプレート
- */
-export type ApplyDownloadMailTpl = {
-  __typename?: 'ApplyDownloadMailTpl';
-  /** BCCメールアドレス */
-  bcc_mail?: Maybe<Scalars['String']['output']>;
-  /** メール本文 */
-  body_tpl: Scalars['String']['output'];
-  /** When the ApplyDownloadMailTpl was created. */
-  created_at: Scalars['DateTime']['output'];
-  /** 送信元メールアドレス */
-  from_mail?: Maybe<Scalars['String']['output']>;
-  /** Unique primary key. */
-  id: Scalars['ID']['output'];
-  /** ステータス */
-  status: StatusApplyDownload;
-  /** メール題名 */
-  subject_tpl: Scalars['String']['output'];
-  /** When the ApplyDownloadMailTpl was last updated. */
-  updated_at: Scalars['DateTime']['output'];
-  /** 有効フラグ */
-  valid_flg: Scalars['Boolean']['output'];
-};
-
-/** A paginated list of ApplyDownloadMailTpl items. */
-export type ApplyDownloadMailTplPaginator = {
-  __typename?: 'ApplyDownloadMailTplPaginator';
-  /** A list of ApplyDownloadMailTpl items. */
-  data: Array<ApplyDownloadMailTpl>;
+/** A paginated list of ApplyDownload items. */
+export type ApplyDownloadPaginator = {
+  __typename?: 'ApplyDownloadPaginator';
+  /** A list of ApplyDownload items. */
+  data: Array<ApplyDownload>;
   /** Pagination information about the list of items. */
   paginatorInfo: PaginatorInfo;
 };
@@ -724,6 +698,18 @@ export enum CodeCgAssetCate {
   Img = 'IMG'
 }
 
+export enum CodeMailTemplate {
+  AdminComment = 'ADMIN_COMMENT',
+  ApplyDownloadApply = 'APPLY_DOWNLOAD_APPLY',
+  ApplyDownloadApproval = 'APPLY_DOWNLOAD_APPROVAL',
+  ApplyDownloadBoxDeliver = 'APPLY_DOWNLOAD_BOX_DELIVER',
+  ApplyDownloadRemoval = 'APPLY_DOWNLOAD_REMOVAL',
+  AssetComment = 'ASSET_COMMENT',
+  AssetDeleteConfirm = 'ASSET_DELETE_CONFIRM',
+  PendingList = 'PENDING_LIST',
+  RemovalAlert = 'REMOVAL_ALERT'
+}
+
 export type CreateApplyDownloadArgs = {
   asset_db_id: Scalars['ID']['input'];
   comment: Scalars['String']['input'];
@@ -837,8 +823,6 @@ export type Mutation = {
   createApplyDownload?: Maybe<ApplyDownload>;
   /** Create a ApplyDownloadComment. */
   createApplyDownloadComment?: Maybe<ApplyDownloadComment>;
-  /** Create a ApplyDownloadMailTpl. */
-  createApplyDownloadMailTpl?: Maybe<ApplyDownloadMailTpl>;
   /** Create a CGABroadcastingRight. */
   createCGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** Create a CGARegistrantAffiliation. */
@@ -873,6 +857,8 @@ export type Mutation = {
   createSample?: Maybe<Sample>;
   /** Create a OktaSession. */
   createSession?: Maybe<OktaSession>;
+  /** Create a SystemMailTemplate. */
+  createSystemMailTemplate?: Maybe<SystemMailTemplate>;
   /** Create a SystemNotice. */
   createSystemNotice?: Maybe<SystemNotice>;
   /** Create a OktaSession. */
@@ -885,8 +871,6 @@ export type Mutation = {
   deleteApplyDownload?: Maybe<ApplyDownload>;
   /** Delete a ApplyDownloadComment. */
   deleteApplyDownloadComment?: Maybe<ApplyDownloadComment>;
-  /** Delete a ApplyDownloadMailTpl. */
-  deleteApplyDownloadMailTpl?: Maybe<ApplyDownloadMailTpl>;
   /** Delete a CGABroadcastingRight. */
   deleteCGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** Delete a CGARegistrantAffiliation. */
@@ -921,6 +905,8 @@ export type Mutation = {
   deleteSample?: Maybe<Sample>;
   /** Delete a OktaSession. */
   deleteSession?: Maybe<OktaSession>;
+  /** Delete a SystemMailTemplate. */
+  deleteSystemMailTemplate?: Maybe<SystemMailTemplate>;
   /** Delete a SystemNotice. */
   deleteSystemNotice?: Maybe<SystemNotice>;
   /** Delete a OktaSession. */
@@ -937,8 +923,6 @@ export type Mutation = {
   updateApplyDownloadBoxDeliver?: Maybe<ApplyDownload>;
   /** Update a ApplyDownloadComment. */
   updateApplyDownloadComment?: Maybe<ApplyDownloadComment>;
-  /** Update a ApplyDownloadMailTpl. */
-  updateApplyDownloadMailTpl?: Maybe<ApplyDownloadMailTpl>;
   /** データ削除 */
   updateApplyDownloadRemoval?: Maybe<ApplyDownload>;
   /** Update a CGABroadcastingRight. */
@@ -975,6 +959,8 @@ export type Mutation = {
   updateSample?: Maybe<Sample>;
   /** Update a OktaSession. */
   updateSession?: Maybe<OktaSession>;
+  /** Update a SystemMailTemplate. */
+  updateSystemMailTemplate?: Maybe<SystemMailTemplate>;
   /** Update a SystemNotice. */
   updateSystemNotice?: Maybe<SystemNotice>;
   /** Update a OktaSession. */
@@ -996,16 +982,6 @@ export type MutationCreateApplyDownloadCommentArgs = {
   comment: Scalars['String']['input'];
   status: StatusApplyDownload;
   user_id: Scalars['ID']['input'];
-  valid_flg: Scalars['Boolean']['input'];
-};
-
-
-export type MutationCreateApplyDownloadMailTplArgs = {
-  bcc_mail?: InputMaybe<Scalars['String']['input']>;
-  body_tpl: Scalars['String']['input'];
-  from_mail?: InputMaybe<Scalars['String']['input']>;
-  status: StatusApplyDownload;
-  subject_tpl: Scalars['String']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -1142,6 +1118,16 @@ export type MutationCreateSessionArgs = {
 };
 
 
+export type MutationCreateSystemMailTemplateArgs = {
+  bcc_mail?: InputMaybe<Scalars['String']['input']>;
+  body_tpl: Scalars['String']['input'];
+  code: CodeMailTemplate;
+  from_mail?: InputMaybe<Scalars['String']['input']>;
+  subject_tpl: Scalars['String']['input'];
+  valid_flg: Scalars['Boolean']['input'];
+};
+
+
 export type MutationCreateSystemNoticeArgs = {
   create_user_id: Scalars['ID']['input'];
   message: Scalars['String']['input'];
@@ -1174,11 +1160,6 @@ export type MutationDeleteApplyDownloadArgs = {
 
 
 export type MutationDeleteApplyDownloadCommentArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteApplyDownloadMailTplArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -1268,6 +1249,11 @@ export type MutationDeleteSessionArgs = {
 };
 
 
+export type MutationDeleteSystemMailTemplateArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationDeleteSystemNoticeArgs = {
   id: Scalars['ID']['input'];
 };
@@ -1306,17 +1292,6 @@ export type MutationUpdateApplyDownloadBoxDeliverArgs = {
 export type MutationUpdateApplyDownloadCommentArgs = {
   comment: Scalars['String']['input'];
   id: Scalars['ID']['input'];
-  valid_flg: Scalars['Boolean']['input'];
-};
-
-
-export type MutationUpdateApplyDownloadMailTplArgs = {
-  bcc_mail?: InputMaybe<Scalars['String']['input']>;
-  body_tpl: Scalars['String']['input'];
-  from_mail?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
-  status: StatusApplyDownload;
-  subject_tpl: Scalars['String']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -1451,6 +1426,17 @@ export type MutationUpdateSampleArgs = {
 
 export type MutationUpdateSessionArgs = {
   input: UpdateSessionInput;
+};
+
+
+export type MutationUpdateSystemMailTemplateArgs = {
+  bcc_mail?: InputMaybe<Scalars['String']['input']>;
+  body_tpl: Scalars['String']['input'];
+  code: CodeMailTemplate;
+  from_mail?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  subject_tpl: Scalars['String']['input'];
+  valid_flg: Scalars['Boolean']['input'];
 };
 
 
@@ -1605,18 +1591,12 @@ export type Query = {
   ApplyDownloadComments: ApplyDownloadCommentPaginator;
   /** List all available ApplyDownloadComment. */
   ApplyDownloadCommentsValid: Array<ApplyDownloadComment>;
-  /** Find a single ApplyDownloadMailTpl by an identifying attribute. */
-  ApplyDownloadMailTpl?: Maybe<ApplyDownloadMailTpl>;
-  /** List multiple ApplyDownloadMailTpl. */
-  ApplyDownloadMailTpls: ApplyDownloadMailTplPaginator;
-  /** List all available ApplyDownloadMailTpl. */
-  ApplyDownloadMailTplsValid: Array<ApplyDownloadMailTpl>;
   /** 承認一覧 */
-  ApplyDownloadsApproval: Array<ApplyDownload>;
+  ApplyDownloadsApproval: ApplyDownloadPaginator;
   /** 申請一覧 */
-  ApplyDownloadsEntry: Array<ApplyDownload>;
+  ApplyDownloadsEntry: ApplyDownloadPaginator;
   /** ダウンロード申請一覧 */
-  ApplyDownloadsNoRemoval: Array<ApplyDownload>;
+  ApplyDownloadsNoRemoval: ApplyDownloadPaginator;
   /** Find a single CGABroadcastingRight by an identifying attribute. */
   CGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** List multiple CGABroadcastingRight. */
@@ -1701,6 +1681,12 @@ export type Query = {
   CGAssets: CgAssetPaginator;
   /** List all available CGAssetCate. */
   CGAssetsValid: CgAssetPaginator;
+  /** Find a single SystemMailTemplate by an identifying attribute. */
+  SystemMailTemplate?: Maybe<SystemMailTemplate>;
+  /** List multiple SystemMailTemplate. */
+  SystemMailTemplates: SystemMailTemplatePaginator;
+  /** List all available SystemMailTemplate. */
+  SystemMailTemplatesValid: Array<SystemMailTemplate>;
   /** Find a single SystemNotice by an identifying attribute. */
   SystemNotice?: Maybe<SystemNotice>;
   /** List multiple SystemNotice. */
@@ -1753,15 +1739,24 @@ export type QueryApplyDownloadCommentsArgs = {
 };
 
 
-export type QueryApplyDownloadMailTplArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+export type QueryApplyDownloadsApprovalArgs = {
+  first?: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
+  user_id: Scalars['ID']['input'];
 };
 
 
-export type QueryApplyDownloadMailTplsArgs = {
-  body_tpl?: InputMaybe<Scalars['String']['input']>;
+export type QueryApplyDownloadsEntryArgs = {
   first?: Scalars['Int']['input'];
   page?: InputMaybe<Scalars['Int']['input']>;
+  user_id: Scalars['ID']['input'];
+};
+
+
+export type QueryApplyDownloadsNoRemovalArgs = {
+  first?: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
+  user_id: Scalars['ID']['input'];
 };
 
 
@@ -1954,6 +1949,18 @@ export type QueryCgAssetsValidArgs = {
 };
 
 
+export type QuerySystemMailTemplateArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QuerySystemMailTemplatesArgs = {
+  body_tpl?: InputMaybe<Scalars['String']['input']>;
+  first?: Scalars['Int']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QuerySystemNoticeArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
 };
@@ -2111,6 +2118,41 @@ export enum StatusApplyDownload {
 }
 
 /**
+ * SystemMailTemplate.
+ * 管理メールテンプレート
+ */
+export type SystemMailTemplate = {
+  __typename?: 'SystemMailTemplate';
+  /** BCCメールアドレス */
+  bcc_mail?: Maybe<Scalars['String']['output']>;
+  /** メール本文 */
+  body_tpl: Scalars['String']['output'];
+  /** メール区分 */
+  code: CodeMailTemplate;
+  /** When the SystemMailTemplate was created. */
+  created_at: Scalars['DateTime']['output'];
+  /** 送信元メールアドレス */
+  from_mail?: Maybe<Scalars['String']['output']>;
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  /** メール題名 */
+  subject_tpl: Scalars['String']['output'];
+  /** When the SystemMailTemplate was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  /** 有効フラグ */
+  valid_flg: Scalars['Boolean']['output'];
+};
+
+/** A paginated list of SystemMailTemplate items. */
+export type SystemMailTemplatePaginator = {
+  __typename?: 'SystemMailTemplatePaginator';
+  /** A list of SystemMailTemplate items. */
+  data: Array<SystemMailTemplate>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+};
+
+/**
  * SystemNotice.
  * お知らせ
  */
@@ -2160,16 +2202,19 @@ export type UnlinkAccountInput = {
 
 export type UpdateApplyDownloadApprovalArgs = {
   comment: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
   user_id: Scalars['ID']['input'];
 };
 
 export type UpdateApplyDownloadBoxDeliverArgs = {
   comment: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
   user_id: Scalars['ID']['input'];
 };
 
 export type UpdateApplyDownloadRemovalArgs = {
   comment: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
   user_id: Scalars['ID']['input'];
 };
 
@@ -2386,37 +2431,33 @@ export type WhereConditionsRelation = {
   relation: Scalars['String']['input'];
 };
 
-export type CreateApplyDownloadMailTplMutationVariables = Exact<{
-  status: StatusApplyDownload;
-  subject_tpl: Scalars['String']['input'];
-  body_tpl: Scalars['String']['input'];
-  from_mail?: InputMaybe<Scalars['String']['input']>;
-  bcc_mail?: InputMaybe<Scalars['String']['input']>;
-  valid_flg: Scalars['Boolean']['input'];
+export type CreateApplyDownloadMutationVariables = Exact<{
+  input: CreateApplyDownloadArgs;
 }>;
 
 
-export type CreateApplyDownloadMailTplMutation = { __typename?: 'Mutation', createApplyDownloadMailTpl?: { __typename: 'ApplyDownloadMailTpl', id: string, status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+export type CreateApplyDownloadMutation = { __typename?: 'Mutation', createApplyDownload?: { __typename: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } } | null };
 
-export type DeleteApplyDownloadMailTplMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+export type UpdateApplyDownloadApprovalMutationVariables = Exact<{
+  input: UpdateApplyDownloadApprovalArgs;
 }>;
 
 
-export type DeleteApplyDownloadMailTplMutation = { __typename?: 'Mutation', deleteApplyDownloadMailTpl?: { __typename: 'ApplyDownloadMailTpl', id: string, status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+export type UpdateApplyDownloadApprovalMutation = { __typename?: 'Mutation', updateApplyDownloadApproval?: { __typename: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } } | null };
 
-export type UpdateApplyDownloadMailTplMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-  status: StatusApplyDownload;
-  subject_tpl: Scalars['String']['input'];
-  body_tpl: Scalars['String']['input'];
-  from_mail?: InputMaybe<Scalars['String']['input']>;
-  bcc_mail?: InputMaybe<Scalars['String']['input']>;
-  valid_flg: Scalars['Boolean']['input'];
+export type UpdateApplyDownloadBoxDeliverMutationVariables = Exact<{
+  input: UpdateApplyDownloadBoxDeliverArgs;
 }>;
 
 
-export type UpdateApplyDownloadMailTplMutation = { __typename?: 'Mutation', updateApplyDownloadMailTpl?: { __typename: 'ApplyDownloadMailTpl', id: string, status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+export type UpdateApplyDownloadBoxDeliverMutation = { __typename?: 'Mutation', updateApplyDownloadBoxDeliver?: { __typename: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } } | null };
+
+export type UpdateApplyDownloadRemovalMutationVariables = Exact<{
+  input: UpdateApplyDownloadRemovalArgs;
+}>;
+
+
+export type UpdateApplyDownloadRemovalMutation = { __typename?: 'Mutation', updateApplyDownloadRemoval?: { __typename: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } } | null };
 
 export type CreateSessionMutationVariables = Exact<{
   input: CreateSessionInput;
@@ -2756,6 +2797,38 @@ export type DeleteSampleMutationVariables = Exact<{
 
 export type DeleteSampleMutation = { __typename?: 'Mutation', deleteSample?: { __typename: 'Sample', id: string, text: string } | null };
 
+export type CreateSystemMailTemplateMutationVariables = Exact<{
+  code: CodeMailTemplate;
+  subject_tpl: Scalars['String']['input'];
+  body_tpl: Scalars['String']['input'];
+  from_mail?: InputMaybe<Scalars['String']['input']>;
+  bcc_mail?: InputMaybe<Scalars['String']['input']>;
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type CreateSystemMailTemplateMutation = { __typename?: 'Mutation', createSystemMailTemplate?: { __typename: 'SystemMailTemplate', id: string, code: CodeMailTemplate, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+
+export type DeleteSystemMailTemplateMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteSystemMailTemplateMutation = { __typename?: 'Mutation', deleteSystemMailTemplate?: { __typename: 'SystemMailTemplate', id: string, code: CodeMailTemplate, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+
+export type UpdateSystemMailTemplateMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  code: CodeMailTemplate;
+  subject_tpl: Scalars['String']['input'];
+  body_tpl: Scalars['String']['input'];
+  from_mail?: InputMaybe<Scalars['String']['input']>;
+  bcc_mail?: InputMaybe<Scalars['String']['input']>;
+  valid_flg: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateSystemMailTemplateMutation = { __typename?: 'Mutation', updateSystemMailTemplate?: { __typename: 'SystemMailTemplate', id: string, code: CodeMailTemplate, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+
 export type CreateSystemNoticeMutationVariables = Exact<{
   create_user_id: Scalars['ID']['input'];
   message: Scalars['String']['input'];
@@ -2812,25 +2885,39 @@ export type UpdateUserRoleCgAssetStoreMutationVariables = Exact<{
 
 export type UpdateUserRoleCgAssetStoreMutation = { __typename?: 'Mutation', updateUserRoleCGAssetStore?: { __typename: 'UserRoleCGAssetStore', id: string, role: RoleCgAssetStore, desc: string, order?: number | null, valid_flg: boolean } | null };
 
-export type GetApplyDownloadMailTplQueryVariables = Exact<{
+export type GetApplyDownloadQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetApplyDownloadMailTplQuery = { __typename?: 'Query', ApplyDownloadMailTpl?: { __typename?: 'ApplyDownloadMailTpl', id: string, status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+export type GetApplyDownloadQuery = { __typename?: 'Query', ApplyDownload?: { __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } } | null };
 
-export type GetApplyDownloadMailTplsQueryVariables = Exact<{
+export type GetApplyDownloadsApprovalQueryVariables = Exact<{
+  user_id: Scalars['ID']['input'];
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
 }>;
 
 
-export type GetApplyDownloadMailTplsQuery = { __typename?: 'Query', ApplyDownloadMailTpls: { __typename?: 'ApplyDownloadMailTplPaginator', data: Array<{ __typename?: 'ApplyDownloadMailTpl', id: string, status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetApplyDownloadsApprovalQuery = { __typename?: 'Query', ApplyDownloadsApproval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
-export type GetApplyDownloadMailTplsValidQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetApplyDownloadsEntryQueryVariables = Exact<{
+  user_id: Scalars['ID']['input'];
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
 
 
-export type GetApplyDownloadMailTplsValidQuery = { __typename?: 'Query', ApplyDownloadMailTplsValid: Array<{ __typename?: 'ApplyDownloadMailTpl', status: StatusApplyDownload, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, created_at: any, id: string }> };
+export type GetApplyDownloadsEntryQuery = { __typename?: 'Query', ApplyDownloadsEntry: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetApplyDownloadsNoRemovalQueryVariables = Exact<{
+  user_id: Scalars['ID']['input'];
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetApplyDownloadsNoRemovalQuery = { __typename?: 'Query', ApplyDownloadsNoRemoval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetSessionAndUserQueryVariables = Exact<{
   sessionToken: Scalars['String']['input'];
@@ -3063,6 +3150,26 @@ export type SamplesAllQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type SamplesAllQuery = { __typename?: 'Query', samplesAll: Array<{ __typename?: 'Sample', id: string, text: string }> };
 
+export type GetSystemMailTemplateQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetSystemMailTemplateQuery = { __typename?: 'Query', SystemMailTemplate?: { __typename?: 'SystemMailTemplate', id: string, code: CodeMailTemplate, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any } | null };
+
+export type GetSystemMailTemplatesQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetSystemMailTemplatesQuery = { __typename?: 'Query', SystemMailTemplates: { __typename?: 'SystemMailTemplatePaginator', data: Array<{ __typename?: 'SystemMailTemplate', id: string, code: CodeMailTemplate, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetSystemMailTemplatesValidQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSystemMailTemplatesValidQuery = { __typename?: 'Query', SystemMailTemplatesValid: Array<{ __typename?: 'SystemMailTemplate', code: CodeMailTemplate, subject_tpl: string, body_tpl: string, from_mail?: string | null, bcc_mail?: string | null, created_at: any, id: string }> };
+
 export type GetSystemNoticeQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -3104,158 +3211,170 @@ export type GetUserRoleCgAssetStoresValidQueryVariables = Exact<{ [key: string]:
 export type GetUserRoleCgAssetStoresValidQuery = { __typename?: 'Query', UserRoleCGAssetStoresValid: Array<{ __typename?: 'UserRoleCGAssetStore', desc: string, id: string }> };
 
 
-export const CreateApplyDownloadMailTplDocument = gql`
-    mutation CreateApplyDownloadMailTpl($status: StatusApplyDownload!, $subject_tpl: String!, $body_tpl: String!, $from_mail: String, $bcc_mail: String, $valid_flg: Boolean!) {
-  createApplyDownloadMailTpl(
-    status: $status
-    subject_tpl: $subject_tpl
-    body_tpl: $body_tpl
-    from_mail: $from_mail
-    bcc_mail: $bcc_mail
-    valid_flg: $valid_flg
-  ) {
+export const CreateApplyDownloadDocument = gql`
+    mutation CreateApplyDownload($input: CreateApplyDownloadArgs!) {
+  createApplyDownload(input: $input) {
     __typename
     id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
     status
-    subject_tpl
-    body_tpl
-    from_mail
-    bcc_mail
-    valid_flg
     created_at
-    updated_at
   }
 }
     `;
-export type CreateApplyDownloadMailTplMutationFn = Apollo.MutationFunction<CreateApplyDownloadMailTplMutation, CreateApplyDownloadMailTplMutationVariables>;
+export type CreateApplyDownloadMutationFn = Apollo.MutationFunction<CreateApplyDownloadMutation, CreateApplyDownloadMutationVariables>;
 
 /**
- * __useCreateApplyDownloadMailTplMutation__
+ * __useCreateApplyDownloadMutation__
  *
- * To run a mutation, you first call `useCreateApplyDownloadMailTplMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateApplyDownloadMailTplMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateApplyDownloadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateApplyDownloadMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createApplyDownloadMailTplMutation, { data, loading, error }] = useCreateApplyDownloadMailTplMutation({
+ * const [createApplyDownloadMutation, { data, loading, error }] = useCreateApplyDownloadMutation({
  *   variables: {
- *      status: // value for 'status'
- *      subject_tpl: // value for 'subject_tpl'
- *      body_tpl: // value for 'body_tpl'
- *      from_mail: // value for 'from_mail'
- *      bcc_mail: // value for 'bcc_mail'
- *      valid_flg: // value for 'valid_flg'
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateApplyDownloadMailTplMutation(baseOptions?: Apollo.MutationHookOptions<CreateApplyDownloadMailTplMutation, CreateApplyDownloadMailTplMutationVariables>) {
+export function useCreateApplyDownloadMutation(baseOptions?: Apollo.MutationHookOptions<CreateApplyDownloadMutation, CreateApplyDownloadMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateApplyDownloadMailTplMutation, CreateApplyDownloadMailTplMutationVariables>(CreateApplyDownloadMailTplDocument, options);
+        return Apollo.useMutation<CreateApplyDownloadMutation, CreateApplyDownloadMutationVariables>(CreateApplyDownloadDocument, options);
       }
-export type CreateApplyDownloadMailTplMutationHookResult = ReturnType<typeof useCreateApplyDownloadMailTplMutation>;
-export type CreateApplyDownloadMailTplMutationResult = Apollo.MutationResult<CreateApplyDownloadMailTplMutation>;
-export type CreateApplyDownloadMailTplMutationOptions = Apollo.BaseMutationOptions<CreateApplyDownloadMailTplMutation, CreateApplyDownloadMailTplMutationVariables>;
-export const DeleteApplyDownloadMailTplDocument = gql`
-    mutation DeleteApplyDownloadMailTpl($id: ID!) {
-  deleteApplyDownloadMailTpl(id: $id) {
+export type CreateApplyDownloadMutationHookResult = ReturnType<typeof useCreateApplyDownloadMutation>;
+export type CreateApplyDownloadMutationResult = Apollo.MutationResult<CreateApplyDownloadMutation>;
+export type CreateApplyDownloadMutationOptions = Apollo.BaseMutationOptions<CreateApplyDownloadMutation, CreateApplyDownloadMutationVariables>;
+export const UpdateApplyDownloadApprovalDocument = gql`
+    mutation UpdateApplyDownloadApproval($input: UpdateApplyDownloadApprovalArgs!) {
+  updateApplyDownloadApproval(input: $input) {
     __typename
     id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
     status
-    subject_tpl
-    body_tpl
-    from_mail
-    bcc_mail
-    valid_flg
     created_at
-    updated_at
   }
 }
     `;
-export type DeleteApplyDownloadMailTplMutationFn = Apollo.MutationFunction<DeleteApplyDownloadMailTplMutation, DeleteApplyDownloadMailTplMutationVariables>;
+export type UpdateApplyDownloadApprovalMutationFn = Apollo.MutationFunction<UpdateApplyDownloadApprovalMutation, UpdateApplyDownloadApprovalMutationVariables>;
 
 /**
- * __useDeleteApplyDownloadMailTplMutation__
+ * __useUpdateApplyDownloadApprovalMutation__
  *
- * To run a mutation, you first call `useDeleteApplyDownloadMailTplMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteApplyDownloadMailTplMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateApplyDownloadApprovalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApplyDownloadApprovalMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [deleteApplyDownloadMailTplMutation, { data, loading, error }] = useDeleteApplyDownloadMailTplMutation({
+ * const [updateApplyDownloadApprovalMutation, { data, loading, error }] = useUpdateApplyDownloadApprovalMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useDeleteApplyDownloadMailTplMutation(baseOptions?: Apollo.MutationHookOptions<DeleteApplyDownloadMailTplMutation, DeleteApplyDownloadMailTplMutationVariables>) {
+export function useUpdateApplyDownloadApprovalMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplyDownloadApprovalMutation, UpdateApplyDownloadApprovalMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteApplyDownloadMailTplMutation, DeleteApplyDownloadMailTplMutationVariables>(DeleteApplyDownloadMailTplDocument, options);
+        return Apollo.useMutation<UpdateApplyDownloadApprovalMutation, UpdateApplyDownloadApprovalMutationVariables>(UpdateApplyDownloadApprovalDocument, options);
       }
-export type DeleteApplyDownloadMailTplMutationHookResult = ReturnType<typeof useDeleteApplyDownloadMailTplMutation>;
-export type DeleteApplyDownloadMailTplMutationResult = Apollo.MutationResult<DeleteApplyDownloadMailTplMutation>;
-export type DeleteApplyDownloadMailTplMutationOptions = Apollo.BaseMutationOptions<DeleteApplyDownloadMailTplMutation, DeleteApplyDownloadMailTplMutationVariables>;
-export const UpdateApplyDownloadMailTplDocument = gql`
-    mutation UpdateApplyDownloadMailTpl($id: ID!, $status: StatusApplyDownload!, $subject_tpl: String!, $body_tpl: String!, $from_mail: String, $bcc_mail: String, $valid_flg: Boolean!) {
-  updateApplyDownloadMailTpl(
-    id: $id
-    status: $status
-    subject_tpl: $subject_tpl
-    body_tpl: $body_tpl
-    from_mail: $from_mail
-    bcc_mail: $bcc_mail
-    valid_flg: $valid_flg
-  ) {
+export type UpdateApplyDownloadApprovalMutationHookResult = ReturnType<typeof useUpdateApplyDownloadApprovalMutation>;
+export type UpdateApplyDownloadApprovalMutationResult = Apollo.MutationResult<UpdateApplyDownloadApprovalMutation>;
+export type UpdateApplyDownloadApprovalMutationOptions = Apollo.BaseMutationOptions<UpdateApplyDownloadApprovalMutation, UpdateApplyDownloadApprovalMutationVariables>;
+export const UpdateApplyDownloadBoxDeliverDocument = gql`
+    mutation UpdateApplyDownloadBoxDeliver($input: UpdateApplyDownloadBoxDeliverArgs!) {
+  updateApplyDownloadBoxDeliver(input: $input) {
     __typename
     id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
     status
-    subject_tpl
-    body_tpl
-    from_mail
-    bcc_mail
-    valid_flg
     created_at
-    updated_at
   }
 }
     `;
-export type UpdateApplyDownloadMailTplMutationFn = Apollo.MutationFunction<UpdateApplyDownloadMailTplMutation, UpdateApplyDownloadMailTplMutationVariables>;
+export type UpdateApplyDownloadBoxDeliverMutationFn = Apollo.MutationFunction<UpdateApplyDownloadBoxDeliverMutation, UpdateApplyDownloadBoxDeliverMutationVariables>;
 
 /**
- * __useUpdateApplyDownloadMailTplMutation__
+ * __useUpdateApplyDownloadBoxDeliverMutation__
  *
- * To run a mutation, you first call `useUpdateApplyDownloadMailTplMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateApplyDownloadMailTplMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateApplyDownloadBoxDeliverMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApplyDownloadBoxDeliverMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateApplyDownloadMailTplMutation, { data, loading, error }] = useUpdateApplyDownloadMailTplMutation({
+ * const [updateApplyDownloadBoxDeliverMutation, { data, loading, error }] = useUpdateApplyDownloadBoxDeliverMutation({
  *   variables: {
- *      id: // value for 'id'
- *      status: // value for 'status'
- *      subject_tpl: // value for 'subject_tpl'
- *      body_tpl: // value for 'body_tpl'
- *      from_mail: // value for 'from_mail'
- *      bcc_mail: // value for 'bcc_mail'
- *      valid_flg: // value for 'valid_flg'
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useUpdateApplyDownloadMailTplMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplyDownloadMailTplMutation, UpdateApplyDownloadMailTplMutationVariables>) {
+export function useUpdateApplyDownloadBoxDeliverMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplyDownloadBoxDeliverMutation, UpdateApplyDownloadBoxDeliverMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateApplyDownloadMailTplMutation, UpdateApplyDownloadMailTplMutationVariables>(UpdateApplyDownloadMailTplDocument, options);
+        return Apollo.useMutation<UpdateApplyDownloadBoxDeliverMutation, UpdateApplyDownloadBoxDeliverMutationVariables>(UpdateApplyDownloadBoxDeliverDocument, options);
       }
-export type UpdateApplyDownloadMailTplMutationHookResult = ReturnType<typeof useUpdateApplyDownloadMailTplMutation>;
-export type UpdateApplyDownloadMailTplMutationResult = Apollo.MutationResult<UpdateApplyDownloadMailTplMutation>;
-export type UpdateApplyDownloadMailTplMutationOptions = Apollo.BaseMutationOptions<UpdateApplyDownloadMailTplMutation, UpdateApplyDownloadMailTplMutationVariables>;
+export type UpdateApplyDownloadBoxDeliverMutationHookResult = ReturnType<typeof useUpdateApplyDownloadBoxDeliverMutation>;
+export type UpdateApplyDownloadBoxDeliverMutationResult = Apollo.MutationResult<UpdateApplyDownloadBoxDeliverMutation>;
+export type UpdateApplyDownloadBoxDeliverMutationOptions = Apollo.BaseMutationOptions<UpdateApplyDownloadBoxDeliverMutation, UpdateApplyDownloadBoxDeliverMutationVariables>;
+export const UpdateApplyDownloadRemovalDocument = gql`
+    mutation UpdateApplyDownloadRemoval($input: UpdateApplyDownloadRemovalArgs!) {
+  updateApplyDownloadRemoval(input: $input) {
+    __typename
+    id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
+    status
+    created_at
+  }
+}
+    `;
+export type UpdateApplyDownloadRemovalMutationFn = Apollo.MutationFunction<UpdateApplyDownloadRemovalMutation, UpdateApplyDownloadRemovalMutationVariables>;
+
+/**
+ * __useUpdateApplyDownloadRemovalMutation__
+ *
+ * To run a mutation, you first call `useUpdateApplyDownloadRemovalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApplyDownloadRemovalMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateApplyDownloadRemovalMutation, { data, loading, error }] = useUpdateApplyDownloadRemovalMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateApplyDownloadRemovalMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplyDownloadRemovalMutation, UpdateApplyDownloadRemovalMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateApplyDownloadRemovalMutation, UpdateApplyDownloadRemovalMutationVariables>(UpdateApplyDownloadRemovalDocument, options);
+      }
+export type UpdateApplyDownloadRemovalMutationHookResult = ReturnType<typeof useUpdateApplyDownloadRemovalMutation>;
+export type UpdateApplyDownloadRemovalMutationResult = Apollo.MutationResult<UpdateApplyDownloadRemovalMutation>;
+export type UpdateApplyDownloadRemovalMutationOptions = Apollo.BaseMutationOptions<UpdateApplyDownloadRemovalMutation, UpdateApplyDownloadRemovalMutationVariables>;
 export const CreateSessionDocument = gql`
     mutation CreateSession($input: CreateSessionInput!) {
   createSession(input: $input) {
@@ -5549,6 +5668,158 @@ export function useDeleteSampleMutation(baseOptions?: Apollo.MutationHookOptions
 export type DeleteSampleMutationHookResult = ReturnType<typeof useDeleteSampleMutation>;
 export type DeleteSampleMutationResult = Apollo.MutationResult<DeleteSampleMutation>;
 export type DeleteSampleMutationOptions = Apollo.BaseMutationOptions<DeleteSampleMutation, DeleteSampleMutationVariables>;
+export const CreateSystemMailTemplateDocument = gql`
+    mutation CreateSystemMailTemplate($code: CodeMailTemplate!, $subject_tpl: String!, $body_tpl: String!, $from_mail: String, $bcc_mail: String, $valid_flg: Boolean!) {
+  createSystemMailTemplate(
+    code: $code
+    subject_tpl: $subject_tpl
+    body_tpl: $body_tpl
+    from_mail: $from_mail
+    bcc_mail: $bcc_mail
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type CreateSystemMailTemplateMutationFn = Apollo.MutationFunction<CreateSystemMailTemplateMutation, CreateSystemMailTemplateMutationVariables>;
+
+/**
+ * __useCreateSystemMailTemplateMutation__
+ *
+ * To run a mutation, you first call `useCreateSystemMailTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSystemMailTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSystemMailTemplateMutation, { data, loading, error }] = useCreateSystemMailTemplateMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *      subject_tpl: // value for 'subject_tpl'
+ *      body_tpl: // value for 'body_tpl'
+ *      from_mail: // value for 'from_mail'
+ *      bcc_mail: // value for 'bcc_mail'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useCreateSystemMailTemplateMutation(baseOptions?: Apollo.MutationHookOptions<CreateSystemMailTemplateMutation, CreateSystemMailTemplateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSystemMailTemplateMutation, CreateSystemMailTemplateMutationVariables>(CreateSystemMailTemplateDocument, options);
+      }
+export type CreateSystemMailTemplateMutationHookResult = ReturnType<typeof useCreateSystemMailTemplateMutation>;
+export type CreateSystemMailTemplateMutationResult = Apollo.MutationResult<CreateSystemMailTemplateMutation>;
+export type CreateSystemMailTemplateMutationOptions = Apollo.BaseMutationOptions<CreateSystemMailTemplateMutation, CreateSystemMailTemplateMutationVariables>;
+export const DeleteSystemMailTemplateDocument = gql`
+    mutation DeleteSystemMailTemplate($id: ID!) {
+  deleteSystemMailTemplate(id: $id) {
+    __typename
+    id
+    code
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type DeleteSystemMailTemplateMutationFn = Apollo.MutationFunction<DeleteSystemMailTemplateMutation, DeleteSystemMailTemplateMutationVariables>;
+
+/**
+ * __useDeleteSystemMailTemplateMutation__
+ *
+ * To run a mutation, you first call `useDeleteSystemMailTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSystemMailTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSystemMailTemplateMutation, { data, loading, error }] = useDeleteSystemMailTemplateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteSystemMailTemplateMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSystemMailTemplateMutation, DeleteSystemMailTemplateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSystemMailTemplateMutation, DeleteSystemMailTemplateMutationVariables>(DeleteSystemMailTemplateDocument, options);
+      }
+export type DeleteSystemMailTemplateMutationHookResult = ReturnType<typeof useDeleteSystemMailTemplateMutation>;
+export type DeleteSystemMailTemplateMutationResult = Apollo.MutationResult<DeleteSystemMailTemplateMutation>;
+export type DeleteSystemMailTemplateMutationOptions = Apollo.BaseMutationOptions<DeleteSystemMailTemplateMutation, DeleteSystemMailTemplateMutationVariables>;
+export const UpdateSystemMailTemplateDocument = gql`
+    mutation UpdateSystemMailTemplate($id: ID!, $code: CodeMailTemplate!, $subject_tpl: String!, $body_tpl: String!, $from_mail: String, $bcc_mail: String, $valid_flg: Boolean!) {
+  updateSystemMailTemplate(
+    id: $id
+    code: $code
+    subject_tpl: $subject_tpl
+    body_tpl: $body_tpl
+    from_mail: $from_mail
+    bcc_mail: $bcc_mail
+    valid_flg: $valid_flg
+  ) {
+    __typename
+    id
+    code
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+export type UpdateSystemMailTemplateMutationFn = Apollo.MutationFunction<UpdateSystemMailTemplateMutation, UpdateSystemMailTemplateMutationVariables>;
+
+/**
+ * __useUpdateSystemMailTemplateMutation__
+ *
+ * To run a mutation, you first call `useUpdateSystemMailTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSystemMailTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSystemMailTemplateMutation, { data, loading, error }] = useUpdateSystemMailTemplateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      code: // value for 'code'
+ *      subject_tpl: // value for 'subject_tpl'
+ *      body_tpl: // value for 'body_tpl'
+ *      from_mail: // value for 'from_mail'
+ *      bcc_mail: // value for 'bcc_mail'
+ *      valid_flg: // value for 'valid_flg'
+ *   },
+ * });
+ */
+export function useUpdateSystemMailTemplateMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSystemMailTemplateMutation, UpdateSystemMailTemplateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSystemMailTemplateMutation, UpdateSystemMailTemplateMutationVariables>(UpdateSystemMailTemplateDocument, options);
+      }
+export type UpdateSystemMailTemplateMutationHookResult = ReturnType<typeof useUpdateSystemMailTemplateMutation>;
+export type UpdateSystemMailTemplateMutationResult = Apollo.MutationResult<UpdateSystemMailTemplateMutation>;
+export type UpdateSystemMailTemplateMutationOptions = Apollo.BaseMutationOptions<UpdateSystemMailTemplateMutation, UpdateSystemMailTemplateMutationVariables>;
 export const CreateSystemNoticeDocument = gql`
     mutation CreateSystemNotice($create_user_id: ID!, $message: String!, $order: Int!, $valid_flg: Boolean!) {
   createSystemNotice(
@@ -5912,62 +6183,60 @@ export function useUpdateUserRoleCgAssetStoreMutation(baseOptions?: Apollo.Mutat
 export type UpdateUserRoleCgAssetStoreMutationHookResult = ReturnType<typeof useUpdateUserRoleCgAssetStoreMutation>;
 export type UpdateUserRoleCgAssetStoreMutationResult = Apollo.MutationResult<UpdateUserRoleCgAssetStoreMutation>;
 export type UpdateUserRoleCgAssetStoreMutationOptions = Apollo.BaseMutationOptions<UpdateUserRoleCgAssetStoreMutation, UpdateUserRoleCgAssetStoreMutationVariables>;
-export const GetApplyDownloadMailTplDocument = gql`
-    query GetApplyDownloadMailTpl($id: ID!) {
-  ApplyDownloadMailTpl(id: $id) {
+export const GetApplyDownloadDocument = gql`
+    query GetApplyDownload($id: ID!) {
+  ApplyDownload(id: $id) {
     id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
     status
-    subject_tpl
-    body_tpl
-    from_mail
-    bcc_mail
-    valid_flg
     created_at
-    updated_at
   }
 }
     `;
 
 /**
- * __useGetApplyDownloadMailTplQuery__
+ * __useGetApplyDownloadQuery__
  *
- * To run a query within a React component, call `useGetApplyDownloadMailTplQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetApplyDownloadMailTplQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetApplyDownloadQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetApplyDownloadMailTplQuery({
+ * const { data, loading, error } = useGetApplyDownloadQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetApplyDownloadMailTplQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadMailTplQuery, GetApplyDownloadMailTplQueryVariables>) {
+export function useGetApplyDownloadQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadQuery, GetApplyDownloadQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetApplyDownloadMailTplQuery, GetApplyDownloadMailTplQueryVariables>(GetApplyDownloadMailTplDocument, options);
+        return Apollo.useQuery<GetApplyDownloadQuery, GetApplyDownloadQueryVariables>(GetApplyDownloadDocument, options);
       }
-export function useGetApplyDownloadMailTplLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadMailTplQuery, GetApplyDownloadMailTplQueryVariables>) {
+export function useGetApplyDownloadLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadQuery, GetApplyDownloadQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetApplyDownloadMailTplQuery, GetApplyDownloadMailTplQueryVariables>(GetApplyDownloadMailTplDocument, options);
+          return Apollo.useLazyQuery<GetApplyDownloadQuery, GetApplyDownloadQueryVariables>(GetApplyDownloadDocument, options);
         }
-export type GetApplyDownloadMailTplQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplQuery>;
-export type GetApplyDownloadMailTplLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplLazyQuery>;
-export type GetApplyDownloadMailTplQueryResult = Apollo.QueryResult<GetApplyDownloadMailTplQuery, GetApplyDownloadMailTplQueryVariables>;
-export const GetApplyDownloadMailTplsDocument = gql`
-    query GetApplyDownloadMailTpls($first: Int!, $page: Int!) {
-  ApplyDownloadMailTpls(first: $first, page: $page) {
+export type GetApplyDownloadQueryHookResult = ReturnType<typeof useGetApplyDownloadQuery>;
+export type GetApplyDownloadLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadLazyQuery>;
+export type GetApplyDownloadQueryResult = Apollo.QueryResult<GetApplyDownloadQuery, GetApplyDownloadQueryVariables>;
+export const GetApplyDownloadsApprovalDocument = gql`
+    query GetApplyDownloadsApproval($user_id: ID!, $first: Int!, $page: Int!) {
+  ApplyDownloadsApproval(user_id: $user_id, first: $first, page: $page) {
     data {
       id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
       status
-      subject_tpl
-      body_tpl
-      from_mail
-      bcc_mail
-      valid_flg
       created_at
-      updated_at
     }
     paginatorInfo {
       count
@@ -5980,73 +6249,138 @@ export const GetApplyDownloadMailTplsDocument = gql`
     `;
 
 /**
- * __useGetApplyDownloadMailTplsQuery__
+ * __useGetApplyDownloadsApprovalQuery__
  *
- * To run a query within a React component, call `useGetApplyDownloadMailTplsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetApplyDownloadMailTplsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetApplyDownloadsApprovalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadsApprovalQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetApplyDownloadMailTplsQuery({
+ * const { data, loading, error } = useGetApplyDownloadsApprovalQuery({
  *   variables: {
+ *      user_id: // value for 'user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
  *   },
  * });
  */
-export function useGetApplyDownloadMailTplsQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadMailTplsQuery, GetApplyDownloadMailTplsQueryVariables>) {
+export function useGetApplyDownloadsApprovalQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadsApprovalQuery, GetApplyDownloadsApprovalQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetApplyDownloadMailTplsQuery, GetApplyDownloadMailTplsQueryVariables>(GetApplyDownloadMailTplsDocument, options);
+        return Apollo.useQuery<GetApplyDownloadsApprovalQuery, GetApplyDownloadsApprovalQueryVariables>(GetApplyDownloadsApprovalDocument, options);
       }
-export function useGetApplyDownloadMailTplsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadMailTplsQuery, GetApplyDownloadMailTplsQueryVariables>) {
+export function useGetApplyDownloadsApprovalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadsApprovalQuery, GetApplyDownloadsApprovalQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetApplyDownloadMailTplsQuery, GetApplyDownloadMailTplsQueryVariables>(GetApplyDownloadMailTplsDocument, options);
+          return Apollo.useLazyQuery<GetApplyDownloadsApprovalQuery, GetApplyDownloadsApprovalQueryVariables>(GetApplyDownloadsApprovalDocument, options);
         }
-export type GetApplyDownloadMailTplsQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplsQuery>;
-export type GetApplyDownloadMailTplsLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplsLazyQuery>;
-export type GetApplyDownloadMailTplsQueryResult = Apollo.QueryResult<GetApplyDownloadMailTplsQuery, GetApplyDownloadMailTplsQueryVariables>;
-export const GetApplyDownloadMailTplsValidDocument = gql`
-    query GetApplyDownloadMailTplsValid {
-  ApplyDownloadMailTplsValid {
-    status
-    subject_tpl
-    body_tpl
-    from_mail
-    bcc_mail
-    created_at
-    id
+export type GetApplyDownloadsApprovalQueryHookResult = ReturnType<typeof useGetApplyDownloadsApprovalQuery>;
+export type GetApplyDownloadsApprovalLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsApprovalLazyQuery>;
+export type GetApplyDownloadsApprovalQueryResult = Apollo.QueryResult<GetApplyDownloadsApprovalQuery, GetApplyDownloadsApprovalQueryVariables>;
+export const GetApplyDownloadsEntryDocument = gql`
+    query GetApplyDownloadsEntry($user_id: ID!, $first: Int!, $page: Int!) {
+  ApplyDownloadsEntry(user_id: $user_id, first: $first, page: $page) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
   }
 }
     `;
 
 /**
- * __useGetApplyDownloadMailTplsValidQuery__
+ * __useGetApplyDownloadsEntryQuery__
  *
- * To run a query within a React component, call `useGetApplyDownloadMailTplsValidQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetApplyDownloadMailTplsValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetApplyDownloadsEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadsEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetApplyDownloadMailTplsValidQuery({
+ * const { data, loading, error } = useGetApplyDownloadsEntryQuery({
  *   variables: {
+ *      user_id: // value for 'user_id'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
  *   },
  * });
  */
-export function useGetApplyDownloadMailTplsValidQuery(baseOptions?: Apollo.QueryHookOptions<GetApplyDownloadMailTplsValidQuery, GetApplyDownloadMailTplsValidQueryVariables>) {
+export function useGetApplyDownloadsEntryQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadsEntryQuery, GetApplyDownloadsEntryQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetApplyDownloadMailTplsValidQuery, GetApplyDownloadMailTplsValidQueryVariables>(GetApplyDownloadMailTplsValidDocument, options);
+        return Apollo.useQuery<GetApplyDownloadsEntryQuery, GetApplyDownloadsEntryQueryVariables>(GetApplyDownloadsEntryDocument, options);
       }
-export function useGetApplyDownloadMailTplsValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadMailTplsValidQuery, GetApplyDownloadMailTplsValidQueryVariables>) {
+export function useGetApplyDownloadsEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadsEntryQuery, GetApplyDownloadsEntryQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetApplyDownloadMailTplsValidQuery, GetApplyDownloadMailTplsValidQueryVariables>(GetApplyDownloadMailTplsValidDocument, options);
+          return Apollo.useLazyQuery<GetApplyDownloadsEntryQuery, GetApplyDownloadsEntryQueryVariables>(GetApplyDownloadsEntryDocument, options);
         }
-export type GetApplyDownloadMailTplsValidQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplsValidQuery>;
-export type GetApplyDownloadMailTplsValidLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadMailTplsValidLazyQuery>;
-export type GetApplyDownloadMailTplsValidQueryResult = Apollo.QueryResult<GetApplyDownloadMailTplsValidQuery, GetApplyDownloadMailTplsValidQueryVariables>;
+export type GetApplyDownloadsEntryQueryHookResult = ReturnType<typeof useGetApplyDownloadsEntryQuery>;
+export type GetApplyDownloadsEntryLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsEntryLazyQuery>;
+export type GetApplyDownloadsEntryQueryResult = Apollo.QueryResult<GetApplyDownloadsEntryQuery, GetApplyDownloadsEntryQueryVariables>;
+export const GetApplyDownloadsNoRemovalDocument = gql`
+    query GetApplyDownloadsNoRemoval($user_id: ID!, $first: Int!, $page: Int!) {
+  ApplyDownloadsNoRemoval(user_id: $user_id, first: $first, page: $page) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetApplyDownloadsNoRemovalQuery__
+ *
+ * To run a query within a React component, call `useGetApplyDownloadsNoRemovalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadsNoRemovalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetApplyDownloadsNoRemovalQuery({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetApplyDownloadsNoRemovalQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadsNoRemovalQuery, GetApplyDownloadsNoRemovalQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetApplyDownloadsNoRemovalQuery, GetApplyDownloadsNoRemovalQueryVariables>(GetApplyDownloadsNoRemovalDocument, options);
+      }
+export function useGetApplyDownloadsNoRemovalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadsNoRemovalQuery, GetApplyDownloadsNoRemovalQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetApplyDownloadsNoRemovalQuery, GetApplyDownloadsNoRemovalQueryVariables>(GetApplyDownloadsNoRemovalDocument, options);
+        }
+export type GetApplyDownloadsNoRemovalQueryHookResult = ReturnType<typeof useGetApplyDownloadsNoRemovalQuery>;
+export type GetApplyDownloadsNoRemovalLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsNoRemovalLazyQuery>;
+export type GetApplyDownloadsNoRemovalQueryResult = Apollo.QueryResult<GetApplyDownloadsNoRemovalQuery, GetApplyDownloadsNoRemovalQueryVariables>;
 export const GetSessionAndUserDocument = gql`
     query GetSessionAndUser($sessionToken: String!) {
   getSessionAndUser(sessionToken: $sessionToken) {
@@ -7887,6 +8221,141 @@ export function useSamplesAllLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type SamplesAllQueryHookResult = ReturnType<typeof useSamplesAllQuery>;
 export type SamplesAllLazyQueryHookResult = ReturnType<typeof useSamplesAllLazyQuery>;
 export type SamplesAllQueryResult = Apollo.QueryResult<SamplesAllQuery, SamplesAllQueryVariables>;
+export const GetSystemMailTemplateDocument = gql`
+    query GetSystemMailTemplate($id: ID!) {
+  SystemMailTemplate(id: $id) {
+    id
+    code
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    valid_flg
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetSystemMailTemplateQuery__
+ *
+ * To run a query within a React component, call `useGetSystemMailTemplateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSystemMailTemplateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSystemMailTemplateQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetSystemMailTemplateQuery(baseOptions: Apollo.QueryHookOptions<GetSystemMailTemplateQuery, GetSystemMailTemplateQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSystemMailTemplateQuery, GetSystemMailTemplateQueryVariables>(GetSystemMailTemplateDocument, options);
+      }
+export function useGetSystemMailTemplateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSystemMailTemplateQuery, GetSystemMailTemplateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSystemMailTemplateQuery, GetSystemMailTemplateQueryVariables>(GetSystemMailTemplateDocument, options);
+        }
+export type GetSystemMailTemplateQueryHookResult = ReturnType<typeof useGetSystemMailTemplateQuery>;
+export type GetSystemMailTemplateLazyQueryHookResult = ReturnType<typeof useGetSystemMailTemplateLazyQuery>;
+export type GetSystemMailTemplateQueryResult = Apollo.QueryResult<GetSystemMailTemplateQuery, GetSystemMailTemplateQueryVariables>;
+export const GetSystemMailTemplatesDocument = gql`
+    query GetSystemMailTemplates($first: Int!, $page: Int!) {
+  SystemMailTemplates(first: $first, page: $page) {
+    data {
+      id
+      code
+      subject_tpl
+      body_tpl
+      from_mail
+      bcc_mail
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSystemMailTemplatesQuery__
+ *
+ * To run a query within a React component, call `useGetSystemMailTemplatesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSystemMailTemplatesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSystemMailTemplatesQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetSystemMailTemplatesQuery(baseOptions: Apollo.QueryHookOptions<GetSystemMailTemplatesQuery, GetSystemMailTemplatesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSystemMailTemplatesQuery, GetSystemMailTemplatesQueryVariables>(GetSystemMailTemplatesDocument, options);
+      }
+export function useGetSystemMailTemplatesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSystemMailTemplatesQuery, GetSystemMailTemplatesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSystemMailTemplatesQuery, GetSystemMailTemplatesQueryVariables>(GetSystemMailTemplatesDocument, options);
+        }
+export type GetSystemMailTemplatesQueryHookResult = ReturnType<typeof useGetSystemMailTemplatesQuery>;
+export type GetSystemMailTemplatesLazyQueryHookResult = ReturnType<typeof useGetSystemMailTemplatesLazyQuery>;
+export type GetSystemMailTemplatesQueryResult = Apollo.QueryResult<GetSystemMailTemplatesQuery, GetSystemMailTemplatesQueryVariables>;
+export const GetSystemMailTemplatesValidDocument = gql`
+    query GetSystemMailTemplatesValid {
+  SystemMailTemplatesValid {
+    code
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    created_at
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetSystemMailTemplatesValidQuery__
+ *
+ * To run a query within a React component, call `useGetSystemMailTemplatesValidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSystemMailTemplatesValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSystemMailTemplatesValidQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSystemMailTemplatesValidQuery(baseOptions?: Apollo.QueryHookOptions<GetSystemMailTemplatesValidQuery, GetSystemMailTemplatesValidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSystemMailTemplatesValidQuery, GetSystemMailTemplatesValidQueryVariables>(GetSystemMailTemplatesValidDocument, options);
+      }
+export function useGetSystemMailTemplatesValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSystemMailTemplatesValidQuery, GetSystemMailTemplatesValidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSystemMailTemplatesValidQuery, GetSystemMailTemplatesValidQueryVariables>(GetSystemMailTemplatesValidDocument, options);
+        }
+export type GetSystemMailTemplatesValidQueryHookResult = ReturnType<typeof useGetSystemMailTemplatesValidQuery>;
+export type GetSystemMailTemplatesValidLazyQueryHookResult = ReturnType<typeof useGetSystemMailTemplatesValidLazyQuery>;
+export type GetSystemMailTemplatesValidQueryResult = Apollo.QueryResult<GetSystemMailTemplatesValidQuery, GetSystemMailTemplatesValidQueryVariables>;
 export const GetSystemNoticeDocument = gql`
     query GetSystemNotice($id: ID!) {
   SystemNotice(id: $id) {

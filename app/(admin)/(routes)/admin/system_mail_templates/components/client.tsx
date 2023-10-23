@@ -9,28 +9,28 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { PaginatorInfo } from "@/graphql/generated/graphql";
 
-import { columns, ApplyDownloadMailTplColumn, formatCode } from "./columns";
+import { columns, SystemMailTemplateColumn, formatCode } from "./columns";
 
-interface ApplyDownloadMailTplClientProps {
-  data: ApplyDownloadMailTplColumn[];
+interface SystemMailTemplateClientProps {
+  data: SystemMailTemplateColumn[];
   paginatorInfo: PaginatorInfo;
 }
 
-export const ApplyDownloadMailTplClient: React.FC<ApplyDownloadMailTplClientProps> = ({
+export const SystemMailTemplateClient: React.FC<SystemMailTemplateClientProps> = ({
   data,
   paginatorInfo
 }) => {
   const router = useRouter();
 
   data.map(elem => {
-    elem.status = formatCode(elem.status)
+    elem.code = formatCode(elem.code)
   })
 
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`ホーム画面: 申請メールテンプレート (${paginatorInfo.total})`} description="申請メールテンプレート管理" />
-        <Button onClick={() => router.push(`/admin/apply_download_mail_tpls/new`)}>
+        <Heading title={`ホーム画面: メールテンプレート (${paginatorInfo.total})`} description="メールテンプレート管理" />
+        <Button onClick={() => router.push(`/admin/system_mail_templates/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>
       </div>

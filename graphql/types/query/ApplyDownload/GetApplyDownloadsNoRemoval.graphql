@@ -1,0 +1,20 @@
+query GetApplyDownloadsNoRemoval($user_id: ID!, $first: Int!, $page: Int!) {
+  ApplyDownloadsNoRemoval(user_id: $user_id, first: $first, page: $page) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}

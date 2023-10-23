@@ -4,9 +4,8 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  SystemNotice,
   GetSystemNoticesDocument,
-  PaginatorInfo,
+  SystemNoticePaginator,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
@@ -29,10 +28,7 @@ const SystemNoticesPage = async ({
   params: {}
 }) => {
   const ret: ApolloQueryResult<{
-    SystemNotices: {
-      data: SystemNotice[];
-      paginatorInfo: PaginatorInfo;
-    }
+    SystemNotices: SystemNoticePaginator
   }> = await apolloServer()
     .query({
       query: GetSystemNoticesDocument,

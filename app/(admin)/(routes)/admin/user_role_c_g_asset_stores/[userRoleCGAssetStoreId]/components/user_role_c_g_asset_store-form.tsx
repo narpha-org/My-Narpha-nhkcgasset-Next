@@ -85,29 +85,55 @@ export const UserRoleCgAssetStoreForm: React.FC<UserRoleCgAssetStoreFormProps> =
   const onSubmit = async (data: UserRoleCgAssetStoreFormValues) => {
     try {
       setLoading(true);
+
+      let ret: FetchResult;
       if (initialData) {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: UpdateUserRoleCgAssetStoreDocument,
             variables: {
               id: params.userRoleCGAssetStoreId,
               ...data
             },
-          })
+          }) as FetchResult<{
+            updateUserRoleCgAssetStore: UserRoleCgAssetStore;
+          }>
       } else {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: CreateUserRoleCgAssetStoreDocument,
             variables: {
               ...data
             },
-          })
+          }) as FetchResult<{
+            createUserRoleCgAssetStore: UserRoleCgAssetStore;
+          }>
       }
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
       router.push(`/admin/user_role_c_g_asset_stores`);
       toast.success(toastMessage);
     } catch (error: any) {
-      toast.error('Something went wrong.');
+      if (error.message === "_CODE_IS_INVALID_") {
+        toast.error("不正なユーザ種類です。");
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setLoading(false);
     }

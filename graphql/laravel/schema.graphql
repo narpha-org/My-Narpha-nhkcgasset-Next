@@ -4,26 +4,11 @@ type Query {
   "Find a single ApplyDownload by an identifying attribute."
   ApplyDownload("Search by primary key." id: ID): ApplyDownload
 
-  "ダウンロード申請一覧"
-  ApplyDownloadsNoRemoval: [ApplyDownload!]!
-
-  "申請一覧"
-  ApplyDownloadsEntry: [ApplyDownload!]!
-
-  "承認一覧"
-  ApplyDownloadsApproval: [ApplyDownload!]!
-
   "Find a single ApplyDownloadComment by an identifying attribute."
   ApplyDownloadComment("Search by primary key." id: ID): ApplyDownloadComment
 
   "List all available ApplyDownloadComment."
   ApplyDownloadCommentsValid: [ApplyDownloadComment!]!
-
-  "Find a single ApplyDownloadMailTpl by an identifying attribute."
-  ApplyDownloadMailTpl("Search by primary key." id: ID): ApplyDownloadMailTpl
-
-  "List all available ApplyDownloadMailTpl."
-  ApplyDownloadMailTplsValid: [ApplyDownloadMailTpl!]!
 
   "Find a single CGABroadcastingRight by an identifying attribute."
   CGABroadcastingRight("Search by primary key." id: ID): CGABroadcastingRight
@@ -118,6 +103,12 @@ type Query {
   "List all Samples."
   samplesAll: [Sample!]!
 
+  "Find a single SystemMailTemplate by an identifying attribute."
+  SystemMailTemplate("Search by primary key." id: ID): SystemMailTemplate
+
+  "List all available SystemMailTemplate."
+  SystemMailTemplatesValid: [SystemMailTemplate!]!
+
   "Find a single SystemNotice by an identifying attribute."
   SystemNotice("Search by primary key." id: ID): SystemNotice
 
@@ -142,6 +133,39 @@ type Query {
   "List all available UserRoleCGAssetStore."
   UserRoleCGAssetStoresValid: [UserRoleCGAssetStore!]!
 
+  "ダウンロード申請一覧"
+  ApplyDownloadsNoRemoval(
+    user_id: ID!
+
+    "Limits number of fetched items. Maximum allowed value: 100."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+  ): ApplyDownloadPaginator!
+
+  "申請一覧"
+  ApplyDownloadsEntry(
+    user_id: ID!
+
+    "Limits number of fetched items. Maximum allowed value: 100."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+  ): ApplyDownloadPaginator!
+
+  "承認一覧"
+  ApplyDownloadsApproval(
+    user_id: ID!
+
+    "Limits number of fetched items. Maximum allowed value: 100."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+  ): ApplyDownloadPaginator!
+
   "List multiple ApplyDownloadComment."
   ApplyDownloadComments(
     "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
@@ -153,18 +177,6 @@ type Query {
     "The offset from which items are returned."
     page: Int
   ): ApplyDownloadCommentPaginator!
-
-  "List multiple ApplyDownloadMailTpl."
-  ApplyDownloadMailTpls(
-    "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
-    body_tpl: String
-
-    "Limits number of fetched items."
-    first: Int! = 10
-
-    "The offset from which items are returned."
-    page: Int
-  ): ApplyDownloadMailTplPaginator!
 
   "List multiple CGABroadcastingRight."
   CGABroadcastingRights(
@@ -370,6 +382,18 @@ type Query {
     page: Int
   ): SamplePaginator!
 
+  "List multiple SystemMailTemplate."
+  SystemMailTemplates(
+    "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
+    body_tpl: String
+
+    "Limits number of fetched items."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+  ): SystemMailTemplatePaginator!
+
   "List multiple SystemNotice."
   SystemNotices(
     orderBy: [OrderByClause!]
@@ -448,30 +472,6 @@ type Mutation {
 
   "Delete a ApplyDownloadComment."
   deleteApplyDownloadComment(id: ID!): ApplyDownloadComment
-
-  "Create a ApplyDownloadMailTpl."
-  createApplyDownloadMailTpl(
-    status: StatusApplyDownload!
-    subject_tpl: String!
-    body_tpl: String!
-    from_mail: String
-    bcc_mail: String
-    valid_flg: Boolean!
-  ): ApplyDownloadMailTpl
-
-  "Update a ApplyDownloadMailTpl."
-  updateApplyDownloadMailTpl(
-    id: ID!
-    status: StatusApplyDownload!
-    subject_tpl: String!
-    body_tpl: String!
-    from_mail: String
-    bcc_mail: String
-    valid_flg: Boolean!
-  ): ApplyDownloadMailTpl
-
-  "Delete a ApplyDownloadMailTpl."
-  deleteApplyDownloadMailTpl(id: ID!): ApplyDownloadMailTpl
 
   "Create a CGABroadcastingRight."
   createCGABroadcastingRight(
@@ -776,6 +776,30 @@ type Mutation {
   "Delete a Sample."
   deleteSample(id: ID!): Sample
 
+  "Create a SystemMailTemplate."
+  createSystemMailTemplate(
+    code: CodeMailTemplate!
+    subject_tpl: String!
+    body_tpl: String!
+    from_mail: String
+    bcc_mail: String
+    valid_flg: Boolean!
+  ): SystemMailTemplate
+
+  "Update a SystemMailTemplate."
+  updateSystemMailTemplate(
+    id: ID!
+    code: CodeMailTemplate!
+    subject_tpl: String!
+    body_tpl: String!
+    from_mail: String
+    bcc_mail: String
+    valid_flg: Boolean!
+  ): SystemMailTemplate
+
+  "Delete a SystemMailTemplate."
+  deleteSystemMailTemplate(id: ID!): SystemMailTemplate
+
   "Create a SystemNotice."
   createSystemNotice(
     create_user_id: ID!
@@ -914,16 +938,19 @@ input CreateApplyDownloadArgs {
 }
 
 input UpdateApplyDownloadApprovalArgs {
+  id: ID!
   user_id: ID!
   comment: String!
 }
 
 input UpdateApplyDownloadBoxDeliverArgs {
+  id: ID!
   user_id: ID!
   comment: String!
 }
 
 input UpdateApplyDownloadRemovalArgs {
+  id: ID!
   user_id: ID!
   comment: String!
 }
@@ -955,39 +982,6 @@ type ApplyDownloadComment {
   created_at: DateTime!
 
   "When the ApplyDownloadComment was last updated."
-  updated_at: DateTime!
-}
-
-"""
-ApplyDownloadMailTpl.
-ダウンロード申請メールテンプレート
-"""
-type ApplyDownloadMailTpl {
-  "Unique primary key."
-  id: ID!
-
-  "ステータス"
-  status: StatusApplyDownload!
-
-  "メール題名"
-  subject_tpl: String!
-
-  "メール本文"
-  body_tpl: String!
-
-  "送信元メールアドレス"
-  from_mail: String
-
-  "BCCメールアドレス"
-  bcc_mail: String
-
-  "有効フラグ"
-  valid_flg: Boolean!
-
-  "When the ApplyDownloadMailTpl was created."
-  created_at: DateTime!
-
-  "When the ApplyDownloadMailTpl was last updated."
   updated_at: DateTime!
 }
 
@@ -1848,6 +1842,51 @@ type Sample {
 }
 
 """
+SystemMailTemplate.
+管理メールテンプレート
+"""
+type SystemMailTemplate {
+  "Unique primary key."
+  id: ID!
+
+  "メール区分"
+  code: CodeMailTemplate!
+
+  "メール題名"
+  subject_tpl: String!
+
+  "メール本文"
+  body_tpl: String!
+
+  "送信元メールアドレス"
+  from_mail: String
+
+  "BCCメールアドレス"
+  bcc_mail: String
+
+  "有効フラグ"
+  valid_flg: Boolean!
+
+  "When the SystemMailTemplate was created."
+  created_at: DateTime!
+
+  "When the SystemMailTemplate was last updated."
+  updated_at: DateTime!
+}
+
+enum CodeMailTemplate {
+  ASSET_DELETE_CONFIRM
+  ASSET_COMMENT
+  REMOVAL_ALERT
+  PENDING_LIST
+  ADMIN_COMMENT
+  APPLY_DOWNLOAD_APPLY
+  APPLY_DOWNLOAD_APPROVAL
+  APPLY_DOWNLOAD_BOX_DELIVER
+  APPLY_DOWNLOAD_REMOVAL
+}
+
+"""
 SystemNotice.
 お知らせ
 """
@@ -2076,6 +2115,15 @@ type PaginatorInfo {
   total: Int!
 }
 
+"A paginated list of ApplyDownload items."
+type ApplyDownloadPaginator {
+  "Pagination information about the list of items."
+  paginatorInfo: PaginatorInfo!
+
+  "A list of ApplyDownload items."
+  data: [ApplyDownload!]!
+}
+
 "A paginated list of ApplyDownloadComment items."
 type ApplyDownloadCommentPaginator {
   "Pagination information about the list of items."
@@ -2083,15 +2131,6 @@ type ApplyDownloadCommentPaginator {
 
   "A list of ApplyDownloadComment items."
   data: [ApplyDownloadComment!]!
-}
-
-"A paginated list of ApplyDownloadMailTpl items."
-type ApplyDownloadMailTplPaginator {
-  "Pagination information about the list of items."
-  paginatorInfo: PaginatorInfo!
-
-  "A list of ApplyDownloadMailTpl items."
-  data: [ApplyDownloadMailTpl!]!
 }
 
 "A paginated list of CGABroadcastingRight items."
@@ -2236,6 +2275,15 @@ type SamplePaginator {
 
   "A list of Sample items."
   data: [Sample!]!
+}
+
+"A paginated list of SystemMailTemplate items."
+type SystemMailTemplatePaginator {
+  "Pagination information about the list of items."
+  paginatorInfo: PaginatorInfo!
+
+  "A list of SystemMailTemplate items."
+  data: [SystemMailTemplate!]!
 }
 
 "A paginated list of SystemNotice items."

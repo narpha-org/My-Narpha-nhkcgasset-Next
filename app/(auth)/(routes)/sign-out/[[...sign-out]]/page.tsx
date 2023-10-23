@@ -5,12 +5,10 @@ import { useRouter } from "next/navigation"
 import { ClientSafeProvider, LiteralUnion, getProviders, signOut, useSession } from "next-auth/react"
 import { BuiltInProviderType } from "next-auth/providers";
 import { LogOut } from "lucide-react";
-// import { useOktaAuth } from '@okta/okta-react';
 import { Button } from "@/components/ui/button";
 
 const SignOut = () => {
   const router = useRouter();
-  // const { oktaAuth } = useOktaAuth();
 
   const { data: session, status } = useSession()
   const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null)
@@ -41,7 +39,6 @@ const SignOut = () => {
         <div key={provider.name}>
           <Button
             onClick={() => signOut().then(async () => {
-              // await oktaAuth.signOut();
               if (!process.env.OKTA_LOGOUT) {
                 return;
               }

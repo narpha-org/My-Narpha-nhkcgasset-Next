@@ -1,0 +1,13 @@
+mutation UpdateApplyDownloadApproval($input: UpdateApplyDownloadApprovalArgs!) {
+  updateApplyDownloadApproval(input: $input) {
+    __typename
+    id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
+    status
+    created_at
+  }
+}

@@ -1,0 +1,13 @@
+query GetSystemMailTemplate($id: ID!) {
+  SystemMailTemplate(id: $id) {
+    id
+    code
+    subject_tpl
+    body_tpl
+    from_mail
+    bcc_mail
+    valid_flg
+    created_at
+    updated_at
+  }
+}

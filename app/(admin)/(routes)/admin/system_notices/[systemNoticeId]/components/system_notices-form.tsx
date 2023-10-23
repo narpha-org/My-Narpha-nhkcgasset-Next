@@ -79,24 +79,46 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
   const onSubmit = async (data: SystemNoticeFormValues) => {
     try {
       setLoading(true);
+
+      let ret: FetchResult;
       if (initialData) {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: UpdateSystemNoticeDocument,
             variables: {
               id: params.systemNoticeId,
               ...data
             },
-          })
+          }) as FetchResult<{
+            updateSystemNotice: SystemNotice;
+          }>
       } else {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: CreateSystemNoticeDocument,
             variables: {
               ...data
             },
-          })
+          }) as FetchResult<{
+            createSystemNotice: SystemNotice;
+          }>
       }
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
       router.push(`/admin/system_notices`);
       toast.success(toastMessage);
@@ -169,7 +191,7 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
                     <Textarea
                       disabled={loading}
                       placeholder="お知らせ"
-                      className=""
+                      className="h-80"
                       {...field}
                     />
                   </FormControl>

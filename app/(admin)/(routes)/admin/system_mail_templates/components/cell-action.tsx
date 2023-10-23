@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import { apolloClient } from "@/lib/apollo-client";
 import {
-  DeleteApplyDownloadMailTplDocument,
+  DeleteSystemMailTemplateDocument,
 } from "@/graphql/generated/graphql";
 
 import { Button } from "@/components/ui/button";
@@ -20,10 +20,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import { ApplyDownloadMailTplColumn } from "./columns";
+import { SystemMailTemplateColumn } from "./columns";
 
 interface CellActionProps {
-  data: ApplyDownloadMailTplColumn;
+  data: SystemMailTemplateColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
@@ -39,7 +39,7 @@ export const CellAction: React.FC<CellActionProps> = ({
       setLoading(true);
       const ret = await apolloClient
         .mutate({
-          mutation: DeleteApplyDownloadMailTplDocument,
+          mutation: DeleteSystemMailTemplateDocument,
           variables: {
             id: data.id,
           },
@@ -50,7 +50,7 @@ export const CellAction: React.FC<CellActionProps> = ({
         throw new Error(ret.errors[0].message)
       }
 
-      toast.success('申請メールテンプレートが削除されました。');
+      toast.success('メールテンプレートが削除されました。');
       router.refresh();
     } catch (error) {
       toast.error('削除できません。');
@@ -62,7 +62,7 @@ export const CellAction: React.FC<CellActionProps> = ({
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success('申請メールテンプレートのIDがクリップボードにコピーされました。');
+    toast.success('メールテンプレートのIDがクリップボードにコピーされました。');
   }
 
   return (
@@ -83,7 +83,7 @@ export const CellAction: React.FC<CellActionProps> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>レコード操作</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => router.push(`/admin/apply_download_mail_tpls/${data.id}`)}
+            onClick={() => router.push(`/admin/system_mail_templates/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> 編集
           </DropdownMenuItem>

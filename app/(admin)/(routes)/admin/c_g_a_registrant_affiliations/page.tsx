@@ -4,12 +4,11 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgaRegistrantAffiliation,
+  CgaRegistrantAffiliationPaginator,
   GetCgaRegistrantAffiliationsDocument,
-  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
-import { formatter } from "@/lib/utils";
+// import { formatter } from "@/lib/utils";
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 
 import { CGARegistrantAffiliationClient } from "./components/client";
@@ -29,10 +28,7 @@ const CGARegistrantAffiliationsPage = async ({
   params: {}
 }) => {
   const ret: ApolloQueryResult<{
-    CGARegistrantAffiliations: {
-      data: CgaRegistrantAffiliation[];
-      paginatorInfo: PaginatorInfo;
-    }
+    CGARegistrantAffiliations: CgaRegistrantAffiliationPaginator
   }> = await apolloServer()
     .query({
       query: GetCgaRegistrantAffiliationsDocument,

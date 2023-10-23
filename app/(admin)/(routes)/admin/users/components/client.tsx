@@ -24,7 +24,7 @@ export const UserClient: React.FC<UserClientProps> = ({
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`Oktaユーザ (${paginatorInfo.total})`} description="本システム上でのOktaユーザ管理" />
+        <Heading title={`ログイン済Oktaユーザ (${paginatorInfo.total})`} description="本システムにログインし保存済のOktaユーザ情報を管理" />
       </div>
       <Separator />
       <DataTableEx columns={columns} data={data} />
