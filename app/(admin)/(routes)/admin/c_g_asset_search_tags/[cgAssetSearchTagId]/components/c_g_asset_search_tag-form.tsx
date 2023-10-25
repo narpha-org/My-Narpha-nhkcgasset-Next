@@ -15,6 +15,7 @@ import {
   CreateCgAssetSearchTagDocument,
   UpdateCgAssetSearchTagDocument,
   DeleteCgAssetSearchTagDocument,
+  CgAssetSearchTagPaginator,
 } from "@/graphql/generated/graphql";
 
 import { Input } from "@/components/ui/input"
@@ -136,7 +137,10 @@ export const CGAssetSearchTagForm: React.FC<CGAssetSearchTagFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      const ret = await apolloClient
+
+      const ret: FetchResult<{
+        DeleteCgAssetSearchTag: CgAssetSearchTag;
+      }> = await apolloClient
         .mutate({
           mutation: DeleteCgAssetSearchTagDocument,
           variables: {
@@ -145,8 +149,18 @@ export const CGAssetSearchTagForm: React.FC<CGAssetSearchTagFormProps> = ({
         })
 
       // console.log("ret", ret);
-      if (ret.errors && ret.errors[0] && ret.errors[0].message) {
-        throw new Error(ret.errors[0].message)
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
       }
 
       router.refresh();

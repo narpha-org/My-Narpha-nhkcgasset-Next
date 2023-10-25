@@ -114,7 +114,10 @@ export const CGAssetSearchAppProdForm: React.FC<CGAssetSearchAppProdFormProps> =
   const onDelete = async () => {
     try {
       setLoading(true);
-      const ret = await apolloClient
+
+      const ret: FetchResult<{
+        DeleteCgAssetSearchAppProd: CgAssetSearchAppProd;
+      }> = await apolloClient
         .mutate({
           mutation: DeleteCgAssetSearchAppProdDocument,
           variables: {
@@ -123,8 +126,18 @@ export const CGAssetSearchAppProdForm: React.FC<CGAssetSearchAppProdFormProps> =
         })
 
       // console.log("ret", ret);
-      if (ret.errors && ret.errors[0] && ret.errors[0].message) {
-        throw new Error(ret.errors[0].message)
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
       }
 
       router.refresh();

@@ -6,8 +6,9 @@ import { toast } from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 
 import { apolloClient } from "@/lib/apollo-client";
+import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  DeleteUserRoleCgAssetStoreDocument,
+  DeleteUserRoleCgAssetStoreDocument, UserRoleCgAssetStore,
 } from "@/graphql/generated/graphql";
 
 import { Button } from "@/components/ui/button";
@@ -37,7 +38,10 @@ export const CellAction: React.FC<CellActionProps> = ({
   const onConfirm = async () => {
     try {
       setLoading(true);
-      const ret = await apolloClient
+
+      const ret: FetchResult<{
+        DeleteUserRoleCgAssetStore: UserRoleCgAssetStore;
+      }> = await apolloClient
         .mutate({
           mutation: DeleteUserRoleCgAssetStoreDocument,
           variables: {
@@ -46,8 +50,18 @@ export const CellAction: React.FC<CellActionProps> = ({
         })
 
       // console.log("ret", ret);
-      if (ret.errors && ret.errors[0] && ret.errors[0].message) {
-        throw new Error(ret.errors[0].message)
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
       }
 
       toast.success('CGアセットストアロールが削除されました。');

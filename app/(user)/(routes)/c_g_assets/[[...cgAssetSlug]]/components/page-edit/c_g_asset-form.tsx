@@ -308,13 +308,32 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      await apolloClient
+
+      const ret: FetchResult<{
+        DeleteCgAsset: CgAsset;
+      }> = await apolloClient
         .mutate({
           mutation: DeleteCgAssetDocument,
           variables: {
             id: params.cgAssetSlug[0],
           },
         })
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
       router.push(`/c_g_assets`);
       toast.success('CGアセットが削除されました。');

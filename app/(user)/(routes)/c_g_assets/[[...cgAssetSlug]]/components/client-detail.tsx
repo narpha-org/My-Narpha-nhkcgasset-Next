@@ -57,7 +57,7 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = ({
           <div className="flex flex-col w-full overflow-hidden h-24 px-3 py-2">
             <AssetHeadlineBlock cgAsset={cgAsset} />
           </div>
-          <div className="flex flex-col w-full overflow-hidden h-96 px-3 py-2">
+          <div className="flex flex-col w-full overflow-hidden h-1/2 px-3 py-2">
             <AssetsCarouselBlock cgAsset={cgAsset} />
           </div>
           <div className="flex flex-col w-full overflow-hidden h-96 px-3 py-2">

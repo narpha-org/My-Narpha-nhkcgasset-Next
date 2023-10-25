@@ -12,6 +12,7 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgAsset,
+  CgAssetTag,
   CreateCgAssetTagDocument,
 } from "@/graphql/generated/graphql";
 
@@ -70,7 +71,10 @@ export const AssetTagForm: React.FC<AssetTagFormProps> = ({
 
     try {
       setLoading(true);
-      const ret = await apolloClient
+
+      const ret: FetchResult<{
+        CreateCgAssetTag: CgAssetTag;
+      }> = await apolloClient
         .mutate({
           mutation: CreateCgAssetTagDocument,
           variables: {

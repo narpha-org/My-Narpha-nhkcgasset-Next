@@ -45,16 +45,17 @@ const SearchResult: React.FC<SearchResultProps> = ({
             return <div key={elem.id}>
               <Link key={elem.id} href={`/c_g_assets/${elem.id}`}>
                 {medias ? (
-                  <>
+                  <div style={{ width: "500", height: "276", position: "relative" }}>
                     <Image
                       src={(medias && medias[0] ? medias[0].thumb_url as string : notFound)}
                       alt={elem.asset_id}
                       width={500}
                       height={276}
                     />
-                    <p style={{ marginTop: "-1.9rem", marginLeft: "0.6rem", zIndex: 100, color: "white" }}>{elem.asset_name}</p>
-                    <p style={{ marginTop: "-1.5rem", marginLeft: "18.1rem", zIndex: 100, color: "white", height: "2.0rem" }}>{mediaDesc}</p>
-                  </>
+                    <p style={{ position: "absolute", top: "9.3rem", left: "0.6rem", zIndex: 100, color: "white", textShadow: "1px 1px 0 #000,-1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000", height: "2.0rem" }}>{elem.asset_name}</p>
+                    <p style={{ position: "absolute", top: "0.4rem", left: "0.6rem", width: "19.0rem", textAlign: "right", zIndex: 100, color: "white", textShadow: "1px 1px 0 #000,-1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000", height: "2.0rem" }}>{mediaDesc}</p>
+                    <p style={{ position: "absolute", top: "9.3rem", left: "0.6rem", width: "19.0rem", textAlign: "right", zIndex: 100, color: "white", textShadow: "1px 1px 0 #000,-1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000", height: "2.0rem" }}>DL数:{elem.download_count}</p>
+                  </div>
                 ) : elem.asset_id}
               </Link>
             </div>

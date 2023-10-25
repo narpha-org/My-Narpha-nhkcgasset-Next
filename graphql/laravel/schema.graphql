@@ -1197,11 +1197,14 @@ type CGAsset {
   "コメント・レビュー"
   reviews: [CGAssetReview]
 
+  "DLカウント"
+  download_count: Int
+
   "登録ユーザ"
   userCreate: User!
 
   "更新ユーザ"
-  userUpdate: User!
+  userUpdate: User
 
   "有効フラグ"
   valid_flg: Boolean!

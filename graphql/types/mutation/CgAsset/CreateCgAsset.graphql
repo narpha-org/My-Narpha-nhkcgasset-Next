@@ -79,6 +79,7 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
         name
       }
     }
+    download_count
     valid_flg
     created_at
     updated_at

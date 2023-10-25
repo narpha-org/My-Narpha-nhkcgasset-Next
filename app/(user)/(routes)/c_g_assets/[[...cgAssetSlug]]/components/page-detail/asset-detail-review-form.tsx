@@ -12,6 +12,7 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgAsset,
+  CgAssetReview,
   CreateCgAssetReviewDocument,
 } from "@/graphql/generated/graphql";
 
@@ -70,7 +71,10 @@ export const AssetDetailReviewForm: React.FC<AssetDetailReviewFormProps> = ({
 
     try {
       setLoading(true);
-      const ret = await apolloClient
+
+      const ret: FetchResult<{
+        CreateCgAssetReview: CgAssetReview;
+      }> = await apolloClient
         .mutate({
           mutation: CreateCgAssetReviewDocument,
           variables: {

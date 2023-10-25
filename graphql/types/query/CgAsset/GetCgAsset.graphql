@@ -89,6 +89,7 @@ query GetCgAsset($id: ID!) {
         name
       }
     }
+    download_count
     userCreate {
       id
       name

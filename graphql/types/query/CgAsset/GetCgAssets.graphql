@@ -98,6 +98,7 @@ query GetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
           name
         }
       }
+      download_count
       userCreate {
         id
         name
