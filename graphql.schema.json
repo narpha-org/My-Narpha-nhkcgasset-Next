@@ -6343,14 +6343,14 @@
                 "deprecationReason": null
               },
               {
-                "name": "order",
+                "name": "notice_date",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "DateTime",
                     "ofType": null
                   }
                 },
@@ -8726,14 +8726,14 @@
                 "deprecationReason": null
               },
               {
-                "name": "order",
+                "name": "notice_date",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "DateTime",
                     "ofType": null
                   }
                 },
@@ -12798,13 +12798,17 @@
             "deprecationReason": null
           },
           {
-            "name": "order",
-            "description": "表示順",
+            "name": "notice_date",
+            "description": "お知らせ日時",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "DateTime",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null

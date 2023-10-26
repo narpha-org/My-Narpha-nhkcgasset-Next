@@ -29,7 +29,7 @@ export const SystemMailTemplateClient: React.FC<SystemMailTemplateClientProps> =
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`ホーム画面: メールテンプレート (${paginatorInfo.total})`} description="メールテンプレート管理" />
+        <Heading title={`メールテンプレート (${paginatorInfo.total})`} description="メールテンプレート管理" />
         <Button onClick={() => router.push(`/admin/system_mail_templates/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>

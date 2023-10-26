@@ -1,6 +1,8 @@
 "use client";
 
 import { Fragment } from "react";
+import { format } from 'date-fns'
+
 import {
   Table,
   TableBody,
@@ -37,7 +39,7 @@ const AssetDetailReviewList: React.FC<AssetDetailReviewListProps> = ({
 
           if (elem) {
             return <TableRow key={elem.id}>
-              <TableCell className="">{elem.created_at}</TableCell>
+              <TableCell className="">{format(new Date(elem.created_at), "yyyy/MM/dd HH:mm")}</TableCell>
               <TableCell>{elem.review.split("\n").map((item, index) => {
                 return (
                   <Fragment key={index}>{item}<br /></Fragment>

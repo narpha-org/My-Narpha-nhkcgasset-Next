@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation";
+import { format } from 'date-fns'
 
 import { Button } from "@/components/ui/button"
 import {
@@ -65,7 +66,7 @@ const AssetInfoApplyList: React.FC<AssetInfoApplyListProps> = ({
             }
 
             return <TableRow key={elem.id}>
-              <TableCell className="">{elem.created_at}</TableCell>
+              <TableCell className="">{format(new Date(elem.created_at), "yyyy/MM/dd")}</TableCell>
               <TableCell>{elem.cgAsset.asset_id}</TableCell>
               <TableCell>{elem.cgAsset.asset_name}</TableCell>
               <TableCell>{formatStatusApplyDownload(elem.status)}</TableCell>

@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { Trash } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
+import { format } from 'date-fns'
 
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
@@ -33,12 +35,15 @@ import { Heading } from "@/components/ui/heading"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { Textarea } from "@/components/ui/text-area"
 import { Checkbox } from "@/components/ui/checkbox"
+import { DateTimePicker } from "@/components/ui/date-time"
 
 const formSchema = z.object({
+  notice_date: z.date({
+    required_error: "お知らせ日時をご指定ください",
+  }),
   message: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
     message: "必須入力",
   }),
-  order: z.coerce.number({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }),
   valid_flg: z.boolean().default(false).optional(),
 });
 
@@ -53,6 +58,7 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
 }) => {
   const params = useParams();
   const router = useRouter();
+  const { data: session, status } = useSession()
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -64,10 +70,10 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
 
   const defaultValues = initialData ? {
     ...initialData,
-    order: initialData?.order as number | undefined,
+    notice_date: new Date(initialData.notice_date)
   } : {
+    notice_date: new Date(),
     message: '',
-    order: undefined,
     valid_flg: false,
   }
 
@@ -86,8 +92,10 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
           .mutate({
             mutation: UpdateSystemNoticeDocument,
             variables: {
+              ...data,
               id: params.systemNoticeId,
-              ...data
+              update_user_id: (session?.user as { userId: string }).userId,
+              notice_date: format(new Date(data.notice_date), "yyyy-MM-dd HH:mm:ss"),
             },
           }) as FetchResult<{
             updateSystemNotice: SystemNotice;
@@ -97,7 +105,9 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
           .mutate({
             mutation: CreateSystemNoticeDocument,
             variables: {
-              ...data
+              ...data,
+              create_user_id: (session?.user as { userId: string }).userId,
+              notice_date: format(new Date(data.notice_date), "yyyy-MM-dd HH:mm:ss"),
             },
           }) as FetchResult<{
             createSystemNotice: SystemNotice;
@@ -214,12 +224,15 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="order"
+              name="notice_date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>表示順</FormLabel>
+                  <FormLabel>お知らせ日時</FormLabel>
                   <FormControl>
-                    <Input type="number" disabled={loading} placeholder="表示順" {...field} />
+                    <DateTimePicker
+                      date={field.value}
+                      setDate={(date) => form.setValue("notice_date", date)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -229,7 +242,7 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
               control={form.control}
               name="valid_flg"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem>
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -242,7 +255,7 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
                       有効フラグ
                     </FormLabel>
                     <FormDescription>
-                      このお知らせを選択項目として有効にする
+                      このお知らせを表示項目として有効にする
                     </FormDescription>
                   </div>
                 </FormItem>

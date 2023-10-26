@@ -2,15 +2,12 @@ query GetSystemNotices($first: Int!, $page: Int!) {
   SystemNotices(
     first: $first
     page: $page
-    orderBy: [
-      { column: "order", order: ASC }
-      { column: "created_at", order: DESC }
-    ]
+    orderBy: [{ column: "notice_date", order: DESC }]
   ) {
     data {
       id
       message
-      order
+      notice_date
       userCreate {
         id
         name

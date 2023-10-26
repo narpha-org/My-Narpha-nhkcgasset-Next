@@ -2,7 +2,7 @@ query GetSystemNotice($id: ID!) {
   SystemNotice(id: $id) {
     id
     message
-    order
+    notice_date
     userCreate {
       id
       name

@@ -44,9 +44,8 @@ const SystemNoticesPage = async ({
   const formattedSystemNotices: SystemNoticeColumn[] = SystemNotices.map((item) => ({
     id: item.id,
     message: item.message,
-    order: item.order as number,
-    valid_flg: (item.valid_flg ? '○' : '-'),
-    created_at: format(new Date(item.created_at), 'yyyy/MM/dd HH:ii'),
+    notice_date: item.notice_date,
+    valid_flg: (item.valid_flg ? '○' : '-')
   }));
 
   return (

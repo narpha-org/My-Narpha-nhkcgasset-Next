@@ -2,20 +2,20 @@ mutation UpdateSystemNotice(
   $id: ID!
   $update_user_id: ID!
   $message: String!
-  $order: Int!
+  $notice_date: DateTime!
   $valid_flg: Boolean!
 ) {
   updateSystemNotice(
     id: $id
     update_user_id: $update_user_id
     message: $message
-    order: $order
+    notice_date: $notice_date
     valid_flg: $valid_flg
   ) {
     __typename
     id
     message
-    order
+    notice_date
     userCreate {
       id
       name

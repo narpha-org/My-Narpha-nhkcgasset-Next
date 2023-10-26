@@ -7,9 +7,8 @@ import { CellAction } from "./cell-action"
 export type SystemNoticeColumn = {
   id: string
   message: string;
-  order: number;
+  notice_date: string;
   valid_flg: string;
-  created_at: string;
 }
 
 export const columns: ColumnDef<SystemNoticeColumn>[] = [
@@ -18,16 +17,12 @@ export const columns: ColumnDef<SystemNoticeColumn>[] = [
     header: "お知らせ",
   },
   {
-    accessorKey: "order",
-    header: "表示順",
+    accessorKey: "notice_date",
+    header: "お知らせ日時",
   },
   {
     accessorKey: "valid_flg",
     header: "有効",
-  },
-  {
-    accessorKey: "created_at",
-    header: "作成日時",
   },
   {
     id: "actions",

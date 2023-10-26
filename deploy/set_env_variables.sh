@@ -14,5 +14,6 @@ echo AWS_BUCKET=$AWS_BUCKET >> next/.env &&
 echo OKTA_CLIENT_ID=$OKTA_CLIENT_ID >> next/.env &&
 echo OKTA_CLIENT_SECRET=$OKTA_CLIENT_SECRET >> next/.env &&
 echo OKTA_ISSUER=$OKTA_ISSUER >> next/.env &&
+echo OKTA_LOGOUT=$OKTA_LOGOUT >> next/.env &&
 
 echo 'Next.js env variables configured'

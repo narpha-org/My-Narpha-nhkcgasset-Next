@@ -1,5 +1,7 @@
 "use client";
 
+import { format } from 'date-fns'
+
 import {
   SystemNotice,
 } from "@/graphql/generated/graphql";
@@ -23,7 +25,7 @@ const NoticeBlock: React.FC<NoticeBlockProps> = ({
 
           if (elem) {
             return <div key={elem.id} className="flex flex-col mb-10">
-              <div className="">{elem.created_at}</div>
+              <div className="">{format(new Date(elem.notice_date), "yyyy/MM/dd")}</div>
               <div className="ml-2">{elem.message}</div>
               {/* <div>{elem.createUser?.name}</div> */}
             </div>

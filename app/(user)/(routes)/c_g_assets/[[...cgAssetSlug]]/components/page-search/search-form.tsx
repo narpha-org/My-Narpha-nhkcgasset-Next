@@ -135,6 +135,17 @@ export const SearchForm: React.FC<SearchFormProps> = ({
                                     (value) => value !== assetTag.code
                                   )
                                 )
+
+                              if (checked) {
+                                if (assetTag.code === '_ALL_') {
+                                  form.setValue("assetTags", ['_ALL_'])
+                                } else {
+                                  form.setValue("assetTags", form.getValues("assetTags").filter(
+                                    (value) => value !== '_ALL_'
+                                  ))
+                                }
+                              }
+
                               form.handleSubmit(onSubmit)();
 
                               return ret;
@@ -185,6 +196,17 @@ export const SearchForm: React.FC<SearchFormProps> = ({
                                     (value) => value !== assetAppProd.code
                                   )
                                 )
+
+                              if (checked) {
+                                if (assetAppProd.code === '_ALL_') {
+                                  form.setValue("assetAppProds", ['_ALL_'])
+                                } else {
+                                  form.setValue("assetAppProds", form.getValues("assetAppProds").filter(
+                                    (value) => value !== '_ALL_'
+                                  ))
+                                }
+                              }
+
                               form.handleSubmit(onSubmit)();
 
                               return ret;

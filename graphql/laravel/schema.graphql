@@ -804,7 +804,7 @@ type Mutation {
   createSystemNotice(
     create_user_id: ID!
     message: String!
-    order: Int!
+    notice_date: DateTime!
     valid_flg: Boolean!
   ): SystemNotice
 
@@ -813,7 +813,7 @@ type Mutation {
     id: ID!
     update_user_id: ID
     message: String!
-    order: Int!
+    notice_date: DateTime!
     valid_flg: Boolean!
   ): SystemNotice
 
@@ -1900,8 +1900,8 @@ type SystemNotice {
   "お知らせ"
   message: String!
 
-  "表示順"
-  order: Int
+  "お知らせ日時"
+  notice_date: DateTime!
 
   "登録ユーザ"
   userCreate: User!

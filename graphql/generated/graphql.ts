@@ -1133,7 +1133,7 @@ export type MutationCreateSystemMailTemplateArgs = {
 export type MutationCreateSystemNoticeArgs = {
   create_user_id: Scalars['ID']['input'];
   message: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
+  notice_date: Scalars['DateTime']['input'];
   valid_flg: Scalars['Boolean']['input'];
 };
 
@@ -1445,7 +1445,7 @@ export type MutationUpdateSystemMailTemplateArgs = {
 export type MutationUpdateSystemNoticeArgs = {
   id: Scalars['ID']['input'];
   message: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
+  notice_date: Scalars['DateTime']['input'];
   update_user_id?: InputMaybe<Scalars['ID']['input']>;
   valid_flg: Scalars['Boolean']['input'];
 };
@@ -2166,8 +2166,8 @@ export type SystemNotice = {
   id: Scalars['ID']['output'];
   /** お知らせ */
   message: Scalars['String']['output'];
-  /** 表示順 */
-  order?: Maybe<Scalars['Int']['output']>;
+  /** お知らせ日時 */
+  notice_date: Scalars['DateTime']['output'];
   /** When the SystemNotice was last updated. */
   updated_at: Scalars['DateTime']['output'];
   /** 登録ユーザ */
@@ -2834,30 +2834,30 @@ export type UpdateSystemMailTemplateMutation = { __typename?: 'Mutation', update
 export type CreateSystemNoticeMutationVariables = Exact<{
   create_user_id: Scalars['ID']['input'];
   message: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
+  notice_date: Scalars['DateTime']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type CreateSystemNoticeMutation = { __typename?: 'Mutation', createSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
+export type CreateSystemNoticeMutation = { __typename?: 'Mutation', createSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, notice_date: any, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
 export type DeleteSystemNoticeMutationVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type DeleteSystemNoticeMutation = { __typename?: 'Mutation', deleteSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
+export type DeleteSystemNoticeMutation = { __typename?: 'Mutation', deleteSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, notice_date: any, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
 export type UpdateSystemNoticeMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   update_user_id: Scalars['ID']['input'];
   message: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
+  notice_date: Scalars['DateTime']['input'];
   valid_flg: Scalars['Boolean']['input'];
 }>;
 
 
-export type UpdateSystemNoticeMutation = { __typename?: 'Mutation', updateSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
+export type UpdateSystemNoticeMutation = { __typename?: 'Mutation', updateSystemNotice?: { __typename: 'SystemNotice', id: string, message: string, notice_date: any, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
 export type CreateUserRoleCgAssetStoreMutationVariables = Exact<{
   role: RoleCgAssetStore;
@@ -3177,7 +3177,7 @@ export type GetSystemNoticeQueryVariables = Exact<{
 }>;
 
 
-export type GetSystemNoticeQuery = { __typename?: 'Query', SystemNotice?: { __typename?: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
+export type GetSystemNoticeQuery = { __typename?: 'Query', SystemNotice?: { __typename?: 'SystemNotice', id: string, message: string, notice_date: any, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
 export type GetSystemNoticesQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -3185,12 +3185,12 @@ export type GetSystemNoticesQueryVariables = Exact<{
 }>;
 
 
-export type GetSystemNoticesQuery = { __typename?: 'Query', SystemNotices: { __typename?: 'SystemNoticePaginator', data: Array<{ __typename?: 'SystemNotice', id: string, message: string, order?: number | null, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetSystemNoticesQuery = { __typename?: 'Query', SystemNotices: { __typename?: 'SystemNoticePaginator', data: Array<{ __typename?: 'SystemNotice', id: string, message: string, notice_date: any, valid_flg: boolean, created_at: any, updated_at: any, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetSystemNoticesValidQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSystemNoticesValidQuery = { __typename?: 'Query', SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
+export type GetSystemNoticesValidQuery = { __typename?: 'Query', SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
 
 export type GetUserRoleCgAssetStoreQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -5826,17 +5826,17 @@ export type UpdateSystemMailTemplateMutationHookResult = ReturnType<typeof useUp
 export type UpdateSystemMailTemplateMutationResult = Apollo.MutationResult<UpdateSystemMailTemplateMutation>;
 export type UpdateSystemMailTemplateMutationOptions = Apollo.BaseMutationOptions<UpdateSystemMailTemplateMutation, UpdateSystemMailTemplateMutationVariables>;
 export const CreateSystemNoticeDocument = gql`
-    mutation CreateSystemNotice($create_user_id: ID!, $message: String!, $order: Int!, $valid_flg: Boolean!) {
+    mutation CreateSystemNotice($create_user_id: ID!, $message: String!, $notice_date: DateTime!, $valid_flg: Boolean!) {
   createSystemNotice(
     create_user_id: $create_user_id
     message: $message
-    order: $order
+    notice_date: $notice_date
     valid_flg: $valid_flg
   ) {
     __typename
     id
     message
-    order
+    notice_date
     userCreate {
       id
       name
@@ -5892,7 +5892,7 @@ export type CreateSystemNoticeMutationFn = Apollo.MutationFunction<CreateSystemN
  *   variables: {
  *      create_user_id: // value for 'create_user_id'
  *      message: // value for 'message'
- *      order: // value for 'order'
+ *      notice_date: // value for 'notice_date'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -5910,7 +5910,7 @@ export const DeleteSystemNoticeDocument = gql`
     __typename
     id
     message
-    order
+    notice_date
     userCreate {
       id
       name
@@ -5976,18 +5976,18 @@ export type DeleteSystemNoticeMutationHookResult = ReturnType<typeof useDeleteSy
 export type DeleteSystemNoticeMutationResult = Apollo.MutationResult<DeleteSystemNoticeMutation>;
 export type DeleteSystemNoticeMutationOptions = Apollo.BaseMutationOptions<DeleteSystemNoticeMutation, DeleteSystemNoticeMutationVariables>;
 export const UpdateSystemNoticeDocument = gql`
-    mutation UpdateSystemNotice($id: ID!, $update_user_id: ID!, $message: String!, $order: Int!, $valid_flg: Boolean!) {
+    mutation UpdateSystemNotice($id: ID!, $update_user_id: ID!, $message: String!, $notice_date: DateTime!, $valid_flg: Boolean!) {
   updateSystemNotice(
     id: $id
     update_user_id: $update_user_id
     message: $message
-    order: $order
+    notice_date: $notice_date
     valid_flg: $valid_flg
   ) {
     __typename
     id
     message
-    order
+    notice_date
     userCreate {
       id
       name
@@ -6044,7 +6044,7 @@ export type UpdateSystemNoticeMutationFn = Apollo.MutationFunction<UpdateSystemN
  *      id: // value for 'id'
  *      update_user_id: // value for 'update_user_id'
  *      message: // value for 'message'
- *      order: // value for 'order'
+ *      notice_date: // value for 'notice_date'
  *      valid_flg: // value for 'valid_flg'
  *   },
  * });
@@ -8368,7 +8368,7 @@ export const GetSystemNoticeDocument = gql`
   SystemNotice(id: $id) {
     id
     message
-    order
+    notice_date
     userCreate {
       id
       name
@@ -8440,12 +8440,12 @@ export const GetSystemNoticesDocument = gql`
   SystemNotices(
     first: $first
     page: $page
-    orderBy: [{column: "order", order: ASC}, {column: "created_at", order: DESC}]
+    orderBy: [{column: "notice_date", order: DESC}]
   ) {
     data {
       id
       message
-      order
+      notice_date
       userCreate {
         id
         name
@@ -8522,10 +8522,9 @@ export type GetSystemNoticesLazyQueryHookResult = ReturnType<typeof useGetSystem
 export type GetSystemNoticesQueryResult = Apollo.QueryResult<GetSystemNoticesQuery, GetSystemNoticesQueryVariables>;
 export const GetSystemNoticesValidDocument = gql`
     query GetSystemNoticesValid {
-  SystemNoticesValid(
-    orderBy: [{column: "order", order: ASC}, {column: "created_at", order: DESC}]
-  ) {
+  SystemNoticesValid(orderBy: [{column: "notice_date", order: DESC}]) {
     message
+    notice_date
     userCreate {
       id
       name

@@ -1,11 +1,7 @@
 query GetSystemNoticesValid {
-  SystemNoticesValid(
-    orderBy: [
-      { column: "order", order: ASC }
-      { column: "created_at", order: DESC }
-    ]
-  ) {
+  SystemNoticesValid(orderBy: [{ column: "notice_date", order: DESC }]) {
     message
+    notice_date
     userCreate {
       id
       name

@@ -3,7 +3,7 @@ mutation DeleteSystemNotice($id: ID!) {
     __typename
     id
     message
-    order
+    notice_date
     userCreate {
       id
       name
