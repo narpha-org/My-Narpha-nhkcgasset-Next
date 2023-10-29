@@ -14,6 +14,7 @@ import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   ApplyDownload,
   CgAsset,
+  User,
   CreateApplyDownloadDocument,
 } from "@/graphql/generated/graphql";
 
@@ -29,10 +30,12 @@ import {
 } from "@/components/ui/form"
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/text-area"
 import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 
 const formSchema = z.object({
+  manage_user_id: z.string({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
   comment: z
     .string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' })
     .max(1000, {
@@ -44,10 +47,12 @@ type CGAssetFormValues = z.infer<typeof formSchema>
 
 interface CGAssetApplyDownloadFormProps {
   initialData: CgAsset | null;
+  manageUsers: User[]
 };
 
 export const CGAssetApplyDownloadForm: React.FC<CGAssetApplyDownloadFormProps> = ({
   initialData,
+  manageUsers
 }) => {
   const params = useParams() as unknown as CGAssetPageProps['params'];
   const router = useRouter();
@@ -104,7 +109,11 @@ export const CGAssetApplyDownloadForm: React.FC<CGAssetApplyDownloadFormProps> =
 
       toast.success('ダウンロードを申請しました。');
     } catch (error: any) {
-      toast.error('ダウンロード申請に失敗しました。');
+      if (error.message) {
+        toast.error(`エラー: ${error.message}`);
+      } else {
+        toast.error('ダウンロード申請に失敗しました。');
+      }
     } finally {
       setLoading(false);
     }
@@ -126,6 +135,28 @@ export const CGAssetApplyDownloadForm: React.FC<CGAssetApplyDownloadFormProps> =
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
           <div className="md:grid md:grid-cols-3 gap-8">
+            <FormField
+              control={form.control}
+              name="manage_user_id"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>番組責任者</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="申請先の番組責任者を選択" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {manageUsers && manageUsers.map((manageUser) => (
+                        <SelectItem key={manageUser.id} value={manageUser.id}>{manageUser.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="comment"

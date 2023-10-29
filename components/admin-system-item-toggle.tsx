@@ -22,6 +22,8 @@ export function SystemItemToggle() {
     `/admin/user_role_c_g_asset_stores`,
     `/admin/c_g_a_registrant_affiliations`,
     `/admin/users`,
+    `/admin/bulk_registration`,
+    `/admin/bulk_export`,
   ].includes(pathname)
 
   return (
@@ -49,6 +51,12 @@ export function SystemItemToggle() {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/users`)}>
           ログイン済Oktaユーザ
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`/admin/bulk_registration`)}>
+          データ一括登録
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`/admin/bulk_export`)}>
+          データエクスポート
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

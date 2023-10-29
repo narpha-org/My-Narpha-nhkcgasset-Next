@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import Carousel from "@/components/ui/carousel";
+import CarouselAsset from "@/components/ui/carousel-asset";
 import {
   CgAsset,
 } from "@/graphql/generated/graphql";
@@ -31,8 +31,8 @@ const AssetsCarouselBlock: React.FC<AssetsCarouselBlockProps> = ({
     }
 
     return <>
-      <div className="lg:w-3/4 mx-auto my-2">
-        <Carousel loop>
+      <div className="lg:w-3/4 mx-auto my-2 relative">
+        <CarouselAsset loop medias={medias}>
           {medias && medias.map((obj, i) => {
             return (
               // 👇 style each individual slide.
@@ -47,7 +47,7 @@ const AssetsCarouselBlock: React.FC<AssetsCarouselBlockProps> = ({
               </div>
             );
           })}
-        </Carousel>
+        </CarouselAsset>
       </div>
     </>
   }

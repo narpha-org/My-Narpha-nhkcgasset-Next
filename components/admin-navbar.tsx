@@ -10,7 +10,7 @@ import { LogoutButton } from "@/components/auth-buttons";
 const AdminNavbar = async () => {
   const session: Session | null = await getServerSession(authOptions)
 
-  if (!session) {
+  if (!session || !session?.user || !session?.user.name) {
     redirect('/sign-in');
   }
 

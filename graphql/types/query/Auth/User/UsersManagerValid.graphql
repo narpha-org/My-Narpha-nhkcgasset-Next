@@ -1,0 +1,7 @@
+query UsersManagerValid {
+  UsersManagerValid {
+    id
+    name
+    email
+  }
+}

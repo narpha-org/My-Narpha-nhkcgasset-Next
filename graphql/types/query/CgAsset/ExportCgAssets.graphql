@@ -1,0 +1,5 @@
+query ExportCgAssets {
+  exportCGAssets {
+    file_url
+  }
+}

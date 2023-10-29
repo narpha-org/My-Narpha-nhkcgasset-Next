@@ -46,6 +46,9 @@ type Query {
   "Find a single CGAsset by an identifying attribute."
   CGAsset("Search by primary key." id: ID): CGAsset
 
+  "Export all CGAsset."
+  exportCGAssets: ExportCGAssets
+
   "Find a single CGAsset3DCG by an identifying attribute."
   CGAsset3DCG("Search by primary key." id: ID): CGAsset3DCG
 
@@ -126,6 +129,9 @@ type Query {
 
   "Find a single User by an identifying attribute."
   User("Search by primary key." id: ID): User
+
+  "List all available MANAGER User."
+  UsersManagerValid: [User!]!
 
   "Find a single UserRoleCGAssetStore by an identifying attribute."
   UserRoleCGAssetStore("Search by primary key." id: ID): UserRoleCGAssetStore
@@ -250,7 +256,7 @@ type Query {
     search: CGAssetSearchFormValues
   ): CGAssetPaginator!
 
-  "List all available CGAssetCate."
+  "List all available CGAsset."
   CGAssetsValid(
     "Limits number of fetched items. Maximum allowed value: 100."
     first: Int! = 10
@@ -567,6 +573,9 @@ type Mutation {
   "Delete a CGAsset."
   deleteCGAsset(id: ID!): CGAsset
 
+  "Import CGAssets."
+  importCGAssets(input: ImportCGAssetsInput!): ImportCGAssets
+
   "Create a CGAsset3DCG."
   createCGAsset3DCG(
     asset_db_id: ID!
@@ -858,6 +867,8 @@ scalar DateTime
 
 scalar Date
 
+scalar Upload
+
 """
 ApplyDownload.
 ダウンロード申請
@@ -868,6 +879,9 @@ type ApplyDownload {
 
   "CGアセット"
   cgAsset: CGAsset!
+
+  "番組責任者ユーザ"
+  manageUser: User!
 
   "ステータス"
   status: StatusApplyDownload!
@@ -933,6 +947,7 @@ enum StatusApplyDownload {
 
 input CreateApplyDownloadArgs {
   asset_db_id: ID!
+  manage_user_id: ID!
   user_id: ID!
   comment: String!
 }
@@ -1416,6 +1431,37 @@ input CGAsset3DCGInput {
   thumb_file_name: String!
   thumb_url: String!
   thumb_file_path: String!
+}
+
+type ExportCGAssets {
+  file_url: String
+}
+
+input ImportCGAssetsInput {
+  "登録ユーザID"
+  create_user_id: ID!
+
+  "CGアセットデータExcel"
+  assetBulkExcel: AssetBulkExcelInput
+}
+
+"CGアセットデータExcel"
+input AssetBulkExcelInput {
+  "リソースファイル名"
+  file_name: String!
+
+  "URL"
+  url: String!
+
+  "リソースファイルパス"
+  file_path: String!
+  thumb_file_name: String
+  thumb_url: String
+  thumb_file_path: String
+}
+
+type ImportCGAssets {
+  total: Int
 }
 
 """

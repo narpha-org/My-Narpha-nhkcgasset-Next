@@ -12,7 +12,7 @@ export default async function DashboardLayout({
 }) {
   const session: Session | null = await getServerSession(authOptions)
 
-  if (!session) {
+  if (!session || !session?.user || !session?.user.name) {
     redirect('/sign-in');
   }
 

@@ -5,9 +5,11 @@ import { ApolloQueryResult } from "@apollo/client";
 import {
   ApplyDownload,
   CgAsset,
+  User,
   GetApplyDownloadDocument,
   GetCgAssetDocument,
   StatusApplyDownload,
+  UsersManagerValidDocument,
 } from "@/graphql/generated/graphql";
 
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
@@ -134,11 +136,20 @@ const CGAssetApplyDownloadClient: React.FC<CGAssetPageProps> = async ({ params }
 
   }
 
+  const retManageUser: ApolloQueryResult<{
+    UsersManagerValid: User[]
+  }> = await apolloServer()
+    .query({
+      query: UsersManagerValidDocument,
+    });
+  const manageUsers = retManageUser.data.UsersManagerValid;
+
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
         <CGAssetApplyDownloadForm
           initialData={CGAsset}
+          manageUsers={manageUsers}
         />
       </div>
     </div>

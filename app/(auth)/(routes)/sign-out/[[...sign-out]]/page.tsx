@@ -25,7 +25,7 @@ const SignOut = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!session) {
+  if (!session || !session?.user || !session?.user.name) {
     router.push(`/`);
   }
 

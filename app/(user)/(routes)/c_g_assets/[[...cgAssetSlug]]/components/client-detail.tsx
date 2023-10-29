@@ -77,7 +77,7 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = ({
           <div className="flex flex-col w-full overflow-hidden h-48 px-3 py-2">
             <AssetRightsSupplementBlock cgAsset={cgAsset} />
           </div>
-          <div className="flex flex-col w-full overflow-hidden h-48 px-3 py-2">
+          <div className="flex flex-col w-full overflow-hidden h-96 px-3 py-2">
             <AssetRevisionHistoryBlock cgAsset={cgAsset} />
           </div>
         </div >

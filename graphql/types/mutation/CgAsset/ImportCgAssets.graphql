@@ -1,0 +1,6 @@
+mutation ImportCgAssets($input: ImportCGAssetsInput!) {
+  importCGAssets(input: $input) {
+    __typename
+    total
+  }
+}
