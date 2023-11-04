@@ -39,7 +39,10 @@ const formSchema = z.object({
     thumb_file_name: z.string().min(0),
     thumb_url: z.string().min(0),
     thumb_file_path: z.string().min(0)
-  }).nullable(),
+  }, {
+    invalid_type_error: "アップロードファイル未選択",
+    required_error: "アップロードファイル未選択",
+  }),
   // excel_file: z.custom<FileList>()
   //   .refine((file) => file.length !== 0, { message: '必須です' })
   //   .transform((file) => file[0])
@@ -62,7 +65,7 @@ export const BulkRegistrationForm: React.FC<BulkRegistrationFormProps> = ({ }) =
   const [loading, setLoading] = useState(false);
 
   const defaultValues = {
-    assetBulkExcel: null as unknown as UploadFileProps | null | undefined,
+    assetBulkExcel: null as unknown as UploadFileProps | undefined,
     // excel_file: null as unknown as File
   }
 
@@ -106,10 +109,10 @@ export const BulkRegistrationForm: React.FC<BulkRegistrationFormProps> = ({ }) =
       const importCGAssets = ret.data?.importCGAssets;
 
       router.refresh();
-      router.push(`/admin/bulk_registration`);
       toast.success(`CGアセットが${importCGAssets?.total}件一括登録されました。`, {
         duration: 4000
       });
+      form.reset();
     } catch (error: any) {
       if (error.message) {
         toast.error(`エラー: ${error.message}`, {
@@ -177,6 +180,69 @@ export const BulkRegistrationForm: React.FC<BulkRegistrationFormProps> = ({ }) =
                     />
                   </FormControl>
                   <FormMessage />
+                  <FormDescription>
+                    [Excel見出し]<br />
+                    <br />
+                    id:                        : Database id (指定時は更新)<br />
+                    asset_id:                  : アセットID (未指定時は自動採番)<br />
+                    <br />
+                    asset_name:                : アセット名<br />
+                    asset_cate_id:             : アセット種別<br />
+                    asset_app_prod:            : 制作アプリ<br />
+                    asset_format:              : 形式<br />
+                    asset_size:                : サイズ<br />
+                    asset_renderer:            : レンダラ<br />
+                    program_id:                : 番組ID<br />
+                    program_name:              : 番組名<br />
+                    registrant_affiliation_id: : 登録者所属<br />
+                    viewing_restriction_id:    : 閲覧制限<br />
+                    broadcasting_right_id:     : 放送権利<br />
+                    shared_area_id:            : 公開エリア<br />
+                    rights_supplement:         : 権利補足（使用上の注意）<br />
+                    asset_detail:              : アセット詳細説明<br />
+                    download_count:            : ダウンロード数<br />
+                    uploadDirId:               : アップロード場所<br />
+                    create_user_id:            : 登録ユーザ<br />
+                    update_user_id:            : 更新ユーザ<br />
+                    valid_flg:                 : 有効フラグ<br />
+                    created_at:                : 登録日時<br />
+                    updated_at:                : 更新日時<br />
+                    <br />
+                    3dcg_1_file_path           : アセット3DCG・ファイルパス<br />
+                    3dcg_1_file_name           : アセット3DCG・ファイル名<br />
+                    3dcg_1_file_url            : アセット3DCG・ファイルURL<br />
+                    3dcg_1_thumb_path          : アセット3DCG・サムネイルパス<br />
+                    3dcg_1_thumb_name          : アセット3DCG・サムネイル名<br />
+                    3dcg_1_thumb_url           : アセット3DCG・サムネイルURL<br />
+                    <br />
+                    video_1_file_path           : アセット動画1・ファイルパス<br />
+                    video_1_file_name           : アセット動画1・ファイル名<br />
+                    video_1_file_url            : アセット動画1・ファイルURL<br />
+                    video_1_thumb_path          : アセット動画1・サムネイルパス<br />
+                    video_1_thumb_name          : アセット動画1・サムネイル名<br />
+                    video_1_thumb_url           : アセット動画1・サムネイルURL<br />
+                    ...<br />
+                    video_4_file_path           : アセット動画4・ファイルパス<br />
+                    video_4_file_name           : アセット動画4・ファイル名<br />
+                    video_4_file_url            : アセット動画4・ファイルURL<br />
+                    video_4_thumb_path          : アセット動画4・サムネイルパス<br />
+                    video_4_thumb_name          : アセット動画4・サムネイル名<br />
+                    video_4_thumb_url           : アセット動画4・サムネイルURL<br />
+                    <br />
+                    image_1_file_path           : アセット画像1・ファイルパス<br />
+                    image_1_file_name           : アセット画像1・ファイル名<br />
+                    image_1_file_url            : アセット画像1・ファイルURL<br />
+                    image_1_thumb_path          : アセット画像1・サムネイルパス<br />
+                    image_1_thumb_name          : アセット画像1・サムネイル名<br />
+                    image_1_thumb_url           : アセット画像1・サムネイルURL<br />
+                    ...<br />
+                    image_20_file_path           : アセット画像20・ファイルパス<br />
+                    image_20_file_name           : アセット画像20・ファイル名<br />
+                    image_20_file_url            : アセット画像20・ファイルURL<br />
+                    image_20_thumb_path          : アセット画像20・サムネイルパス<br />
+                    image_20_thumb_name          : アセット画像20・サムネイル名<br />
+                    image_20_thumb_url           : アセット画像20・サムネイルURL<br />
+                  </FormDescription>
                 </FormItem>
               )}
             />

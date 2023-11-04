@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react"
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { Session } from "next-auth";
 import { toast } from "react-hot-toast"
 import { LogIn, LogOut } from "lucide-react";
@@ -36,6 +36,8 @@ export const LoginButton = () => {
 
 // ログアウトボタン
 export const LogoutButton = (props: { session: Session | null }) => {
+  const { data: session, status } = useSession()
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +48,11 @@ export const LogoutButton = (props: { session: Session | null }) => {
       if (!process.env.OKTA_LOGOUT) {
         return;
       }
-      return (window.location.href = process.env.OKTA_LOGOUT);
+      return (window.location.href =
+        process.env.OKTA_LOGOUT +
+        '?' + 'id_token_hint=' + (session as unknown as { idToken: string }).idToken +
+        '&' + 'post_logout_redirect_uri=' + encodeURIComponent(process.env.NEXTAUTH_URL as string)
+      );
     });
 
     // toast.success('ログアウトました。');

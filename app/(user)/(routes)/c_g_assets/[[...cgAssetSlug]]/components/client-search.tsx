@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -23,6 +24,7 @@ import { fetchData } from './page-search/fetch-data';
 import { SearchForm } from './page-search/search-form';
 import { Button } from "@/components/ui/button";
 import SearchResult from "./page-search/search-result";
+import { IsRoleUser } from "@/lib/check-role-client";
 
 interface CGAssetSearchClientProps {
   assetCates: CgAssetCate[];
@@ -36,6 +38,7 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
   assetSearchAppProds,
 }) => {
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   const storeSearchInfo = useSearchForm();
   const [data, setData] = useState<CgAsset[]>([]);
@@ -50,7 +53,7 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
 
     (async () => {
       const ret = await fetchData({
-        first: 10, page: 1, search: storeSearchInfo.searchFormData //as CGAssetSearchFormValues
+        first: 10, page: 1, search: storeSearchInfo.searchFormData, session //as CGAssetSearchFormValues
       })
       setData(ret.data);
       setPaginatorInfo(ret.paginatorInfo);
@@ -72,7 +75,7 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
     setLoading(true)
     setSearchData(data);
 
-    const ret = await fetchData({ first: 10, page: 1, search: data })
+    const ret = await fetchData({ first: 10, page: 1, search: data, session })
     setData(ret.data);
     setPaginatorInfo(ret.paginatorInfo);
     storeSearchInfo.setSearchFormData(data)
@@ -85,7 +88,7 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
 
     const page = (paginatorInfo?.currentPage ? paginatorInfo?.currentPage + 1 : 1);
 
-    const ret = await fetchData({ first: 10, page: page, search: searchData })
+    const ret = await fetchData({ first: 10, page: page, search: searchData, session })
     setData([...data, ...ret.data]);
     setPaginatorInfo(ret.paginatorInfo);
     setIsInitPage(false)
@@ -95,9 +98,11 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
     <>
       <div className="flex items-center justify-between">
         <Heading title="CGアセット一覧" description="" />
-        <Button onClick={() => router.push(`/c_g_assets/new`)}>
-          <Plus className="mr-2 h-4 w-4" /> アセット追加
-        </Button>
+        {/* {!IsRoleUser(session) && (
+          <Button onClick={() => router.push(`/c_g_assets/new`)}>
+            <Plus className="mr-2 h-4 w-4" /> アセット追加
+          </Button>
+        )} */}
       </div>
       <Separator />
       <div className="flex flex-row">

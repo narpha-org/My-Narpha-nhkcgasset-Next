@@ -63,6 +63,7 @@ export const authOptions: NextAuthOptions = {
       }
       if (account) {
         // token.accessToken = account.access_token;
+        token.idToken = account.id_token;
       }
       if (profile) {
         token.OktaRoleDesc = (
@@ -124,7 +125,7 @@ export const authOptions: NextAuthOptions = {
         console.log("in session", { session, token });
       }
 
-      token.accessToken;
+      token.idToken;
 
       let yourSession = {
         ...session,
@@ -136,6 +137,7 @@ export const authOptions: NextAuthOptions = {
           rgstAffiDesc: token.rgstAffiDesc,
           rgstAffiCode: token.rgstAffiCode,
         },
+        idToken: token.idToken,
       };
 
       if (process.env.NODE_ENV === "development") {

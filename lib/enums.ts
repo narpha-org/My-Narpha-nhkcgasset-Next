@@ -38,11 +38,11 @@ export const statusApplyDownloads: {
   },
   {
     key: StatusApplyDownload.Approval,
-    value: "承認済",
+    value: "承認済み",
   },
   {
     key: StatusApplyDownload.BoxDeliver,
-    value: "Box送付",
+    value: "送付済み",
   },
   {
     key: StatusApplyDownload.Removal,

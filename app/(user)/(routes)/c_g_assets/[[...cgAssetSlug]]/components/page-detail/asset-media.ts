@@ -36,7 +36,7 @@ export const getAssetMedias = (elem: CgAsset) => {
     default:
       ret.mediaDesc = "";
       ret.medias = null;
-      ret.notFound = "";
+      ret.notFound = "/images/asset_image_notfound.png";
   }
 
   return ret;

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   CgAsset,
 } from "@/graphql/generated/graphql";
@@ -17,11 +18,22 @@ const AssetTagsBlock: React.FC<AssetTagsBlockProps> = ({
         タグ一覧
       </div>
       <div className="flex-grow h-full overflow-y-auto">
-        <div className="mt-6">
-          {cgAsset?.assetTags?.map(assetTag => assetTag?.tag).join(', ')}
-        </div>
-        <div className="mt-24">
+        <div className="mt-8">
           <AssetTagForm cgAsset={cgAsset} />
+        </div>
+        <div className="mt-6">
+          {cgAsset && cgAsset.assetTags && [...cgAsset.assetTags]
+            .sort((a, b) => Number(b?.tag_add_edit_flg) - Number(a?.tag_add_edit_flg))
+            .map(assetTag => {
+              return (
+                <Button
+                  key={assetTag?.id}
+                  variant={assetTag?.tag_add_edit_flg ? "ghost" : "outline"}
+                >
+                  {assetTag?.tag}
+                </Button>
+              )
+            })}
         </div>
       </div>
     </>

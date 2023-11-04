@@ -50,27 +50,51 @@ export type ApplyDownload = {
   approval_date?: Maybe<Scalars['DateTime']['output']>;
   /** 承認メール送信済 */
   approval_mail_sent?: Maybe<Scalars['Boolean']['output']>;
-  /** データ送付ユーザ */
+  /** DL済み通知ユーザ */
   boxDeliverUser?: Maybe<User>;
-  /** データ送付日 */
+  /** DL済み通知日 */
   box_deliver_date?: Maybe<Scalars['DateTime']['output']>;
-  /** データ送付メール送信済 */
+  /** DL済み通知メール送信済 */
   box_deliver_mail_sent?: Maybe<Scalars['Boolean']['output']>;
+  /** Boxリンク */
+  box_link?: Maybe<Scalars['String']['output']>;
   /** CGアセット */
   cgAsset: CgAsset;
   /** When the ApplyDownload was created. */
   created_at: Scalars['DateTime']['output'];
+  /** データ削除日 */
+  date_removal?: Maybe<Scalars['DateTime']['output']>;
+  /** 利用期間・終了日 */
+  date_usage_end?: Maybe<Scalars['DateTime']['output']>;
+  /** 利用期間・開始日 */
+  date_usage_start?: Maybe<Scalars['DateTime']['output']>;
+  /** データ削除完了ユーザ */
+  doneUser?: Maybe<User>;
+  /** データ削除完了日 */
+  done_date?: Maybe<Scalars['DateTime']['output']>;
+  /** データ削除完了メール送信済 */
+  done_mail_sent?: Maybe<Scalars['Boolean']['output']>;
+  /** ダウンロード日 */
+  download_date?: Maybe<Scalars['DateTime']['output']>;
+  /** その他 */
+  etc_txt?: Maybe<Scalars['String']['output']>;
   /** Unique primary key. */
   id: Scalars['ID']['output'];
   /** 番組責任者ユーザ */
   manageUser: User;
-  /** データ削除ユーザ */
+  /** 番組ID */
+  program_id?: Maybe<Scalars['String']['output']>;
+  /** 番組名 */
+  program_name?: Maybe<Scalars['String']['output']>;
+  /** 利用目的 */
+  purpose_of_use_txt?: Maybe<Scalars['String']['output']>;
+  /** データ削除通知ユーザ */
   removalUser?: Maybe<User>;
-  /** データ削除日 */
+  /** データ削除通知日 */
   removal_date?: Maybe<Scalars['DateTime']['output']>;
   /** データ削除期限日 */
   removal_limit_date?: Maybe<Scalars['DateTime']['output']>;
-  /** データ削除メール送信済 */
+  /** データ削除通知メール送信済 */
   removal_mail_sent?: Maybe<Scalars['Boolean']['output']>;
   /** ステータス */
   status: StatusApplyDownload;
@@ -721,6 +745,8 @@ export enum CodeMailTemplate {
   ApplyDownloadApply = 'APPLY_DOWNLOAD_APPLY',
   ApplyDownloadApproval = 'APPLY_DOWNLOAD_APPROVAL',
   ApplyDownloadBoxDeliver = 'APPLY_DOWNLOAD_BOX_DELIVER',
+  ApplyDownloadDlNotice = 'APPLY_DOWNLOAD_DL_NOTICE',
+  ApplyDownloadDone = 'APPLY_DOWNLOAD_DONE',
   ApplyDownloadRemoval = 'APPLY_DOWNLOAD_REMOVAL',
   AssetComment = 'ASSET_COMMENT',
   AssetDeleteConfirm = 'ASSET_DELETE_CONFIRM',
@@ -730,8 +756,19 @@ export enum CodeMailTemplate {
 
 export type CreateApplyDownloadArgs = {
   asset_db_id: Scalars['ID']['input'];
-  comment: Scalars['String']['input'];
+  /** 利用期間・終了日 */
+  date_usage_end?: InputMaybe<Scalars['DateTime']['input']>;
+  /** 利用期間・開始日 */
+  date_usage_start?: InputMaybe<Scalars['DateTime']['input']>;
+  /** その他 */
+  etc_txt?: InputMaybe<Scalars['String']['input']>;
   manage_user_id: Scalars['ID']['input'];
+  /** 番組ID */
+  program_id?: InputMaybe<Scalars['String']['input']>;
+  /** 番組名 */
+  program_name?: InputMaybe<Scalars['String']['input']>;
+  /** 利用目的 */
+  purpose_of_use_txt?: InputMaybe<Scalars['String']['input']>;
   user_id: Scalars['ID']['input'];
 };
 
@@ -855,7 +892,7 @@ export type LinkAccountInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  /** ダウンロード申請登録 */
+  /** ダウンロード申請 */
   createApplyDownload?: Maybe<ApplyDownload>;
   /** Create a ApplyDownloadComment. */
   createApplyDownloadComment?: Maybe<ApplyDownloadComment>;
@@ -961,7 +998,11 @@ export type Mutation = {
   updateApplyDownloadBoxDeliver?: Maybe<ApplyDownload>;
   /** Update a ApplyDownloadComment. */
   updateApplyDownloadComment?: Maybe<ApplyDownloadComment>;
+  /** DL済み通知 */
+  updateApplyDownloadDLNotification?: Maybe<ApplyDownload>;
   /** データ削除 */
+  updateApplyDownloadDone?: Maybe<ApplyDownload>;
+  /** データ削除期限 */
   updateApplyDownloadRemoval?: Maybe<ApplyDownload>;
   /** Update a CGABroadcastingRight. */
   updateCGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
@@ -1339,6 +1380,16 @@ export type MutationUpdateApplyDownloadCommentArgs = {
 };
 
 
+export type MutationUpdateApplyDownloadDlNotificationArgs = {
+  input: UpdateApplyDownloadDlNotificationArgs;
+};
+
+
+export type MutationUpdateApplyDownloadDoneArgs = {
+  input: UpdateApplyDownloadDoneArgs;
+};
+
+
 export type MutationUpdateApplyDownloadRemovalArgs = {
   input: UpdateApplyDownloadRemovalArgs;
 };
@@ -1634,12 +1685,14 @@ export type Query = {
   ApplyDownloadComments: ApplyDownloadCommentPaginator;
   /** List all available ApplyDownloadComment. */
   ApplyDownloadCommentsValid: Array<ApplyDownloadComment>;
-  /** 承認一覧 */
-  ApplyDownloadsApproval: ApplyDownloadPaginator;
-  /** 申請一覧 */
-  ApplyDownloadsEntry: ApplyDownloadPaginator;
-  /** ダウンロード申請一覧 */
-  ApplyDownloadsNoRemoval: ApplyDownloadPaginator;
+  /** 承認待ち or 承認済み */
+  ApplyDownloadsApplyOrApproval: ApplyDownloadPaginator;
+  /** 承認待ち or ダウンロード or データ削除報告 */
+  ApplyDownloadsApplyOrApprovalOrBoxDeliver: ApplyDownloadPaginator;
+  /** 申請中 or 承認許可 or DL済み通知 or データ削除期限 */
+  ApplyDownloadsNotDone: ApplyDownloadPaginator;
+  /** 承認待ち */
+  ApplyDownloadsOnlyApply: ApplyDownloadPaginator;
   /** Find a single CGABroadcastingRight by an identifying attribute. */
   CGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** List multiple CGABroadcastingRight. */
@@ -1720,9 +1773,11 @@ export type Query = {
   CGAssetVideo?: Maybe<CgAssetVideo>;
   /** List multiple CGAssetVideo. */
   CGAssetVideos: CgAssetVideoPaginator;
-  /** List multiple CGAssets. */
-  CGAssets: CgAssetPaginator;
   /** List all available CGAsset. */
+  CGAssetsAll: CgAssetPaginator;
+  /** List all available own created CGAsset. */
+  CGAssetsCreatedAll: CgAssetPaginator;
+  /** List all valid CGAsset. */
   CGAssetsValid: CgAssetPaginator;
   /** Find a single SystemMailTemplate by an identifying attribute. */
   SystemMailTemplate?: Maybe<SystemMailTemplate>;
@@ -1786,24 +1841,35 @@ export type QueryApplyDownloadCommentsArgs = {
 };
 
 
-export type QueryApplyDownloadsApprovalArgs = {
+export type QueryApplyDownloadsApplyOrApprovalArgs = {
   first?: Scalars['Int']['input'];
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  user_id: Scalars['ID']['input'];
+  user_id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
-export type QueryApplyDownloadsEntryArgs = {
+export type QueryApplyDownloadsApplyOrApprovalOrBoxDeliverArgs = {
   first?: Scalars['Int']['input'];
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  user_id: Scalars['ID']['input'];
+  user_id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
-export type QueryApplyDownloadsNoRemovalArgs = {
+export type QueryApplyDownloadsNotDoneArgs = {
   first?: Scalars['Int']['input'];
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  user_id: Scalars['ID']['input'];
+  user_id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryApplyDownloadsOnlyApplyArgs = {
+  first?: Scalars['Int']['input'];
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
@@ -1980,11 +2046,19 @@ export type QueryCgAssetVideosArgs = {
 };
 
 
-export type QueryCgAssetsArgs = {
+export type QueryCgAssetsAllArgs = {
   first?: Scalars['Int']['input'];
   orderBy?: InputMaybe<Array<OrderByClause>>;
   page?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<CgAssetSearchFormValues>;
+};
+
+
+export type QueryCgAssetsCreatedAllArgs = {
+  create_user_id: Scalars['ID']['input'];
+  first?: Scalars['Int']['input'];
+  orderBy?: InputMaybe<Array<OrderByClause>>;
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -2161,6 +2235,8 @@ export enum StatusApplyDownload {
   Apply = 'APPLY',
   Approval = 'APPROVAL',
   BoxDeliver = 'BOX_DELIVER',
+  DlNotice = 'DL_NOTICE',
+  Done = 'DONE',
   Removal = 'REMOVAL'
 }
 
@@ -2248,19 +2324,30 @@ export type UnlinkAccountInput = {
 };
 
 export type UpdateApplyDownloadApprovalArgs = {
-  comment: Scalars['String']['input'];
   id: Scalars['ID']['input'];
   user_id: Scalars['ID']['input'];
 };
 
 export type UpdateApplyDownloadBoxDeliverArgs = {
-  comment: Scalars['String']['input'];
+  /** Boxリンク */
+  box_link?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  /** データ削除期限日 */
+  removal_limit_date?: InputMaybe<Scalars['DateTime']['input']>;
+  user_id: Scalars['ID']['input'];
+};
+
+export type UpdateApplyDownloadDlNotificationArgs = {
+  id: Scalars['ID']['input'];
+  user_id: Scalars['ID']['input'];
+};
+
+export type UpdateApplyDownloadDoneArgs = {
   id: Scalars['ID']['input'];
   user_id: Scalars['ID']['input'];
 };
 
 export type UpdateApplyDownloadRemovalArgs = {
-  comment: Scalars['String']['input'];
   id: Scalars['ID']['input'];
   user_id: Scalars['ID']['input'];
 };
@@ -2498,6 +2585,20 @@ export type UpdateApplyDownloadBoxDeliverMutationVariables = Exact<{
 
 
 export type UpdateApplyDownloadBoxDeliverMutation = { __typename?: 'Mutation', updateApplyDownloadBoxDeliver?: { __typename: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } } | null };
+
+export type UpdateApplyDownloadDlNotificationMutationVariables = Exact<{
+  input: UpdateApplyDownloadDlNotificationArgs;
+}>;
+
+
+export type UpdateApplyDownloadDlNotificationMutation = { __typename?: 'Mutation', updateApplyDownloadDLNotification?: { __typename: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } } | null };
+
+export type UpdateApplyDownloadDoneMutationVariables = Exact<{
+  input: UpdateApplyDownloadDoneArgs;
+}>;
+
+
+export type UpdateApplyDownloadDoneMutation = { __typename?: 'Mutation', updateApplyDownloadDone?: { __typename: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } } | null };
 
 export type UpdateApplyDownloadRemovalMutationVariables = Exact<{
   input: UpdateApplyDownloadRemovalArgs;
@@ -2944,34 +3045,47 @@ export type GetApplyDownloadQueryVariables = Exact<{
 }>;
 
 
-export type GetApplyDownloadQuery = { __typename?: 'Query', ApplyDownload?: { __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } } | null };
+export type GetApplyDownloadQuery = { __typename?: 'Query', ApplyDownload?: { __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, program_id?: string | null, program_name?: string | null, date_usage_start?: any | null, date_usage_end?: any | null, purpose_of_use_txt?: string | null, etc_txt?: string | null, box_link?: string | null, removal_limit_date?: any | null, download_date?: any | null, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null } | null };
 
-export type GetApplyDownloadsApprovalQueryVariables = Exact<{
-  user_id: Scalars['ID']['input'];
+export type GetApplyDownloadsApplyOrApprovalQueryVariables = Exact<{
+  user_id?: InputMaybe<Scalars['ID']['input']>;
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
 }>;
 
 
-export type GetApplyDownloadsApprovalQuery = { __typename?: 'Query', ApplyDownloadsApproval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetApplyDownloadsApplyOrApprovalQuery = { __typename?: 'Query', ApplyDownloadsApplyOrApproval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
-export type GetApplyDownloadsEntryQueryVariables = Exact<{
-  user_id: Scalars['ID']['input'];
+export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryVariables = Exact<{
+  user_id?: InputMaybe<Scalars['ID']['input']>;
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
 }>;
 
 
-export type GetApplyDownloadsEntryQuery = { __typename?: 'Query', ApplyDownloadsEntry: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery = { __typename?: 'Query', ApplyDownloadsApplyOrApprovalOrBoxDeliver: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
-export type GetApplyDownloadsNoRemovalQueryVariables = Exact<{
-  user_id: Scalars['ID']['input'];
+export type GetApplyDownloadsNotDoneQueryVariables = Exact<{
+  user_id?: InputMaybe<Scalars['ID']['input']>;
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
 }>;
 
 
-export type GetApplyDownloadsNoRemovalQuery = { __typename?: 'Query', ApplyDownloadsNoRemoval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string } }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetApplyDownloadsNotDoneQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetApplyDownloadsOnlyApplyQueryVariables = Exact<{
+  user_id?: InputMaybe<Scalars['ID']['input']>;
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetApplyDownloadsOnlyApplyQuery = { __typename?: 'Query', ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetSessionAndUserQueryVariables = Exact<{
   sessionToken: Scalars['String']['input'];
@@ -3088,7 +3202,7 @@ export type ApiGetCgAssetsQueryVariables = Exact<{
 }>;
 
 
-export type ApiGetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore } | null }, userUpdate?: { __typename?: 'User', name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore } | null } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type ApiGetCgAssetsQuery = { __typename?: 'Query', CGAssetsValid: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore } | null }, userUpdate?: { __typename?: 'User', name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string, role: RoleCgAssetStore } | null } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type ExportCgAssetsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3102,14 +3216,32 @@ export type GetCgAssetQueryVariables = Exact<{
 
 export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
-export type GetCgAssetsQueryVariables = Exact<{
+export type GetCgAssetsAllQueryVariables = Exact<{
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
   search?: InputMaybe<CgAssetSearchFormValues>;
 }>;
 
 
-export type GetCgAssetsQuery = { __typename?: 'Query', CGAssets: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetCgAssetsAllQuery = { __typename?: 'Query', CGAssetsAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetCgAssetsCreatedAllQueryVariables = Exact<{
+  create_user_id: Scalars['ID']['input'];
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type GetCgAssetsCreatedAllQuery = { __typename?: 'Query', CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+
+export type GetCgAssetsValidQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+  search?: InputMaybe<CgAssetSearchFormValues>;
+}>;
+
+
+export type GetCgAssetsValidQuery = { __typename?: 'Query', CGAssetsValid: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetCgAssetCateQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3210,6 +3342,56 @@ export type GetCgaSharedAreasValidQueryVariables = Exact<{ [key: string]: never;
 
 
 export type GetCgaSharedAreasValidQuery = { __typename?: 'Query', CGASharedAreasValid: Array<{ __typename?: 'CGASharedArea', desc: string, id: string }> };
+
+export type CgAssetDetailClientQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type CgAssetDetailClientQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null, CGAViewingRestrictionsValid: Array<{ __typename?: 'CGAViewingRestriction', desc: string, id: string }> };
+
+export type CgAssetEditClientQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CgAssetEditClientQuery = { __typename?: 'Query', CGAssetCatesValid: Array<{ __typename?: 'CGAssetCate', code: CodeCgAssetCate, desc: string, id: string }>, CGARegistrantAffiliationsValid: Array<{ __typename?: 'CGARegistrantAffiliation', desc: string, id: string }>, CGAViewingRestrictionsValid: Array<{ __typename?: 'CGAViewingRestriction', desc: string, id: string }>, CGABroadcastingRightsValid: Array<{ __typename?: 'CGABroadcastingRight', desc: string, id: string }>, CGASharedAreasValid: Array<{ __typename?: 'CGASharedArea', desc: string, id: string }>, CGAssetUploadDirsValid: Array<{ __typename?: 'CGAssetUploadDir', base_path: string, id: string }> };
+
+export type CgAssetSearchClientQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CgAssetSearchClientQuery = { __typename?: 'Query', CGAssetCatesValid: Array<{ __typename?: 'CGAssetCate', code: CodeCgAssetCate, desc: string, id: string }>, CGAssetSearchTagsValid: Array<{ __typename?: 'CGAssetSearchTag', code: string, desc: string, id: string }>, CGAssetSearchAppProdsValid: Array<{ __typename?: 'CGAssetSearchAppProd', code: string, desc: string, id: string }> };
+
+export type HomeDashboardServerAdminQueryVariables = Exact<{
+  user_id?: InputMaybe<Scalars['ID']['input']>;
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  create_user_id: Scalars['ID']['input'];
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type HomeDashboardServerAdminQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsApplyOrApprovalOrBoxDeliver: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
+
+export type HomeDashboardServerManagerQueryVariables = Exact<{
+  user_id?: InputMaybe<Scalars['ID']['input']>;
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  create_user_id: Scalars['ID']['input'];
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type HomeDashboardServerManagerQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsApplyOrApproval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
+
+export type HomeDashboardServerUserQueryVariables = Exact<{
+  user_id?: InputMaybe<Scalars['ID']['input']>;
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  create_user_id: Scalars['ID']['input'];
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
+
+
+export type HomeDashboardServerUserQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
 
 export type GetSampleQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3407,6 +3589,88 @@ export function useUpdateApplyDownloadBoxDeliverMutation(baseOptions?: Apollo.Mu
 export type UpdateApplyDownloadBoxDeliverMutationHookResult = ReturnType<typeof useUpdateApplyDownloadBoxDeliverMutation>;
 export type UpdateApplyDownloadBoxDeliverMutationResult = Apollo.MutationResult<UpdateApplyDownloadBoxDeliverMutation>;
 export type UpdateApplyDownloadBoxDeliverMutationOptions = Apollo.BaseMutationOptions<UpdateApplyDownloadBoxDeliverMutation, UpdateApplyDownloadBoxDeliverMutationVariables>;
+export const UpdateApplyDownloadDlNotificationDocument = gql`
+    mutation UpdateApplyDownloadDLNotification($input: UpdateApplyDownloadDLNotificationArgs!) {
+  updateApplyDownloadDLNotification(input: $input) {
+    __typename
+    id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
+    status
+    created_at
+  }
+}
+    `;
+export type UpdateApplyDownloadDlNotificationMutationFn = Apollo.MutationFunction<UpdateApplyDownloadDlNotificationMutation, UpdateApplyDownloadDlNotificationMutationVariables>;
+
+/**
+ * __useUpdateApplyDownloadDlNotificationMutation__
+ *
+ * To run a mutation, you first call `useUpdateApplyDownloadDlNotificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApplyDownloadDlNotificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateApplyDownloadDlNotificationMutation, { data, loading, error }] = useUpdateApplyDownloadDlNotificationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateApplyDownloadDlNotificationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplyDownloadDlNotificationMutation, UpdateApplyDownloadDlNotificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateApplyDownloadDlNotificationMutation, UpdateApplyDownloadDlNotificationMutationVariables>(UpdateApplyDownloadDlNotificationDocument, options);
+      }
+export type UpdateApplyDownloadDlNotificationMutationHookResult = ReturnType<typeof useUpdateApplyDownloadDlNotificationMutation>;
+export type UpdateApplyDownloadDlNotificationMutationResult = Apollo.MutationResult<UpdateApplyDownloadDlNotificationMutation>;
+export type UpdateApplyDownloadDlNotificationMutationOptions = Apollo.BaseMutationOptions<UpdateApplyDownloadDlNotificationMutation, UpdateApplyDownloadDlNotificationMutationVariables>;
+export const UpdateApplyDownloadDoneDocument = gql`
+    mutation UpdateApplyDownloadDone($input: UpdateApplyDownloadDoneArgs!) {
+  updateApplyDownloadDone(input: $input) {
+    __typename
+    id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
+    status
+    created_at
+  }
+}
+    `;
+export type UpdateApplyDownloadDoneMutationFn = Apollo.MutationFunction<UpdateApplyDownloadDoneMutation, UpdateApplyDownloadDoneMutationVariables>;
+
+/**
+ * __useUpdateApplyDownloadDoneMutation__
+ *
+ * To run a mutation, you first call `useUpdateApplyDownloadDoneMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApplyDownloadDoneMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateApplyDownloadDoneMutation, { data, loading, error }] = useUpdateApplyDownloadDoneMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateApplyDownloadDoneMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplyDownloadDoneMutation, UpdateApplyDownloadDoneMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateApplyDownloadDoneMutation, UpdateApplyDownloadDoneMutationVariables>(UpdateApplyDownloadDoneDocument, options);
+      }
+export type UpdateApplyDownloadDoneMutationHookResult = ReturnType<typeof useUpdateApplyDownloadDoneMutation>;
+export type UpdateApplyDownloadDoneMutationResult = Apollo.MutationResult<UpdateApplyDownloadDoneMutation>;
+export type UpdateApplyDownloadDoneMutationOptions = Apollo.BaseMutationOptions<UpdateApplyDownloadDoneMutation, UpdateApplyDownloadDoneMutationVariables>;
 export const UpdateApplyDownloadRemovalDocument = gql`
     mutation UpdateApplyDownloadRemoval($input: UpdateApplyDownloadRemovalArgs!) {
   updateApplyDownloadRemoval(input: $input) {
@@ -6302,7 +6566,24 @@ export const GetApplyDownloadDocument = gql`
       asset_id
       asset_name
     }
+    manageUser {
+      id
+      name
+    }
     status
+    program_id
+    program_name
+    date_usage_start
+    date_usage_end
+    purpose_of_use_txt
+    etc_txt
+    applyUser {
+      id
+      name
+    }
+    box_link
+    removal_limit_date
+    download_date
     created_at
   }
 }
@@ -6335,15 +6616,28 @@ export function useGetApplyDownloadLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetApplyDownloadQueryHookResult = ReturnType<typeof useGetApplyDownloadQuery>;
 export type GetApplyDownloadLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadLazyQuery>;
 export type GetApplyDownloadQueryResult = Apollo.QueryResult<GetApplyDownloadQuery, GetApplyDownloadQueryVariables>;
-export const GetApplyDownloadsApprovalDocument = gql`
-    query GetApplyDownloadsApproval($user_id: ID!, $first: Int!, $page: Int!) {
-  ApplyDownloadsApproval(user_id: $user_id, first: $first, page: $page) {
+export const GetApplyDownloadsApplyOrApprovalDocument = gql`
+    query GetApplyDownloadsApplyOrApproval($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!) {
+  ApplyDownloadsApplyOrApproval(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
     data {
       id
       cgAsset {
         id
         asset_id
         asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
       }
       status
       created_at
@@ -6359,43 +6653,57 @@ export const GetApplyDownloadsApprovalDocument = gql`
     `;
 
 /**
- * __useGetApplyDownloadsApprovalQuery__
+ * __useGetApplyDownloadsApplyOrApprovalQuery__
  *
- * To run a query within a React component, call `useGetApplyDownloadsApprovalQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetApplyDownloadsApprovalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetApplyDownloadsApplyOrApprovalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadsApplyOrApprovalQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetApplyDownloadsApprovalQuery({
+ * const { data, loading, error } = useGetApplyDownloadsApplyOrApprovalQuery({
  *   variables: {
  *      user_id: // value for 'user_id'
+ *      manage_user_id: // value for 'manage_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
  *   },
  * });
  */
-export function useGetApplyDownloadsApprovalQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadsApprovalQuery, GetApplyDownloadsApprovalQueryVariables>) {
+export function useGetApplyDownloadsApplyOrApprovalQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadsApplyOrApprovalQuery, GetApplyDownloadsApplyOrApprovalQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetApplyDownloadsApprovalQuery, GetApplyDownloadsApprovalQueryVariables>(GetApplyDownloadsApprovalDocument, options);
+        return Apollo.useQuery<GetApplyDownloadsApplyOrApprovalQuery, GetApplyDownloadsApplyOrApprovalQueryVariables>(GetApplyDownloadsApplyOrApprovalDocument, options);
       }
-export function useGetApplyDownloadsApprovalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadsApprovalQuery, GetApplyDownloadsApprovalQueryVariables>) {
+export function useGetApplyDownloadsApplyOrApprovalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadsApplyOrApprovalQuery, GetApplyDownloadsApplyOrApprovalQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetApplyDownloadsApprovalQuery, GetApplyDownloadsApprovalQueryVariables>(GetApplyDownloadsApprovalDocument, options);
+          return Apollo.useLazyQuery<GetApplyDownloadsApplyOrApprovalQuery, GetApplyDownloadsApplyOrApprovalQueryVariables>(GetApplyDownloadsApplyOrApprovalDocument, options);
         }
-export type GetApplyDownloadsApprovalQueryHookResult = ReturnType<typeof useGetApplyDownloadsApprovalQuery>;
-export type GetApplyDownloadsApprovalLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsApprovalLazyQuery>;
-export type GetApplyDownloadsApprovalQueryResult = Apollo.QueryResult<GetApplyDownloadsApprovalQuery, GetApplyDownloadsApprovalQueryVariables>;
-export const GetApplyDownloadsEntryDocument = gql`
-    query GetApplyDownloadsEntry($user_id: ID!, $first: Int!, $page: Int!) {
-  ApplyDownloadsEntry(user_id: $user_id, first: $first, page: $page) {
+export type GetApplyDownloadsApplyOrApprovalQueryHookResult = ReturnType<typeof useGetApplyDownloadsApplyOrApprovalQuery>;
+export type GetApplyDownloadsApplyOrApprovalLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsApplyOrApprovalLazyQuery>;
+export type GetApplyDownloadsApplyOrApprovalQueryResult = Apollo.QueryResult<GetApplyDownloadsApplyOrApprovalQuery, GetApplyDownloadsApplyOrApprovalQueryVariables>;
+export const GetApplyDownloadsApplyOrApprovalOrBoxDeliverDocument = gql`
+    query GetApplyDownloadsApplyOrApprovalOrBoxDeliver($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!) {
+  ApplyDownloadsApplyOrApprovalOrBoxDeliver(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
     data {
       id
       cgAsset {
         id
         asset_id
         asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
       }
       status
       created_at
@@ -6411,43 +6719,57 @@ export const GetApplyDownloadsEntryDocument = gql`
     `;
 
 /**
- * __useGetApplyDownloadsEntryQuery__
+ * __useGetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery__
  *
- * To run a query within a React component, call `useGetApplyDownloadsEntryQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetApplyDownloadsEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetApplyDownloadsEntryQuery({
+ * const { data, loading, error } = useGetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery({
  *   variables: {
  *      user_id: // value for 'user_id'
+ *      manage_user_id: // value for 'manage_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
  *   },
  * });
  */
-export function useGetApplyDownloadsEntryQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadsEntryQuery, GetApplyDownloadsEntryQueryVariables>) {
+export function useGetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery, GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetApplyDownloadsEntryQuery, GetApplyDownloadsEntryQueryVariables>(GetApplyDownloadsEntryDocument, options);
+        return Apollo.useQuery<GetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery, GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryVariables>(GetApplyDownloadsApplyOrApprovalOrBoxDeliverDocument, options);
       }
-export function useGetApplyDownloadsEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadsEntryQuery, GetApplyDownloadsEntryQueryVariables>) {
+export function useGetApplyDownloadsApplyOrApprovalOrBoxDeliverLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery, GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetApplyDownloadsEntryQuery, GetApplyDownloadsEntryQueryVariables>(GetApplyDownloadsEntryDocument, options);
+          return Apollo.useLazyQuery<GetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery, GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryVariables>(GetApplyDownloadsApplyOrApprovalOrBoxDeliverDocument, options);
         }
-export type GetApplyDownloadsEntryQueryHookResult = ReturnType<typeof useGetApplyDownloadsEntryQuery>;
-export type GetApplyDownloadsEntryLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsEntryLazyQuery>;
-export type GetApplyDownloadsEntryQueryResult = Apollo.QueryResult<GetApplyDownloadsEntryQuery, GetApplyDownloadsEntryQueryVariables>;
-export const GetApplyDownloadsNoRemovalDocument = gql`
-    query GetApplyDownloadsNoRemoval($user_id: ID!, $first: Int!, $page: Int!) {
-  ApplyDownloadsNoRemoval(user_id: $user_id, first: $first, page: $page) {
+export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryHookResult = ReturnType<typeof useGetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery>;
+export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsApplyOrApprovalOrBoxDeliverLazyQuery>;
+export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryResult = Apollo.QueryResult<GetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery, GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryVariables>;
+export const GetApplyDownloadsNotDoneDocument = gql`
+    query GetApplyDownloadsNotDone($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!) {
+  ApplyDownloadsNotDone(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
     data {
       id
       cgAsset {
         id
         asset_id
         asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
       }
       status
       created_at
@@ -6463,34 +6785,101 @@ export const GetApplyDownloadsNoRemovalDocument = gql`
     `;
 
 /**
- * __useGetApplyDownloadsNoRemovalQuery__
+ * __useGetApplyDownloadsNotDoneQuery__
  *
- * To run a query within a React component, call `useGetApplyDownloadsNoRemovalQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetApplyDownloadsNoRemovalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetApplyDownloadsNotDoneQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadsNotDoneQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetApplyDownloadsNoRemovalQuery({
+ * const { data, loading, error } = useGetApplyDownloadsNotDoneQuery({
  *   variables: {
  *      user_id: // value for 'user_id'
+ *      manage_user_id: // value for 'manage_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
  *   },
  * });
  */
-export function useGetApplyDownloadsNoRemovalQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadsNoRemovalQuery, GetApplyDownloadsNoRemovalQueryVariables>) {
+export function useGetApplyDownloadsNotDoneQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadsNotDoneQuery, GetApplyDownloadsNotDoneQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetApplyDownloadsNoRemovalQuery, GetApplyDownloadsNoRemovalQueryVariables>(GetApplyDownloadsNoRemovalDocument, options);
+        return Apollo.useQuery<GetApplyDownloadsNotDoneQuery, GetApplyDownloadsNotDoneQueryVariables>(GetApplyDownloadsNotDoneDocument, options);
       }
-export function useGetApplyDownloadsNoRemovalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadsNoRemovalQuery, GetApplyDownloadsNoRemovalQueryVariables>) {
+export function useGetApplyDownloadsNotDoneLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadsNotDoneQuery, GetApplyDownloadsNotDoneQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetApplyDownloadsNoRemovalQuery, GetApplyDownloadsNoRemovalQueryVariables>(GetApplyDownloadsNoRemovalDocument, options);
+          return Apollo.useLazyQuery<GetApplyDownloadsNotDoneQuery, GetApplyDownloadsNotDoneQueryVariables>(GetApplyDownloadsNotDoneDocument, options);
         }
-export type GetApplyDownloadsNoRemovalQueryHookResult = ReturnType<typeof useGetApplyDownloadsNoRemovalQuery>;
-export type GetApplyDownloadsNoRemovalLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsNoRemovalLazyQuery>;
-export type GetApplyDownloadsNoRemovalQueryResult = Apollo.QueryResult<GetApplyDownloadsNoRemovalQuery, GetApplyDownloadsNoRemovalQueryVariables>;
+export type GetApplyDownloadsNotDoneQueryHookResult = ReturnType<typeof useGetApplyDownloadsNotDoneQuery>;
+export type GetApplyDownloadsNotDoneLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsNotDoneLazyQuery>;
+export type GetApplyDownloadsNotDoneQueryResult = Apollo.QueryResult<GetApplyDownloadsNotDoneQuery, GetApplyDownloadsNotDoneQueryVariables>;
+export const GetApplyDownloadsOnlyApplyDocument = gql`
+    query GetApplyDownloadsOnlyApply($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!) {
+  ApplyDownloadsOnlyApply(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetApplyDownloadsOnlyApplyQuery__
+ *
+ * To run a query within a React component, call `useGetApplyDownloadsOnlyApplyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetApplyDownloadsOnlyApplyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetApplyDownloadsOnlyApplyQuery({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      manage_user_id: // value for 'manage_user_id'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetApplyDownloadsOnlyApplyQuery(baseOptions: Apollo.QueryHookOptions<GetApplyDownloadsOnlyApplyQuery, GetApplyDownloadsOnlyApplyQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetApplyDownloadsOnlyApplyQuery, GetApplyDownloadsOnlyApplyQueryVariables>(GetApplyDownloadsOnlyApplyDocument, options);
+      }
+export function useGetApplyDownloadsOnlyApplyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApplyDownloadsOnlyApplyQuery, GetApplyDownloadsOnlyApplyQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetApplyDownloadsOnlyApplyQuery, GetApplyDownloadsOnlyApplyQueryVariables>(GetApplyDownloadsOnlyApplyDocument, options);
+        }
+export type GetApplyDownloadsOnlyApplyQueryHookResult = ReturnType<typeof useGetApplyDownloadsOnlyApplyQuery>;
+export type GetApplyDownloadsOnlyApplyLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsOnlyApplyLazyQuery>;
+export type GetApplyDownloadsOnlyApplyQueryResult = Apollo.QueryResult<GetApplyDownloadsOnlyApplyQuery, GetApplyDownloadsOnlyApplyQueryVariables>;
 export const GetSessionAndUserDocument = gql`
     query GetSessionAndUser($sessionToken: String!) {
   getSessionAndUser(sessionToken: $sessionToken) {
@@ -7347,7 +7736,7 @@ export type GetCgaViewingRestrictionsValidLazyQueryHookResult = ReturnType<typeo
 export type GetCgaViewingRestrictionsValidQueryResult = Apollo.QueryResult<GetCgaViewingRestrictionsValidQuery, GetCgaViewingRestrictionsValidQueryVariables>;
 export const ApiGetCgAssetsDocument = gql`
     query ApiGetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
-  CGAssets(
+  CGAssetsValid(
     first: $first
     page: $page
     orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
@@ -7692,9 +8081,9 @@ export function useGetCgAssetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetCgAssetQueryHookResult = ReturnType<typeof useGetCgAssetQuery>;
 export type GetCgAssetLazyQueryHookResult = ReturnType<typeof useGetCgAssetLazyQuery>;
 export type GetCgAssetQueryResult = Apollo.QueryResult<GetCgAssetQuery, GetCgAssetQueryVariables>;
-export const GetCgAssetsDocument = gql`
-    query GetCgAssets($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
-  CGAssets(
+export const GetCgAssetsAllDocument = gql`
+    query GetCgAssetsAll($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
+  CGAssetsAll(
     first: $first
     page: $page
     orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
@@ -7838,16 +8227,16 @@ export const GetCgAssetsDocument = gql`
     `;
 
 /**
- * __useGetCgAssetsQuery__
+ * __useGetCgAssetsAllQuery__
  *
- * To run a query within a React component, call `useGetCgAssetsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCgAssetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetCgAssetsAllQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetsAllQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetCgAssetsQuery({
+ * const { data, loading, error } = useGetCgAssetsAllQuery({
  *   variables: {
  *      first: // value for 'first'
  *      page: // value for 'page'
@@ -7855,17 +8244,246 @@ export const GetCgAssetsDocument = gql`
  *   },
  * });
  */
-export function useGetCgAssetsQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetsQuery, GetCgAssetsQueryVariables>) {
+export function useGetCgAssetsAllQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetsAllQuery, GetCgAssetsAllQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCgAssetsQuery, GetCgAssetsQueryVariables>(GetCgAssetsDocument, options);
+        return Apollo.useQuery<GetCgAssetsAllQuery, GetCgAssetsAllQueryVariables>(GetCgAssetsAllDocument, options);
       }
-export function useGetCgAssetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetsQuery, GetCgAssetsQueryVariables>) {
+export function useGetCgAssetsAllLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetsAllQuery, GetCgAssetsAllQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCgAssetsQuery, GetCgAssetsQueryVariables>(GetCgAssetsDocument, options);
+          return Apollo.useLazyQuery<GetCgAssetsAllQuery, GetCgAssetsAllQueryVariables>(GetCgAssetsAllDocument, options);
         }
-export type GetCgAssetsQueryHookResult = ReturnType<typeof useGetCgAssetsQuery>;
-export type GetCgAssetsLazyQueryHookResult = ReturnType<typeof useGetCgAssetsLazyQuery>;
-export type GetCgAssetsQueryResult = Apollo.QueryResult<GetCgAssetsQuery, GetCgAssetsQueryVariables>;
+export type GetCgAssetsAllQueryHookResult = ReturnType<typeof useGetCgAssetsAllQuery>;
+export type GetCgAssetsAllLazyQueryHookResult = ReturnType<typeof useGetCgAssetsAllLazyQuery>;
+export type GetCgAssetsAllQueryResult = Apollo.QueryResult<GetCgAssetsAllQuery, GetCgAssetsAllQueryVariables>;
+export const GetCgAssetsCreatedAllDocument = gql`
+    query GetCgAssetsCreatedAll($create_user_id: ID!, $first: Int!, $page: Int!) {
+  CGAssetsCreatedAll(
+    create_user_id: $create_user_id
+    first: $first
+    page: $page
+    orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetsCreatedAllQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetsCreatedAllQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetsCreatedAllQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetsCreatedAllQuery({
+ *   variables: {
+ *      create_user_id: // value for 'create_user_id'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetCgAssetsCreatedAllQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetsCreatedAllQuery, GetCgAssetsCreatedAllQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetsCreatedAllQuery, GetCgAssetsCreatedAllQueryVariables>(GetCgAssetsCreatedAllDocument, options);
+      }
+export function useGetCgAssetsCreatedAllLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetsCreatedAllQuery, GetCgAssetsCreatedAllQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetsCreatedAllQuery, GetCgAssetsCreatedAllQueryVariables>(GetCgAssetsCreatedAllDocument, options);
+        }
+export type GetCgAssetsCreatedAllQueryHookResult = ReturnType<typeof useGetCgAssetsCreatedAllQuery>;
+export type GetCgAssetsCreatedAllLazyQueryHookResult = ReturnType<typeof useGetCgAssetsCreatedAllLazyQuery>;
+export type GetCgAssetsCreatedAllQueryResult = Apollo.QueryResult<GetCgAssetsCreatedAllQuery, GetCgAssetsCreatedAllQueryVariables>;
+export const GetCgAssetsValidDocument = gql`
+    query GetCgAssetsValid($first: Int!, $page: Int!, $search: CGAssetSearchFormValues) {
+  CGAssetsValid(
+    first: $first
+    page: $page
+    orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+    search: $search
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      assetCate {
+        id
+        code
+        desc
+      }
+      asset_app_prod
+      asset_format
+      asset_size
+      asset_renderer
+      program_id
+      program_name
+      registrantAffiliation {
+        id
+        desc
+      }
+      viewingRestriction {
+        id
+        desc
+      }
+      broadcastingRight {
+        id
+        desc
+      }
+      sharedArea {
+        id
+        desc
+      }
+      rights_supplement
+      asset_detail
+      asset_media_base
+      uploadDir {
+        id
+        base_path
+      }
+      assetImages {
+        id
+        file_name
+        url
+        file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
+      }
+      assetVideos {
+        id
+        file_name
+        url
+        file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
+      }
+      asset3DCGs {
+        id
+        file_name
+        url
+        file_path
+        thumb_file_name
+        thumb_url
+        thumb_file_path
+      }
+      assetTags {
+        id
+        tag
+        tag_add_edit_flg
+        taggedUser {
+          name
+        }
+        created_at
+      }
+      revisionHistories {
+        id
+        created_at
+        desc
+        revisedUser {
+          name
+        }
+      }
+      reviews {
+        id
+        created_at
+        review
+        reviewedUser {
+          name
+        }
+      }
+      download_count
+      userCreate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      userUpdate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCgAssetsValidQuery__
+ *
+ * To run a query within a React component, call `useGetCgAssetsValidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCgAssetsValidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCgAssetsValidQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useGetCgAssetsValidQuery(baseOptions: Apollo.QueryHookOptions<GetCgAssetsValidQuery, GetCgAssetsValidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCgAssetsValidQuery, GetCgAssetsValidQueryVariables>(GetCgAssetsValidDocument, options);
+      }
+export function useGetCgAssetsValidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCgAssetsValidQuery, GetCgAssetsValidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCgAssetsValidQuery, GetCgAssetsValidQueryVariables>(GetCgAssetsValidDocument, options);
+        }
+export type GetCgAssetsValidQueryHookResult = ReturnType<typeof useGetCgAssetsValidQuery>;
+export type GetCgAssetsValidLazyQueryHookResult = ReturnType<typeof useGetCgAssetsValidLazyQuery>;
+export type GetCgAssetsValidQueryResult = Apollo.QueryResult<GetCgAssetsValidQuery, GetCgAssetsValidQueryVariables>;
 export const GetCgAssetCateDocument = gql`
     query GetCgAssetCate($id: ID!) {
   CGAssetCate(id: $id) {
@@ -8485,6 +9103,804 @@ export function useGetCgaSharedAreasValidLazyQuery(baseOptions?: Apollo.LazyQuer
 export type GetCgaSharedAreasValidQueryHookResult = ReturnType<typeof useGetCgaSharedAreasValidQuery>;
 export type GetCgaSharedAreasValidLazyQueryHookResult = ReturnType<typeof useGetCgaSharedAreasValidLazyQuery>;
 export type GetCgaSharedAreasValidQueryResult = Apollo.QueryResult<GetCgaSharedAreasValidQuery, GetCgaSharedAreasValidQueryVariables>;
+export const CgAssetDetailClientDocument = gql`
+    query CGAssetDetailClient($id: ID!) {
+  CGAsset(id: $id) {
+    id
+    asset_id
+    asset_name
+    assetCate {
+      id
+      code
+      desc
+    }
+    asset_app_prod
+    asset_format
+    asset_size
+    asset_renderer
+    program_id
+    program_name
+    registrantAffiliation {
+      id
+      desc
+    }
+    viewingRestriction {
+      id
+      desc
+    }
+    broadcastingRight {
+      id
+      desc
+    }
+    sharedArea {
+      id
+      desc
+    }
+    rights_supplement
+    asset_detail
+    asset_media_base
+    uploadDir {
+      id
+      base_path
+    }
+    assetImages {
+      id
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetVideos {
+      id
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    asset3DCGs {
+      id
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetTags {
+      id
+      tag
+      tag_add_edit_flg
+      taggedUser {
+        name
+      }
+      created_at
+    }
+    revisionHistories {
+      id
+      created_at
+      desc
+      revisedUser {
+        name
+      }
+    }
+    reviews {
+      id
+      created_at
+      review
+      reviewedUser {
+        name
+      }
+    }
+    download_count
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+  CGAViewingRestrictionsValid {
+    desc
+    id
+  }
+}
+    `;
+
+/**
+ * __useCgAssetDetailClientQuery__
+ *
+ * To run a query within a React component, call `useCgAssetDetailClientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCgAssetDetailClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCgAssetDetailClientQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCgAssetDetailClientQuery(baseOptions: Apollo.QueryHookOptions<CgAssetDetailClientQuery, CgAssetDetailClientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CgAssetDetailClientQuery, CgAssetDetailClientQueryVariables>(CgAssetDetailClientDocument, options);
+      }
+export function useCgAssetDetailClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CgAssetDetailClientQuery, CgAssetDetailClientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CgAssetDetailClientQuery, CgAssetDetailClientQueryVariables>(CgAssetDetailClientDocument, options);
+        }
+export type CgAssetDetailClientQueryHookResult = ReturnType<typeof useCgAssetDetailClientQuery>;
+export type CgAssetDetailClientLazyQueryHookResult = ReturnType<typeof useCgAssetDetailClientLazyQuery>;
+export type CgAssetDetailClientQueryResult = Apollo.QueryResult<CgAssetDetailClientQuery, CgAssetDetailClientQueryVariables>;
+export const CgAssetEditClientDocument = gql`
+    query CGAssetEditClient {
+  CGAssetCatesValid {
+    code
+    desc
+    id
+  }
+  CGARegistrantAffiliationsValid {
+    desc
+    id
+  }
+  CGAViewingRestrictionsValid {
+    desc
+    id
+  }
+  CGABroadcastingRightsValid {
+    desc
+    id
+  }
+  CGASharedAreasValid {
+    desc
+    id
+  }
+  CGAssetUploadDirsValid {
+    base_path
+    id
+  }
+}
+    `;
+
+/**
+ * __useCgAssetEditClientQuery__
+ *
+ * To run a query within a React component, call `useCgAssetEditClientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCgAssetEditClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCgAssetEditClientQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCgAssetEditClientQuery(baseOptions?: Apollo.QueryHookOptions<CgAssetEditClientQuery, CgAssetEditClientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CgAssetEditClientQuery, CgAssetEditClientQueryVariables>(CgAssetEditClientDocument, options);
+      }
+export function useCgAssetEditClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CgAssetEditClientQuery, CgAssetEditClientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CgAssetEditClientQuery, CgAssetEditClientQueryVariables>(CgAssetEditClientDocument, options);
+        }
+export type CgAssetEditClientQueryHookResult = ReturnType<typeof useCgAssetEditClientQuery>;
+export type CgAssetEditClientLazyQueryHookResult = ReturnType<typeof useCgAssetEditClientLazyQuery>;
+export type CgAssetEditClientQueryResult = Apollo.QueryResult<CgAssetEditClientQuery, CgAssetEditClientQueryVariables>;
+export const CgAssetSearchClientDocument = gql`
+    query CGAssetSearchClient {
+  CGAssetCatesValid {
+    code
+    desc
+    id
+  }
+  CGAssetSearchTagsValid {
+    code
+    desc
+    id
+  }
+  CGAssetSearchAppProdsValid {
+    code
+    desc
+    id
+  }
+}
+    `;
+
+/**
+ * __useCgAssetSearchClientQuery__
+ *
+ * To run a query within a React component, call `useCgAssetSearchClientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCgAssetSearchClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCgAssetSearchClientQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCgAssetSearchClientQuery(baseOptions?: Apollo.QueryHookOptions<CgAssetSearchClientQuery, CgAssetSearchClientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CgAssetSearchClientQuery, CgAssetSearchClientQueryVariables>(CgAssetSearchClientDocument, options);
+      }
+export function useCgAssetSearchClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CgAssetSearchClientQuery, CgAssetSearchClientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CgAssetSearchClientQuery, CgAssetSearchClientQueryVariables>(CgAssetSearchClientDocument, options);
+        }
+export type CgAssetSearchClientQueryHookResult = ReturnType<typeof useCgAssetSearchClientQuery>;
+export type CgAssetSearchClientLazyQueryHookResult = ReturnType<typeof useCgAssetSearchClientLazyQuery>;
+export type CgAssetSearchClientQueryResult = Apollo.QueryResult<CgAssetSearchClientQuery, CgAssetSearchClientQueryVariables>;
+export const HomeDashboardServerAdminDocument = gql`
+    query HomeDashboardServerAdmin($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!) {
+  ApplyDownloadsNotDone(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  ApplyDownloadsOnlyApply(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  ApplyDownloadsApplyOrApprovalOrBoxDeliver(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  CGAssetsCreatedAll(
+    create_user_id: $create_user_id
+    first: $first
+    page: $page
+    orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  SystemNoticesValid(orderBy: [{column: "notice_date", order: DESC}]) {
+    message
+    notice_date
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+    id
+  }
+}
+    `;
+
+/**
+ * __useHomeDashboardServerAdminQuery__
+ *
+ * To run a query within a React component, call `useHomeDashboardServerAdminQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHomeDashboardServerAdminQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHomeDashboardServerAdminQuery({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      manage_user_id: // value for 'manage_user_id'
+ *      create_user_id: // value for 'create_user_id'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useHomeDashboardServerAdminQuery(baseOptions: Apollo.QueryHookOptions<HomeDashboardServerAdminQuery, HomeDashboardServerAdminQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HomeDashboardServerAdminQuery, HomeDashboardServerAdminQueryVariables>(HomeDashboardServerAdminDocument, options);
+      }
+export function useHomeDashboardServerAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomeDashboardServerAdminQuery, HomeDashboardServerAdminQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HomeDashboardServerAdminQuery, HomeDashboardServerAdminQueryVariables>(HomeDashboardServerAdminDocument, options);
+        }
+export type HomeDashboardServerAdminQueryHookResult = ReturnType<typeof useHomeDashboardServerAdminQuery>;
+export type HomeDashboardServerAdminLazyQueryHookResult = ReturnType<typeof useHomeDashboardServerAdminLazyQuery>;
+export type HomeDashboardServerAdminQueryResult = Apollo.QueryResult<HomeDashboardServerAdminQuery, HomeDashboardServerAdminQueryVariables>;
+export const HomeDashboardServerManagerDocument = gql`
+    query HomeDashboardServerManager($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!) {
+  ApplyDownloadsNotDone(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  ApplyDownloadsOnlyApply(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  ApplyDownloadsApplyOrApproval(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  CGAssetsCreatedAll(
+    create_user_id: $create_user_id
+    first: $first
+    page: $page
+    orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  SystemNoticesValid(orderBy: [{column: "notice_date", order: DESC}]) {
+    message
+    notice_date
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+    id
+  }
+}
+    `;
+
+/**
+ * __useHomeDashboardServerManagerQuery__
+ *
+ * To run a query within a React component, call `useHomeDashboardServerManagerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHomeDashboardServerManagerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHomeDashboardServerManagerQuery({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      manage_user_id: // value for 'manage_user_id'
+ *      create_user_id: // value for 'create_user_id'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useHomeDashboardServerManagerQuery(baseOptions: Apollo.QueryHookOptions<HomeDashboardServerManagerQuery, HomeDashboardServerManagerQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HomeDashboardServerManagerQuery, HomeDashboardServerManagerQueryVariables>(HomeDashboardServerManagerDocument, options);
+      }
+export function useHomeDashboardServerManagerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomeDashboardServerManagerQuery, HomeDashboardServerManagerQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HomeDashboardServerManagerQuery, HomeDashboardServerManagerQueryVariables>(HomeDashboardServerManagerDocument, options);
+        }
+export type HomeDashboardServerManagerQueryHookResult = ReturnType<typeof useHomeDashboardServerManagerQuery>;
+export type HomeDashboardServerManagerLazyQueryHookResult = ReturnType<typeof useHomeDashboardServerManagerLazyQuery>;
+export type HomeDashboardServerManagerQueryResult = Apollo.QueryResult<HomeDashboardServerManagerQuery, HomeDashboardServerManagerQueryVariables>;
+export const HomeDashboardServerUserDocument = gql`
+    query HomeDashboardServerUser($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!) {
+  ApplyDownloadsNotDone(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  ApplyDownloadsOnlyApply(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  CGAssetsCreatedAll(
+    create_user_id: $create_user_id
+    first: $first
+    page: $page
+    orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  SystemNoticesValid(orderBy: [{column: "notice_date", order: DESC}]) {
+    message
+    notice_date
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+    id
+  }
+}
+    `;
+
+/**
+ * __useHomeDashboardServerUserQuery__
+ *
+ * To run a query within a React component, call `useHomeDashboardServerUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHomeDashboardServerUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHomeDashboardServerUserQuery({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      manage_user_id: // value for 'manage_user_id'
+ *      create_user_id: // value for 'create_user_id'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useHomeDashboardServerUserQuery(baseOptions: Apollo.QueryHookOptions<HomeDashboardServerUserQuery, HomeDashboardServerUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HomeDashboardServerUserQuery, HomeDashboardServerUserQueryVariables>(HomeDashboardServerUserDocument, options);
+      }
+export function useHomeDashboardServerUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomeDashboardServerUserQuery, HomeDashboardServerUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HomeDashboardServerUserQuery, HomeDashboardServerUserQueryVariables>(HomeDashboardServerUserDocument, options);
+        }
+export type HomeDashboardServerUserQueryHookResult = ReturnType<typeof useHomeDashboardServerUserQuery>;
+export type HomeDashboardServerUserLazyQueryHookResult = ReturnType<typeof useHomeDashboardServerUserLazyQuery>;
+export type HomeDashboardServerUserQueryResult = Apollo.QueryResult<HomeDashboardServerUserQuery, HomeDashboardServerUserQueryVariables>;
 export const GetSampleDocument = gql`
     query GetSample($id: ID!) {
   sample(id: $id) {

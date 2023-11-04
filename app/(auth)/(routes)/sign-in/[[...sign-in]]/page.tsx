@@ -37,7 +37,7 @@ const SignIn = ({ params, searchParams }: SignInPageParams) => {
   }, []);
 
   if (session) {
-    router.push(`/`);
+    router.push(`/c_g_assets`);
   }
 
   if (!isMounted || session) {

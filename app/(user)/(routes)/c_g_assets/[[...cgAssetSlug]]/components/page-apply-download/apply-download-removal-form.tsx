@@ -1,11 +1,11 @@
 "use client"
 
 import * as z from "zod"
-import { useState } from "react"
+import { useState, Dispatch, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { Undo2, Save, Plus } from "lucide-react"
+// import { Undo2, Save, Plus } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 
@@ -14,10 +14,11 @@ import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   ApplyDownload,
   CgAsset,
-  UpdateApplyDownloadRemovalDocument,
+  User,
+  UpdateApplyDownloadDoneDocument,
 } from "@/graphql/generated/graphql";
 
-import { Button } from "@/components/ui/button"
+// import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -29,61 +30,63 @@ import {
 } from "@/components/ui/form"
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Textarea } from "@/components/ui/text-area"
 import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 
-const formSchema = z.object({
-  checkAction: z.literal(true, {
-    errorMap: () => ({ message: "アセットデータ削除の確認が必要です" }),
-  }),
-  comment: z
-    .string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' })
-    .max(1000, {
-      message: "アセットデータ削除通知コメント は最大 1000 文字以内でご入力ください。",
-    }),
+import CGAssetApplyDownloadRemovalFormInput from "./apply-download-removal-form-input"
+import CGAssetApplyDownloadRemovalFormConfirm from "./apply-download-removal-form-confirm"
+
+export const ApplyDownloadRemovalFormSchema = z.object({
 });
 
-type CGAssetFormValues = z.infer<typeof formSchema>
+export type ApplyDownloadRemovalFormValues = z.infer<typeof ApplyDownloadRemovalFormSchema>
 
 interface CGAssetApplyDownloadRemovalFormProps {
-  initialData: CgAsset | null;
+  initialData: ApplyDownload | null;
+  cgAsset: CgAsset | null;
+  manageUsers: User[] | null;
+  setDialogOpen: Dispatch<SetStateAction<boolean>>;
+  params: {
+    cgAssetSlug: string[];
+  };
 };
 
 export const CGAssetApplyDownloadRemovalForm: React.FC<CGAssetApplyDownloadRemovalFormProps> = ({
   initialData,
+  cgAsset,
+  manageUsers,
+  setDialogOpen,
+  params
 }) => {
-  const params = useParams() as unknown as CGAssetPageProps['params'];
+  // const params = useParams() as unknown as CGAssetPageProps['params'];
   const router = useRouter();
   const { data: session, status } = useSession()
 
   const [loading, setLoading] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
 
   const defaultValues = initialData ? {
     ...initialData,
   } : {
-    comment: '',
   }
 
-  const form = useForm<CGAssetFormValues>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<ApplyDownloadRemovalFormValues>({
+    resolver: zodResolver(ApplyDownloadRemovalFormSchema),
     defaultValues
   });
 
-  const onSubmit = async (data: CGAssetFormValues) => {
+  const onSubmit = async (data: ApplyDownloadRemovalFormValues) => {
     try {
       setLoading(true);
 
       const ret: FetchResult<{
-        updateApplyDownloadRemoval: ApplyDownload;
+        updateApplyDownloadDone: ApplyDownload;
       }> = await apolloClient
         .mutate({
-          mutation: UpdateApplyDownloadRemovalDocument,
+          mutation: UpdateApplyDownloadDoneDocument,
           variables: {
             input: {
               id: params.cgAssetSlug[2],
               user_id: (session?.user as { userId: string }).userId,
-              comment: data.comment
             }
           },
         })
@@ -104,91 +107,58 @@ export const CGAssetApplyDownloadRemovalForm: React.FC<CGAssetApplyDownloadRemov
       }
 
       router.refresh();
-      router.push(`/c_g_assets/${params.cgAssetSlug[0]}`);
+      setDialogOpen(false);
 
-      toast.success('アセットデータ削除を通知しました。');
+      toast.success('データ消去を報告しました。');
     } catch (error: any) {
-      toast.error('アセットデータ削除の通知に失敗しました。');
+      if (error.message) {
+        toast.error(`エラー: ${error.message}`, {
+          duration: 6000
+        });
+      } else {
+        toast.error('データ消去の報告に失敗しました。');
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  const onNext = () => {
+    setPageNumber(state => state + 1);
+  };
+
+  const onPrev = () => {
+    setPageNumber(state => state - 1);
+  };
+
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title="アセットデータ削除の通知" description={`アセットID: ${initialData?.asset_id} のデータ削除を通知する`} />
-        <div className="flex flex-wrap justify-between">
-          <div className="">
-            <Button onClick={() => router.push(`/c_g_assets/${initialData?.id}`)}>
-              <Undo2 className="mr-2 h-4 w-4" /> 戻る
-            </Button>
-          </div>
-        </div>
+        <Heading title="データ消去報告" description={`下記のデータを消去いたしました。`} />
       </div>
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-          <div className="md:grid md:grid-cols-3 gap-8">
-            <FormField
-              control={form.control}
-              name="checkAction"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      disabled={loading}
-                      // @ts-ignore
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>
-                      アセットデータ削除確認
-                    </FormLabel>
-                    <FormDescription>
-                      該当アセットデータを削除済みであることを確認します
-                    </FormDescription>
-                  </div>
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="md:grid md:grid-cols-3 gap-8">
-            <FormField
-              control={form.control}
-              name="comment"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>コメント</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      disabled={loading}
-                      placeholder="コメントを記述"
-                      className=""
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                  <FormDescription>
-                    アセットデータ削除に関する番組責任者へのコメントを入力
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-          </div>
-          <Button disabled={loading} className="ml-auto mr-2" variant="outline" type="button"
-            onClick={() => router.push(`/c_g_assets${(
-              params.cgAssetSlug[0] !== CGAssetPageSlug.New ?
-                "/" + params.cgAssetSlug[0] :
-                ""
-            )}`)}>
-            <Undo2 className="mr-2 h-4 w-4" /> キャンセル
-          </Button>
-          <Button disabled={loading} className="ml-auto" type="submit">
-            {initialData ? <Save className="mr-2 h-4 w-4" /> : <Plus className="mr-2 h-4 w-4" />} アセットデータ削除を通知する
-          </Button>
+          {pageNumber === 0 && <CGAssetApplyDownloadRemovalFormConfirm
+            form={form}
+            initialData={initialData}
+            cgAsset={cgAsset}
+            manageUsers={manageUsers}
+            setDialogOpen={setDialogOpen}
+            params={params}
+            loading={loading}
+            onPrev={onPrev}
+          />}
+          {pageNumber === 999 && <CGAssetApplyDownloadRemovalFormInput
+            form={form}
+            initialData={initialData}
+            cgAsset={cgAsset}
+            manageUsers={manageUsers}
+            setDialogOpen={setDialogOpen}
+            params={params}
+            loading={loading}
+            onNext={onNext}
+          />}
         </form>
       </Form>
     </>

@@ -1,0 +1,133 @@
+query CGAssetDetailClient($id: ID!) {
+  CGAsset(id: $id) {
+    id
+    asset_id
+    asset_name
+    assetCate {
+      id
+      code
+      desc
+    }
+    asset_app_prod
+    asset_format
+    asset_size
+    asset_renderer
+    program_id
+    program_name
+    registrantAffiliation {
+      id
+      desc
+    }
+    viewingRestriction {
+      id
+      desc
+    }
+    broadcastingRight {
+      id
+      desc
+    }
+    sharedArea {
+      id
+      desc
+    }
+    rights_supplement
+    asset_detail
+    asset_media_base
+    uploadDir {
+      id
+      base_path
+    }
+    assetImages {
+      id
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetVideos {
+      id
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    asset3DCGs {
+      id
+      file_name
+      url
+      file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetTags {
+      id
+      tag
+      tag_add_edit_flg
+      taggedUser {
+        name
+      }
+      created_at
+    }
+    revisionHistories {
+      id
+      created_at
+      desc
+      revisedUser {
+        name
+      }
+    }
+    reviews {
+      id
+      created_at
+      review
+      reviewedUser {
+        name
+      }
+    }
+    download_count
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    valid_flg
+    created_at
+    updated_at
+  }
+  CGAViewingRestrictionsValid {
+    desc
+    id
+  }
+}

@@ -6,22 +6,25 @@ import {
   CgAsset,
   GetCgAssetDocument,
   CgAssetCate,
-  GetCgAssetCatesValidDocument,
+  // GetCgAssetCatesValidDocument,
   CgaRegistrantAffiliation,
-  GetCgaRegistrantAffilliationsValidDocument,
+  // GetCgaRegistrantAffilliationsValidDocument,
   CgaViewingRestriction,
-  GetCgaViewingRestrictionsValidDocument,
+  // GetCgaViewingRestrictionsValidDocument,
   CgaBroadcastingRight,
-  GetCgaBroadcastingRightsValidDocument,
+  // GetCgaBroadcastingRightsValidDocument,
   CgaSharedArea,
-  GetCgaSharedAreasValidDocument,
+  // GetCgaSharedAreasValidDocument,
   CgAssetUploadDir,
-  GetCgAssetUploadDirsValidDocument,
+  // GetCgAssetUploadDirsValidDocument,
+  CgAssetEditClientDocument,
 } from "@/graphql/generated/graphql";
 
 import { CGAssetForm } from "./page-edit/c_g_asset-form";
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 import { CGAssetPageProps, CGAssetPageSlug } from './page-slug';
+import { isServerRoleUser } from '@/lib/check-role-server';
+import UserUnauthorized from "@/app/(user)/user-unauthorized";
 
 export async function generateMetadata({
   params,
@@ -61,6 +64,10 @@ export async function generateMetadata({
 
 const CGAssetEditClient: React.FC<CGAssetPageProps> = async ({ params }) => {
 
+  if (await isServerRoleUser()) {
+    return <UserUnauthorized />;
+  }
+
   let CGAsset: CgAsset | null = null;
 
   if (
@@ -79,53 +86,71 @@ const CGAssetEditClient: React.FC<CGAssetPageProps> = async ({ params }) => {
     CGAsset = ret.data.CGAsset;
   }
 
-  const retCate: ApolloQueryResult<{
+  // const retCate: ApolloQueryResult<{
+  //   CGAssetCatesValid: CgAssetCate[]
+  // }> = await apolloServer()
+  //   .query({
+  //     query: GetCgAssetCatesValidDocument,
+  //   });
+  // const assetCates = retCate.data.CGAssetCatesValid;
+
+  // const retRegistrantAffiliation: ApolloQueryResult<{
+  //   CGARegistrantAffiliationsValid: CgaRegistrantAffiliation[]
+  // }> = await apolloServer()
+  //   .query({
+  //     query: GetCgaRegistrantAffilliationsValidDocument,
+  //   });
+  // const registrantAffiliations = retRegistrantAffiliation.data.CGARegistrantAffiliationsValid;
+
+  // const retviewingRestriction: ApolloQueryResult<{
+  //   CGAViewingRestrictionsValid: CgaViewingRestriction[]
+  // }> = await apolloServer()
+  //   .query({
+  //     query: GetCgaViewingRestrictionsValidDocument,
+  //   });
+  // const viewingRestrictions = retviewingRestriction.data.CGAViewingRestrictionsValid;
+
+  // const retBroadcastingRight: ApolloQueryResult<{
+  //   CGABroadcastingRightsValid: CgaBroadcastingRight[]
+  // }> = await apolloServer()
+  //   .query({
+  //     query: GetCgaBroadcastingRightsValidDocument,
+  //   });
+  // const broadcastingRights = retBroadcastingRight.data.CGABroadcastingRightsValid;
+
+  // const retSharedArea: ApolloQueryResult<{
+  //   CGASharedAreasValid: CgaSharedArea[]
+  // }> = await apolloServer()
+  //   .query({
+  //     query: GetCgaSharedAreasValidDocument,
+  //   });
+  // const sharedAreas = retSharedArea.data.CGASharedAreasValid;
+
+  // const retUploadDir: ApolloQueryResult<{
+  //   CGAssetUploadDirsValid: CgAssetUploadDir[]
+  // }> = await apolloServer()
+  //   .query({
+  //     query: GetCgAssetUploadDirsValidDocument,
+  //   });
+  // const uploadDirs = retUploadDir.data.CGAssetUploadDirsValid;
+
+  const ret: ApolloQueryResult<{
     CGAssetCatesValid: CgAssetCate[]
-  }> = await apolloServer()
-    .query({
-      query: GetCgAssetCatesValidDocument,
-    });
-  const assetCates = retCate.data.CGAssetCatesValid;
-
-  const retRegistrantAffiliation: ApolloQueryResult<{
     CGARegistrantAffiliationsValid: CgaRegistrantAffiliation[]
-  }> = await apolloServer()
-    .query({
-      query: GetCgaRegistrantAffilliationsValidDocument,
-    });
-  const registrantAffiliations = retRegistrantAffiliation.data.CGARegistrantAffiliationsValid;
-
-  const retviewingRestriction: ApolloQueryResult<{
     CGAViewingRestrictionsValid: CgaViewingRestriction[]
-  }> = await apolloServer()
-    .query({
-      query: GetCgaViewingRestrictionsValidDocument,
-    });
-  const viewingRestrictions = retviewingRestriction.data.CGAViewingRestrictionsValid;
-
-  const retBroadcastingRight: ApolloQueryResult<{
     CGABroadcastingRightsValid: CgaBroadcastingRight[]
-  }> = await apolloServer()
-    .query({
-      query: GetCgaBroadcastingRightsValidDocument,
-    });
-  const broadcastingRights = retBroadcastingRight.data.CGABroadcastingRightsValid;
-
-  const retSharedArea: ApolloQueryResult<{
     CGASharedAreasValid: CgaSharedArea[]
-  }> = await apolloServer()
-    .query({
-      query: GetCgaSharedAreasValidDocument,
-    });
-  const sharedAreas = retSharedArea.data.CGASharedAreasValid;
-
-  const retUploadDir: ApolloQueryResult<{
     CGAssetUploadDirsValid: CgAssetUploadDir[]
   }> = await apolloServer()
     .query({
-      query: GetCgAssetUploadDirsValidDocument,
+      query: CgAssetEditClientDocument,
     });
-  const uploadDirs = retUploadDir.data.CGAssetUploadDirsValid;
+  const assetCates = ret.data.CGAssetCatesValid;
+  const registrantAffiliations = ret.data.CGARegistrantAffiliationsValid;
+  const viewingRestrictions = ret.data.CGAViewingRestrictionsValid;
+  const broadcastingRights = ret.data.CGABroadcastingRightsValid;
+  const sharedAreas = ret.data.CGASharedAreasValid;
+  const uploadDirs = ret.data.CGAssetUploadDirsValid;
 
   return (
     <div className="flex-col">

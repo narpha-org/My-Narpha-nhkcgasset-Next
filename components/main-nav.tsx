@@ -2,8 +2,11 @@
 
 import Link from "next/link"
 import { useParams, usePathname } from "next/navigation";
+import { useSession } from "next-auth/react"
 
 import { cn } from "@/lib/utils"
+// import { RoleCgAssetStore } from "@/graphql/generated/graphql";
+import { IsRoleAdmin } from "@/lib/check-role-client";
 
 export function MainNav({
   className,
@@ -11,6 +14,8 @@ export function MainNav({
 }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
   const params = useParams();
+
+  const { data: session, status } = useSession()
 
   const routes = [
     {
@@ -23,12 +28,22 @@ export function MainNav({
       label: 'CGアセット',
       active: pathname === `/c_g_assets`,
     },
-    {
+  ]
+
+  if (IsRoleAdmin(session)) {
+    routes.push({
       href: `/admin/`,
       label: '管理TOP',
       active: pathname === `/admin/`,
-    },
-  ]
+    });
+  }
+  // if (session?.user && (session?.user as unknown as { role: string }).role === RoleCgAssetStore.Admin) {
+  //   routes.push({
+  //     href: `/admin/`,
+  //     label: '管理TOP',
+  //     active: pathname === `/admin/`,
+  //   });
+  // }
 
   return (
     <nav

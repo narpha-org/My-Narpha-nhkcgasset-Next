@@ -19,7 +19,7 @@ const AssetsCarouselBlock: React.FC<AssetsCarouselBlockProps> = ({
 
     const { mediaDesc, medias, notFound } = getAssetMedias(cgAsset);
 
-    if (!medias) {
+    if (!medias || !medias.length) {
       return <>
         <Image
           src={notFound}

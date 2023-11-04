@@ -1,0 +1,26 @@
+query GetCgAssetsCreatedAll($create_user_id: ID!, $first: Int!, $page: Int!) {
+  CGAssetsCreatedAll(
+    create_user_id: $create_user_id
+    first: $first
+    page: $page
+    orderBy: [
+      { column: "created_at", order: DESC }
+      { column: "asset_id", order: ASC }
+    ]
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+}

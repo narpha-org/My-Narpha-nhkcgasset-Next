@@ -6,20 +6,25 @@ import {
   CgAsset,
   GetCgAssetDocument,
   CgAssetCate,
-  GetCgAssetCatesValidDocument,
+  // GetCgAssetCatesValidDocument,
   CgAssetSearchTag,
-  GetCgAssetSearchTagsValidDocument,
+  // GetCgAssetSearchTagsValidDocument,
   CgAssetSearchAppProd,
-  GetCgAssetSearchAppProdsValidDocument,
+  // GetCgAssetSearchAppProdsValidDocument,
+  CgAssetSearchClientDocument,
+  CgaViewingRestriction,
+  CgAssetDetailClientDocument,
 } from "@/graphql/generated/graphql";
-import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 
 import CGAssetDetailClient from './components/client-detail';
 import { CGAssetPageProps, CGAssetPageSlug } from './components/page-slug';
 import CGAssetEditClient from './components/client-edit';
-import CGAssetApplyDownloadClient from './components/client-apply-download';
 import { CGAssetSearchClient } from './components/client-search';
 import { generateMetadata as generateMetadataFunc } from './components/metadata';
+import { isServerRoleAdmin, isServerRoleManager } from '@/lib/check-role-server';
+// import CGAssetApplyDownloadClientManager from './components/client-apply-download-manager';
+// import CGAssetApplyDownloadClientAdmin from './components/client-apply-download-admin';
+// import CGAssetApplyDownloadClientUser from './components/client-apply-download-user';
 
 export async function generateMetadata({
   params,
@@ -33,29 +38,41 @@ const CGAssetPage: React.FC<CGAssetPageProps> = async ({ params }) => {
 
     /* CGアセット一覧 */
 
-    const retCate: ApolloQueryResult<{
+    // const retCate: ApolloQueryResult<{
+    //   CGAssetCatesValid: CgAssetCate[]
+    // }> = await apolloServer()
+    //   .query({
+    //     query: GetCgAssetCatesValidDocument,
+    //   });
+    // const assetCates = retCate.data.CGAssetCatesValid;
+
+    // const retSearchTag: ApolloQueryResult<{
+    //   CGAssetSearchTagsValid: CgAssetSearchTag[]
+    // }> = await apolloServer()
+    //   .query({
+    //     query: GetCgAssetSearchTagsValidDocument,
+    //   });
+    // const assetSearchTags = retSearchTag.data.CGAssetSearchTagsValid;
+
+    // const retAppProd: ApolloQueryResult<{
+    //   CGAssetSearchAppProdsValid: CgAssetSearchAppProd[]
+    // }> = await apolloServer()
+    //   .query({
+    //     query: GetCgAssetSearchAppProdsValidDocument,
+    //   });
+    // const assetSearchAppProds = retAppProd.data.CGAssetSearchAppProdsValid;
+
+    const ret: ApolloQueryResult<{
       CGAssetCatesValid: CgAssetCate[]
-    }> = await apolloServer()
-      .query({
-        query: GetCgAssetCatesValidDocument,
-      });
-    const assetCates = retCate.data.CGAssetCatesValid;
-
-    const retSearchTag: ApolloQueryResult<{
       CGAssetSearchTagsValid: CgAssetSearchTag[]
-    }> = await apolloServer()
-      .query({
-        query: GetCgAssetSearchTagsValidDocument,
-      });
-    const assetSearchTags = retSearchTag.data.CGAssetSearchTagsValid;
-
-    const retAppProd: ApolloQueryResult<{
       CGAssetSearchAppProdsValid: CgAssetSearchAppProd[]
     }> = await apolloServer()
       .query({
-        query: GetCgAssetSearchAppProdsValidDocument,
+        query: CgAssetSearchClientDocument,
       });
-    const assetSearchAppProds = retAppProd.data.CGAssetSearchAppProdsValid;
+    const assetCates = ret.data.CGAssetCatesValid;
+    const assetSearchTags = ret.data.CGAssetSearchTagsValid;
+    const assetSearchAppProds = ret.data.CGAssetSearchAppProdsValid;
 
     return (
       <div className="flex-col">
@@ -99,27 +116,39 @@ const CGAssetPage: React.FC<CGAssetPageProps> = async ({ params }) => {
 
     /* CGアセット申請ダウンロード */
 
-    return <CGAssetApplyDownloadClient params={params} />
+    if (await isServerRoleAdmin()) {
+      // return <CGAssetApplyDownloadClientAdmin params={params} />
+    }
+    if (await isServerRoleManager()) {
+      // return <CGAssetApplyDownloadClientManager params={params} />
+    }
+
+    // return <CGAssetApplyDownloadClientUser params={params} />
   }
 
   /* CGアセット詳細 */
 
   const ret: ApolloQueryResult<{
     CGAsset: CgAsset
+    CGAViewingRestrictionsValid: CgaViewingRestriction[]
   }> = await apolloServer()
     .query({
-      query: GetCgAssetDocument,
+      query: CgAssetDetailClientDocument,
       variables: {
         id: params.cgAssetSlug[0]
       },
     });
   const CGAsset = ret.data.CGAsset;
+  const CgaViewingRestrictions = ret.data.CGAViewingRestrictionsValid;
 
   return (
     <>
       <div className="flex-col">
         <div className="flex-1 space-y-4 p-8 pt-6">
-          <CGAssetDetailClient cgAsset={CGAsset} />
+          <CGAssetDetailClient
+            cgAsset={CGAsset}
+            cgaViewingRestrictions={CgaViewingRestrictions}
+          />
         </div>
       </div>
     </>

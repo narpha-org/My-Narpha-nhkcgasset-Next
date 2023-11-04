@@ -52,9 +52,9 @@ const SearchResult: React.FC<SearchResultProps> = ({
                       width={500}
                       height={276}
                     />
-                    <p style={{ position: "absolute", top: "9.3rem", left: "0.6rem", zIndex: 100, color: "white", textShadow: "1px 1px 0 #000,-1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000", height: "2.0rem" }}>{elem.asset_name}</p>
-                    <p style={{ position: "absolute", top: "0.4rem", left: "0.6rem", width: "19.0rem", textAlign: "right", zIndex: 100, color: "white", textShadow: "1px 1px 0 #000,-1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000", height: "2.0rem" }}>{mediaDesc}</p>
-                    <p style={{ position: "absolute", top: "9.3rem", left: "0.6rem", width: "19.0rem", textAlign: "right", zIndex: 100, color: "white", textShadow: "1px 1px 0 #000,-1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000", height: "2.0rem" }}>DL数:{elem.download_count}</p>
+                    <p style={{ position: "absolute", top: "9.3rem", left: "0.6rem", zIndex: 40, color: "white", textShadow: "1px 1px 0 #000,-1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000", height: "2.0rem" }}>{elem.asset_name}</p>
+                    <p style={{ position: "absolute", top: "0.4rem", left: "0.6rem", width: "19.0rem", textAlign: "right", zIndex: 40, color: "white", textShadow: "1px 1px 0 #000,-1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000", height: "2.0rem" }}>{mediaDesc}</p>
+                    <p style={{ position: "absolute", top: "9.3rem", left: "0.6rem", width: "19.0rem", textAlign: "right", zIndex: 40, color: "white", textShadow: "1px 1px 0 #000,-1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000", height: "2.0rem" }}>DL数:{elem.download_count}</p>
                   </div>
                 ) : elem.asset_id}
               </Link>

@@ -139,9 +139,10 @@ type Query {
   "List all available UserRoleCGAssetStore."
   UserRoleCGAssetStoresValid: [UserRoleCGAssetStore!]!
 
-  "ダウンロード申請一覧"
-  ApplyDownloadsNoRemoval(
-    user_id: ID!
+  "申請中 or 承認許可 or DL済み通知 or データ削除期限"
+  ApplyDownloadsNotDone(
+    user_id: ID
+    manage_user_id: ID
 
     "Limits number of fetched items. Maximum allowed value: 100."
     first: Int! = 10
@@ -150,9 +151,10 @@ type Query {
     page: Int
   ): ApplyDownloadPaginator!
 
-  "申請一覧"
-  ApplyDownloadsEntry(
-    user_id: ID!
+  "承認待ち"
+  ApplyDownloadsOnlyApply(
+    user_id: ID
+    manage_user_id: ID
 
     "Limits number of fetched items. Maximum allowed value: 100."
     first: Int! = 10
@@ -161,9 +163,22 @@ type Query {
     page: Int
   ): ApplyDownloadPaginator!
 
-  "承認一覧"
-  ApplyDownloadsApproval(
-    user_id: ID!
+  "承認待ち or 承認済み"
+  ApplyDownloadsApplyOrApproval(
+    user_id: ID
+    manage_user_id: ID
+
+    "Limits number of fetched items. Maximum allowed value: 100."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+  ): ApplyDownloadPaginator!
+
+  "承認待ち or ダウンロード or データ削除報告"
+  ApplyDownloadsApplyOrApprovalOrBoxDeliver(
+    user_id: ID
+    manage_user_id: ID
 
     "Limits number of fetched items. Maximum allowed value: 100."
     first: Int! = 10
@@ -244,8 +259,8 @@ type Query {
     page: Int
   ): CGAViewingRestrictionPaginator!
 
-  "List multiple CGAssets."
-  CGAssets(
+  "List all available CGAsset."
+  CGAssetsAll(
     "Limits number of fetched items. Maximum allowed value: 100."
     first: Int! = 10
 
@@ -256,7 +271,7 @@ type Query {
     search: CGAssetSearchFormValues
   ): CGAssetPaginator!
 
-  "List all available CGAsset."
+  "List all valid CGAsset."
   CGAssetsValid(
     "Limits number of fetched items. Maximum allowed value: 100."
     first: Int! = 10
@@ -266,6 +281,19 @@ type Query {
 
     orderBy: [OrderByClause!]
     search: CGAssetSearchFormValues
+  ): CGAssetPaginator!
+
+  "List all available own created CGAsset."
+  CGAssetsCreatedAll(
+    create_user_id: ID!
+
+    "Limits number of fetched items. Maximum allowed value: 100."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+
+    orderBy: [OrderByClause!]
   ): CGAssetPaginator!
 
   "List multiple CGAsset3DCG."
@@ -439,7 +467,7 @@ type Query {
 }
 
 type Mutation {
-  "ダウンロード申請登録"
+  "ダウンロード申請"
   createApplyDownload(input: CreateApplyDownloadArgs!): ApplyDownload
 
   "ダウンロード承認"
@@ -452,10 +480,18 @@ type Mutation {
     input: UpdateApplyDownloadBoxDeliverArgs!
   ): ApplyDownload
 
-  "データ削除"
+  "DL済み通知"
+  updateApplyDownloadDLNotification(
+    input: UpdateApplyDownloadDLNotificationArgs!
+  ): ApplyDownload
+
+  "データ削除期限"
   updateApplyDownloadRemoval(
     input: UpdateApplyDownloadRemovalArgs!
   ): ApplyDownload
+
+  "データ削除"
+  updateApplyDownloadDone(input: UpdateApplyDownloadDoneArgs!): ApplyDownload
 
   "Delete a ApplyDownload."
   deleteApplyDownload(id: ID!): ApplyDownload
@@ -886,6 +922,30 @@ type ApplyDownload {
   "ステータス"
   status: StatusApplyDownload!
 
+  "番組ID"
+  program_id: String
+
+  "番組名"
+  program_name: String
+
+  "利用期間・開始日"
+  date_usage_start: DateTime
+
+  "利用期間・終了日"
+  date_usage_end: DateTime
+
+  "利用目的"
+  purpose_of_use_txt: String
+
+  "その他"
+  etc_txt: String
+
+  "Boxリンク"
+  box_link: String
+
+  "データ削除日"
+  date_removal: DateTime
+
   "申請日"
   apply_date: DateTime
 
@@ -904,26 +964,38 @@ type ApplyDownload {
   "承認メール送信済"
   approval_mail_sent: Boolean
 
-  "データ送付日"
+  "DL済み通知日"
   box_deliver_date: DateTime
 
-  "データ送付ユーザ"
+  "DL済み通知ユーザ"
   boxDeliverUser: User
 
-  "データ送付メール送信済"
+  "DL済み通知メール送信済"
   box_deliver_mail_sent: Boolean
 
-  "データ削除日"
+  "ダウンロード日"
+  download_date: DateTime
+
+  "データ削除通知日"
   removal_date: DateTime
 
-  "データ削除ユーザ"
+  "データ削除通知ユーザ"
   removalUser: User
 
-  "データ削除メール送信済"
+  "データ削除通知メール送信済"
   removal_mail_sent: Boolean
 
   "データ削除期限日"
   removal_limit_date: DateTime
+
+  "データ削除完了日"
+  done_date: DateTime
+
+  "データ削除完了ユーザ"
+  doneUser: User
+
+  "データ削除完了メール送信済"
+  done_mail_sent: Boolean
 
   "コメント"
   applyDownloadComments: [ApplyDownloadComment]
@@ -942,32 +1014,64 @@ enum StatusApplyDownload {
   APPLY
   APPROVAL
   BOX_DELIVER
+  DL_NOTICE
   REMOVAL
+  DONE
 }
 
 input CreateApplyDownloadArgs {
   asset_db_id: ID!
   manage_user_id: ID!
   user_id: ID!
-  comment: String!
+
+  "番組ID"
+  program_id: String
+
+  "番組名"
+  program_name: String
+
+  "利用期間・開始日"
+  date_usage_start: DateTime
+
+  "利用期間・終了日"
+  date_usage_end: DateTime
+
+  "利用目的"
+  purpose_of_use_txt: String
+
+  "その他"
+  etc_txt: String
 }
 
 input UpdateApplyDownloadApprovalArgs {
   id: ID!
   user_id: ID!
-  comment: String!
 }
 
 input UpdateApplyDownloadBoxDeliverArgs {
   id: ID!
   user_id: ID!
-  comment: String!
+
+  "Boxリンク"
+  box_link: String
+
+  "データ削除期限日"
+  removal_limit_date: DateTime
+}
+
+input UpdateApplyDownloadDLNotificationArgs {
+  id: ID!
+  user_id: ID!
 }
 
 input UpdateApplyDownloadRemovalArgs {
   id: ID!
   user_id: ID!
-  comment: String!
+}
+
+input UpdateApplyDownloadDoneArgs {
+  id: ID!
+  user_id: ID!
 }
 
 """
@@ -1932,7 +2036,9 @@ enum CodeMailTemplate {
   APPLY_DOWNLOAD_APPLY
   APPLY_DOWNLOAD_APPROVAL
   APPLY_DOWNLOAD_BOX_DELIVER
+  APPLY_DOWNLOAD_DL_NOTICE
   APPLY_DOWNLOAD_REMOVAL
+  APPLY_DOWNLOAD_DONE
 }
 
 """

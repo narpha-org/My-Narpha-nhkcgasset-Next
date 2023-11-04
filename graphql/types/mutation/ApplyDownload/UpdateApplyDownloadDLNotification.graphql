@@ -1,0 +1,15 @@
+mutation UpdateApplyDownloadDLNotification(
+  $input: UpdateApplyDownloadDLNotificationArgs!
+) {
+  updateApplyDownloadDLNotification(input: $input) {
+    __typename
+    id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
+    status
+    created_at
+  }
+}

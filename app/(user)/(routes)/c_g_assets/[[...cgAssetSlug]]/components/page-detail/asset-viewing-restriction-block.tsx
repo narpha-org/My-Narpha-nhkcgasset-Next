@@ -1,13 +1,16 @@
+import classNames from "classnames";
 import {
-  CgAsset,
+  CgAsset, CgaViewingRestriction,
 } from "@/graphql/generated/graphql";
 
 interface AssetViewingRestrictionBlockProps {
   cgAsset: CgAsset;
+  cgaViewingRestrictions: CgaViewingRestriction[]
 }
 
 const AssetViewingRestrictionBlock: React.FC<AssetViewingRestrictionBlockProps> = ({
-  cgAsset
+  cgAsset,
+  cgaViewingRestrictions
 }) => {
 
   return (
@@ -18,7 +21,22 @@ const AssetViewingRestrictionBlock: React.FC<AssetViewingRestrictionBlockProps> 
       </div>
       <div className="flex-grow h-full overflow-y-auto">
         <slot>
-          {cgAsset.viewingRestriction?.desc}
+          {cgaViewingRestrictions.map((elem, idx) => {
+            return <>
+              {idx > 0 && (
+                <span className="">／</span>
+              )}
+              <span
+                key={elem.id}
+                className={classNames({
+                  "font-bold": elem.id === cgAsset.viewingRestriction?.id,
+                  "font-light": elem.id !== cgAsset.viewingRestriction?.id,
+                })}
+              >
+                {elem.desc}
+              </span>
+            </>
+          })}
         </slot>
       </div>
     </>

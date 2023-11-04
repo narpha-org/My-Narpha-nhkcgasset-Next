@@ -6,7 +6,24 @@ query GetApplyDownload($id: ID!) {
       asset_id
       asset_name
     }
+    manageUser {
+      id
+      name
+    }
     status
+    program_id
+    program_name
+    date_usage_start
+    date_usage_end
+    purpose_of_use_txt
+    etc_txt
+    applyUser {
+      id
+      name
+    }
+    box_link
+    removal_limit_date
+    download_date
     created_at
   }
 }

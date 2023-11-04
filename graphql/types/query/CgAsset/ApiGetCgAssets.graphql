@@ -3,7 +3,7 @@ query ApiGetCgAssets(
   $page: Int!
   $search: CGAssetSearchFormValues
 ) {
-  CGAssets(
+  CGAssetsValid(
     first: $first
     page: $page
     orderBy: [

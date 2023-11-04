@@ -1,11 +1,11 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { Download, FileEdit } from "lucide-react";
 
 import {
-  CgAsset,
+  CgAsset, CgaViewingRestriction,
 } from "@/graphql/generated/graphql";
+import { isServerRoleUser } from "@/lib/check-role-server";
 
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
@@ -19,19 +19,20 @@ import AssetHeadlineBlock from './page-detail/asset-headline-block';
 import AssetsCarouselBlock from './page-detail/assets-carousel-block';
 import AssetTagsBlock from './page-detail/asset-tags-block';
 import AssetDetailReviewBlock from './page-detail/asset-detail-review-block';
+import ApplyDownloadDialog from "./apply-download-dialog";
 
 interface CGAssetDetailClientProps {
   cgAsset: CgAsset;
+  cgaViewingRestrictions: CgaViewingRestriction[]
 }
 
-const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = ({
-  cgAsset
+const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
+  cgAsset,
+  cgaViewingRestrictions
 }) => {
-  const router = useRouter();
 
   if (!cgAsset) {
-    router.refresh();
-    router.push(`/c_g_assets`);
+    redirect('/c_g_assets');
   }
 
   return (
@@ -39,16 +40,20 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = ({
       <div className="flex items-center justify-between">
         <Heading title="CGアセット詳細" description="" />
         <div className="flex flex-wrap justify-between">
-          <div className="">
-            <Button onClick={() => router.push(`/c_g_assets/${cgAsset.id}/apply-download`)}>
-              <Download className="mr-2 h-4 w-4" /> ダウンロード申請
-            </Button>
-          </div>
-          <div className="ml-2">
-            <Button onClick={() => router.push(`/c_g_assets/${cgAsset.id}/edit`)}>
-              <FileEdit className="mr-2 h-4 w-4" /> 修正
-            </Button>
-          </div>
+          {await isServerRoleUser() && (
+            <div className="">
+              <ApplyDownloadDialog cgAssetId={cgAsset.id} />
+            </div>
+          )}
+          {!await isServerRoleUser() && (
+            <div className="ml-2">
+              <Link href={`/c_g_assets/${cgAsset.id}/edit`}>
+                <Button>
+                  <FileEdit className="mr-2 h-4 w-4" /> 修正
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
       <Separator />
@@ -60,7 +65,7 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = ({
           <div className="flex flex-col w-full overflow-hidden h-1/2 px-3 py-2">
             <AssetsCarouselBlock cgAsset={cgAsset} />
           </div>
-          <div className="flex flex-col w-full overflow-hidden h-96 px-3 py-2">
+          <div className="flex flex-col w-full overflow-hidden h-64 px-3 py-2">
             <AssetTagsBlock cgAsset={cgAsset} />
           </div>
           <div className="flex flex-col w-full overflow-hidden h-96 px-3 py-2">
@@ -72,7 +77,10 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = ({
             <AssetSpecBlock cgAsset={cgAsset} />
           </div>
           <div className="flex flex-col w-full overflow-hidden h-32 px-3 py-2">
-            <AssetViewingRestrictionBlock cgAsset={cgAsset} />
+            <AssetViewingRestrictionBlock
+              cgAsset={cgAsset}
+              cgaViewingRestrictions={cgaViewingRestrictions}
+            />
           </div>
           <div className="flex flex-col w-full overflow-hidden h-48 px-3 py-2">
             <AssetRightsSupplementBlock cgAsset={cgAsset} />

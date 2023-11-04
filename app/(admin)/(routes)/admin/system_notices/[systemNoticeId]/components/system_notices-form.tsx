@@ -35,7 +35,7 @@ import { Heading } from "@/components/ui/heading"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { Textarea } from "@/components/ui/text-area"
 import { Checkbox } from "@/components/ui/checkbox"
-import { DateTimePicker } from "@/components/ui/date-time"
+import { DateTimePicker } from "@/components/ui/date-time-picker"
 
 const formSchema = z.object({
   notice_date: z.date({

@@ -1,0 +1,17 @@
+query CGAssetSearchClient {
+  CGAssetCatesValid {
+    code
+    desc
+    id
+  }
+  CGAssetSearchTagsValid {
+    code
+    desc
+    id
+  }
+  CGAssetSearchAppProdsValid {
+    code
+    desc
+    id
+  }
+}

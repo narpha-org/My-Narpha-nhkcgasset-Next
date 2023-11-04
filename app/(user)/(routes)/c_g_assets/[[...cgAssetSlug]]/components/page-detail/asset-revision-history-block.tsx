@@ -7,7 +7,7 @@ import {
 } from "@/graphql/generated/graphql";
 
 interface AssetRevisionHistoryBlockProps {
-  cgAsset: CgAsset;
+  cgAsset: CgAsset | null;
 }
 
 const AssetRevisionHistoryBlock: React.FC<AssetRevisionHistoryBlockProps> = ({
@@ -20,8 +20,8 @@ const AssetRevisionHistoryBlock: React.FC<AssetRevisionHistoryBlockProps> = ({
         <i className="title_icon" />
         修正履歴
       </div>
-      <div className="flex-grow h-full overflow-y-auto">
-        {cgAsset.revisionHistories?.map((elem: CgaRevisionHistory | null) => {
+      <div className="flex-grow w-full h-full overflow-y-auto">
+        {cgAsset && cgAsset.revisionHistories?.map((elem: CgaRevisionHistory | null) => {
 
           if (elem) {
             return <div key={elem.id} className="flex flex-wrap justify-between mb-5">

@@ -273,8 +273,20 @@ export const SystemMailTemplateForm: React.FC<SystemMailTemplateFormProps> = ({
                     アセット名: %ASSET_NAME%<br />
                     FROMユーザ名: %FROM_USER_NAME%<br />
                     TOユーザ名: %TO_USER_NAME%<br />
-                    発信メッセージ: %ASSET_USER_MESSAGE%<br />
                     アセットURL: %ASSET_URL%<br />
+                    <br />
+                    申請ユーザ名: %APPLY_USER_NAME%<br />
+                    番組ID: %APPLY_PROGRAM_ID%<br />
+                    番組名: %APPLY_PROGRAM_NAME%<br />
+                    利用期間・開始日: %APPLY_DATE_USAGE_START%<br />
+                    利用期間・終了日: %APPLY_DATE_USAGE_END%<br />
+                    利用目的テキスト: %APPLY_PURPOSE_OF_USE_TXT%<br />
+                    その他テキスト: %APPLY_ETC_TXT%<br />
+                    Boxリンク: %APPLY_BOX_LINK%<br />
+                    ダウンロード日: %APPLY_DATE_DOWNLOAD%<br />
+                    データ削除期限: %APPLY_DATE_REMOVAL%<br />
+                    <br />
+                    発信メッセージ: %ASSET_USER_MESSAGE%<br />
                     未決リスト: %PENDING_LIST%<br />
                   </FormDescription>
                 </FormItem>

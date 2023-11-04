@@ -17,7 +17,7 @@ const CarouselAssetIcons = ({ medias, selectedIndex, onMove }: Props) => {
     <div
       className="flex gap-1 my-2 justify-center -translate-y-5"
       style={{
-        zIndex: 100,
+        zIndex: 40,
         width: "100%",
         height: "27px",
         position: "absolute",

@@ -26,7 +26,7 @@ const SignOut = () => {
   }, []);
 
   if (!session || !session?.user || !session?.user.name) {
-    router.push(`/`);
+    router.push(`/c_g_assets`);
   }
 
   if (!isMounted || !session) {
@@ -42,12 +42,16 @@ const SignOut = () => {
               if (!process.env.OKTA_LOGOUT) {
                 return;
               }
-              return (window.location.href = process.env.OKTA_LOGOUT);
+              return (window.location.href =
+                process.env.OKTA_LOGOUT +
+                '?' + 'id_token_hint=' + (session as unknown as { idToken: string }).idToken +
+                '&' + 'post_logout_redirect_uri=' + encodeURIComponent(process.env.NEXTAUTH_URL as string)
+              );
             })}
           >
             <LogOut className="mr-2 h-4 w-4" /> {provider.name} からサインアウト
           </Button>
-        </div>
+        </div >
       ))}
     </>
   )

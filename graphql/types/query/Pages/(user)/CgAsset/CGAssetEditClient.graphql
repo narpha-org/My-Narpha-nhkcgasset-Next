@@ -1,0 +1,27 @@
+query CGAssetEditClient {
+  CGAssetCatesValid {
+    code
+    desc
+    id
+  }
+  CGARegistrantAffiliationsValid {
+    desc
+    id
+  }
+  CGAViewingRestrictionsValid {
+    desc
+    id
+  }
+  CGABroadcastingRightsValid {
+    desc
+    id
+  }
+  CGASharedAreasValid {
+    desc
+    id
+  }
+  CGAssetUploadDirsValid {
+    base_path
+    id
+  }
+}

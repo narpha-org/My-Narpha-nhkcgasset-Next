@@ -20,6 +20,7 @@ export function AssetItemToggle() {
     `/admin/c_g_a_viewing_restrictions`,
     `/admin/c_g_a_broadcasting_rights`,
     `/admin/c_g_a_shared_areas`,
+    `/admin/c_g_asset_upload_dirs`,
   ].includes(pathname)
 
   return (
@@ -41,6 +42,9 @@ export function AssetItemToggle() {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/c_g_a_shared_areas`)}>
           公開エリア
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`/admin/c_g_asset_upload_dirs`)}>
+          アップロード場所
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
