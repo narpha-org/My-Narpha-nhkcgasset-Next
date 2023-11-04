@@ -10,6 +10,7 @@ echo NEXTAUTH_URL=https://app.narpha.click >> next/.env &&
 echo AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID >> next/.env &&
 echo AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY >> next/.env &&
 echo AWS_BUCKET=$AWS_BUCKET >> next/.env &&
+echo AWS_BUCKET_PATH=$AWS_BUCKET_PATH >> next/.env &&
 
 echo OKTA_CLIENT_ID=$OKTA_CLIENT_ID >> next/.env &&
 echo OKTA_CLIENT_SECRET=$OKTA_CLIENT_SECRET >> next/.env &&
