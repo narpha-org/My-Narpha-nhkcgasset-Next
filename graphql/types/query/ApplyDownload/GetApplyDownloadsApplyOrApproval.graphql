@@ -3,12 +3,20 @@ query GetApplyDownloadsApplyOrApproval(
   $manage_user_id: ID
   $first: Int!
   $page: Int!
+  $order: String
+  $orderAsc: String
+  $section_adl: String
+  $searchTxt: String
 ) {
   ApplyDownloadsApplyOrApproval(
     user_id: $user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: $order
+    orderAsc: $orderAsc
+    section_adl: $section_adl
+    searchTxt: $searchTxt
   ) {
     data {
       id
@@ -24,6 +32,12 @@ query GetApplyDownloadsApplyOrApproval(
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at

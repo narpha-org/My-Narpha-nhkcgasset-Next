@@ -76,8 +76,8 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
     setSearchData(data);
 
     const ret = await fetchData({ first: 10, page: 1, search: data, session })
-    setData(ret.data);
-    setPaginatorInfo(ret.paginatorInfo);
+    setData(() => ret.data);
+    setPaginatorInfo(() => ret.paginatorInfo);
     storeSearchInfo.setSearchFormData(data)
     setIsInitPage(false)
 
@@ -89,8 +89,15 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
     const page = (paginatorInfo?.currentPage ? paginatorInfo?.currentPage + 1 : 1);
 
     const ret = await fetchData({ first: 10, page: page, search: searchData, session })
-    setData([...data, ...ret.data]);
-    setPaginatorInfo(ret.paginatorInfo);
+    setData(() => [...data, ...ret.data]);
+    setPaginatorInfo(() => ret.paginatorInfo);
+    setIsInitPage(false)
+  }
+
+  const onLoadPagenation = async ({ page }) => {
+    const ret = await fetchData({ first: 10, page: page, search: searchData, session })
+    setData(() => [...ret.data]);
+    setPaginatorInfo(() => ret.paginatorInfo);
     setIsInitPage(false)
   }
 
@@ -125,6 +132,7 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
             paginatorInfo={paginatorInfo}
             loading={loading}
             isInitPage={isInitPage}
+            onLoadPagenation={onLoadPagenation}
             onLoadMorePage={onLoadMorePage}
           />
         </div >

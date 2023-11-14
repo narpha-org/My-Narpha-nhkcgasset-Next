@@ -3,9 +3,10 @@ import { redirect } from 'next/navigation';
 import { Download, FileEdit } from "lucide-react";
 
 import {
+  ApplyDownload,
   CgAsset, CgaViewingRestriction,
 } from "@/graphql/generated/graphql";
-import { isServerRoleUser } from "@/lib/check-role-server";
+import { isServerRoleOther, isServerRoleUser } from "@/lib/check-role-server";
 
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
@@ -20,32 +21,43 @@ import AssetsCarouselBlock from './page-detail/assets-carousel-block';
 import AssetTagsBlock from './page-detail/asset-tags-block';
 import AssetDetailReviewBlock from './page-detail/asset-detail-review-block';
 import ApplyDownloadDialog from "./apply-download-dialog";
+import { checkGlacierStatus } from '@/lib/check-glacier-status';
+import GlacierDLDialog from './glacier-dl-dialog';
 
 interface CGAssetDetailClientProps {
   cgAsset: CgAsset;
   cgaViewingRestrictions: CgaViewingRestriction[]
+  applyDownloads: ApplyDownload[]
 }
 
 const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
   cgAsset,
-  cgaViewingRestrictions
+  cgaViewingRestrictions,
+  applyDownloads
 }) => {
 
   if (!cgAsset) {
     redirect('/c_g_assets');
   }
 
+  const downloadable = checkGlacierStatus(applyDownloads) === 1;
+
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading title="CGアセット詳細" description="" />
         <div className="flex flex-wrap justify-between">
-          {await isServerRoleUser() && (
-            <div className="">
+          {downloadable && (
+            <div className="ml-2">
+              <GlacierDLDialog applyDownloads={applyDownloads} cgAsset={cgAsset} />
+            </div>
+          )}
+          {(await isServerRoleUser() || await isServerRoleOther()) && (
+            <div className="ml-2">
               <ApplyDownloadDialog cgAssetId={cgAsset.id} />
             </div>
           )}
-          {!await isServerRoleUser() && (
+          {(!await isServerRoleUser() && !await isServerRoleOther()) && (
             <div className="ml-2">
               <Link href={`/c_g_assets/${cgAsset.id}/edit`}>
                 <Button>

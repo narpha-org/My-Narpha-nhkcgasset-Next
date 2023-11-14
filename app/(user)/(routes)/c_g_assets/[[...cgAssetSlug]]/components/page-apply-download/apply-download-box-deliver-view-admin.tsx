@@ -97,7 +97,7 @@ export const CGAssetApplyDownloadBoxDeliverViewAdmin: React.FC<CGAssetApplyDownl
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title="ダウンロード用 Boxリンク通知内容" description={`アセットID: ${cgAsset?.asset_id} のBoxリンク通知内容`} />
+        <Heading title="ダウンロード用 S3 Glacier 復元キュー通知内容" description={`アセットID: ${cgAsset?.asset_id} のS3 Glacier 復元キュー通知内容`} />
       </div>
       <Separator />
       <Form {...form}>
@@ -199,7 +199,7 @@ export const CGAssetApplyDownloadBoxDeliverViewAdmin: React.FC<CGAssetApplyDownl
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="box_link"
               render={({ field }) => (
@@ -214,7 +214,7 @@ export const CGAssetApplyDownloadBoxDeliverViewAdmin: React.FC<CGAssetApplyDownl
                   </div>
                 </FormItem>
               )}
-            />
+            /> */}
             {form.getValues('download_date') &&
               <FormField
                 control={form.control}

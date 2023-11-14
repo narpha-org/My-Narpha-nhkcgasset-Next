@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 
-import { ApplyDownload, CgAsset } from "@/graphql/generated/graphql";
+import { ApplyDownload, ApplyDownloadPaginator, CgAsset, CgAssetPaginator } from "@/graphql/generated/graphql";
 import { IsRoleAdmin, IsRoleManager } from "@/lib/check-role-client";
 
 import AssetInfoBlockAdmin from "./asset-info-block-admin";
@@ -11,41 +11,60 @@ import AssetInfoBlockUser from "./asset-info-block-user";
 
 interface AssetInfoBlockProps {
   downloadApplies: ApplyDownload[]
+  downloadAppliesPg: ApplyDownloadPaginator['paginatorInfo']
   applies: ApplyDownload[]
+  appliesPg: ApplyDownloadPaginator['paginatorInfo']
   approvals: ApplyDownload[]
+  approvalsPg: ApplyDownloadPaginator['paginatorInfo']
   cgAssets: CgAsset[]
+  cgAssetsPg: CgAssetPaginator['paginatorInfo']
 }
 
 const AssetInfoBlock: React.FC<AssetInfoBlockProps> = ({
   downloadApplies,
+  downloadAppliesPg,
   applies,
+  appliesPg,
   approvals,
+  approvalsPg,
   cgAssets,
+  cgAssetsPg,
 }) => {
   const { data: session, status } = useSession();
 
   if (IsRoleAdmin(session)) {
     return <AssetInfoBlockAdmin
       downloadApplies={downloadApplies}
+      downloadAppliesPg={downloadAppliesPg}
       applies={applies}
+      appliesPg={appliesPg}
       approvals={approvals}
+      approvalsPg={approvalsPg}
       cgAssets={cgAssets}
+      cgAssetsPg={cgAssetsPg}
     />
   }
 
   if (IsRoleManager(session)) {
     return <AssetInfoBlockManager
       downloadApplies={downloadApplies}
+      downloadAppliesPg={downloadAppliesPg}
       applies={applies}
+      appliesPg={appliesPg}
       approvals={approvals}
+      approvalsPg={approvalsPg}
       cgAssets={cgAssets}
+      cgAssetsPg={cgAssetsPg}
     />
   }
 
   return <AssetInfoBlockUser
     downloadApplies={downloadApplies}
+    downloadAppliesPg={downloadAppliesPg}
     applies={applies}
+    appliesPg={appliesPg}
     approvals={approvals}
+    approvalsPg={approvalsPg}
   />
 }
 

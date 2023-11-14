@@ -38,6 +38,8 @@ export type ApplyDownload = {
   __typename?: 'ApplyDownload';
   /** コメント */
   applyDownloadComments?: Maybe<Array<Maybe<ApplyDownloadComment>>>;
+  /** S3Glacierファイル */
+  applyDownloadGlaciers?: Maybe<Array<Maybe<ApplyDownloadGlacier>>>;
   /** 申請ユーザ */
   applyUser?: Maybe<User>;
   /** 申請日 */
@@ -135,6 +137,32 @@ export type ApplyDownloadCommentPaginator = {
   data: Array<ApplyDownloadComment>;
   /** Pagination information about the list of items. */
   paginatorInfo: PaginatorInfo;
+};
+
+/**
+ * ApplyDownloadGlacier.
+ * ダウンロード申請S3Glacierファイル
+ */
+export type ApplyDownloadGlacier = {
+  __typename?: 'ApplyDownloadGlacier';
+  /** ダウンロード申請 */
+  applyDownload: ApplyDownload;
+  /** When the ApplyDownloadGlacier was created. */
+  created_at: Scalars['DateTime']['output'];
+  /** 復元有効期限 */
+  expiry_date?: Maybe<Scalars['DateTime']['output']>;
+  /** リソースファイルパス */
+  file_path: Scalars['String']['output'];
+  /** Unique primary key. */
+  id: Scalars['ID']['output'];
+  /** 復元ステータス */
+  ongoing_request: Scalars['Boolean']['output'];
+  /** 期限付きURL */
+  presigned_url?: Maybe<Scalars['String']['output']>;
+  /** When the ApplyDownloadGlacier was last updated. */
+  updated_at: Scalars['DateTime']['output'];
+  /** DL許可ユーザ */
+  user?: Maybe<User>;
 };
 
 /** A paginated list of ApplyDownload items. */
@@ -320,6 +348,8 @@ export type CgaViewingRestrictionPaginator = {
  */
 export type CgAsset = {
   __typename?: 'CGAsset';
+  /** ダウンロード申請 */
+  applyDownloads?: Maybe<Array<Maybe<ApplyDownload>>>;
   /** アセット3DCG */
   asset3DCGs?: Maybe<Array<Maybe<CgAsset3Dcg>>>;
   /** アセット種別 */
@@ -745,6 +775,7 @@ export enum CodeMailTemplate {
   ApplyDownloadApply = 'APPLY_DOWNLOAD_APPLY',
   ApplyDownloadApproval = 'APPLY_DOWNLOAD_APPROVAL',
   ApplyDownloadBoxDeliver = 'APPLY_DOWNLOAD_BOX_DELIVER',
+  ApplyDownloadBoxReady = 'APPLY_DOWNLOAD_BOX_READY',
   ApplyDownloadDlNotice = 'APPLY_DOWNLOAD_DL_NOTICE',
   ApplyDownloadDone = 'APPLY_DOWNLOAD_DONE',
   ApplyDownloadRemoval = 'APPLY_DOWNLOAD_REMOVAL',
@@ -896,6 +927,8 @@ export type Mutation = {
   createApplyDownload?: Maybe<ApplyDownload>;
   /** Create a ApplyDownloadComment. */
   createApplyDownloadComment?: Maybe<ApplyDownloadComment>;
+  /** Create a ApplyDownloadGlacier. */
+  createApplyDownloadGlacier?: Maybe<ApplyDownloadGlacier>;
   /** Create a CGABroadcastingRight. */
   createCGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** Create a CGARegistrantAffiliation. */
@@ -944,6 +977,8 @@ export type Mutation = {
   deleteApplyDownload?: Maybe<ApplyDownload>;
   /** Delete a ApplyDownloadComment. */
   deleteApplyDownloadComment?: Maybe<ApplyDownloadComment>;
+  /** Delete a ApplyDownloadGlacier. */
+  deleteApplyDownloadGlacier?: Maybe<ApplyDownloadGlacier>;
   /** Delete a CGABroadcastingRight. */
   deleteCGABroadcastingRight?: Maybe<CgaBroadcastingRight>;
   /** Delete a CGARegistrantAffiliation. */
@@ -1002,6 +1037,8 @@ export type Mutation = {
   updateApplyDownloadDLNotification?: Maybe<ApplyDownload>;
   /** データ削除 */
   updateApplyDownloadDone?: Maybe<ApplyDownload>;
+  /** Update a ApplyDownloadGlacier. */
+  updateApplyDownloadGlacier?: Maybe<ApplyDownloadGlacier>;
   /** データ削除期限 */
   updateApplyDownloadRemoval?: Maybe<ApplyDownload>;
   /** Update a CGABroadcastingRight. */
@@ -1062,6 +1099,14 @@ export type MutationCreateApplyDownloadCommentArgs = {
   status: StatusApplyDownload;
   user_id: Scalars['ID']['input'];
   valid_flg: Scalars['Boolean']['input'];
+};
+
+
+export type MutationCreateApplyDownloadGlacierArgs = {
+  apply_download_id: Scalars['ID']['input'];
+  file_path: Scalars['String']['input'];
+  ongoing_request: Scalars['Boolean']['input'];
+  user_id: Scalars['ID']['input'];
 };
 
 
@@ -1243,6 +1288,11 @@ export type MutationDeleteApplyDownloadCommentArgs = {
 };
 
 
+export type MutationDeleteApplyDownloadGlacierArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationDeleteCgaBroadcastingRightArgs = {
   id: Scalars['ID']['input'];
 };
@@ -1387,6 +1437,14 @@ export type MutationUpdateApplyDownloadDlNotificationArgs = {
 
 export type MutationUpdateApplyDownloadDoneArgs = {
   input: UpdateApplyDownloadDoneArgs;
+};
+
+
+export type MutationUpdateApplyDownloadGlacierArgs = {
+  expiry_date?: InputMaybe<Scalars['DateTime']['input']>;
+  id: Scalars['ID']['input'];
+  ongoing_request: Scalars['Boolean']['input'];
+  presigned_url?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -1685,10 +1743,14 @@ export type Query = {
   ApplyDownloadComments: ApplyDownloadCommentPaginator;
   /** List all available ApplyDownloadComment. */
   ApplyDownloadCommentsValid: Array<ApplyDownloadComment>;
+  /** Find a single ApplyDownloadGlacier by an identifying attribute. */
+  ApplyDownloadGlacier?: Maybe<ApplyDownloadGlacier>;
   /** 承認待ち or 承認済み */
   ApplyDownloadsApplyOrApproval: ApplyDownloadPaginator;
   /** 承認待ち or ダウンロード or データ削除報告 */
   ApplyDownloadsApplyOrApprovalOrBoxDeliver: ApplyDownloadPaginator;
+  /** DLが有効となったBoxリンク通知 */
+  ApplyDownloadsBoxDeliverGlacierAll?: Maybe<Array<Maybe<ApplyDownload>>>;
   /** 申請中 or 承認許可 or DL済み通知 or データ削除期限 */
   ApplyDownloadsNotDone: ApplyDownloadPaginator;
   /** 承認待ち */
@@ -1841,10 +1903,19 @@ export type QueryApplyDownloadCommentsArgs = {
 };
 
 
+export type QueryApplyDownloadGlacierArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
 export type QueryApplyDownloadsApplyOrApprovalArgs = {
   first?: Scalars['Int']['input'];
   manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  order?: InputMaybe<Scalars['String']['input']>;
+  orderAsc?: InputMaybe<Scalars['String']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+  searchTxt?: InputMaybe<Scalars['String']['input']>;
+  section_adl?: InputMaybe<Scalars['String']['input']>;
   user_id?: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -1852,15 +1923,28 @@ export type QueryApplyDownloadsApplyOrApprovalArgs = {
 export type QueryApplyDownloadsApplyOrApprovalOrBoxDeliverArgs = {
   first?: Scalars['Int']['input'];
   manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  order?: InputMaybe<Scalars['String']['input']>;
+  orderAsc?: InputMaybe<Scalars['String']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+  searchTxt?: InputMaybe<Scalars['String']['input']>;
+  section_adl?: InputMaybe<Scalars['String']['input']>;
   user_id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryApplyDownloadsBoxDeliverGlacierAllArgs = {
+  apply_user_id: Scalars['ID']['input'];
 };
 
 
 export type QueryApplyDownloadsNotDoneArgs = {
   first?: Scalars['Int']['input'];
   manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  order?: InputMaybe<Scalars['String']['input']>;
+  orderAsc?: InputMaybe<Scalars['String']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+  searchTxt?: InputMaybe<Scalars['String']['input']>;
+  section_adl?: InputMaybe<Scalars['String']['input']>;
   user_id?: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -1868,7 +1952,11 @@ export type QueryApplyDownloadsNotDoneArgs = {
 export type QueryApplyDownloadsOnlyApplyArgs = {
   first?: Scalars['Int']['input'];
   manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  order?: InputMaybe<Scalars['String']['input']>;
+  orderAsc?: InputMaybe<Scalars['String']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+  searchTxt?: InputMaybe<Scalars['String']['input']>;
+  section_adl?: InputMaybe<Scalars['String']['input']>;
   user_id?: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -2057,8 +2145,12 @@ export type QueryCgAssetsAllArgs = {
 export type QueryCgAssetsCreatedAllArgs = {
   create_user_id: Scalars['ID']['input'];
   first?: Scalars['Int']['input'];
+  order?: InputMaybe<Scalars['String']['input']>;
+  orderAsc?: InputMaybe<Scalars['String']['input']>;
   orderBy?: InputMaybe<Array<OrderByClause>>;
   page?: InputMaybe<Scalars['Int']['input']>;
+  searchTxt?: InputMaybe<Scalars['String']['input']>;
+  section?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -2162,7 +2254,9 @@ export type QueryUseVerificationTokenArgs = {
 
 export enum RoleCgAssetStore {
   Admin = 'ADMIN',
+  Editor = 'EDITOR',
   Manager = 'MANAGER',
+  Other = 'OTHER',
   User = 'USER'
 }
 
@@ -2235,6 +2329,7 @@ export enum StatusApplyDownload {
   Apply = 'APPLY',
   Approval = 'APPROVAL',
   BoxDeliver = 'BOX_DELIVER',
+  BoxReady = 'BOX_READY',
   DlNotice = 'DL_NOTICE',
   Done = 'DONE',
   Removal = 'REMOVAL'
@@ -2329,8 +2424,6 @@ export type UpdateApplyDownloadApprovalArgs = {
 };
 
 export type UpdateApplyDownloadBoxDeliverArgs = {
-  /** Boxリンク */
-  box_link?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['ID']['input'];
   /** データ削除期限日 */
   removal_limit_date?: InputMaybe<Scalars['DateTime']['input']>;
@@ -2455,6 +2548,8 @@ export type User = {
   applyDownloadBoxDelivers?: Maybe<Array<Maybe<ApplyDownload>>>;
   /** コメント */
   applyDownloadComments?: Maybe<Array<Maybe<ApplyDownloadComment>>>;
+  /** S3Glacierファイル */
+  applyDownloadGlaciers?: Maybe<Array<Maybe<ApplyDownloadGlacier>>>;
   /** ダウンロード消去 */
   applyDownloadRemovals?: Maybe<Array<Maybe<ApplyDownload>>>;
   /** アセットタグ */
@@ -3045,47 +3140,63 @@ export type GetApplyDownloadQueryVariables = Exact<{
 }>;
 
 
-export type GetApplyDownloadQuery = { __typename?: 'Query', ApplyDownload?: { __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, program_id?: string | null, program_name?: string | null, date_usage_start?: any | null, date_usage_end?: any | null, purpose_of_use_txt?: string | null, etc_txt?: string | null, box_link?: string | null, removal_limit_date?: any | null, download_date?: any | null, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null } | null };
+export type GetApplyDownloadQuery = { __typename?: 'Query', ApplyDownload?: { __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, program_id?: string | null, program_name?: string | null, date_usage_start?: any | null, date_usage_end?: any | null, purpose_of_use_txt?: string | null, etc_txt?: string | null, removal_limit_date?: any | null, download_date?: any | null, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null } | null };
 
 export type GetApplyDownloadsApplyOrApprovalQueryVariables = Exact<{
   user_id?: InputMaybe<Scalars['ID']['input']>;
   manage_user_id?: InputMaybe<Scalars['ID']['input']>;
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
+  order?: InputMaybe<Scalars['String']['input']>;
+  orderAsc?: InputMaybe<Scalars['String']['input']>;
+  section_adl?: InputMaybe<Scalars['String']['input']>;
+  searchTxt?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetApplyDownloadsApplyOrApprovalQuery = { __typename?: 'Query', ApplyDownloadsApplyOrApproval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetApplyDownloadsApplyOrApprovalQuery = { __typename?: 'Query', ApplyDownloadsApplyOrApproval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryVariables = Exact<{
   user_id?: InputMaybe<Scalars['ID']['input']>;
   manage_user_id?: InputMaybe<Scalars['ID']['input']>;
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
+  order?: InputMaybe<Scalars['String']['input']>;
+  orderAsc?: InputMaybe<Scalars['String']['input']>;
+  section_adl?: InputMaybe<Scalars['String']['input']>;
+  searchTxt?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery = { __typename?: 'Query', ApplyDownloadsApplyOrApprovalOrBoxDeliver: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery = { __typename?: 'Query', ApplyDownloadsApplyOrApprovalOrBoxDeliver: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetApplyDownloadsNotDoneQueryVariables = Exact<{
   user_id?: InputMaybe<Scalars['ID']['input']>;
   manage_user_id?: InputMaybe<Scalars['ID']['input']>;
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
+  order?: InputMaybe<Scalars['String']['input']>;
+  orderAsc?: InputMaybe<Scalars['String']['input']>;
+  section_adl?: InputMaybe<Scalars['String']['input']>;
+  searchTxt?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetApplyDownloadsNotDoneQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetApplyDownloadsNotDoneQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetApplyDownloadsOnlyApplyQueryVariables = Exact<{
   user_id?: InputMaybe<Scalars['ID']['input']>;
   manage_user_id?: InputMaybe<Scalars['ID']['input']>;
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
+  order?: InputMaybe<Scalars['String']['input']>;
+  orderAsc?: InputMaybe<Scalars['String']['input']>;
+  section_adl?: InputMaybe<Scalars['String']['input']>;
+  searchTxt?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetApplyDownloadsOnlyApplyQuery = { __typename?: 'Query', ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
+export type GetApplyDownloadsOnlyApplyQuery = { __typename?: 'Query', ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type GetSessionAndUserQueryVariables = Exact<{
   sessionToken: Scalars['String']['input'];
@@ -3214,7 +3325,7 @@ export type GetCgAssetQueryVariables = Exact<{
 }>;
 
 
-export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
+export type GetCgAssetQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, applyDownloads?: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null };
 
 export type GetCgAssetsAllQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -3229,6 +3340,10 @@ export type GetCgAssetsCreatedAllQueryVariables = Exact<{
   create_user_id: Scalars['ID']['input'];
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
+  section?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['String']['input']>;
+  orderAsc?: InputMaybe<Scalars['String']['input']>;
+  searchTxt?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -3345,10 +3460,11 @@ export type GetCgaSharedAreasValidQuery = { __typename?: 'Query', CGASharedAreas
 
 export type CgAssetDetailClientQueryVariables = Exact<{
   id: Scalars['ID']['input'];
+  apply_user_id: Scalars['ID']['input'];
 }>;
 
 
-export type CgAssetDetailClientQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null, CGAViewingRestrictionsValid: Array<{ __typename?: 'CGAViewingRestriction', desc: string, id: string }> };
+export type CgAssetDetailClientQuery = { __typename?: 'Query', CGAsset?: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, asset_media_base: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, uploadDir?: { __typename?: 'CGAssetUploadDir', id: string, base_path: string } | null, assetImages?: Array<{ __typename?: 'CGAssetImage', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetVideos?: Array<{ __typename?: 'CGAssetVideo', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, asset3DCGs?: Array<{ __typename?: 'CGAsset3DCG', id: string, file_name: string, url: string, file_path: string, thumb_file_name?: string | null, thumb_url?: string | null, thumb_file_path?: string | null } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null } | null, CGAViewingRestrictionsValid: Array<{ __typename?: 'CGAViewingRestriction', desc: string, id: string }>, ApplyDownloadsBoxDeliverGlacierAll?: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null } | null> | null };
 
 export type CgAssetEditClientQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3366,10 +3482,23 @@ export type HomeDashboardServerAdminQueryVariables = Exact<{
   create_user_id: Scalars['ID']['input'];
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
+  section?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type HomeDashboardServerAdminQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsApplyOrApprovalOrBoxDeliver: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
+export type HomeDashboardServerAdminQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsApplyOrApprovalOrBoxDeliver: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
+
+export type HomeDashboardServerEditorQueryVariables = Exact<{
+  user_id?: InputMaybe<Scalars['ID']['input']>;
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  create_user_id: Scalars['ID']['input'];
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+  section?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type HomeDashboardServerEditorQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsApplyOrApproval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
 
 export type HomeDashboardServerManagerQueryVariables = Exact<{
   user_id?: InputMaybe<Scalars['ID']['input']>;
@@ -3377,10 +3506,23 @@ export type HomeDashboardServerManagerQueryVariables = Exact<{
   create_user_id: Scalars['ID']['input'];
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
+  section?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type HomeDashboardServerManagerQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsApplyOrApproval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
+export type HomeDashboardServerManagerQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsApplyOrApproval: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
+
+export type HomeDashboardServerOtherQueryVariables = Exact<{
+  user_id?: InputMaybe<Scalars['ID']['input']>;
+  manage_user_id?: InputMaybe<Scalars['ID']['input']>;
+  create_user_id: Scalars['ID']['input'];
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+  section?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type HomeDashboardServerOtherQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
 
 export type HomeDashboardServerUserQueryVariables = Exact<{
   user_id?: InputMaybe<Scalars['ID']['input']>;
@@ -3388,10 +3530,11 @@ export type HomeDashboardServerUserQueryVariables = Exact<{
   create_user_id: Scalars['ID']['input'];
   first: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
+  section?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type HomeDashboardServerUserQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
+export type HomeDashboardServerUserQuery = { __typename?: 'Query', ApplyDownloadsNotDone: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, ApplyDownloadsOnlyApply: { __typename?: 'ApplyDownloadPaginator', data: Array<{ __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null } | null> | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, CGAssetsCreatedAll: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, valid_flg: boolean, created_at: any, updated_at: any }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } }, SystemNoticesValid: Array<{ __typename?: 'SystemNotice', message: string, notice_date: any, created_at: any, id: string, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }> };
 
 export type GetSampleQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -6581,7 +6724,12 @@ export const GetApplyDownloadDocument = gql`
       id
       name
     }
-    box_link
+    applyDownloadGlaciers {
+      id
+      ongoing_request
+      expiry_date
+      presigned_url
+    }
     removal_limit_date
     download_date
     created_at
@@ -6617,12 +6765,16 @@ export type GetApplyDownloadQueryHookResult = ReturnType<typeof useGetApplyDownl
 export type GetApplyDownloadLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadLazyQuery>;
 export type GetApplyDownloadQueryResult = Apollo.QueryResult<GetApplyDownloadQuery, GetApplyDownloadQueryVariables>;
 export const GetApplyDownloadsApplyOrApprovalDocument = gql`
-    query GetApplyDownloadsApplyOrApproval($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!) {
+    query GetApplyDownloadsApplyOrApproval($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!, $order: String, $orderAsc: String, $section_adl: String, $searchTxt: String) {
   ApplyDownloadsApplyOrApproval(
     user_id: $user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: $order
+    orderAsc: $orderAsc
+    section_adl: $section_adl
+    searchTxt: $searchTxt
   ) {
     data {
       id
@@ -6638,6 +6790,12 @@ export const GetApplyDownloadsApplyOrApprovalDocument = gql`
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -6668,6 +6826,10 @@ export const GetApplyDownloadsApplyOrApprovalDocument = gql`
  *      manage_user_id: // value for 'manage_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
+ *      order: // value for 'order'
+ *      orderAsc: // value for 'orderAsc'
+ *      section_adl: // value for 'section_adl'
+ *      searchTxt: // value for 'searchTxt'
  *   },
  * });
  */
@@ -6683,12 +6845,16 @@ export type GetApplyDownloadsApplyOrApprovalQueryHookResult = ReturnType<typeof 
 export type GetApplyDownloadsApplyOrApprovalLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsApplyOrApprovalLazyQuery>;
 export type GetApplyDownloadsApplyOrApprovalQueryResult = Apollo.QueryResult<GetApplyDownloadsApplyOrApprovalQuery, GetApplyDownloadsApplyOrApprovalQueryVariables>;
 export const GetApplyDownloadsApplyOrApprovalOrBoxDeliverDocument = gql`
-    query GetApplyDownloadsApplyOrApprovalOrBoxDeliver($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!) {
+    query GetApplyDownloadsApplyOrApprovalOrBoxDeliver($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!, $order: String, $orderAsc: String, $section_adl: String, $searchTxt: String) {
   ApplyDownloadsApplyOrApprovalOrBoxDeliver(
     user_id: $user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: $order
+    orderAsc: $orderAsc
+    section_adl: $section_adl
+    searchTxt: $searchTxt
   ) {
     data {
       id
@@ -6704,6 +6870,12 @@ export const GetApplyDownloadsApplyOrApprovalOrBoxDeliverDocument = gql`
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -6734,6 +6906,10 @@ export const GetApplyDownloadsApplyOrApprovalOrBoxDeliverDocument = gql`
  *      manage_user_id: // value for 'manage_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
+ *      order: // value for 'order'
+ *      orderAsc: // value for 'orderAsc'
+ *      section_adl: // value for 'section_adl'
+ *      searchTxt: // value for 'searchTxt'
  *   },
  * });
  */
@@ -6749,12 +6925,16 @@ export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryHookResult = Return
 export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsApplyOrApprovalOrBoxDeliverLazyQuery>;
 export type GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryResult = Apollo.QueryResult<GetApplyDownloadsApplyOrApprovalOrBoxDeliverQuery, GetApplyDownloadsApplyOrApprovalOrBoxDeliverQueryVariables>;
 export const GetApplyDownloadsNotDoneDocument = gql`
-    query GetApplyDownloadsNotDone($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!) {
+    query GetApplyDownloadsNotDone($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!, $order: String, $orderAsc: String, $section_adl: String, $searchTxt: String) {
   ApplyDownloadsNotDone(
     user_id: $user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: $order
+    orderAsc: $orderAsc
+    section_adl: $section_adl
+    searchTxt: $searchTxt
   ) {
     data {
       id
@@ -6770,6 +6950,12 @@ export const GetApplyDownloadsNotDoneDocument = gql`
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -6800,6 +6986,10 @@ export const GetApplyDownloadsNotDoneDocument = gql`
  *      manage_user_id: // value for 'manage_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
+ *      order: // value for 'order'
+ *      orderAsc: // value for 'orderAsc'
+ *      section_adl: // value for 'section_adl'
+ *      searchTxt: // value for 'searchTxt'
  *   },
  * });
  */
@@ -6815,12 +7005,16 @@ export type GetApplyDownloadsNotDoneQueryHookResult = ReturnType<typeof useGetAp
 export type GetApplyDownloadsNotDoneLazyQueryHookResult = ReturnType<typeof useGetApplyDownloadsNotDoneLazyQuery>;
 export type GetApplyDownloadsNotDoneQueryResult = Apollo.QueryResult<GetApplyDownloadsNotDoneQuery, GetApplyDownloadsNotDoneQueryVariables>;
 export const GetApplyDownloadsOnlyApplyDocument = gql`
-    query GetApplyDownloadsOnlyApply($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!) {
+    query GetApplyDownloadsOnlyApply($user_id: ID, $manage_user_id: ID, $first: Int!, $page: Int!, $order: String, $orderAsc: String, $section_adl: String, $searchTxt: String) {
   ApplyDownloadsOnlyApply(
     user_id: $user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: $order
+    orderAsc: $orderAsc
+    section_adl: $section_adl
+    searchTxt: $searchTxt
   ) {
     data {
       id
@@ -6836,6 +7030,12 @@ export const GetApplyDownloadsOnlyApplyDocument = gql`
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -6866,6 +7066,10 @@ export const GetApplyDownloadsOnlyApplyDocument = gql`
  *      manage_user_id: // value for 'manage_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
+ *      order: // value for 'order'
+ *      orderAsc: // value for 'orderAsc'
+ *      section_adl: // value for 'section_adl'
+ *      searchTxt: // value for 'searchTxt'
  *   },
  * });
  */
@@ -8014,6 +8218,16 @@ export const GetCgAssetDocument = gql`
         name
       }
     }
+    applyDownloads {
+      id
+      status
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
+    }
     download_count
     userCreate {
       id
@@ -8256,12 +8470,16 @@ export type GetCgAssetsAllQueryHookResult = ReturnType<typeof useGetCgAssetsAllQ
 export type GetCgAssetsAllLazyQueryHookResult = ReturnType<typeof useGetCgAssetsAllLazyQuery>;
 export type GetCgAssetsAllQueryResult = Apollo.QueryResult<GetCgAssetsAllQuery, GetCgAssetsAllQueryVariables>;
 export const GetCgAssetsCreatedAllDocument = gql`
-    query GetCgAssetsCreatedAll($create_user_id: ID!, $first: Int!, $page: Int!) {
+    query GetCgAssetsCreatedAll($create_user_id: ID!, $first: Int!, $page: Int!, $section: String, $order: String, $orderAsc: String, $searchTxt: String) {
   CGAssetsCreatedAll(
     create_user_id: $create_user_id
     first: $first
     page: $page
     orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+    section: $section
+    order: $order
+    orderAsc: $orderAsc
+    searchTxt: $searchTxt
   ) {
     data {
       id
@@ -8296,6 +8514,10 @@ export const GetCgAssetsCreatedAllDocument = gql`
  *      create_user_id: // value for 'create_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
+ *      section: // value for 'section'
+ *      order: // value for 'order'
+ *      orderAsc: // value for 'orderAsc'
+ *      searchTxt: // value for 'searchTxt'
  *   },
  * });
  */
@@ -9104,7 +9326,7 @@ export type GetCgaSharedAreasValidQueryHookResult = ReturnType<typeof useGetCgaS
 export type GetCgaSharedAreasValidLazyQueryHookResult = ReturnType<typeof useGetCgaSharedAreasValidLazyQuery>;
 export type GetCgaSharedAreasValidQueryResult = Apollo.QueryResult<GetCgaSharedAreasValidQuery, GetCgaSharedAreasValidQueryVariables>;
 export const CgAssetDetailClientDocument = gql`
-    query CGAssetDetailClient($id: ID!) {
+    query CGAssetDetailClient($id: ID!, $apply_user_id: ID!) {
   CGAsset(id: $id) {
     id
     asset_id
@@ -9236,6 +9458,16 @@ export const CgAssetDetailClientDocument = gql`
     desc
     id
   }
+  ApplyDownloadsBoxDeliverGlacierAll(apply_user_id: $apply_user_id) {
+    id
+    status
+    applyDownloadGlaciers {
+      id
+      ongoing_request
+      expiry_date
+      presigned_url
+    }
+  }
 }
     `;
 
@@ -9252,6 +9484,7 @@ export const CgAssetDetailClientDocument = gql`
  * const { data, loading, error } = useCgAssetDetailClientQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      apply_user_id: // value for 'apply_user_id'
  *   },
  * });
  */
@@ -9369,12 +9602,16 @@ export type CgAssetSearchClientQueryHookResult = ReturnType<typeof useCgAssetSea
 export type CgAssetSearchClientLazyQueryHookResult = ReturnType<typeof useCgAssetSearchClientLazyQuery>;
 export type CgAssetSearchClientQueryResult = Apollo.QueryResult<CgAssetSearchClientQuery, CgAssetSearchClientQueryVariables>;
 export const HomeDashboardServerAdminDocument = gql`
-    query HomeDashboardServerAdmin($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!) {
+    query HomeDashboardServerAdmin($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!, $section: String) {
   ApplyDownloadsNotDone(
     user_id: $user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    section_adl: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9390,6 +9627,12 @@ export const HomeDashboardServerAdminDocument = gql`
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -9406,6 +9649,9 @@ export const HomeDashboardServerAdminDocument = gql`
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9421,6 +9667,12 @@ export const HomeDashboardServerAdminDocument = gql`
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -9437,6 +9689,9 @@ export const HomeDashboardServerAdminDocument = gql`
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9453,6 +9708,12 @@ export const HomeDashboardServerAdminDocument = gql`
         id
         name
       }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
       status
       created_at
     }
@@ -9468,6 +9729,10 @@ export const HomeDashboardServerAdminDocument = gql`
     first: $first
     page: $page
     orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+    section: $section
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9542,6 +9807,7 @@ export const HomeDashboardServerAdminDocument = gql`
  *      create_user_id: // value for 'create_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
+ *      section: // value for 'section'
  *   },
  * });
  */
@@ -9556,13 +9822,17 @@ export function useHomeDashboardServerAdminLazyQuery(baseOptions?: Apollo.LazyQu
 export type HomeDashboardServerAdminQueryHookResult = ReturnType<typeof useHomeDashboardServerAdminQuery>;
 export type HomeDashboardServerAdminLazyQueryHookResult = ReturnType<typeof useHomeDashboardServerAdminLazyQuery>;
 export type HomeDashboardServerAdminQueryResult = Apollo.QueryResult<HomeDashboardServerAdminQuery, HomeDashboardServerAdminQueryVariables>;
-export const HomeDashboardServerManagerDocument = gql`
-    query HomeDashboardServerManager($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!) {
+export const HomeDashboardServerEditorDocument = gql`
+    query HomeDashboardServerEditor($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!, $section: String) {
   ApplyDownloadsNotDone(
     user_id: $user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    section_adl: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9578,6 +9848,12 @@ export const HomeDashboardServerManagerDocument = gql`
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -9594,6 +9870,9 @@ export const HomeDashboardServerManagerDocument = gql`
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9609,6 +9888,12 @@ export const HomeDashboardServerManagerDocument = gql`
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -9625,6 +9910,9 @@ export const HomeDashboardServerManagerDocument = gql`
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9641,6 +9929,12 @@ export const HomeDashboardServerManagerDocument = gql`
         id
         name
       }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
       status
       created_at
     }
@@ -9656,6 +9950,231 @@ export const HomeDashboardServerManagerDocument = gql`
     first: $first
     page: $page
     orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+    section: $section
+    order: null
+    orderAsc: null
+    searchTxt: null
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  SystemNoticesValid(orderBy: [{column: "notice_date", order: DESC}]) {
+    message
+    notice_date
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+    id
+  }
+}
+    `;
+
+/**
+ * __useHomeDashboardServerEditorQuery__
+ *
+ * To run a query within a React component, call `useHomeDashboardServerEditorQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHomeDashboardServerEditorQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHomeDashboardServerEditorQuery({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      manage_user_id: // value for 'manage_user_id'
+ *      create_user_id: // value for 'create_user_id'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *      section: // value for 'section'
+ *   },
+ * });
+ */
+export function useHomeDashboardServerEditorQuery(baseOptions: Apollo.QueryHookOptions<HomeDashboardServerEditorQuery, HomeDashboardServerEditorQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HomeDashboardServerEditorQuery, HomeDashboardServerEditorQueryVariables>(HomeDashboardServerEditorDocument, options);
+      }
+export function useHomeDashboardServerEditorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomeDashboardServerEditorQuery, HomeDashboardServerEditorQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HomeDashboardServerEditorQuery, HomeDashboardServerEditorQueryVariables>(HomeDashboardServerEditorDocument, options);
+        }
+export type HomeDashboardServerEditorQueryHookResult = ReturnType<typeof useHomeDashboardServerEditorQuery>;
+export type HomeDashboardServerEditorLazyQueryHookResult = ReturnType<typeof useHomeDashboardServerEditorLazyQuery>;
+export type HomeDashboardServerEditorQueryResult = Apollo.QueryResult<HomeDashboardServerEditorQuery, HomeDashboardServerEditorQueryVariables>;
+export const HomeDashboardServerManagerDocument = gql`
+    query HomeDashboardServerManager($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!, $section: String) {
+  ApplyDownloadsNotDone(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+    order: null
+    orderAsc: null
+    section_adl: null
+    searchTxt: null
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  ApplyDownloadsOnlyApply(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  ApplyDownloadsApplyOrApproval(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  CGAssetsCreatedAll(
+    create_user_id: $create_user_id
+    first: $first
+    page: $page
+    orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+    section: $section
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9730,6 +10249,7 @@ export const HomeDashboardServerManagerDocument = gql`
  *      create_user_id: // value for 'create_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
+ *      section: // value for 'section'
  *   },
  * });
  */
@@ -9744,13 +10264,17 @@ export function useHomeDashboardServerManagerLazyQuery(baseOptions?: Apollo.Lazy
 export type HomeDashboardServerManagerQueryHookResult = ReturnType<typeof useHomeDashboardServerManagerQuery>;
 export type HomeDashboardServerManagerLazyQueryHookResult = ReturnType<typeof useHomeDashboardServerManagerLazyQuery>;
 export type HomeDashboardServerManagerQueryResult = Apollo.QueryResult<HomeDashboardServerManagerQuery, HomeDashboardServerManagerQueryVariables>;
-export const HomeDashboardServerUserDocument = gql`
-    query HomeDashboardServerUser($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!) {
+export const HomeDashboardServerOtherDocument = gql`
+    query HomeDashboardServerOther($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!, $section: String) {
   ApplyDownloadsNotDone(
     user_id: $user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    section_adl: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9766,6 +10290,12 @@ export const HomeDashboardServerUserDocument = gql`
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -9782,6 +10312,9 @@ export const HomeDashboardServerUserDocument = gql`
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9798,6 +10331,12 @@ export const HomeDashboardServerUserDocument = gql`
         id
         name
       }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
       status
       created_at
     }
@@ -9813,6 +10352,191 @@ export const HomeDashboardServerUserDocument = gql`
     first: $first
     page: $page
     orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+    section: $section
+    order: null
+    orderAsc: null
+    searchTxt: null
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  SystemNoticesValid(orderBy: [{column: "notice_date", order: DESC}]) {
+    message
+    notice_date
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+    id
+  }
+}
+    `;
+
+/**
+ * __useHomeDashboardServerOtherQuery__
+ *
+ * To run a query within a React component, call `useHomeDashboardServerOtherQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHomeDashboardServerOtherQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHomeDashboardServerOtherQuery({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      manage_user_id: // value for 'manage_user_id'
+ *      create_user_id: // value for 'create_user_id'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
+ *      section: // value for 'section'
+ *   },
+ * });
+ */
+export function useHomeDashboardServerOtherQuery(baseOptions: Apollo.QueryHookOptions<HomeDashboardServerOtherQuery, HomeDashboardServerOtherQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HomeDashboardServerOtherQuery, HomeDashboardServerOtherQueryVariables>(HomeDashboardServerOtherDocument, options);
+      }
+export function useHomeDashboardServerOtherLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomeDashboardServerOtherQuery, HomeDashboardServerOtherQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HomeDashboardServerOtherQuery, HomeDashboardServerOtherQueryVariables>(HomeDashboardServerOtherDocument, options);
+        }
+export type HomeDashboardServerOtherQueryHookResult = ReturnType<typeof useHomeDashboardServerOtherQuery>;
+export type HomeDashboardServerOtherLazyQueryHookResult = ReturnType<typeof useHomeDashboardServerOtherLazyQuery>;
+export type HomeDashboardServerOtherQueryResult = Apollo.QueryResult<HomeDashboardServerOtherQuery, HomeDashboardServerOtherQueryVariables>;
+export const HomeDashboardServerUserDocument = gql`
+    query HomeDashboardServerUser($user_id: ID, $manage_user_id: ID, $create_user_id: ID!, $first: Int!, $page: Int!, $section: String) {
+  ApplyDownloadsNotDone(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+    order: null
+    orderAsc: null
+    section_adl: null
+    searchTxt: null
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  ApplyDownloadsOnlyApply(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  CGAssetsCreatedAll(
+    create_user_id: $create_user_id
+    first: $first
+    page: $page
+    orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+    section: $section
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id
@@ -9887,6 +10611,7 @@ export const HomeDashboardServerUserDocument = gql`
  *      create_user_id: // value for 'create_user_id'
  *      first: // value for 'first'
  *      page: // value for 'page'
+ *      section: // value for 'section'
  *   },
  * });
  */

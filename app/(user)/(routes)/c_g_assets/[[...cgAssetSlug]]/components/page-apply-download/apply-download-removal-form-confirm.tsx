@@ -150,7 +150,7 @@ export const CGAssetApplyDownloadRemovalFormConfirm: React.FC<CGAssetApplyDownlo
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="box_link"
           render={({ field }) => (
@@ -165,7 +165,7 @@ export const CGAssetApplyDownloadRemovalFormConfirm: React.FC<CGAssetApplyDownlo
               </div>
             </FormItem>
           )}
-        />
+        /> */}
         <FormField
           control={form.control}
           name="download_date"

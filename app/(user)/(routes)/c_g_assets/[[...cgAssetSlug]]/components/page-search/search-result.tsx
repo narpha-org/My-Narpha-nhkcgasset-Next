@@ -1,5 +1,7 @@
+import { useState } from "react";
 import Link from "next/link"
 import Image from 'next/image';
+import ReactPaginate from 'react-paginate';
 
 import { CgAsset, PaginatorInfo } from '@/graphql/generated/graphql';
 
@@ -12,6 +14,7 @@ interface SearchResultProps {
   paginatorInfo: PaginatorInfo | null;
   loading: boolean;
   isInitPage: boolean;
+  onLoadPagenation: (params: { page: number }) => Promise<void>;
   onLoadMorePage: () => Promise<void>;
 }
 
@@ -20,8 +23,54 @@ const SearchResult: React.FC<SearchResultProps> = ({
   paginatorInfo,
   loading,
   isInitPage,
+  onLoadPagenation,
   onLoadMorePage
 }) => {
+  const [loadingChild, setLoadingChild] = useState(false);
+
+  const rowCount = 10;
+
+  const [pageIndex, setPageIndex] = useState((paginatorInfo?.currentPage || 1) - 1);
+  const pageCount = Math.ceil((paginatorInfo?.total || 0) / rowCount);
+
+  const targetPage = async (newIndex) => {
+    setLoadingChild(true);
+
+    setPageIndex(() => newIndex);
+    // console.log(`targetPage pageIndex:${pageIndex}`);
+    await onLoadPagenation({
+      page: newIndex + 1,
+    });
+
+    setLoadingChild(false);
+  }
+
+  const getCanPreviousPage = () => {
+    if (pageIndex < 1) {
+      return false;
+    }
+    return true;
+  }
+
+  const getCanNextPage = () => {
+    if (pageIndex >= pageCount - 1) {
+      return false;
+    }
+    return true;
+  }
+
+  const handlePageClick = async (data) => {
+    setLoadingChild(true);
+
+    setPageIndex(() => data.selected);
+    // console.log(`handlePageClick pageIndex:${pageIndex}`);
+    await onLoadPagenation({
+      page: data.selected + 1,
+    });
+
+    setLoadingChild(false);
+  }
+
   return (
     <>
       <div className="h-16 items-center px-4">
@@ -32,8 +81,8 @@ const SearchResult: React.FC<SearchResultProps> = ({
               '最新アセット'
           )}
       </div>
-      {loading ? (
-        <div className="flex items-center justify-center">
+      {loading || loadingChild ? (
+        <div className="flex items-center justify-center h-96">
           <Loader />
         </div>
       ) : (
@@ -62,7 +111,50 @@ const SearchResult: React.FC<SearchResultProps> = ({
           })}
         </div>
       )}
-      {!loading && !isInitPage && paginatorInfo && paginatorInfo.hasMorePages && (
+      {!loading && !isInitPage && paginatorInfo && (
+        <div className="flow-root h-16 items-center px-4 my-4">
+          <div className="float-right flex items-center space-x-4">
+            <div className="flex items-center gap-2 mt-3">
+              {pageCount > 0 && (
+                <Button
+                  variant="default"
+                  size="icon"
+                  onClick={() => targetPage(0)}
+                  disabled={!getCanPreviousPage()}
+                >
+                  {'<<'}
+                </Button>
+              )}
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={pageCount}
+                previousLabel="<"
+                renderOnZeroPageCount={undefined}
+                breakClassName=""
+                breakLinkClassName=""
+                containerClassName="flex items-center gap-2"
+                activeClassName="opacity-50"
+                disabledClassName="disabled"
+                forcePage={pageIndex}
+              />
+              {pageCount > 0 && (
+                <Button
+                  variant="default"
+                  size="icon"
+                  onClick={() => targetPage(pageCount - 1)}
+                  disabled={!getCanNextPage()}
+                >
+                  {'>>'}
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      {/* {!loading && !isInitPage && paginatorInfo && paginatorInfo.hasMorePages && (
         <div className="flow-root h-16 items-center px-4 my-4">
           <div className="float-right flex items-center space-x-4">
             <Button
@@ -73,7 +165,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
             >さらに読み込む</Button>
           </div>
         </div>
-      )}
+      )} */}
     </>
   )
 }

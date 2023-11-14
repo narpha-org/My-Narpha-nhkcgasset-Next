@@ -38,6 +38,23 @@ export async function isServerRoleManager() {
   return false;
 }
 
+export async function isServerRoleEditor() {
+  const session: Session | null = await getServerSession(authOptions);
+
+  if (!session || !session?.user || !session?.user.name) {
+    return false;
+  }
+
+  if (
+    (session?.user as unknown as { role: string }).role ===
+    RoleCgAssetStore.Editor
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 export async function isServerRoleUser() {
   const session: Session | null = await getServerSession(authOptions);
 
@@ -48,6 +65,23 @@ export async function isServerRoleUser() {
   if (
     (session?.user as unknown as { role: string }).role ===
     RoleCgAssetStore.User
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+export async function isServerRoleOther() {
+  const session: Session | null = await getServerSession(authOptions);
+
+  if (!session || !session?.user || !session?.user.name) {
+    return false;
+  }
+
+  if (
+    (session?.user as unknown as { role: string }).role ===
+    RoleCgAssetStore.Other
   ) {
     return true;
   }

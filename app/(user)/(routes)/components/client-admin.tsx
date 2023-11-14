@@ -6,7 +6,9 @@ import { useSearchForm } from "@/hooks/use-search-form";
 import {
   SystemNotice,
   ApplyDownload,
+  ApplyDownloadPaginator,
   CgAsset,
+  CgAssetPaginator,
 } from "@/graphql/generated/graphql";
 
 import { Heading } from "@/components/ui/heading";
@@ -18,17 +20,25 @@ import UserInfoBlock from "./user-info-block";
 interface HomeDashboardClientAdminProps {
   systemNotices: SystemNotice[]
   downloadApplies: ApplyDownload[]
+  downloadAppliesPg: ApplyDownloadPaginator['paginatorInfo']
   applies: ApplyDownload[]
+  appliesPg: ApplyDownloadPaginator['paginatorInfo']
   approvals: ApplyDownload[]
+  approvalsPg: ApplyDownloadPaginator['paginatorInfo']
   cgAssets: CgAsset[]
+  cgAssetsPg: CgAssetPaginator['paginatorInfo']
 }
 
 export const HomeDashboardClientAdmin: React.FC<HomeDashboardClientAdminProps> = ({
   systemNotices,
   downloadApplies,
+  downloadAppliesPg,
   applies,
+  appliesPg,
   approvals,
-  cgAssets
+  approvalsPg,
+  cgAssets,
+  cgAssetsPg
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -55,24 +65,28 @@ export const HomeDashboardClientAdmin: React.FC<HomeDashboardClientAdminProps> =
       </div>
       <Separator />
       <div className="flex flex-row">
-        <div className="basis-2/3">
+        <div className="basis-1/3">
           <div className="flex flex-col w-full overflow-hidden h-64 px-3 py-2">
             <NoticeBlock
               systemNotices={systemNotices}
             />
           </div>
+          <div className="flex flex-col w-full overflow-hidden h-full px-3 py-2">
+            <UserInfoBlock />
+          </div>
+        </div>
+        <div className="basis-2/3">
           <div className="flex flex-col w-full px-3 py-2">
             <AssetInfoBlock
               downloadApplies={downloadApplies}
+              downloadAppliesPg={downloadAppliesPg}
               applies={applies}
+              appliesPg={appliesPg}
               approvals={approvals}
+              approvalsPg={approvalsPg}
               cgAssets={cgAssets}
+              cgAssetsPg={cgAssetsPg}
             />
-          </div>
-        </div>
-        <div className="basis-1/3">
-          <div className="flex flex-col w-full overflow-hidden h-full px-3 py-2">
-            <UserInfoBlock />
           </div>
         </div>
       </div>

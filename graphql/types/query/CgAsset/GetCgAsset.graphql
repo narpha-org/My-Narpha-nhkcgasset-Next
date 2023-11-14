@@ -89,6 +89,16 @@ query GetCgAsset($id: ID!) {
         name
       }
     }
+    applyDownloads {
+      id
+      status
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
+    }
     download_count
     userCreate {
       id

@@ -1,4 +1,12 @@
-query GetCgAssetsCreatedAll($create_user_id: ID!, $first: Int!, $page: Int!) {
+query GetCgAssetsCreatedAll(
+  $create_user_id: ID!
+  $first: Int!
+  $page: Int!
+  $section: String
+  $order: String
+  $orderAsc: String
+  $searchTxt: String
+) {
   CGAssetsCreatedAll(
     create_user_id: $create_user_id
     first: $first
@@ -7,6 +15,10 @@ query GetCgAssetsCreatedAll($create_user_id: ID!, $first: Int!, $page: Int!) {
       { column: "created_at", order: DESC }
       { column: "asset_id", order: ASC }
     ]
+    section: $section
+    order: $order
+    orderAsc: $orderAsc
+    searchTxt: $searchTxt
   ) {
     data {
       id

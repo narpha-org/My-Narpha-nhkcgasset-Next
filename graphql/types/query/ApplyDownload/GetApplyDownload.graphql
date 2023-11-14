@@ -21,7 +21,12 @@ query GetApplyDownload($id: ID!) {
       id
       name
     }
-    box_link
+    applyDownloadGlaciers {
+      id
+      ongoing_request
+      expiry_date
+      presigned_url
+    }
     removal_limit_date
     download_date
     created_at

@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react";
 import { Download } from "lucide-react";
-import { IsRoleAdmin, IsRoleManager, IsRoleUser } from "@/lib/check-role-client";
+import {
+  IsRoleAdmin,
+  IsRoleManager,
+  IsRoleEditor,
+  IsRoleUser,
+  IsRoleOther
+} from "@/lib/check-role-client";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -19,7 +25,9 @@ import {
 import { CGAssetPageSlug } from "./page-slug";
 import CGAssetApplyDownloadClientAdmin from "./client-apply-download-admin";
 import CGAssetApplyDownloadClientManager from "./client-apply-download-manager";
+import CGAssetApplyDownloadClientEditor from "./client-apply-download-editor";
 import CGAssetApplyDownloadClientUser from "./client-apply-download-user";
+import CGAssetApplyDownloadClientOther from "./client-apply-download-other";
 
 const ApplyDownloadDialog = ({
   cgAssetId
@@ -43,8 +51,14 @@ const ApplyDownloadDialog = ({
   if (IsRoleManager(session)) {
     child = <CGAssetApplyDownloadClientManager params={params} setDialogOpen={setOpen} />
   }
+  if (IsRoleEditor(session)) {
+    child = <CGAssetApplyDownloadClientEditor params={params} setDialogOpen={setOpen} />
+  }
   if (IsRoleUser(session)) {
     child = <CGAssetApplyDownloadClientUser params={params} setDialogOpen={setOpen} />
+  }
+  if (IsRoleOther(session)) {
+    child = <CGAssetApplyDownloadClientOther params={params} setDialogOpen={setOpen} />
   }
 
   if (!child) {

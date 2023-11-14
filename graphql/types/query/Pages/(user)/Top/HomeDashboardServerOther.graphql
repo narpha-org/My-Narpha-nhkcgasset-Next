@@ -1,0 +1,156 @@
+query HomeDashboardServerOther(
+  $user_id: ID
+  $manage_user_id: ID
+  $create_user_id: ID!
+  $first: Int!
+  $page: Int!
+  $section: String
+) {
+  ApplyDownloadsNotDone(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+    order: null
+    orderAsc: null
+    section_adl: null
+    searchTxt: null
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  ApplyDownloadsOnlyApply(
+    user_id: $user_id
+    manage_user_id: $manage_user_id
+    first: $first
+    page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
+  ) {
+    data {
+      id
+      cgAsset {
+        id
+        asset_id
+        asset_name
+      }
+      manageUser {
+        id
+        name
+      }
+      applyUser {
+        id
+        name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
+      }
+      status
+      created_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  CGAssetsCreatedAll(
+    create_user_id: $create_user_id
+    first: $first
+    page: $page
+    orderBy: [
+      { column: "created_at", order: DESC }
+      { column: "asset_id", order: ASC }
+    ]
+    section: $section
+    order: null
+    orderAsc: null
+    searchTxt: null
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
+  }
+  SystemNoticesValid(orderBy: [{ column: "notice_date", order: DESC }]) {
+    message
+    notice_date
+    userCreate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    userUpdate {
+      id
+      name
+      email
+      registrantAffiliation {
+        id
+        desc
+      }
+      regist_affili_code
+      roleCGAssetStore {
+        id
+        desc
+        role
+        valid_flg
+      }
+    }
+    created_at
+    id
+  }
+}

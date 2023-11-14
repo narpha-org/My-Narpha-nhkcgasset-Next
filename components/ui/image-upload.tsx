@@ -1,6 +1,8 @@
 "use client";
 
+import { ManagedUpload } from 'aws-sdk/clients/s3';
 import { uploadImageToS3 } from '@/lib/aws-s3';
+import { uploadImageToS3Glacier } from '@/lib/aws-s3-glacier';
 import { useEffect, useState, useRef, ChangeEventHandler } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -22,13 +24,15 @@ interface ImageUploadProps {
   onChange: ({ file_name, url, file_path, thumb_file_name, thumb_url, thumb_file_path }: UploadImageProps) => void;
   onRemove: (value: string) => void;
   value: UploadImageProps[];
+  glacier?: boolean;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   disabled,
   onChange,
   onRemove,
-  value
+  value,
+  glacier
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const inputRef = useRef(null);
@@ -60,13 +64,34 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     console.log(fileObj);
     console.log(fileObj.name);
 
-    const fileData = await uploadImageToS3(fileObj);
+    let fileData: ManagedUpload.SendData | null = null;
+
+    fileData = await uploadImageToS3(fileObj);
 
     console.log(fileData?.Bucket);
     console.log(fileData?.Key);
     console.log(fileData?.Location);
 
-    if (fileData) {
+    let fileDataGlacier: ManagedUpload.SendData | null = null;
+
+    if (glacier) {
+      fileDataGlacier = await uploadImageToS3Glacier(fileObj);
+
+      console.log(fileDataGlacier?.Bucket);
+      console.log(fileDataGlacier?.Key);
+      console.log(fileDataGlacier?.Location);
+    }
+
+    if (glacier && fileData && fileDataGlacier) {
+      onChange({
+        file_name: fileObj.name,
+        url: fileDataGlacier?.Location,
+        file_path: fileDataGlacier?.Key,
+        thumb_file_name: fileObj.name,
+        thumb_url: fileData?.Location,
+        thumb_file_path: fileData?.Key,
+      });
+    } else if (fileData) {
       onChange({
         file_name: fileObj.name,
         url: fileData?.Location,

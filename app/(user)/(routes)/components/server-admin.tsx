@@ -9,12 +9,8 @@ import {
   ApplyDownloadPaginator,
   CgAssetPaginator,
   HomeDashboardServerAdminDocument,
-  // GetSystemNoticesValidDocument,
-  // GetApplyDownloadsNotDoneDocument,
-  // GetApplyDownloadsOnlyApplyDocument,
-  // GetApplyDownloadsApplyOrApprovalOrBoxDeliverDocument,
-  // GetCgAssetsCreatedAllDocument,
 } from "@/graphql/generated/graphql";
+import { ROW_COUNT } from "@/lib/pagenation";
 
 import { HomeDashboardClientAdmin } from './client-admin';
 
@@ -22,63 +18,7 @@ interface HomeDashboardServerAdminProps { };
 
 const HomeDashboardServerAdmin = async ({ }: HomeDashboardServerAdminProps) => {
   const session: Session | null = await getServerSession(authOptions)
-
-  // const retSystemNotice: ApolloQueryResult<{
-  //   SystemNoticesValid: SystemNotice[]
-  // }> = await apolloServer()
-  //   .query({
-  //     query: GetSystemNoticesValidDocument,
-  //   });
-  // const systemNotices = retSystemNotice.data.SystemNoticesValid;
-
-  // const retDlsNotDone: ApolloQueryResult<{
-  //   ApplyDownloadsNotDone: ApplyDownloadPaginator
-  // }> = await apolloServer()
-  //   .query({
-  //     query: GetApplyDownloadsNotDoneDocument,
-  //     variables: {
-  //       first: 100,
-  //       page: 1
-  //     }
-  //   });
-  // const dls_NotDone = retDlsNotDone.data.ApplyDownloadsNotDone.data;
-
-  // const retDlsOnlyApply: ApolloQueryResult<{
-  //   ApplyDownloadsOnlyApply: ApplyDownloadPaginator
-  // }> = await apolloServer()
-  //   .query({
-  //     query: GetApplyDownloadsOnlyApplyDocument,
-  //     variables: {
-  //       first: 100,
-  //       page: 1
-  //     }
-  //   });
-  // const dls_OnlyApply = retDlsOnlyApply.data.ApplyDownloadsOnlyApply.data;
-
-  // const retDlsApplyOrApprovalOrBoxDeliver: ApolloQueryResult<{
-  //   ApplyDownloadsApplyOrApprovalOrBoxDeliver: ApplyDownloadPaginator
-  // }> = await apolloServer()
-  //   .query({
-  //     query: GetApplyDownloadsApplyOrApprovalOrBoxDeliverDocument,
-  //     variables: {
-  //       first: 100,
-  //       page: 1
-  //     }
-  //   });
-  // const dls_ApplyOrApprovalOrBoxDeliver = retDlsApplyOrApprovalOrBoxDeliver.data.ApplyDownloadsApplyOrApprovalOrBoxDeliver.data;
-
-  // const retCgAsset: ApolloQueryResult<{
-  //   CGAssetsCreatedAll: CgAssetPaginator
-  // }> = await apolloServer()
-  //   .query({
-  //     query: GetCgAssetsCreatedAllDocument,
-  //     variables: {
-  //       create_user_id: (session?.user as { userId: string }).userId,
-  //       first: 100,
-  //       page: 1
-  //     }
-  //   });
-  // const cgAssets = retCgAsset.data.CGAssetsCreatedAll.data;
+  const rowCount = ROW_COUNT;
 
   const ret: ApolloQueryResult<{
     SystemNoticesValid: SystemNotice[]
@@ -91,15 +31,20 @@ const HomeDashboardServerAdmin = async ({ }: HomeDashboardServerAdminProps) => {
       query: HomeDashboardServerAdminDocument,
       variables: {
         create_user_id: (session?.user as { userId: string }).userId,
-        first: 100,
-        page: 1
+        first: rowCount,
+        page: 1,
+        section: 'CGASSETS_CREATED_BY_USER',
       }
     });
   const systemNotices = ret.data.SystemNoticesValid;
   const dls_NotDone = ret.data.ApplyDownloadsNotDone.data;
+  const dls_NotDone_pginfo = ret.data.ApplyDownloadsNotDone.paginatorInfo;
   const dls_OnlyApply = ret.data.ApplyDownloadsOnlyApply.data;
+  const dls_OnlyApply_pginfo = ret.data.ApplyDownloadsOnlyApply.paginatorInfo;
   const dls_ApplyOrApprovalOrBoxDeliver = ret.data.ApplyDownloadsApplyOrApprovalOrBoxDeliver.data;
+  const dls_ApplyOrApprovalOrBoxDeliver_pginfo = ret.data.ApplyDownloadsApplyOrApprovalOrBoxDeliver.paginatorInfo;
   const cgAssets = ret.data.CGAssetsCreatedAll.data;
+  const cgAssets_pginfo = ret.data.CGAssetsCreatedAll.paginatorInfo;
 
   return (
     <div className="flex-col">
@@ -107,9 +52,13 @@ const HomeDashboardServerAdmin = async ({ }: HomeDashboardServerAdminProps) => {
         <HomeDashboardClientAdmin
           systemNotices={systemNotices}
           downloadApplies={dls_NotDone}
+          downloadAppliesPg={dls_NotDone_pginfo}
           applies={dls_OnlyApply}
+          appliesPg={dls_OnlyApply_pginfo}
           approvals={dls_ApplyOrApprovalOrBoxDeliver}
+          approvalsPg={dls_ApplyOrApprovalOrBoxDeliver_pginfo}
           cgAssets={cgAssets}
+          cgAssetsPg={cgAssets_pginfo}
         />
       </div>
     </div>

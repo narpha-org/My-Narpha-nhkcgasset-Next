@@ -199,7 +199,7 @@ export const CGAssetApplyDownloadApprovalView: React.FC<CGAssetApplyDownloadAppr
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="box_link"
               render={({ field }) => (
@@ -214,7 +214,7 @@ export const CGAssetApplyDownloadApprovalView: React.FC<CGAssetApplyDownloadAppr
                   </div>
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="download_date"

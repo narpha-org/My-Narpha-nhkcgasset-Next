@@ -9,11 +9,8 @@ import {
   ApplyDownloadPaginator,
   CgAssetPaginator,
   HomeDashboardServerUserDocument,
-  // GetSystemNoticesValidDocument,
-  // GetApplyDownloadsNotDoneDocument,
-  // GetApplyDownloadsOnlyApplyDocument,
-  // GetCgAssetsCreatedAllDocument,
 } from "@/graphql/generated/graphql";
+import { ROW_COUNT } from "@/lib/pagenation";
 
 import { HomeDashboardClientUser } from './client-user';
 
@@ -21,66 +18,7 @@ interface HomeDashboardServerUserProps { };
 
 const HomeDashboardServerUser = async ({ }: HomeDashboardServerUserProps) => {
   const session: Session | null = await getServerSession(authOptions)
-
-  // const retSystemNotice: ApolloQueryResult<{
-  //   SystemNoticesValid: SystemNotice[]
-  // }> = await apolloServer()
-  //   .query({
-  //     query: GetSystemNoticesValidDocument,
-  //   });
-  // const systemNotices = retSystemNotice.data.SystemNoticesValid;
-
-  // const retDlsNotDone: ApolloQueryResult<{
-  //   ApplyDownloadsNotDone: ApplyDownloadPaginator
-  // }> = await apolloServer()
-  //   .query({
-  //     query: GetApplyDownloadsNotDoneDocument,
-  //     variables: {
-  //       user_id: (session?.user as { userId: string }).userId,
-  //       first: 100,
-  //       page: 1
-  //     }
-  //   });
-  // const dls_NotDone = retDlsNotDone.data.ApplyDownloadsNotDone.data;
-
-  // const retDlsOnlyApply: ApolloQueryResult<{
-  //   ApplyDownloadsOnlyApply: ApplyDownloadPaginator
-  // }> = await apolloServer()
-  //   .query({
-  //     query: GetApplyDownloadsOnlyApplyDocument,
-  //     variables: {
-  //       user_id: (session?.user as { userId: string }).userId,
-  //       first: 100,
-  //       page: 1
-  //     }
-  //   });
-  // const dls_OnlyApply = retDlsOnlyApply.data.ApplyDownloadsOnlyApply.data;
-
-  // // const retDlsApplyOrApprovalOrBoxDeliver: ApolloQueryResult<{
-  // //   ApplyDownloadsApplyOrApprovalOrBoxDeliver: ApplyDownloadPaginator
-  // // }> = await apolloServer()
-  // //   .query({
-  // //     query: GetApplyDownloadsApplyOrApprovalOrBoxDeliverDocument,
-  // //     variables: {
-  // //       user_id: (session?.user as { userId: string }).userId,
-  // //       first: 100,
-  // //       page: 1
-  // //     }
-  // //   });
-  // // const dls_ApplyOrApprovalOrBoxDeliver = retDlsApplyOrApprovalOrBoxDeliver.data.ApplyDownloadsApplyOrApprovalOrBoxDeliver.data;
-
-  // const retCgAsset: ApolloQueryResult<{
-  //   CGAssetsCreatedAll: CgAssetPaginator
-  // }> = await apolloServer()
-  //   .query({
-  //     query: GetCgAssetsCreatedAllDocument,
-  //     variables: {
-  //       create_user_id: (session?.user as { userId: string }).userId,
-  //       first: 100,
-  //       page: 1
-  //     }
-  //   });
-  // const cgAssets = retCgAsset.data.CGAssetsCreatedAll.data;
+  const rowCount = ROW_COUNT;
 
   const ret: ApolloQueryResult<{
     SystemNoticesValid: SystemNotice[]
@@ -93,14 +31,18 @@ const HomeDashboardServerUser = async ({ }: HomeDashboardServerUserProps) => {
       variables: {
         user_id: (session?.user as { userId: string }).userId,
         create_user_id: (session?.user as { userId: string }).userId,
-        first: 100,
-        page: 1
+        first: rowCount,
+        page: 1,
+        section: 'CGASSETS_CREATED_BY_USER'
       }
     });
   const systemNotices = ret.data.SystemNoticesValid;
   const dls_NotDone = ret.data.ApplyDownloadsNotDone.data;
+  const dls_NotDone_pginfo = ret.data.ApplyDownloadsNotDone.paginatorInfo;
   const dls_OnlyApply = ret.data.ApplyDownloadsOnlyApply.data;
+  const dls_OnlyApply_pginfo = ret.data.ApplyDownloadsOnlyApply.paginatorInfo;
   const cgAssets = ret.data.CGAssetsCreatedAll.data;
+  const cgAssets_pginfo = ret.data.CGAssetsCreatedAll.paginatorInfo;
 
   return (
     <div className="flex-col">
@@ -108,9 +50,13 @@ const HomeDashboardServerUser = async ({ }: HomeDashboardServerUserProps) => {
         <HomeDashboardClientUser
           systemNotices={systemNotices}
           downloadApplies={dls_NotDone}
+          downloadAppliesPg={dls_NotDone_pginfo}
           applies={dls_OnlyApply}
+          appliesPg={dls_OnlyApply_pginfo}
           approvals={dls_NotDone}
+          approvalsPg={dls_NotDone_pginfo}
           cgAssets={cgAssets}
+          cgAssetsPg={cgAssets_pginfo}
         />
       </div>
     </div>

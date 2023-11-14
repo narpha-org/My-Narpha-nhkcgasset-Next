@@ -1,25 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useSession } from "next-auth/react";
-import { Download } from "lucide-react";
-import { IsRoleAdmin, IsRoleManager, IsRoleUser } from "@/lib/check-role-client";
+import {
+  IsRoleAdmin,
+  IsRoleManager,
+  IsRoleEditor,
+  IsRoleUser,
+  IsRoleOther
+} from "@/lib/check-role-client";
 
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  // DialogDescription,
+  // DialogFooter,
+  // DialogHeader,
+  // DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
 
 import { CGAssetPageSlug } from "@/app/(user)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/page-slug";
 import CGAssetApplyDownloadClientAdmin from "@/app/(user)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-admin";
 import CGAssetApplyDownloadClientManager from "@/app/(user)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-manager";
+import CGAssetApplyDownloadClientEditor from "@/app/(user)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-editor";
 import CGAssetApplyDownloadClientUser from "@/app/(user)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-user";
+import CGAssetApplyDownloadClientOther from "@/app/(user)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-other";
 
 const ApplyDownloadDialog = ({
   cgAssetId,
@@ -47,8 +54,14 @@ const ApplyDownloadDialog = ({
   if (IsRoleManager(session)) {
     child = <CGAssetApplyDownloadClientManager params={params} setDialogOpen={setOpen} />
   }
+  if (IsRoleEditor(session)) {
+    child = <CGAssetApplyDownloadClientEditor params={params} setDialogOpen={setOpen} />
+  }
   if (IsRoleUser(session)) {
     child = <CGAssetApplyDownloadClientUser params={params} setDialogOpen={setOpen} />
+  }
+  if (IsRoleOther(session)) {
+    child = <CGAssetApplyDownloadClientOther params={params} setDialogOpen={setOpen} />
   }
 
   if (!child) {

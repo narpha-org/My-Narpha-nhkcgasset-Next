@@ -159,7 +159,7 @@ export const CGAssetApplyDownloadBoxDeliverFormInput: React.FC<CGAssetApplyDownl
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="box_link"
           render={({ field }) => (
@@ -176,7 +176,7 @@ export const CGAssetApplyDownloadBoxDeliverFormInput: React.FC<CGAssetApplyDownl
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         {/* <FormField
           control={form.control}
           name="download_date"

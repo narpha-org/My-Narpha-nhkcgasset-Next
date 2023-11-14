@@ -23,7 +23,7 @@ import {
 import { CGAssetForm } from "./page-edit/c_g_asset-form";
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 import { CGAssetPageProps, CGAssetPageSlug } from './page-slug';
-import { isServerRoleUser } from '@/lib/check-role-server';
+import { isServerRoleOther, isServerRoleUser } from '@/lib/check-role-server';
 import UserUnauthorized from "@/app/(user)/user-unauthorized";
 
 export async function generateMetadata({
@@ -64,7 +64,7 @@ export async function generateMetadata({
 
 const CGAssetEditClient: React.FC<CGAssetPageProps> = async ({ params }) => {
 
-  if (await isServerRoleUser()) {
+  if (await isServerRoleUser() || await isServerRoleOther()) {
     return <UserUnauthorized />;
   }
 

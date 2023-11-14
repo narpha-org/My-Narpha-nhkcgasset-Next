@@ -32,6 +32,9 @@ const CGAssetApplyDownloadClientManager: React.FC<CGAssetPageProps & {
   useEffect(() => {
 
     (async () => {
+      if (isMounted) {
+        return;
+      }
 
       if (
         !params.cgAssetSlug[0] ||

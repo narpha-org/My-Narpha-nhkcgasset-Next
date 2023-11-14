@@ -4,12 +4,17 @@ query HomeDashboardServerManager(
   $create_user_id: ID!
   $first: Int!
   $page: Int!
+  $section: String
 ) {
   ApplyDownloadsNotDone(
     user_id: $user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    section_adl: null
+    searchTxt: null
   ) {
     data {
       id
@@ -25,6 +30,12 @@ query HomeDashboardServerManager(
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -41,6 +52,9 @@ query HomeDashboardServerManager(
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id
@@ -56,6 +70,12 @@ query HomeDashboardServerManager(
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -72,6 +92,9 @@ query HomeDashboardServerManager(
     manage_user_id: $manage_user_id
     first: $first
     page: $page
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id
@@ -87,6 +110,12 @@ query HomeDashboardServerManager(
       applyUser {
         id
         name
+      }
+      applyDownloadGlaciers {
+        id
+        ongoing_request
+        expiry_date
+        presigned_url
       }
       status
       created_at
@@ -106,6 +135,10 @@ query HomeDashboardServerManager(
       { column: "created_at", order: DESC }
       { column: "asset_id", order: ASC }
     ]
+    section: $section
+    order: null
+    orderAsc: null
+    searchTxt: null
   ) {
     data {
       id

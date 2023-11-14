@@ -199,7 +199,7 @@ export const CGAssetApplyDownloadRemovalView: React.FC<CGAssetApplyDownloadRemov
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="box_link"
               render={({ field }) => (
@@ -214,7 +214,7 @@ export const CGAssetApplyDownloadRemovalView: React.FC<CGAssetApplyDownloadRemov
                   </div>
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="download_date"

@@ -710,6 +710,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                       <FormLabel>アセット画像</FormLabel>
                       <FormControl>
                         <ImageUpload
+                          glacier={false}
                           value={field.value as UploadImageProps[]}
                           disabled={loading}
                           onChange={({
@@ -742,6 +743,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                       <FormLabel>アセット動画</FormLabel>
                       <FormControl>
                         <FileUpload
+                          glacier={false}
                           value={field.value as UploadFileProps[]}
                           disabled={loading}
                           onChange={({
@@ -775,6 +777,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                       <FormLabel>アセット3DCG</FormLabel>
                       <FormControl>
                         <FileUpload
+                          glacier={false}
                           value={field.value as UploadFileProps[]}
                           disabled={loading}
                           onChange={({

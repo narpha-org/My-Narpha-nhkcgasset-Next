@@ -1,4 +1,7 @@
 import { Metadata } from 'next'
+import { getServerSession } from "next-auth/next";
+import { Session } from "next-auth";
+import { authOptions } from "@/lib/auth-options";
 
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult } from "@apollo/client";
@@ -14,6 +17,7 @@ import {
   CgAssetSearchClientDocument,
   CgaViewingRestriction,
   CgAssetDetailClientDocument,
+  ApplyDownload,
 } from "@/graphql/generated/graphql";
 
 import CGAssetDetailClient from './components/client-detail';
@@ -33,6 +37,7 @@ export async function generateMetadata({
 }
 
 const CGAssetPage: React.FC<CGAssetPageProps> = async ({ params }) => {
+  const session: Session | null = await getServerSession(authOptions)
 
   if (!params.cgAssetSlug) {
 
@@ -131,15 +136,18 @@ const CGAssetPage: React.FC<CGAssetPageProps> = async ({ params }) => {
   const ret: ApolloQueryResult<{
     CGAsset: CgAsset
     CGAViewingRestrictionsValid: CgaViewingRestriction[]
+    ApplyDownloadsBoxDeliverGlacierAll: ApplyDownload[]
   }> = await apolloServer()
     .query({
       query: CgAssetDetailClientDocument,
       variables: {
-        id: params.cgAssetSlug[0]
+        id: params.cgAssetSlug[0],
+        apply_user_id: (session?.user as { userId: string }).userId,
       },
     });
   const CGAsset = ret.data.CGAsset;
   const CgaViewingRestrictions = ret.data.CGAViewingRestrictionsValid;
+  const ApplyDownloads = ret.data.ApplyDownloadsBoxDeliverGlacierAll;
 
   return (
     <>
@@ -148,6 +156,7 @@ const CGAssetPage: React.FC<CGAssetPageProps> = async ({ params }) => {
           <CGAssetDetailClient
             cgAsset={CGAsset}
             cgaViewingRestrictions={CgaViewingRestrictions}
+            applyDownloads={ApplyDownloads}
           />
         </div>
       </div>

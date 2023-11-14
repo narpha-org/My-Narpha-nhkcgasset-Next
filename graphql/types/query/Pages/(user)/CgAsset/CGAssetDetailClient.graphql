@@ -1,4 +1,4 @@
-query CGAssetDetailClient($id: ID!) {
+query CGAssetDetailClient($id: ID!, $apply_user_id: ID!) {
   CGAsset(id: $id) {
     id
     asset_id
@@ -129,5 +129,15 @@ query CGAssetDetailClient($id: ID!) {
   CGAViewingRestrictionsValid {
     desc
     id
+  }
+  ApplyDownloadsBoxDeliverGlacierAll(apply_user_id: $apply_user_id) {
+    id
+    status
+    applyDownloadGlaciers {
+      id
+      ongoing_request
+      expiry_date
+      presigned_url
+    }
   }
 }

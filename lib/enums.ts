@@ -45,6 +45,10 @@ export const statusApplyDownloads: {
     value: "送付済み",
   },
   {
+    key: StatusApplyDownload.DlNotice,
+    value: "DL済み",
+  },
+  {
     key: StatusApplyDownload.Removal,
     value: "消去",
   },

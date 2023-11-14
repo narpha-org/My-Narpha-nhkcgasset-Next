@@ -50,11 +50,19 @@ export const roleCGAssetStores: { key: RoleCgAssetStore; value: string }[] = [
   },
   {
     key: RoleCgAssetStore.Manager,
+    value: "責任者"
+  },
+  {
+    key: RoleCgAssetStore.Editor,
     value: "編集者"
   },
   {
     key: RoleCgAssetStore.User,
-    value: "一般ユーザ"
+    value: "制作スタッフ"
+  },
+  {
+    key: RoleCgAssetStore.Other,
+    value: "外部プロダクション"
   },
 ]
 

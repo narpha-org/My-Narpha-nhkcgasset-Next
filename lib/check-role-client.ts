@@ -38,6 +38,23 @@ export const IsRoleManager = (session: Session | null) => {
   return false;
 };
 
+export const IsRoleEditor = (session: Session | null) => {
+  // const { data: session, status } = useSession();
+
+  if (!session || !session?.user || !session?.user.name) {
+    return false;
+  }
+
+  if (
+    (session?.user as unknown as { role: string }).role ===
+    RoleCgAssetStore.Editor
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
 export const IsRoleUser = (session: Session | null) => {
   // const { data: session, status } = useSession();
 
@@ -48,6 +65,23 @@ export const IsRoleUser = (session: Session | null) => {
   if (
     (session?.user as unknown as { role: string }).role ===
     RoleCgAssetStore.User
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
+export const IsRoleOther = (session: Session | null) => {
+  // const { data: session, status } = useSession();
+
+  if (!session || !session?.user || !session?.user.name) {
+    return false;
+  }
+
+  if (
+    (session?.user as unknown as { role: string }).role ===
+    RoleCgAssetStore.Other
   ) {
     return true;
   }

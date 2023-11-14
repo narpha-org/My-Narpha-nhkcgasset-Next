@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { X, Undo2, Send } from "lucide-react"
+import { X, Undo2, Send, DownloadCloud } from "lucide-react"
 import { format } from 'date-fns'
 
 import { apolloClient } from "@/lib/apollo-client";
@@ -17,7 +17,8 @@ import {
   ApplyDownload,
   CgAsset,
   User,
-  UpdateApplyDownloadDlNotificationDocument
+  UpdateApplyDownloadDlNotificationDocument,
+  ApplyDownloadGlacier
 } from "@/graphql/generated/graphql";
 
 import { Button } from "@/components/ui/button"
@@ -33,6 +34,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
 import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+import { getAppDLGlaciers } from "@/lib/check-glacier-status";
 
 export const ApplyDownloadDLNotificationUserFormSchema = z.object({
   // manage_user_id: z.string({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
@@ -140,10 +142,39 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
     }
   };
 
+  const download = (filename, content) => {
+    var element = document.createElement("a");
+    element.setAttribute("href", content);
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  };
+
+  const handleDownload = async (e, presigned_url: string) => {
+    try {
+      const result = await fetch(presigned_url, {
+        method: "GET",
+        headers: {}
+      });
+      const blob = await result.blob();
+      const url = URL.createObjectURL(blob);
+      download(cgAsset?.asset_name, url);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const appDLGlaciers = getAppDLGlaciers(cgAsset?.applyDownloads as ApplyDownload[]);
+
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title="ダウンロード用 Boxリンク通知内容" description={`アセットID: ${cgAsset?.asset_id} のBoxリンク通知内容`} />
+        <Heading title="ダウンロード用 S3 Glacier 復元キュー通知内容" description={`アセットID: ${cgAsset?.asset_id} のS3 Glacier 復元キュー通知内容`} />
       </div>
       <Separator />
       <Form {...form}>
@@ -245,7 +276,7 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="box_link"
               render={({ field }) => (
@@ -260,7 +291,7 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
                   </div>
                 </FormItem>
               )}
-            />
+            /> */}
             {form.getValues('download_date') &&
               <FormField
                 control={form.control}
@@ -287,6 +318,21 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
                 </FormItem>
               )}
             />
+          </div>
+          <div className="flex flex-col justify-items-center">
+            {appDLGlaciers && appDLGlaciers.map((elem: ApplyDownloadGlacier | null) => {
+              if (elem) {
+                return <div key={elem.id} className="mx-auto my-2">
+                  <Button
+                    className=""
+                    type="button"
+                    onClick={(event) => handleDownload(event, elem.presigned_url as string)}
+                  >
+                    <DownloadCloud className="mr-2 h-4 w-4" /> ダウンロード
+                  </Button>
+                </div>
+              }
+            })}
           </div>
           <Button disabled={loading} className="ml-auto mr-2" variant="outline" type="button"
             onClick={() => setDialogOpen(false)}>

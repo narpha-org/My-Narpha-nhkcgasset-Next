@@ -1,10 +1,15 @@
 "use client";
 
-import { format } from 'date-fns'
+import { useSession } from "next-auth/react";
 
-import {
-  SystemNotice,
-} from "@/graphql/generated/graphql";
+import { SystemNotice } from "@/graphql/generated/graphql";
+import { IsRoleAdmin, IsRoleEditor, IsRoleManager, IsRoleOther, IsRoleUser } from "@/lib/check-role-client";
+
+import NoticeBlockAdmin from "./notice-block-admin";
+import NoticeBlockManager from "./notice-block-manager";
+import NoticeBlockEditor from "./notice-block-editor";
+import NoticeBlockUser from "./notice-block-user";
+import NoticeBlockOther from "./notice-block-other";
 
 interface NoticeBlockProps {
   systemNotices: SystemNotice[]
@@ -13,27 +18,35 @@ interface NoticeBlockProps {
 const NoticeBlock: React.FC<NoticeBlockProps> = ({
   systemNotices
 }) => {
+  const { data: session, status } = useSession();
 
-  return (
-    <>
-      <div v-if="title" className="block text-lg font-semibold py-2 px-2">
-        <i className="title_icon" />
-        お知らせ
-      </div>
-      <div className="flex-grow h-full overflow-y-auto">
-        {systemNotices?.map((elem: SystemNotice | null) => {
+  if (IsRoleAdmin(session)) {
+    return <NoticeBlockAdmin
+      systemNotices={systemNotices}
+    />
+  }
+  if (IsRoleManager(session)) {
+    return <NoticeBlockManager
+      systemNotices={systemNotices}
+    />
+  }
+  if (IsRoleEditor(session)) {
+    return <NoticeBlockEditor
+      systemNotices={systemNotices}
+    />
+  }
+  if (IsRoleUser(session)) {
+    return <NoticeBlockUser
+      systemNotices={systemNotices}
+    />
+  }
+  if (IsRoleOther(session)) {
+    return <NoticeBlockOther
+      systemNotices={systemNotices}
+    />
+  }
 
-          if (elem) {
-            return <div key={elem.id} className="flex flex-col mb-10">
-              <div className="">{format(new Date(elem.notice_date), "yyyy/MM/dd")}</div>
-              <div className="ml-2">{elem.message}</div>
-              {/* <div>{elem.createUser?.name}</div> */}
-            </div>
-          }
-        })}
-      </div>
-    </>
-  )
+  return <div>Not Valid</div>
 }
 
 export default NoticeBlock
