@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation"
 import { ClientSafeProvider, LiteralUnion, getProviders, signOut, useSession } from "next-auth/react"
 import { BuiltInProviderType } from "next-auth/providers";
 import { LogOut } from "lucide-react";
+
+import { useSearchForm } from "@/hooks/use-search-form";
 import { Button } from "@/components/ui/button";
 
 const SignOut = () => {
@@ -12,6 +14,7 @@ const SignOut = () => {
 
   const { data: session, status } = useSession()
   const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null)
+  const storeSearchInfo = useSearchForm();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -39,6 +42,8 @@ const SignOut = () => {
         <div key={provider.name}>
           <Button
             onClick={() => signOut().then(async () => {
+              storeSearchInfo.resetSearchFormData()
+
               if (!process.env.OKTA_LOGOUT) {
                 return;
               }

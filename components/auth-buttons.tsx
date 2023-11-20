@@ -3,20 +3,23 @@
 import { useState } from "react"
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Session } from "next-auth";
-import { toast } from "react-hot-toast"
+// import { toast } from "react-hot-toast"
 import { LogIn, LogOut } from "lucide-react";
 
+import { useSearchForm } from "@/hooks/use-search-form";
 import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal"
 
 // ログインボタン
 export const LoginButton = () => {
+  const storeSearchInfo = useSearchForm();
   const [loading, setLoading] = useState(false);
 
   const onSignIn = () => {
     setLoading(true);
 
     signIn();
+    storeSearchInfo.resetSearchFormData()
 
     // toast.success('Oktaの認証画面に移動します。');
 
@@ -37,6 +40,7 @@ export const LoginButton = () => {
 // ログアウトボタン
 export const LogoutButton = (props: { session: Session | null }) => {
   const { data: session, status } = useSession()
+  const storeSearchInfo = useSearchForm();
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -45,6 +49,8 @@ export const LogoutButton = (props: { session: Session | null }) => {
     setLoading(true);
 
     signOut().then(() => {
+      storeSearchInfo.resetSearchFormData()
+
       if (!process.env.OKTA_LOGOUT) {
         return;
       }

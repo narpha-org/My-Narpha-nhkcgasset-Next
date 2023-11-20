@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation"
 import { ClientSafeProvider, LiteralUnion, getProviders, signIn, useSession } from "next-auth/react"
 import { BuiltInProviderType } from "next-auth/providers";
 import { LogIn } from "lucide-react";
+
+import { useSearchForm } from "@/hooks/use-search-form";
 import { Button } from "@/components/ui/button";
 
 interface SignInPageParams {
@@ -22,6 +24,7 @@ const SignIn = ({ params, searchParams }: SignInPageParams) => {
 
   const { data: session, status } = useSession()
   const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null)
+  const storeSearchInfo = useSearchForm();
   const [isMounted, setIsMounted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -48,6 +51,7 @@ const SignIn = ({ params, searchParams }: SignInPageParams) => {
     setLoading(true);
 
     signIn(providerId);
+    storeSearchInfo.resetSearchFormData()
 
     setLoading(false);
   }

@@ -43,30 +43,6 @@ const CGAssetPage: React.FC<CGAssetPageProps> = async ({ params }) => {
 
     /* CGアセット一覧 */
 
-    // const retCate: ApolloQueryResult<{
-    //   CGAssetCatesValid: CgAssetCate[]
-    // }> = await apolloServer()
-    //   .query({
-    //     query: GetCgAssetCatesValidDocument,
-    //   });
-    // const assetCates = retCate.data.CGAssetCatesValid;
-
-    // const retSearchTag: ApolloQueryResult<{
-    //   CGAssetSearchTagsValid: CgAssetSearchTag[]
-    // }> = await apolloServer()
-    //   .query({
-    //     query: GetCgAssetSearchTagsValidDocument,
-    //   });
-    // const assetSearchTags = retSearchTag.data.CGAssetSearchTagsValid;
-
-    // const retAppProd: ApolloQueryResult<{
-    //   CGAssetSearchAppProdsValid: CgAssetSearchAppProd[]
-    // }> = await apolloServer()
-    //   .query({
-    //     query: GetCgAssetSearchAppProdsValidDocument,
-    //   });
-    // const assetSearchAppProds = retAppProd.data.CGAssetSearchAppProdsValid;
-
     const ret: ApolloQueryResult<{
       CGAssetCatesValid: CgAssetCate[]
       CGAssetSearchTagsValid: CgAssetSearchTag[]

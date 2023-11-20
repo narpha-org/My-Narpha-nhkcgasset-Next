@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import _ from 'lodash';
 
 import {
   CgAsset,
@@ -57,7 +58,7 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
       })
       setData(ret.data);
       setPaginatorInfo(ret.paginatorInfo);
-      if (storeSearchInfo.searchFormData !== INIT_CGASSET_SEARCH_FORM_VALUES) {
+      if (_.isEqual(storeSearchInfo.searchFormData, INIT_CGASSET_SEARCH_FORM_VALUES) === false) {
         setIsInitPage(false)
       }
 
