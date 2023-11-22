@@ -4,11 +4,12 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
+  GetUsersQuery,
   GetUsersDocument,
-  UserPaginator,
+  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
-import { formatter } from "@/lib/utils";
+// import { formatter } from "@/lib/utils";
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 
 import { UserClient } from "./components/client";
@@ -27,19 +28,18 @@ const UsersPage = async ({
 }: {
   params: {}
 }) => {
-  const ret: ApolloQueryResult<{
-    Users: UserPaginator
-  }> = await apolloServer()
-    .query({
-      query: GetUsersDocument,
-      variables: {
-        first: 9999,
-        page: 1
-      },
-      fetchPolicy: 'network-only'
-    });
+  const ret: ApolloQueryResult<GetUsersQuery>
+    = await apolloServer()
+      .query({
+        query: GetUsersDocument,
+        variables: {
+          first: 9999,
+          page: 1
+        },
+        fetchPolicy: 'network-only'
+      });
   const Users = ret.data.Users.data;
-  const paginatorInfo = ret.data.Users.paginatorInfo;
+  const paginatorInfo = ret.data.Users.paginatorInfo as PaginatorInfo;
 
   const formattedUsers: UserColumn[] = Users.map((item) => ({
     id: item.id,

@@ -11,7 +11,7 @@ import { useParams, useRouter } from "next/navigation"
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  ExportCgAssets,
+  ExportCgAssetsQuery,
   ExportCgAssetsDocument,
 } from "@/graphql/generated/graphql";
 
@@ -44,15 +44,14 @@ export const BulkExportForm: React.FC<BulkExportFormProps> = ({ }) => {
     try {
       setLoading(true);
 
-      const ret: ApolloQueryResult<{
-        exportCGAssets: ExportCgAssets
-      }> = await apolloClient
-        .query({
-          query: ExportCgAssetsDocument,
-          variables: {
-            id: params.cgaBroadcastingRightId
-          },
-        });
+      const ret: ApolloQueryResult<ExportCgAssetsQuery>
+        = await apolloClient
+          .query({
+            query: ExportCgAssetsDocument,
+            variables: {
+              id: params.cgaBroadcastingRightId
+            },
+          });
 
       // console.log("ret", ret);
       if (
@@ -72,7 +71,7 @@ export const BulkExportForm: React.FC<BulkExportFormProps> = ({ }) => {
       const exportCGAssets = ret.data.exportCGAssets;
 
       router.refresh();
-      router.replace(`${exportCGAssets.file_url}`);
+      router.replace(`${exportCGAssets?.file_url}`);
       toast.success("エクスポートしました。", {
         duration: 4000
       });

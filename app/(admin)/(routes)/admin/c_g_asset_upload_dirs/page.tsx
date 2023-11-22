@@ -4,11 +4,12 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgAssetUploadDirPaginator,
+  GetCgAssetUploadDirsQuery,
   GetCgAssetUploadDirsDocument,
+  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
-import { formatter } from "@/lib/utils";
+// import { formatter } from "@/lib/utils";
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 
 import { CGAssetUploadDirClient } from "./components/client";
@@ -27,19 +28,18 @@ const CGAssetUploadDirsPage = async ({
 }: {
   params: {}
 }) => {
-  const ret: ApolloQueryResult<{
-    CGAssetUploadDirs: CgAssetUploadDirPaginator
-  }> = await apolloServer()
-    .query({
-      query: GetCgAssetUploadDirsDocument,
-      variables: {
-        first: 999,
-        page: 1
-      },
-      fetchPolicy: 'network-only'
-    });
+  const ret: ApolloQueryResult<GetCgAssetUploadDirsQuery>
+    = await apolloServer()
+      .query({
+        query: GetCgAssetUploadDirsDocument,
+        variables: {
+          first: 999,
+          page: 1
+        },
+        fetchPolicy: 'network-only'
+      });
   const CGAssetUploadDirs = ret.data.CGAssetUploadDirs.data;
-  const paginatorInfo = ret.data.CGAssetUploadDirs.paginatorInfo;
+  const paginatorInfo = ret.data.CGAssetUploadDirs.paginatorInfo as PaginatorInfo;
 
   const formattedCGAssetUploadDirs: CGAssetUploadDirColumn[] = CGAssetUploadDirs.map((item) => ({
     id: item.id,

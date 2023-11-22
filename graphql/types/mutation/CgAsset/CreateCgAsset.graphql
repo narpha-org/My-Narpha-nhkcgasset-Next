@@ -7,6 +7,7 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
     assetCate {
       desc
     }
+    asset_genre
     asset_app_prod
     asset_format
     asset_size
@@ -52,6 +53,16 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetUploads {
+      file_name
+      url
+      file_path
+    }
+    assetThumbs {
       thumb_file_name
       thumb_url
       thumb_file_path

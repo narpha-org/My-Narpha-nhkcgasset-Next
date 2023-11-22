@@ -1,8 +1,9 @@
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  SystemNotice,
+  GetSystemNoticeQuery,
   GetSystemNoticeDocument,
+  SystemNotice,
 } from "@/graphql/generated/graphql";
 
 import { SystemNoticeForm } from "./components/system_notices-form";
@@ -12,16 +13,15 @@ const SystemNoticePage = async ({
 }: {
   params: { systemNoticeId: string }
 }) => {
-  const ret: ApolloQueryResult<{
-    SystemNotice: SystemNotice
-  }> = await apolloServer()
-    .query({
-      query: GetSystemNoticeDocument,
-      variables: {
-        id: params.systemNoticeId
-      },
-    });
-  const SystemNotice = ret.data.SystemNotice;
+  const ret: ApolloQueryResult<GetSystemNoticeQuery>
+    = await apolloServer()
+      .query({
+        query: GetSystemNoticeDocument,
+        variables: {
+          id: params.systemNoticeId
+        },
+      });
+  const SystemNotice = ret.data.SystemNotice as SystemNotice;
 
   return (
     <div className="flex-col">

@@ -7,11 +7,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgAssetPaginator,
+  ApiGetCgAssetsQuery,
   ApiGetCgAssetsDocument,
+  ApiCgAssetsSearchFormValues,
 } from "@/graphql/generated/graphql";
-import { CGAssetSearchFormValues } from "@/hooks/use-search-form";
+// import { CgAssetsSearchFormValues } from "@/hooks/use-cgassets-search-form";
 import { recursiveRemoveKey } from "@/lib/utils";
+
+// type ApiCgAssetsSearchFormValues = {
+//   assetCateDescs: string[];
+//   assetTags: string[];
+//   assetAppProds: string[];
+//   keyword: string;
+// };
 
 interface CgAssetsSearchParams {
   cates: string;
@@ -40,15 +48,15 @@ export async function GET(req: NextRequest) {
     return new NextResponse("Search condition is required", { status: 400 });
   }
 
-  const searchData: CGAssetSearchFormValues = {
-    assetCates: [],
+  const searchData: ApiCgAssetsSearchFormValues = {
+    assetCateDescs: [],
     assetTags: [],
     assetAppProds: [],
     keyword: "",
   };
 
   if (cates) {
-    searchData.assetCates = cates.split(",");
+    searchData.assetCateDescs = cates.split(",");
   }
   if (tags) {
     searchData.assetTags = tags.split(",");
@@ -61,17 +69,18 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const ret: ApolloQueryResult<{
-      CGAssets: CgAssetPaginator;
-    }> = await apolloServer().query({
-      query: ApiGetCgAssetsDocument,
-      variables: {
-        first: Number(first) || 99,
-        page: Number(page) || 1,
-        search: searchData, //as CGAssetSearchFormValues
-      },
-    });
-    const cgAssetPaginator = JSON.parse(JSON.stringify(ret.data.CGAssets));
+    const ret: ApolloQueryResult<ApiGetCgAssetsQuery> =
+      await apolloServer().query({
+        query: ApiGetCgAssetsDocument,
+        variables: {
+          first: Number(first) || 99,
+          page: Number(page) || 1,
+          search: searchData, //as CgAssetsSearchFormValues
+        },
+      });
+    const cgAssetPaginator = JSON.parse(
+      JSON.stringify(ret.data.ApiCGAssetsValid)
+    );
     recursiveRemoveKey(cgAssetPaginator, "__typename");
 
     return NextResponse.json(cgAssetPaginator);

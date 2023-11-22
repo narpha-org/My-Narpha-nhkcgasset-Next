@@ -12,8 +12,11 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgAssetCate,
+  CreateCgAssetCateMutation,
   CreateCgAssetCateDocument,
+  UpdateCgAssetCateMutation,
   UpdateCgAssetCateDocument,
+  DeleteCgAssetCateMutation,
   DeleteCgAssetCateDocument,
 } from "@/graphql/generated/graphql";
 
@@ -95,9 +98,7 @@ export const CGAssetCateForm: React.FC<CGAssetCateFormProps> = ({
               id: params.cgAssetCateId,
               ...data
             },
-          }) as FetchResult<{
-            updateCgAssetCate: CgAssetCate;
-          }>
+          }) as FetchResult<UpdateCgAssetCateMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -105,9 +106,7 @@ export const CGAssetCateForm: React.FC<CGAssetCateFormProps> = ({
             variables: {
               ...data
             },
-          }) as FetchResult<{
-            createCgAssetCate: CgAssetCate;
-          }>
+          }) as FetchResult<CreateCgAssetCateMutation>
       }
 
       // console.log("ret", ret);
@@ -143,15 +142,14 @@ export const CGAssetCateForm: React.FC<CGAssetCateFormProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteCgAssetCate: CgAssetCate;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteCgAssetCateDocument,
-          variables: {
-            id: params.cgAssetCateId,
-          },
-        })
+      const ret: FetchResult<DeleteCgAssetCateMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteCgAssetCateDocument,
+            variables: {
+              id: params.cgAssetCateId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

@@ -227,41 +227,49 @@ import type {
 
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  User,
-  OktaAccount,
-  OktaSession,
-  OktaVerificationToken,
-  CreateUserInput,
+  // User,
+  CreateUserMutation,
   CreateUserDocument,
+  GetUserQuery,
   GetUserDocument,
+  GetUserByEmailQuery,
   GetUserByEmailDocument,
   GetUserByAccountInput,
+  GetUserByAccountQuery,
   GetUserByAccountDocument,
-  UpdateUserInput,
+  // UpdateUserInput,
+  UpdateUserMutation,
   UpdateUserDocument,
+  DeleteUserMutation,
   DeleteUserDocument,
   LinkAccountInput,
+  LinkAccountMutation,
   LinkAccountDocument,
   UnlinkAccountInput,
+  UnlinkAccountMutation,
   UnlinkAccountDocument,
-  CreateSessionInput,
+  // CreateSessionInput,
+  CreateSessionMutation,
   CreateSessionDocument,
+  GetSessionAndUserQuery,
   GetSessionAndUserDocument,
   UpdateSessionInput,
+  UpdateSessionMutation,
   UpdateSessionDocument,
+  DeleteSessionMutation,
   DeleteSessionDocument,
   CreateVerificationTokenInput,
+  CreateVerificationTokenMutation,
   CreateVerificationTokenDocument,
   UseVerificationTokenInput,
+  UseVerificationTokenQuery,
   UseVerificationTokenDocument,
 } from "@/graphql/generated/graphql";
 
 export function MyApolloAdapter(apolloServer): Adapter {
   return {
     async createUser(user) {
-      const ret: FetchResult<{
-        createUser: User;
-      }> = await apolloServer().mutate({
+      const ret: FetchResult<CreateUserMutation> = await apolloServer().mutate({
         mutation: CreateUserDocument,
         variables: {
           user,
@@ -271,9 +279,7 @@ export function MyApolloAdapter(apolloServer): Adapter {
       return ret.data?.createUser as unknown as AdapterUser;
     },
     async getUser(id) {
-      const ret: ApolloQueryResult<{
-        getUser: User;
-      }> = await apolloServer().query({
+      const ret: ApolloQueryResult<GetUserQuery> = await apolloServer().query({
         query: GetUserDocument,
         variables: {
           id,
@@ -283,34 +289,30 @@ export function MyApolloAdapter(apolloServer): Adapter {
       return ret.data?.getUser as unknown as AdapterUser;
     },
     async getUserByEmail(email: string) {
-      const ret: ApolloQueryResult<{
-        getUserByEmail: User;
-      }> = await apolloServer().query({
-        query: GetUserByEmailDocument,
-        variables: {
-          email,
-        },
-      });
+      const ret: ApolloQueryResult<GetUserByEmailQuery> =
+        await apolloServer().query({
+          query: GetUserByEmailDocument,
+          variables: {
+            email,
+          },
+        });
 
       return ret.data?.getUserByEmail as unknown as AdapterUser;
     },
     async getUserByAccount(provider_providerAccountId: GetUserByAccountInput) {
-      const ret: ApolloQueryResult<{
-        getUserByAccount: User;
-      }> = await apolloServer().query({
-        query: GetUserByAccountDocument,
-        variables: {
-          input: provider_providerAccountId,
-        },
-      });
+      const ret: ApolloQueryResult<GetUserByAccountQuery> =
+        await apolloServer().query({
+          query: GetUserByAccountDocument,
+          variables: {
+            input: provider_providerAccountId,
+          },
+        });
 
       return (ret.data?.getUserByAccount ??
         null) as unknown as Promise<AdapterUser | null>;
     },
     async updateUser(user) {
-      const ret: FetchResult<{
-        updateUser: User;
-      }> = await apolloServer().mutate({
+      const ret: FetchResult<UpdateUserMutation> = await apolloServer().mutate({
         mutation: UpdateUserDocument,
         variables: {
           user,
@@ -320,9 +322,7 @@ export function MyApolloAdapter(apolloServer): Adapter {
       return ret.data?.updateUser as unknown as AdapterUser;
     },
     async deleteUser(id) {
-      const ret: FetchResult<{
-        deleteUser: User;
-      }> = await apolloServer().mutate({
+      const ret: FetchResult<DeleteUserMutation> = await apolloServer().mutate({
         mutation: DeleteUserDocument,
         variables: {
           userId: id,
@@ -332,50 +332,47 @@ export function MyApolloAdapter(apolloServer): Adapter {
       return ret.data?.deleteUser as unknown as AdapterUser;
     },
     async linkAccount(account: LinkAccountInput) {
-      const ret: FetchResult<{
-        linkAccount: OktaAccount;
-      }> = await apolloServer().mutate({
-        mutation: LinkAccountDocument,
-        variables: {
-          account,
-        },
-      });
+      const ret: FetchResult<LinkAccountMutation> = await apolloServer().mutate(
+        {
+          mutation: LinkAccountDocument,
+          variables: {
+            account,
+          },
+        }
+      );
 
       return ret.data?.linkAccount as unknown as AdapterAccount;
     },
     async unlinkAccount({ providerAccountId, provider }: UnlinkAccountInput) {
-      const ret: FetchResult<{
-        unlinkAccount: OktaAccount;
-      }> = await apolloServer().mutate({
-        mutation: UnlinkAccountDocument,
-        variables: {
-          input: { providerAccountId, provider },
-        },
-      });
+      const ret: FetchResult<UnlinkAccountMutation> =
+        await apolloServer().mutate({
+          mutation: UnlinkAccountDocument,
+          variables: {
+            input: { providerAccountId, provider },
+          },
+        });
 
       return ret.data?.unlinkAccount as unknown as AdapterAccount;
     },
     async createSession(data) {
-      const ret: FetchResult<{
-        createSession: OktaSession;
-      }> = await apolloServer().mutate({
-        mutation: CreateSessionDocument,
-        variables: {
-          input: data,
-        },
-      });
+      const ret: FetchResult<CreateSessionMutation> =
+        await apolloServer().mutate({
+          mutation: CreateSessionDocument,
+          variables: {
+            input: data,
+          },
+        });
 
       return ret.data?.createSession as unknown as AdapterSession;
     },
     async getSessionAndUser(sessionToken: string) {
-      const ret: ApolloQueryResult<{
-        getSessionAndUser: OktaSession;
-      }> = await apolloServer().query({
-        query: GetSessionAndUserDocument,
-        variables: {
-          sessionToken,
-        },
-      });
+      const ret: ApolloQueryResult<GetSessionAndUserQuery> =
+        await apolloServer().query({
+          query: GetSessionAndUserDocument,
+          variables: {
+            sessionToken,
+          },
+        });
 
       return ret.data?.getSessionAndUser as unknown as Promise<{
         session: AdapterSession;
@@ -383,26 +380,24 @@ export function MyApolloAdapter(apolloServer): Adapter {
       } | null>;
     },
     async updateSession({ sessionToken }: UpdateSessionInput) {
-      const ret: FetchResult<{
-        updateSession: OktaSession;
-      }> = await apolloServer().mutate({
-        mutation: UpdateSessionDocument,
-        variables: {
-          input: { sessionToken },
-        },
-      });
+      const ret: FetchResult<UpdateSessionMutation> =
+        await apolloServer().mutate({
+          mutation: UpdateSessionDocument,
+          variables: {
+            input: { sessionToken },
+          },
+        });
 
       return ret.data?.updateSession as unknown as AdapterSession;
     },
     async deleteSession(sessionToken: string) {
-      const ret: FetchResult<{
-        deleteSession: OktaSession;
-      }> = await apolloServer().mutate({
-        mutation: DeleteSessionDocument,
-        variables: {
-          sessionToken,
-        },
-      });
+      const ret: FetchResult<DeleteSessionMutation> =
+        await apolloServer().mutate({
+          mutation: DeleteSessionDocument,
+          variables: {
+            sessionToken,
+          },
+        });
 
       return ret.data?.deleteSession as unknown as AdapterSession;
     },
@@ -411,14 +406,13 @@ export function MyApolloAdapter(apolloServer): Adapter {
       expires,
       token,
     }: CreateVerificationTokenInput) {
-      const ret: FetchResult<{
-        createVerificationToken: OktaVerificationToken;
-      }> = await apolloServer().mutate({
-        mutation: CreateVerificationTokenDocument,
-        variables: {
-          input: { identifier, expires, token },
-        },
-      });
+      const ret: FetchResult<CreateVerificationTokenMutation> =
+        await apolloServer().mutate({
+          mutation: CreateVerificationTokenDocument,
+          variables: {
+            input: { identifier, expires, token },
+          },
+        });
 
       return ret.data?.createVerificationToken as unknown as VerificationToken;
     },
@@ -426,14 +420,13 @@ export function MyApolloAdapter(apolloServer): Adapter {
       identifier,
       token,
     }: UseVerificationTokenInput) {
-      const ret: ApolloQueryResult<{
-        useVerificationToken: OktaVerificationToken;
-      }> = await apolloServer().query({
-        query: UseVerificationTokenDocument,
-        variables: {
-          input: { identifier, token },
-        },
-      });
+      const ret: ApolloQueryResult<UseVerificationTokenQuery> =
+        await apolloServer().query({
+          query: UseVerificationTokenDocument,
+          variables: {
+            input: { identifier, token },
+          },
+        });
 
       return ret.data?.useVerificationToken as unknown as VerificationToken;
     },

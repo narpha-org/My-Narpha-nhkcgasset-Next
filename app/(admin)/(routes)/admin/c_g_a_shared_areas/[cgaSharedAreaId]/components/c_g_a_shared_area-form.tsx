@@ -12,8 +12,11 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgaSharedArea,
+  CreateCgaSharedAreaMutation,
   CreateCgaSharedAreaDocument,
+  UpdateCgaSharedAreaMutation,
   UpdateCgaSharedAreaDocument,
+  DeleteCgaSharedAreaMutation,
   DeleteCgaSharedAreaDocument,
 } from "@/graphql/generated/graphql";
 
@@ -88,9 +91,7 @@ export const CGASharedAreaForm: React.FC<CGASharedAreaFormProps> = ({
               id: params.cgaSharedAreaId,
               ...data
             },
-          }) as FetchResult<{
-            updateCgaSharedArea: CgaSharedArea;
-          }>
+          }) as FetchResult<UpdateCgaSharedAreaMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -98,9 +99,7 @@ export const CGASharedAreaForm: React.FC<CGASharedAreaFormProps> = ({
             variables: {
               ...data
             },
-          }) as FetchResult<{
-            createCgaSharedArea: CgaSharedArea;
-          }>
+          }) as FetchResult<CreateCgaSharedAreaMutation>
       }
 
       // console.log("ret", ret);
@@ -132,15 +131,14 @@ export const CGASharedAreaForm: React.FC<CGASharedAreaFormProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteCgaSharedArea: CgaSharedArea;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteCgaSharedAreaDocument,
-          variables: {
-            id: params.cgaSharedAreaId,
-          },
-        })
+      const ret: FetchResult<DeleteCgaSharedAreaMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteCgaSharedAreaDocument,
+            variables: {
+              id: params.cgaSharedAreaId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

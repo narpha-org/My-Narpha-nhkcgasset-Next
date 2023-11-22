@@ -1,0 +1,12 @@
+<svg id="Arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="45" viewBox="0 0 16 45">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="長方形_571" data-name="長方形 571" class="cls-1" d="M360.286,2223.02l-12.272,21.35,3.447,2,12.272-21.35a2,2,0,0,0-.728-2.73A1.975,1.975,0,0,0,360.286,2223.02Z" transform="translate(-348 -2222)"/>
+  <path id="長方形_571-2" data-name="長方形 571" class="cls-1" d="M360.286,2265.97l-12.272-21.36,3.447-2,12.272,21.36a2,2,0,0,1-.728,2.73A1.975,1.975,0,0,1,360.286,2265.97Z" transform="translate(-348 -2222)"/>
+</svg>

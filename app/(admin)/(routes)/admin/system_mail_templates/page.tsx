@@ -4,8 +4,9 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  SystemMailTemplatePaginator,
+  GetSystemMailTemplatesQuery,
   GetSystemMailTemplatesDocument,
+  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
@@ -27,19 +28,18 @@ const SystemMailTemplatesPage = async ({
 }: {
   params: {}
 }) => {
-  const ret: ApolloQueryResult<{
-    SystemMailTemplates: SystemMailTemplatePaginator
-  }> = await apolloServer()
-    .query({
-      query: GetSystemMailTemplatesDocument,
-      variables: {
-        first: 999,
-        page: 1
-      },
-      fetchPolicy: 'network-only'
-    });
+  const ret: ApolloQueryResult<GetSystemMailTemplatesQuery>
+    = await apolloServer()
+      .query({
+        query: GetSystemMailTemplatesDocument,
+        variables: {
+          first: 999,
+          page: 1
+        },
+        fetchPolicy: 'network-only'
+      });
   const SystemMailTemplates = ret.data.SystemMailTemplates.data;
-  const paginatorInfo = ret.data.SystemMailTemplates.paginatorInfo;
+  const paginatorInfo = ret.data.SystemMailTemplates.paginatorInfo as PaginatorInfo;
 
   const formattedSystemMailTemplates: SystemMailTemplateColumn[] = SystemMailTemplates.map((item) => ({
     id: item.id,

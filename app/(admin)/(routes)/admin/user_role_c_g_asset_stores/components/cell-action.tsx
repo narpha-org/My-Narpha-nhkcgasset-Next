@@ -8,7 +8,9 @@ import { useParams, useRouter } from "next/navigation";
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  DeleteUserRoleCgAssetStoreDocument, UserRoleCgAssetStore,
+  DeleteUserRoleCgAssetStoreMutation,
+  DeleteUserRoleCgAssetStoreDocument,
+  // UserRoleCgAssetStore,
 } from "@/graphql/generated/graphql";
 
 import { Button } from "@/components/ui/button";
@@ -39,15 +41,14 @@ export const CellAction: React.FC<CellActionProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteUserRoleCgAssetStore: UserRoleCgAssetStore;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteUserRoleCgAssetStoreDocument,
-          variables: {
-            id: data.id,
-          },
-        })
+      const ret: FetchResult<DeleteUserRoleCgAssetStoreMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteUserRoleCgAssetStoreDocument,
+            variables: {
+              id: data.id,
+            },
+          })
 
       // console.log("ret", ret);
       if (

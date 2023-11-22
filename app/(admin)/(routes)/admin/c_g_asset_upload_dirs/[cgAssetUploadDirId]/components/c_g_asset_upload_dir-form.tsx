@@ -12,8 +12,11 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgAssetUploadDir,
+  CreateCgAssetUploadDirMutation,
   CreateCgAssetUploadDirDocument,
+  UpdateCgAssetUploadDirMutation,
   UpdateCgAssetUploadDirDocument,
+  DeleteCgAssetUploadDirMutation,
   DeleteCgAssetUploadDirDocument,
 } from "@/graphql/generated/graphql";
 
@@ -88,9 +91,7 @@ export const CGAssetUploadDirForm: React.FC<CGAssetUploadDirFormProps> = ({
               id: params.cgAssetUploadDirId,
               ...data
             },
-          }) as FetchResult<{
-            UpdateCgAssetUploadDir: CgAssetUploadDir;
-          }>
+          }) as FetchResult<UpdateCgAssetUploadDirMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -98,9 +99,7 @@ export const CGAssetUploadDirForm: React.FC<CGAssetUploadDirFormProps> = ({
             variables: {
               ...data
             },
-          }) as FetchResult<{
-            CreateCgAssetUploadDir: CgAssetUploadDir;
-          }>
+          }) as FetchResult<CreateCgAssetUploadDirMutation>
       }
 
       // console.log("ret", ret);
@@ -132,15 +131,14 @@ export const CGAssetUploadDirForm: React.FC<CGAssetUploadDirFormProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteCgAssetUploadDir: CgAssetUploadDir;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteCgAssetUploadDirDocument,
-          variables: {
-            id: params.cgAssetUploadDirId,
-          },
-        })
+      const ret: FetchResult<DeleteCgAssetUploadDirMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteCgAssetUploadDirDocument,
+            variables: {
+              id: params.cgAssetUploadDirId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

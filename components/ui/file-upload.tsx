@@ -19,9 +19,24 @@ export type UploadFileProps = {
   thumb_file_path: string;
 }
 
+export type UploadOnlyFileProps = {
+  file_name: string;
+  url: string;
+  file_path: string;
+}
+
 interface FileUploadProps {
   disabled?: boolean;
   onChange: ({ file_name, url, file_path, thumb_file_name, thumb_url, thumb_file_path }: UploadFileProps) => void;
+  onRemove: (value: string) => void;
+  value: UploadFileProps[];
+  poster: string;
+  glacier?: boolean;
+}
+
+interface FileOnlyUploadProps {
+  disabled?: boolean;
+  onChange: ({ file_name, url, file_path }: UploadOnlyFileProps) => void;
   onRemove: (value: string) => void;
   value: UploadFileProps[];
   poster: string;

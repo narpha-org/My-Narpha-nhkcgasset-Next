@@ -14,8 +14,11 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   SystemNotice,
+  CreateSystemNoticeMutation,
   CreateSystemNoticeDocument,
+  UpdateSystemNoticeMutation,
   UpdateSystemNoticeDocument,
+  DeleteSystemNoticeMutation,
   DeleteSystemNoticeDocument,
 } from "@/graphql/generated/graphql";
 
@@ -97,9 +100,7 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
               update_user_id: (session?.user as { userId: string }).userId,
               notice_date: format(new Date(data.notice_date), "yyyy-MM-dd HH:mm:ss"),
             },
-          }) as FetchResult<{
-            updateSystemNotice: SystemNotice;
-          }>
+          }) as FetchResult<UpdateSystemNoticeMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -109,9 +110,7 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
               create_user_id: (session?.user as { userId: string }).userId,
               notice_date: format(new Date(data.notice_date), "yyyy-MM-dd HH:mm:ss"),
             },
-          }) as FetchResult<{
-            createSystemNotice: SystemNotice;
-          }>
+          }) as FetchResult<CreateSystemNoticeMutation>
       }
 
       // console.log("ret", ret);
@@ -143,15 +142,14 @@ export const SystemNoticeForm: React.FC<SystemNoticeFormProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteSystemNotice: SystemNotice;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteSystemNoticeDocument,
-          variables: {
-            id: params.systemNoticeId,
-          },
-        })
+      const ret: FetchResult<DeleteSystemNoticeMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteSystemNoticeDocument,
+            variables: {
+              id: params.systemNoticeId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

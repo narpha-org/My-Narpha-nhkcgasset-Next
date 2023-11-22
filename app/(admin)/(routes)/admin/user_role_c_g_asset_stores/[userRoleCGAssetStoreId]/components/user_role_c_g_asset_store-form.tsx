@@ -12,8 +12,11 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   UserRoleCgAssetStore,
+  CreateUserRoleCgAssetStoreMutation,
   CreateUserRoleCgAssetStoreDocument,
+  UpdateUserRoleCgAssetStoreMutation,
   UpdateUserRoleCgAssetStoreDocument,
+  DeleteUserRoleCgAssetStoreMutation,
   DeleteUserRoleCgAssetStoreDocument,
 } from "@/graphql/generated/graphql";
 
@@ -95,9 +98,7 @@ export const UserRoleCgAssetStoreForm: React.FC<UserRoleCgAssetStoreFormProps> =
               id: params.userRoleCGAssetStoreId,
               ...data
             },
-          }) as FetchResult<{
-            updateUserRoleCgAssetStore: UserRoleCgAssetStore;
-          }>
+          }) as FetchResult<UpdateUserRoleCgAssetStoreMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -105,9 +106,7 @@ export const UserRoleCgAssetStoreForm: React.FC<UserRoleCgAssetStoreFormProps> =
             variables: {
               ...data
             },
-          }) as FetchResult<{
-            createUserRoleCgAssetStore: UserRoleCgAssetStore;
-          }>
+          }) as FetchResult<CreateUserRoleCgAssetStoreMutation>
       }
 
       // console.log("ret", ret);
@@ -143,15 +142,14 @@ export const UserRoleCgAssetStoreForm: React.FC<UserRoleCgAssetStoreFormProps> =
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteUserRoleCgAssetStore: UserRoleCgAssetStore;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteUserRoleCgAssetStoreDocument,
-          variables: {
-            id: params.userRoleCGAssetStoreId,
-          },
-        })
+      const ret: FetchResult<DeleteUserRoleCgAssetStoreMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteUserRoleCgAssetStoreDocument,
+            variables: {
+              id: params.userRoleCGAssetStoreId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

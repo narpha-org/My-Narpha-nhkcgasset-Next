@@ -8,6 +8,7 @@ query CGAssetDetailClient($id: ID!, $apply_user_id: ID!) {
       code
       desc
     }
+    asset_genre
     asset_app_prod
     asset_format
     asset_size
@@ -60,6 +61,16 @@ query CGAssetDetailClient($id: ID!, $apply_user_id: ID!) {
       file_name
       url
       file_path
+      thumb_file_name
+      thumb_url
+      thumb_file_path
+    }
+    assetUploads {
+      file_name
+      url
+      file_path
+    }
+    assetThumbs {
       thumb_file_name
       thumb_url
       thumb_file_path

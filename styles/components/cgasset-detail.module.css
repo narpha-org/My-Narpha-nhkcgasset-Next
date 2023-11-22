@@ -1,0 +1,9 @@
+.parentItem {
+  /* z-index: 2; */
+}
+
+.childItem {
+  transition: top 0.2s linear, opacity 0.2s ease-in;
+  overflow: hidden;
+  /* z-index: 1; */
+}

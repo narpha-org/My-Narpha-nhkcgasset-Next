@@ -91,11 +91,17 @@ type Query {
   "List all available CGAssetTag."
   CGAssetTagsValid: [CGAssetTag!]!
 
+  "Find a single CGAssetThumb by an identifying attribute."
+  CGAssetThumb("Search by primary key." id: ID): CGAssetThumb
+
   "Find a single CGAssetUploadDir by an identifying attribute."
   CGAssetUploadDir("Search by primary key." id: ID): CGAssetUploadDir
 
   "List all available CGAssetUploadDir."
   CGAssetUploadDirsValid: [CGAssetUploadDir!]!
+
+  "Find a single CGAssetUpload by an identifying attribute."
+  CGAssetUpload("Search by primary key." id: ID): CGAssetUpload
 
   "Find a single CGAssetVideo by an identifying attribute."
   CGAssetVideo("Search by primary key." id: ID): CGAssetVideo
@@ -309,6 +315,18 @@ type Query {
     search: CGAssetSearchFormValues
   ): CGAssetPaginator!
 
+  "List all valid CGAsset."
+  ApiCGAssetsValid(
+    "Limits number of fetched items. Maximum allowed value: 100."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+
+    orderBy: [OrderByClause!]
+    search: ApiCgAssetsSearchFormValues
+  ): CGAssetPaginator!
+
   "List all available own created CGAsset."
   CGAssetsCreatedAll(
     create_user_id: ID!
@@ -410,6 +428,18 @@ type Query {
     page: Int
   ): CGAssetTagPaginator!
 
+  "List multiple CGAssetThumb."
+  CGAssetThumbs(
+    "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
+    file_path: String
+
+    "Limits number of fetched items."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+  ): CGAssetThumbPaginator!
+
   "List multiple CGAssetUploadDir."
   CGAssetUploadDirs(
     "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
@@ -421,6 +451,18 @@ type Query {
     "The offset from which items are returned."
     page: Int
   ): CGAssetUploadDirPaginator!
+
+  "List multiple CGAssetUpload."
+  CGAssetUploads(
+    "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
+    file_path: String
+
+    "Limits number of fetched items."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+  ): CGAssetUploadPaginator!
 
   "List multiple CGAssetVideo."
   CGAssetVideos(
@@ -798,6 +840,25 @@ type Mutation {
   "Delete a CGAssetTag."
   deleteCGAssetTag(id: ID!): CGAssetTag
 
+  "Create a CGAssetThumb."
+  createCGAssetThumb(
+    asset_db_id: ID!
+    thumb_file_name: String!
+    thumb_url: String!
+    thumb_file_path: String!
+    revised_user_id: ID!
+  ): CGAssetThumb
+
+  "Update a CGAssetThumb."
+  updateCGAssetThumb(
+    thumb_file_name: String!
+    thumb_url: String!
+    thumb_file_path: String!
+  ): CGAssetThumb
+
+  "Delete a CGAssetThumb."
+  deleteCGAssetThumb(id: ID!): CGAssetThumb
+
   "Create a CGAssetUploadDir."
   createCGAssetUploadDir(
     base_path: String!
@@ -815,6 +876,25 @@ type Mutation {
 
   "Delete a CGAssetUploadDir."
   deleteCGAssetUploadDir(id: ID!): CGAssetUploadDir
+
+  "Create a CGAssetUpload."
+  createCGAssetUpload(
+    asset_db_id: ID!
+    file_name: String!
+    url: String!
+    file_path: String!
+    revised_user_id: ID!
+  ): CGAssetUpload
+
+  "Update a CGAssetUpload."
+  updateCGAssetUpload(
+    file_name: String!
+    url: String!
+    file_path: String!
+  ): CGAssetUpload
+
+  "Delete a CGAssetUpload."
+  deleteCGAssetUpload(id: ID!): CGAssetUpload
 
   "Create a CGAssetVideo."
   createCGAssetVideo(
@@ -1339,13 +1419,16 @@ type CGAsset {
   "アセット種別"
   assetCate: CGAssetCate
 
-  "制作アプリ"
+  "ジャンル"
+  asset_genre: String
+
+  "制作ソフトウェア"
   asset_app_prod: String
 
   "形式"
   asset_format: String
 
-  "サイズ"
+  "ファイルサイズ"
   asset_size: String
 
   "レンダラ"
@@ -1390,6 +1473,12 @@ type CGAsset {
   "アセット3DCG"
   asset3DCGs: [CGAsset3DCG]
 
+  "アセットアップロード"
+  assetUploads: [CGAssetUpload]
+
+  "アセットサムネイル"
+  assetThumbs: [CGAssetThumb]
+
   "アセットタグ"
   assetTags: [CGAssetTag]
 
@@ -1428,6 +1517,13 @@ input CGAssetSearchFormValues {
   keyword: String
 }
 
+input ApiCgAssetsSearchFormValues {
+  assetCateDescs: [String]
+  assetTags: [String]
+  assetAppProds: [String]
+  keyword: String
+}
+
 input CreateCGAssetInput {
   "登録ユーザID"
   create_user_id: ID!
@@ -1441,13 +1537,16 @@ input CreateCGAssetInput {
   "アセット種別ID"
   assetCateId: ID
 
-  "制作アプリ"
+  "ジャンル"
+  asset_genre: String
+
+  "制作ソフトウェア"
   asset_app_prod: String
 
   "形式"
   asset_format: String
 
-  "サイズ"
+  "ファイルサイズ"
   asset_size: String
 
   "レンダラ"
@@ -1491,6 +1590,12 @@ input CreateCGAssetInput {
 
   "アセット3DCG"
   asset3DCGs: [CGAsset3DCGInput]
+
+  "アセットアップロード"
+  assetUploads: [CGAssetUploadInput]
+
+  "アセットサムネイル"
+  assetThumbs: [CGAssetThumbInput]
 
   "アセットタグ文字列"
   assetTagsStr: String
@@ -1517,13 +1622,16 @@ input UpdateCGAssetInput {
   "アセット種別ID"
   assetCateId: ID
 
-  "制作アプリ"
+  "ジャンル"
+  asset_genre: String
+
+  "制作ソフトウェア"
   asset_app_prod: String
 
   "形式"
   asset_format: String
 
-  "サイズ"
+  "ファイルサイズ"
   asset_size: String
 
   "レンダラ"
@@ -1567,6 +1675,12 @@ input UpdateCGAssetInput {
 
   "アセット3DCG"
   asset3DCGs: [CGAsset3DCGInput]
+
+  "アセットアップロード"
+  assetUploads: [CGAssetUploadInput]
+
+  "アセットサムネイル"
+  assetThumbs: [CGAssetThumbInput]
 
   "アセットタグ文字列"
   assetTagsStr: String
@@ -1618,6 +1732,25 @@ input CGAsset3DCGInput {
 
   "リソースファイルパス"
   file_path: String!
+  thumb_file_name: String!
+  thumb_url: String!
+  thumb_file_path: String!
+}
+
+"アセットアップロード"
+input CGAssetUploadInput {
+  "リソースファイル名"
+  file_name: String!
+
+  "URL"
+  url: String!
+
+  "リソースファイルパス"
+  file_path: String!
+}
+
+"アセットサムネイル"
+input CGAssetThumbInput {
   thumb_file_name: String!
   thumb_url: String!
   thumb_file_path: String!
@@ -1871,6 +2004,33 @@ type CGAssetTag {
 }
 
 """
+CGAssetThumb.
+アセットサムネイル
+"""
+type CGAssetThumb {
+  "Unique primary key."
+  id: ID!
+
+  "CGアセットID"
+  cgAsset: CGAsset
+
+  "サムネイルファイル名"
+  thumb_file_name: String
+
+  "サムネイルURL"
+  thumb_url: String
+
+  "サムネイルファイルパス"
+  thumb_file_path: String
+
+  "When the CGAssetThumb was created."
+  created_at: DateTime!
+
+  "When the CGAssetThumb was last updated."
+  updated_at: DateTime!
+}
+
+"""
 CGAssetUploadDir.
 アップロード場所
 """
@@ -1891,6 +2051,33 @@ type CGAssetUploadDir {
   created_at: DateTime!
 
   "When the CGAssetUploadDir was last updated."
+  updated_at: DateTime!
+}
+
+"""
+CGAssetUpload.
+アセットアップロード
+"""
+type CGAssetUpload {
+  "Unique primary key."
+  id: ID!
+
+  "CGアセットID"
+  cgAsset: CGAsset
+
+  "リソースファイル名"
+  file_name: String!
+
+  "URL"
+  url: String!
+
+  "リソースファイルパス"
+  file_path: String!
+
+  "When the CGAssetUpload was created."
+  created_at: DateTime!
+
+  "When the CGAssetUpload was last updated."
   updated_at: DateTime!
 }
 
@@ -2497,6 +2684,15 @@ type CGAssetTagPaginator {
   data: [CGAssetTag!]!
 }
 
+"A paginated list of CGAssetThumb items."
+type CGAssetThumbPaginator {
+  "Pagination information about the list of items."
+  paginatorInfo: PaginatorInfo!
+
+  "A list of CGAssetThumb items."
+  data: [CGAssetThumb!]!
+}
+
 "A paginated list of CGAssetUploadDir items."
 type CGAssetUploadDirPaginator {
   "Pagination information about the list of items."
@@ -2504,6 +2700,15 @@ type CGAssetUploadDirPaginator {
 
   "A list of CGAssetUploadDir items."
   data: [CGAssetUploadDir!]!
+}
+
+"A paginated list of CGAssetUpload items."
+type CGAssetUploadPaginator {
+  "Pagination information about the list of items."
+  paginatorInfo: PaginatorInfo!
+
+  "A list of CGAssetUpload items."
+  data: [CGAssetUpload!]!
 }
 
 "A paginated list of CGAssetVideo items."

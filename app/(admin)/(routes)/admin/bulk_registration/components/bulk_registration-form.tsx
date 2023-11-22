@@ -14,6 +14,7 @@ import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   ImportCgAssets,
   ImportCgAssetsDocument,
+  ImportCgAssetsMutation,
 } from "@/graphql/generated/graphql";
 
 // import { Input } from "@/components/ui/input"
@@ -78,18 +79,17 @@ export const BulkRegistrationForm: React.FC<BulkRegistrationFormProps> = ({ }) =
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        importCGAssets: ImportCgAssets;
-      }> = await apolloClient
-        .mutate({
-          mutation: ImportCgAssetsDocument,
-          variables: {
-            input: {
-              create_user_id: (session?.user as { userId: string }).userId,
-              ...data,
-            }
-          },
-        });
+      const ret: FetchResult<ImportCgAssetsMutation>
+        = await apolloClient
+          .mutate({
+            mutation: ImportCgAssetsDocument,
+            variables: {
+              input: {
+                create_user_id: (session?.user as { userId: string }).userId,
+                ...data,
+              }
+            },
+          });
 
       // console.log("ret", ret);
       if (
@@ -188,7 +188,8 @@ export const BulkRegistrationForm: React.FC<BulkRegistrationFormProps> = ({ }) =
                     <br />
                     asset_name:                : アセット名<br />
                     asset_cate_id:             : アセット種別<br />
-                    asset_app_prod:            : 制作アプリ<br />
+                    asset_genre:               : ジャンル<br />
+                    asset_app_prod:            : 制作ソフトウェア<br />
                     asset_format:              : 形式<br />
                     asset_size:                : サイズ<br />
                     asset_renderer:            : レンダラ<br />
@@ -207,7 +208,7 @@ export const BulkRegistrationForm: React.FC<BulkRegistrationFormProps> = ({ }) =
                     valid_flg:                 : 有効フラグ<br />
                     created_at:                : 登録日時<br />
                     updated_at:                : 更新日時<br />
-                    <br />
+                    {/* <br />
                     3dcg_1_file_path           : アセット3DCG・ファイルパス<br />
                     3dcg_1_file_name           : アセット3DCG・ファイル名<br />
                     3dcg_1_file_url            : アセット3DCG・ファイルURL<br />
@@ -241,7 +242,23 @@ export const BulkRegistrationForm: React.FC<BulkRegistrationFormProps> = ({ }) =
                     image_20_file_url            : アセット画像20・ファイルURL<br />
                     image_20_thumb_path          : アセット画像20・サムネイルパス<br />
                     image_20_thumb_name          : アセット画像20・サムネイル名<br />
-                    image_20_thumb_url           : アセット画像20・サムネイルURL<br />
+                    image_20_thumb_url           : アセット画像20・サムネイルURL<br /> */}
+                    <br />
+                    upload_1_file_path           : アセットアップロード1・ファイルパス<br />
+                    upload_1_file_name           : アセットアップロード1・ファイル名<br />
+                    upload_1_url            : アセットアップロード1・ファイルURL<br />
+                    ...<br />
+                    upload_20_file_path           : アセットアップロード20・ファイルパス<br />
+                    upload_20_file_name           : アセットアップロード20・ファイル名<br />
+                    upload_20_url            : アセットアップロード20・ファイルURL<br />
+                    <br />
+                    thumb_1_file_path          : アセットサムネイル1・サムネイルパス<br />
+                    thumb_1_file_name          : アセットサムネイル1・サムネイル名<br />
+                    thumb_1_url           : アセットサムネイル1・サムネイルURL<br />
+                    ...<br />
+                    thumb_20_file_path          : アセットサムネイル20・サムネイルパス<br />
+                    thumb_20_file_name          : アセットサムネイル20・サムネイル名<br />
+                    thumb_20_url           : アセットサムネイル20・サムネイルURL<br />
                   </FormDescription>
                 </FormItem>
               )}

@@ -8,7 +8,8 @@ import { useParams, useRouter } from "next/navigation";
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgaBroadcastingRight,
+  // CgaBroadcastingRight,
+  DeleteCgaBroadcastingRightMutation,
   DeleteCgaBroadcastingRightDocument,
 } from "@/graphql/generated/graphql";
 
@@ -40,15 +41,14 @@ export const CellAction: React.FC<CellActionProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteCgaBroadcastingRight: CgaBroadcastingRight;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteCgaBroadcastingRightDocument,
-          variables: {
-            id: data.id,
-          },
-        })
+      const ret: FetchResult<DeleteCgaBroadcastingRightMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteCgaBroadcastingRightDocument,
+            variables: {
+              id: data.id,
+            },
+          })
 
       // console.log("ret", ret);
       if (

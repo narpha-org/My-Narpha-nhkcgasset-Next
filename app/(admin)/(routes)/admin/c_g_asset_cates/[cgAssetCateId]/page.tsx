@@ -1,8 +1,9 @@
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgAssetCate,
+  GetCgAssetCateQuery,
   GetCgAssetCateDocument,
+  CgAssetCate,
 } from "@/graphql/generated/graphql";
 
 import { CGAssetCateForm } from "./components/c_g_asset_cate-form";
@@ -12,16 +13,15 @@ const CGAssetCatePage = async ({
 }: {
   params: { cgAssetCateId: string }
 }) => {
-  const ret: ApolloQueryResult<{
-    CGAssetCate: CgAssetCate
-  }> = await apolloServer()
-    .query({
-      query: GetCgAssetCateDocument,
-      variables: {
-        id: params.cgAssetCateId
-      },
-    });
-  const CGAssetCate = ret.data.CGAssetCate;
+  const ret: ApolloQueryResult<GetCgAssetCateQuery>
+    = await apolloServer()
+      .query({
+        query: GetCgAssetCateDocument,
+        variables: {
+          id: params.cgAssetCateId
+        },
+      });
+  const CGAssetCate = ret.data.CGAssetCate as CgAssetCate;
 
   return (
     <div className="flex-col">

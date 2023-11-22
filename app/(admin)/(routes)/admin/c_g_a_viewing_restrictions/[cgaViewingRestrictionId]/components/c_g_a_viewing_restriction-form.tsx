@@ -12,8 +12,11 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgaViewingRestriction,
+  CreateCgaViewingRestrictionMutation,
   CreateCgaViewingRestrictionDocument,
+  UpdateCgaViewingRestrictionMutation,
   UpdateCgaViewingRestrictionDocument,
+  DeleteCgaViewingRestrictionMutation,
   DeleteCgaViewingRestrictionDocument,
 } from "@/graphql/generated/graphql";
 
@@ -88,9 +91,7 @@ export const CGAViewingRestrictionForm: React.FC<CGAViewingRestrictionFormProps>
               id: params.cgaViewingRestrictionId,
               ...data
             },
-          }) as FetchResult<{
-            updateCgaViewingRestriction: CgaViewingRestriction;
-          }>
+          }) as FetchResult<UpdateCgaViewingRestrictionMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -98,9 +99,7 @@ export const CGAViewingRestrictionForm: React.FC<CGAViewingRestrictionFormProps>
             variables: {
               ...data
             },
-          }) as FetchResult<{
-            createCgaViewingRestriction: CgaViewingRestriction;
-          }>
+          }) as FetchResult<CreateCgaViewingRestrictionMutation>
       }
 
       // console.log("ret", ret);
@@ -132,15 +131,14 @@ export const CGAViewingRestrictionForm: React.FC<CGAViewingRestrictionFormProps>
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteCgaViewingRestriction: CgaViewingRestriction;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteCgaViewingRestrictionDocument,
-          variables: {
-            id: params.cgaViewingRestrictionId,
-          },
-        })
+      const ret: FetchResult<DeleteCgaViewingRestrictionMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteCgaViewingRestrictionDocument,
+            variables: {
+              id: params.cgaViewingRestrictionId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

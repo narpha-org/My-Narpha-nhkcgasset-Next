@@ -4,8 +4,9 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
+  GetUserRoleCgAssetStoresQuery,
   GetUserRoleCgAssetStoresDocument,
-  UserRoleCgAssetStorePaginator,
+  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
@@ -27,19 +28,18 @@ const UserRoleCgAssetStoresPage = async ({
 }: {
   params: {}
 }) => {
-  const ret: ApolloQueryResult<{
-    UserRoleCGAssetStores: UserRoleCgAssetStorePaginator
-  }> = await apolloServer()
-    .query({
-      query: GetUserRoleCgAssetStoresDocument,
-      variables: {
-        first: 999,
-        page: 1
-      },
-      fetchPolicy: 'network-only'
-    });
+  const ret: ApolloQueryResult<GetUserRoleCgAssetStoresQuery>
+    = await apolloServer()
+      .query({
+        query: GetUserRoleCgAssetStoresDocument,
+        variables: {
+          first: 999,
+          page: 1
+        },
+        fetchPolicy: 'network-only'
+      });
   const UserRoleCGAssetStores = ret.data.UserRoleCGAssetStores.data;
-  const paginatorInfo = ret.data.UserRoleCGAssetStores.paginatorInfo;
+  const paginatorInfo = ret.data.UserRoleCGAssetStores.paginatorInfo as PaginatorInfo;
 
   const formattedUserRoleCGAssetStores: UserRoleCgAssetStoreColumn[] = UserRoleCGAssetStores.map((item) => ({
     id: item.id,

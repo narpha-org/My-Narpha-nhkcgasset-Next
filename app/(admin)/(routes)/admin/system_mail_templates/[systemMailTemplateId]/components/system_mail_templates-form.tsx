@@ -12,8 +12,11 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   SystemMailTemplate,
+  CreateSystemMailTemplateMutation,
   CreateSystemMailTemplateDocument,
+  UpdateSystemMailTemplateMutation,
   UpdateSystemMailTemplateDocument,
+  DeleteSystemMailTemplateMutation,
   DeleteSystemMailTemplateDocument,
 } from "@/graphql/generated/graphql";
 
@@ -103,9 +106,7 @@ export const SystemMailTemplateForm: React.FC<SystemMailTemplateFormProps> = ({
               id: params.systemMailTemplateId,
               ...data
             },
-          }) as FetchResult<{
-            updateSystemMailTemplate: SystemMailTemplate;
-          }>
+          }) as FetchResult<UpdateSystemMailTemplateMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -113,9 +114,7 @@ export const SystemMailTemplateForm: React.FC<SystemMailTemplateFormProps> = ({
             variables: {
               ...data
             },
-          }) as FetchResult<{
-            createSystemMailTemplate: SystemMailTemplate;
-          }>
+          }) as FetchResult<CreateSystemMailTemplateMutation>
       }
 
       // console.log("ret", ret);
@@ -151,15 +150,14 @@ export const SystemMailTemplateForm: React.FC<SystemMailTemplateFormProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteSystemMailTemplate: SystemMailTemplate;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteSystemMailTemplateDocument,
-          variables: {
-            id: params.systemMailTemplateId,
-          },
-        })
+      const ret: FetchResult<DeleteSystemMailTemplateMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteSystemMailTemplateDocument,
+            variables: {
+              id: params.systemMailTemplateId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

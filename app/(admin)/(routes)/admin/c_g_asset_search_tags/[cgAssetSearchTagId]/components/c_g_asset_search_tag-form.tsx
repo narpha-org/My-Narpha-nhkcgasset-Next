@@ -12,10 +12,12 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgAssetSearchTag,
+  CreateCgAssetSearchTagMutation,
   CreateCgAssetSearchTagDocument,
+  UpdateCgAssetSearchTagMutation,
   UpdateCgAssetSearchTagDocument,
+  DeleteCgAssetSearchTagMutation,
   DeleteCgAssetSearchTagDocument,
-  CgAssetSearchTagPaginator,
 } from "@/graphql/generated/graphql";
 
 import { Input } from "@/components/ui/input"
@@ -32,7 +34,13 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
 import { AlertModal } from "@/components/modals/alert-modal"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue
+// } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 
 const formSchema = z.object({
@@ -94,9 +102,7 @@ export const CGAssetSearchTagForm: React.FC<CGAssetSearchTagFormProps> = ({
               id: params.cgAssetSearchTagId,
               ...data
             },
-          }) as FetchResult<{
-            updateCgAssetSearchTag: CgAssetSearchTag;
-          }>
+          }) as FetchResult<UpdateCgAssetSearchTagMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -104,9 +110,7 @@ export const CGAssetSearchTagForm: React.FC<CGAssetSearchTagFormProps> = ({
             variables: {
               ...data
             },
-          }) as FetchResult<{
-            createCgAssetSearchTag: CgAssetSearchTag;
-          }>
+          }) as FetchResult<CreateCgAssetSearchTagMutation>
       }
 
       // console.log("ret", ret);
@@ -138,15 +142,14 @@ export const CGAssetSearchTagForm: React.FC<CGAssetSearchTagFormProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteCgAssetSearchTag: CgAssetSearchTag;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteCgAssetSearchTagDocument,
-          variables: {
-            id: params.cgAssetSearchTagId,
-          },
-        })
+      const ret: FetchResult<DeleteCgAssetSearchTagMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteCgAssetSearchTagDocument,
+            variables: {
+              id: params.cgAssetSearchTagId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

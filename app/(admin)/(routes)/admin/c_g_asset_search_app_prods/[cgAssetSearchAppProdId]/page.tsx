@@ -1,8 +1,9 @@
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgAssetSearchAppProd,
+  GetCgAssetSearchAppProdQuery,
   GetCgAssetSearchAppProdDocument,
+  CgAssetSearchAppProd,
 } from "@/graphql/generated/graphql";
 
 import { CGAssetSearchAppProdForm } from "./components/c_g_asset_search_app_prods-form";
@@ -12,16 +13,15 @@ const CGAssetSearchAppProdPage = async ({
 }: {
   params: { cgAssetSearchAppProdId: string }
 }) => {
-  const ret: ApolloQueryResult<{
-    CGAssetSearchAppProd: CgAssetSearchAppProd
-  }> = await apolloServer()
-    .query({
-      query: GetCgAssetSearchAppProdDocument,
-      variables: {
-        id: params.cgAssetSearchAppProdId
-      },
-    });
-  const CGAssetSearchAppProd = ret.data.CGAssetSearchAppProd;
+  const ret: ApolloQueryResult<GetCgAssetSearchAppProdQuery>
+    = await apolloServer()
+      .query({
+        query: GetCgAssetSearchAppProdDocument,
+        variables: {
+          id: params.cgAssetSearchAppProdId
+        },
+      });
+  const CGAssetSearchAppProd = ret.data.CGAssetSearchAppProd as CgAssetSearchAppProd;
 
   return (
     <div className="flex-col">

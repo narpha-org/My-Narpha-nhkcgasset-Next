@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth-options";
 import { redirect } from "next/navigation";
 
 import { MainNav } from "@/components/main-nav";
-import { ThemeToggle } from "@/components/theme-toggle";
+// import { ThemeToggle } from "@/components/theme-toggle";
 import { LogoutButton } from "@/components/auth-buttons";
 
 const Navbar = async () => {
@@ -19,7 +19,7 @@ const Navbar = async () => {
       <div className="flex h-16 items-center px-4">
         <MainNav className="mx-6" />
         <div className="ml-auto flex items-center space-x-4">
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
           <LogoutButton session={session} />
         </div>
       </div>

@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+@function vw($size, $viewport: 1920) {
+  $rate: 100 / $viewport;
+  @return $rate * $size * 1vw;
+}
+
+@mixin fz($font_size: 10) {
+  font-size: $font_size * 1px;
+  font-size: vw($font_size);
+}
+
+.my-assets-thumbnail-link {
+  display: flex;
+  width: 4.173vw;
+  height: 4.173vw;
+  object-fit: fill;
+}
+
+.my-assets-textarea-tags {
+  max-width: 28.8541666667vw;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 0.15625vw;
+  padding: 0.2604166667vw 0.5208333333vw;
+  border: 0.0520833333vw solid #bab9b9;
+  margin-top: 0.3vw;
+}
+
+.my-assets-textarea-log {
+  max-width: 28.8541666667vw;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 0.15625vw;
+  padding: 0.2604166667vw 0.5208333333vw;
+  border: 0.0520833333vw solid #bab9b9;
+  margin-top: 0.3vw;
+}
+
+.my-assets-pulldown-upload-dir {
+  max-width: vw(385);
+  width: 100%;
+  padding: vw(3) vw(10);
+  color: #212121;
+  border-radius: vw(5);
+  border: vw(1) solid #bab9b9;
+  background: #f8fafc;
+  background-image: url(../public/assets/images/triangle.svg);
+  background-position: right vw(15) center;
+  background-repeat: no-repeat;
+  background-size: vw(15) vw(13);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin-top: 0.3vw;
+}

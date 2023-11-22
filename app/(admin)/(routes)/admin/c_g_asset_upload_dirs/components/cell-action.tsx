@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgAssetUploadDir,
+  // CgAssetUploadDir,
+  DeleteCgAssetUploadDirMutation,
   DeleteCgAssetUploadDirDocument,
 } from "@/graphql/generated/graphql";
 
@@ -40,15 +41,14 @@ export const CellAction: React.FC<CellActionProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteCgAssetUploadDir: CgAssetUploadDir;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteCgAssetUploadDirDocument,
-          variables: {
-            id: data.id,
-          },
-        })
+      const ret: FetchResult<DeleteCgAssetUploadDirMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteCgAssetUploadDirDocument,
+            variables: {
+              id: data.id,
+            },
+          })
 
       // console.log("ret", ret);
       if (

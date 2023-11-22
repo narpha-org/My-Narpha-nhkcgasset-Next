@@ -19,9 +19,23 @@ export type UploadImageProps = {
   thumb_file_path: string;
 }
 
+export type UploadThumbProps = {
+  thumb_file_name: string;
+  thumb_url: string;
+  thumb_file_path: string;
+}
+
 interface ImageUploadProps {
   disabled?: boolean;
   onChange: ({ file_name, url, file_path, thumb_file_name, thumb_url, thumb_file_path }: UploadImageProps) => void;
+  onRemove: (value: string) => void;
+  value: UploadImageProps[];
+  glacier?: boolean;
+}
+
+interface ThumbUploadProps {
+  disabled?: boolean;
+  onChange: ({ thumb_file_name, thumb_url, thumb_file_path }: UploadThumbProps) => void;
   onRemove: (value: string) => void;
   value: UploadImageProps[];
   glacier?: boolean;

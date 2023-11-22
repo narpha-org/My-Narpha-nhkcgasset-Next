@@ -4,8 +4,9 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgAssetCatePaginator,
+  GetCgAssetCatesQuery,
   GetCgAssetCatesDocument,
+  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
@@ -27,19 +28,18 @@ const CGAssetCatesPage = async ({
 }: {
   params: {}
 }) => {
-  const ret: ApolloQueryResult<{
-    CGAssetCates: CgAssetCatePaginator
-  }> = await apolloServer()
-    .query({
-      query: GetCgAssetCatesDocument,
-      variables: {
-        first: 999,
-        page: 1
-      },
-      fetchPolicy: 'network-only'
-    });
+  const ret: ApolloQueryResult<GetCgAssetCatesQuery>
+    = await apolloServer()
+      .query({
+        query: GetCgAssetCatesDocument,
+        variables: {
+          first: 999,
+          page: 1
+        },
+        fetchPolicy: 'network-only'
+      });
   const CGAssetCates = ret.data.CGAssetCates.data;
-  const paginatorInfo = ret.data.CGAssetCates.paginatorInfo;
+  const paginatorInfo = ret.data.CGAssetCates.paginatorInfo as PaginatorInfo;
 
   const formattedCGAssetCates: CGAssetCateColumn[] = CGAssetCates.map((item) => ({
     id: item.id,

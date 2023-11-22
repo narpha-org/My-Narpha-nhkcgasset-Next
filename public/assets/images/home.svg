@@ -1,0 +1,14 @@
+<svg id="home_icon" xmlns="http://www.w3.org/2000/svg" width="18.76" height="19.25" viewBox="0 0 18.76 19.25">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="長方形_8" data-name="長方形 8" class="cls-1" d="M1758.3,26.443a2.349,2.349,0,0,1,2.35,2.351v7.051a2.35,2.35,0,1,1-4.7,0V28.794A2.349,2.349,0,0,1,1758.3,26.443Z" transform="translate(-1753.62 -18.938)"/>
+  <path id="長方形_8-2" data-name="長方形 8" class="cls-1" d="M1767.7,26.443a2.349,2.349,0,0,1,2.35,2.351v7.051a2.35,2.35,0,1,1-4.7,0V28.794A2.349,2.349,0,0,1,1767.7,26.443Z" transform="translate(-1753.62 -18.938)"/>
+  <path id="長方形_8-3" data-name="長方形 8" class="cls-1" d="M1757.12,30.907v-4.7h11.76v4.7h-11.76Z" transform="translate(-1753.62 -18.938)"/>
+  <path id="三角形_1" data-name="三角形 1" class="cls-1" d="M1762.32,19.219a0.991,0.991,0,0,1,1.36,0l8.38,7.845a1,1,0,0,1-.68,1.73h-16.76a1,1,0,0,1-.68-1.73Z" transform="translate(-1753.62 -18.938)"/>
+</svg>

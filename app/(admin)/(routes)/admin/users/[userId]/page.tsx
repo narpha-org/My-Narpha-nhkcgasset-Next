@@ -1,12 +1,15 @@
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  User,
+  GetUserQuery,
   GetUserDocument,
-  CgaRegistrantAffiliation,
+  User,
+  GetCgaRegistrantAffilliationsValidQuery,
   GetCgaRegistrantAffilliationsValidDocument,
-  UserRoleCgAssetStore,
+  CgaRegistrantAffiliation,
+  GetUserRoleCgAssetStoresValidQuery,
   GetUserRoleCgAssetStoresValidDocument,
+  UserRoleCgAssetStore,
 } from "@/graphql/generated/graphql";
 
 import { UserForm } from "./components/user-form";
@@ -16,32 +19,31 @@ const UserPage = async ({
 }: {
   params: { userId: string }
 }) => {
-  const ret: ApolloQueryResult<{
-    getUser: User
-  }> = await apolloServer()
-    .query({
-      query: GetUserDocument,
-      variables: {
-        id: params.userId
-      },
-    });
-  const User = ret.data.getUser;
+  const ret: ApolloQueryResult<GetUserQuery>
+    = await apolloServer()
+      .query({
+        query: GetUserDocument,
+        variables: {
+          id: params.userId
+        },
+      });
+  const User = ret.data.getUser as User;
 
-  const retRegistrantAffiliation: ApolloQueryResult<{
-    CGARegistrantAffiliationsValid: CgaRegistrantAffiliation[]
-  }> = await apolloServer()
-    .query({
-      query: GetCgaRegistrantAffilliationsValidDocument,
-    });
-  const registrantAffiliations = retRegistrantAffiliation.data.CGARegistrantAffiliationsValid;
+  const retRegistrantAffiliation: ApolloQueryResult<GetCgaRegistrantAffilliationsValidQuery>
+    = await apolloServer()
+      .query({
+        query: GetCgaRegistrantAffilliationsValidDocument,
+      });
+  const registrantAffiliations = retRegistrantAffiliation.data.CGARegistrantAffiliationsValid as
+    CgaRegistrantAffiliation[];
 
-  const retUserRoleCgAssetStore: ApolloQueryResult<{
-    UserRoleCGAssetStoresValid: UserRoleCgAssetStore[]
-  }> = await apolloServer()
-    .query({
-      query: GetUserRoleCgAssetStoresValidDocument,
-    });
-  const userRoleCgAssetStores = retUserRoleCgAssetStore.data.UserRoleCGAssetStoresValid;
+  const retUserRoleCgAssetStore: ApolloQueryResult<GetUserRoleCgAssetStoresValidQuery>
+    = await apolloServer()
+      .query({
+        query: GetUserRoleCgAssetStoresValidDocument,
+      });
+  const userRoleCgAssetStores = retUserRoleCgAssetStore.data.UserRoleCGAssetStoresValid as
+    UserRoleCgAssetStore[];
 
   return (
     <div className="flex-col">

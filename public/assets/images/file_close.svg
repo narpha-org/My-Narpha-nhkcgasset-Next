@@ -1,0 +1,18 @@
+<svg id="グループ_3" data-name="グループ 3" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        opacity: 0.36;
+      }
+
+      .cls-2 {
+        fill: #696969;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <circle id="楕円形_870" data-name="楕円形 870" class="cls-1" cx="11" cy="11" r="11"/>
+  <path id="長方形_667" data-name="長方形 667" class="cls-2" d="M1275.79,4104.4a1,1,0,0,1,0,1.41l-11.32,11.32a1,1,0,0,1-1.41,0,1.008,1.008,0,0,1,0-1.42l11.31-11.31A1.008,1.008,0,0,1,1275.79,4104.4Z" transform="translate(-1258 -4100)"/>
+  <path id="長方形_667-2" data-name="長方形 667" class="cls-2" d="M1275.24,4117.13a1.008,1.008,0,0,1-1.42,0l-11.31-11.31a1.008,1.008,0,0,1,0-1.42,1,1,0,0,1,1.41,0l11.32,11.32A1,1,0,0,1,1275.24,4117.13Z" transform="translate(-1258 -4100)"/>
+</svg>

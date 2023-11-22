@@ -12,8 +12,11 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgaRegistrantAffiliation,
+  CreateCgaRegistrantAffiliationMutation,
   CreateCgaRegistrantAffiliationDocument,
+  UpdateCgaRegistrantAffiliationMutation,
   UpdateCgaRegistrantAffiliationDocument,
+  DeleteCgaRegistrantAffiliationMutation,
   DeleteCgaRegistrantAffiliationDocument,
 } from "@/graphql/generated/graphql";
 
@@ -88,9 +91,7 @@ export const CGARegistrantAffiliationForm: React.FC<CGARegistrantAffiliationForm
               id: params.cgaRegistrantAffiliationId,
               ...data
             },
-          }) as FetchResult<{
-            updateCgaRegistrantAffiliation: CgaRegistrantAffiliation;
-          }>
+          }) as FetchResult<UpdateCgaRegistrantAffiliationMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -98,9 +99,7 @@ export const CGARegistrantAffiliationForm: React.FC<CGARegistrantAffiliationForm
             variables: {
               ...data
             },
-          }) as FetchResult<{
-            createCgaRegistrantAffiliation: CgaRegistrantAffiliation;
-          }>
+          }) as FetchResult<CreateCgaRegistrantAffiliationMutation>
       }
 
       // console.log("ret", ret);
@@ -132,15 +131,14 @@ export const CGARegistrantAffiliationForm: React.FC<CGARegistrantAffiliationForm
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteCgaRegistrantAffiliation: CgaRegistrantAffiliation;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteCgaRegistrantAffiliationDocument,
-          variables: {
-            id: params.cgaRegistrantAffiliationId,
-          },
-        })
+      const ret: FetchResult<DeleteCgaRegistrantAffiliationMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteCgaRegistrantAffiliationDocument,
+            variables: {
+              id: params.cgaRegistrantAffiliationId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

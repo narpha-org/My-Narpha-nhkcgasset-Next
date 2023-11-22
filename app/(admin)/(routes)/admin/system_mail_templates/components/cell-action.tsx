@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  DeleteSystemMailTemplateDocument, SystemMailTemplate,
+  DeleteSystemMailTemplateMutation,
+  DeleteSystemMailTemplateDocument,
+  //  SystemMailTemplate,
 } from "@/graphql/generated/graphql";
 
 import { Button } from "@/components/ui/button";
@@ -39,15 +41,14 @@ export const CellAction: React.FC<CellActionProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteSystemMailTemplate: SystemMailTemplate;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteSystemMailTemplateDocument,
-          variables: {
-            id: data.id,
-          },
-        })
+      const ret: FetchResult<DeleteSystemMailTemplateMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteSystemMailTemplateDocument,
+            variables: {
+              id: data.id,
+            },
+          })
 
       // console.log("ret", ret);
       if (

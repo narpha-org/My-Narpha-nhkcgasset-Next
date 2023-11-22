@@ -6,15 +6,15 @@ import {
 export const codeCGAssetCates: { key: CodeCgAssetCate; value: string }[] = [
   {
     key: CodeCgAssetCate.C3D,
-    value: "3Dタグ",
+    value: "3DCGタグ",
   },
   {
     key: CodeCgAssetCate.C2D,
-    value: "2Dタグ",
+    value: "動画タグ",
   },
   {
     key: CodeCgAssetCate.Img,
-    value: "-タグ非表示-",
+    value: "静止画タグ",
   },
 ];
 

@@ -4,11 +4,12 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgAssetSearchAppProdPaginator,
+  GetCgAssetSearchAppProdsQuery,
   GetCgAssetSearchAppProdsDocument,
+  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
-import { formatter } from "@/lib/utils";
+// import { formatter } from "@/lib/utils";
 
 import { CGAssetSearchAppProdClient } from "./components/client";
 import { CGAssetSearchAppProdColumn } from "./components/columns";
@@ -27,19 +28,18 @@ const CGAssetSearchAppProdsPage = async ({
 }: {
   params: {}
 }) => {
-  const ret: ApolloQueryResult<{
-    CGAssetSearchAppProds: CgAssetSearchAppProdPaginator
-  }> = await apolloServer()
-    .query({
-      query: GetCgAssetSearchAppProdsDocument,
-      variables: {
-        first: 999,
-        page: 1
-      },
-      fetchPolicy: 'network-only'
-    });
+  const ret: ApolloQueryResult<GetCgAssetSearchAppProdsQuery>
+    = await apolloServer()
+      .query({
+        query: GetCgAssetSearchAppProdsDocument,
+        variables: {
+          first: 999,
+          page: 1
+        },
+        fetchPolicy: 'network-only'
+      });
   const CGAssetSearchAppProds = ret.data.CGAssetSearchAppProds.data;
-  const paginatorInfo = ret.data.CGAssetSearchAppProds.paginatorInfo;
+  const paginatorInfo = ret.data.CGAssetSearchAppProds.paginatorInfo as PaginatorInfo;
 
   const formattedCGAssetSearchAppProds: CGAssetSearchAppProdColumn[] = CGAssetSearchAppProds.map((item) => ({
     id: item.id,

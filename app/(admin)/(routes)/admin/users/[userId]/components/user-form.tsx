@@ -14,8 +14,11 @@ import {
   User,
   CgaRegistrantAffiliation,
   UserRoleCgAssetStore,
+  CreateUserMutation,
   CreateUserDocument,
+  UpdateUserMutation,
   UpdateUserDocument,
+  DeleteUserMutation,
   DeleteUserDocument,
 } from "@/graphql/generated/graphql";
 
@@ -114,9 +117,7 @@ export const UserForm: React.FC<UserFormProps> = ({
                 ...data
               },
             },
-          }) as FetchResult<{
-            updateUser: User;
-          }>
+          }) as FetchResult<UpdateUserMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -126,9 +127,7 @@ export const UserForm: React.FC<UserFormProps> = ({
                 ...data
               },
             },
-          }) as FetchResult<{
-            createUser: User;
-          }>
+          }) as FetchResult<CreateUserMutation>
       }
 
       // console.log("ret", ret);
@@ -162,15 +161,14 @@ export const UserForm: React.FC<UserFormProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteUser: User;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteUserDocument,
-          variables: {
-            id: params.userId,
-          },
-        })
+      const ret: FetchResult<DeleteUserMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteUserDocument,
+            variables: {
+              id: params.userId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

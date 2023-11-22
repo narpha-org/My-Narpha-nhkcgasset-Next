@@ -4,8 +4,9 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgaViewingRestrictionPaginator,
+  GetCgaViewingRestrictionsQuery,
   GetCgaViewingRestrictionsDocument,
+  PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
@@ -27,19 +28,18 @@ const CGAViewingRestrictionsPage = async ({
 }: {
   params: {}
 }) => {
-  const ret: ApolloQueryResult<{
-    CGAViewingRestrictions: CgaViewingRestrictionPaginator
-  }> = await apolloServer()
-    .query({
-      query: GetCgaViewingRestrictionsDocument,
-      variables: {
-        first: 999,
-        page: 1
-      },
-      fetchPolicy: 'network-only'
-    });
+  const ret: ApolloQueryResult<GetCgaViewingRestrictionsQuery>
+    = await apolloServer()
+      .query({
+        query: GetCgaViewingRestrictionsDocument,
+        variables: {
+          first: 999,
+          page: 1
+        },
+        fetchPolicy: 'network-only'
+      });
   const CGAViewingRestrictions = ret.data.CGAViewingRestrictions.data;
-  const paginatorInfo = ret.data.CGAViewingRestrictions.paginatorInfo;
+  const paginatorInfo = ret.data.CGAViewingRestrictions.paginatorInfo as PaginatorInfo;
 
   const formattedCGAViewingRestrictions: CGAViewingRestrictionColumn[] = CGAViewingRestrictions.map((item) => ({
     id: item.id,

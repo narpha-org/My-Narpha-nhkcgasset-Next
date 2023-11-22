@@ -12,8 +12,11 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgaBroadcastingRight,
+  CreateCgaBroadcastingRightMutation,
   CreateCgaBroadcastingRightDocument,
+  UpdateCgaBroadcastingRightMutation,
   UpdateCgaBroadcastingRightDocument,
+  DeleteCgaBroadcastingRightMutation,
   DeleteCgaBroadcastingRightDocument,
 } from "@/graphql/generated/graphql";
 
@@ -88,9 +91,7 @@ export const CGaBroadcastingRightForm: React.FC<CGaBroadcastingRightFormProps> =
               id: params.cgaBroadcastingRightId,
               ...data
             },
-          }) as FetchResult<{
-            UpdateCgaBroadcastingRight: CgaBroadcastingRight;
-          }>
+          }) as FetchResult<UpdateCgaBroadcastingRightMutation>
       } else {
         ret = await apolloClient
           .mutate({
@@ -98,9 +99,7 @@ export const CGaBroadcastingRightForm: React.FC<CGaBroadcastingRightFormProps> =
             variables: {
               ...data
             },
-          }) as FetchResult<{
-            CreateCgaBroadcastingRight: CgaBroadcastingRight;
-          }>
+          }) as FetchResult<CreateCgaBroadcastingRightMutation>
       }
 
       // console.log("ret", ret);
@@ -132,15 +131,14 @@ export const CGaBroadcastingRightForm: React.FC<CGaBroadcastingRightFormProps> =
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteCgaBroadcastingRight: CgaBroadcastingRight;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteCgaBroadcastingRightDocument,
-          variables: {
-            id: params.cgaBroadcastingRightId,
-          },
-        })
+      const ret: FetchResult<DeleteCgaBroadcastingRightMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteCgaBroadcastingRightDocument,
+            variables: {
+              id: params.cgaBroadcastingRightId,
+            },
+          })
 
       // console.log("ret", ret);
       if (

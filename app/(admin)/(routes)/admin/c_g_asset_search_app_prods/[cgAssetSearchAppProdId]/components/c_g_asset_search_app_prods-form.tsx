@@ -12,8 +12,11 @@ import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CgAssetSearchAppProd,
+  CreateCgAssetSearchAppProdMutation,
   CreateCgAssetSearchAppProdDocument,
+  UpdateCgAssetSearchAppProdMutation,
   UpdateCgAssetSearchAppProdDocument,
+  DeleteCgAssetSearchAppProdMutation,
   DeleteCgAssetSearchAppProdDocument,
 } from "@/graphql/generated/graphql";
 
@@ -31,7 +34,13 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
 import { AlertModal } from "@/components/modals/alert-modal"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+// import { 
+//   Select, 
+//   SelectContent, 
+//   SelectItem, 
+//   SelectTrigger, 
+//   SelectValue 
+// } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 
 const formSchema = z.object({
@@ -83,24 +92,42 @@ export const CGAssetSearchAppProdForm: React.FC<CGAssetSearchAppProdFormProps> =
   const onSubmit = async (data: CGAssetSearchAppProdFormValues) => {
     try {
       setLoading(true);
+
+      let ret: FetchResult;
       if (initialData) {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: UpdateCgAssetSearchAppProdDocument,
             variables: {
               id: params.cgAssetSearchAppProdId,
               ...data
             },
-          })
+          }) as FetchResult<UpdateCgAssetSearchAppProdMutation>
       } else {
-        await apolloClient
+        ret = await apolloClient
           .mutate({
             mutation: CreateCgAssetSearchAppProdDocument,
             variables: {
               ...data
             },
-          })
+          }) as FetchResult<CreateCgAssetSearchAppProdMutation>
       }
+
+      // console.log("ret", ret);
+      if (
+        ret.errors &&
+        ret.errors[0] &&
+        ret.errors[0].extensions &&
+        ret.errors[0].extensions.debugMessage
+      ) {
+        throw new Error(ret.errors[0].extensions.debugMessage as string)
+      } else if (
+        ret.errors &&
+        ret.errors[0]
+      ) {
+        throw new Error(ret.errors[0].message as string)
+      }
+
       router.refresh();
       router.push(`/admin/c_g_asset_search_app_prods`);
       toast.success(toastMessage);
@@ -115,15 +142,14 @@ export const CGAssetSearchAppProdForm: React.FC<CGAssetSearchAppProdFormProps> =
     try {
       setLoading(true);
 
-      const ret: FetchResult<{
-        DeleteCgAssetSearchAppProd: CgAssetSearchAppProd;
-      }> = await apolloClient
-        .mutate({
-          mutation: DeleteCgAssetSearchAppProdDocument,
-          variables: {
-            id: params.cgAssetSearchAppProdId,
-          },
-        })
+      const ret: FetchResult<DeleteCgAssetSearchAppProdMutation>
+        = await apolloClient
+          .mutate({
+            mutation: DeleteCgAssetSearchAppProdDocument,
+            variables: {
+              id: params.cgAssetSearchAppProdId,
+            },
+          })
 
       // console.log("ret", ret);
       if (
