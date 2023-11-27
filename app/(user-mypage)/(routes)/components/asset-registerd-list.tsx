@@ -37,12 +37,14 @@ interface AssetRegisterdListProps {
   searchRef: Ref<{ handleSearch(txt: string): void; } | undefined>
   cgAssets: CgAsset[]
   cgAssetsPg: CgAssetPaginator['paginatorInfo']
+  cgAssetsSearchSection: string
 }
 
 const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
   searchRef,
   cgAssets,
-  cgAssetsPg
+  cgAssetsPg,
+  cgAssetsSearchSection,
 }) => {
   const { data: session, status } = useSession()
 
@@ -62,6 +64,7 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
 
   const [open, setOpen] = useState(false);
   const [deleteCgAssetId, setDeleteCgAssetId] = useState('');
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
   useEffect(() => {
     setLoading(false)
@@ -96,9 +99,11 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
       }
 
       router.refresh();
-      router.push(`/c_g_assets`);
+      // router.push(`/`);
+      refreshPage();
       toast.success('CGアセットが削除されました。');
     } catch (error: any) {
+      console.log(`err: ${error}`);
       toast.error('CGアセットの削除に失敗しました。');
     } finally {
       setLoading(false);
@@ -116,7 +121,7 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
           variables: {
             create_user_id: (session?.user as { userId: string }).userId,
             first: rowCount,
-            section: 'CGASSETS_CREATED_BY_USER',
+            section: cgAssetsSearchSection,
             page: param.page, // pageIndex + 1,
             order: param.order, // order,
             orderAsc: (param.orderAsc ? 'ASC' : 'DESC'), // (orderAsc ? 'ASC' : 'DESC'),
@@ -128,6 +133,15 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
     setPageCount(() => Math.ceil(ret.data.CGAssetsCreatedAll.paginatorInfo.total / rowCount));
 
     setLoading(false)
+  }
+
+  const refreshPage = async () => {
+    await fetchData({
+      page: pageIndex,
+      order: order,
+      orderAsc: orderAsc,
+      searchTxt: searchTxt,
+    });
   }
 
   const targetPage = async (newIndex) => {
@@ -216,6 +230,7 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
         onClose={() => setOpen(false)}
         onConfirm={onDelete}
         loading={loading}
+        title={deleteConfirmText}
       />
       <Table>
         <TableCaption>登録一覧</TableCaption>
@@ -252,7 +267,8 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
                     className="ml-auto"
                     type="button"
                     onClick={() => {
-                      setDeleteCgAssetId(elem.id);
+                      setDeleteCgAssetId(() => elem.id);
+                      setDeleteConfirmText(() => `以下のアセット情報削除を実行してよろしいですか？<br ><br >Asset ID: ${elem.asset_id}<br >Asset Name: ${elem.asset_name}`);
                       setOpen(true);
                     }}
                   >

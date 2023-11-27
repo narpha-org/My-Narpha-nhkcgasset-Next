@@ -126,8 +126,8 @@ const FileUpload: React.FC<FileUploadProps> = ({
   return (
     <>
       <div className="mb-4 flex items-center gap-4">
-        {value.map((obj) => (
-          <div key={obj.url} className="relative w-[290px] h-[160px] rounded-md overflow-hidden">
+        {value.map((obj, idx) => (
+          <div key={idx} className="relative w-[290px] h-[160px] rounded-md overflow-hidden">
             <div className="z-10 absolute top-2 right-2">
               <Button
                 type="button"

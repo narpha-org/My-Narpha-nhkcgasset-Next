@@ -28,14 +28,14 @@ export const uploadImageToS3 = async (
   // Key: アップロードするファイルのキーを指定します。
   // ContentType: アップロードするファイルのMIMEタイプを指定します。
   // Body: アップロードするファイルデータを指定します。
-  console.log("アップロードparams:", params);
+  // console.log("アップロードparams:", params);
 
   try {
     // S3に画像をアップロードする
     const data = await s3.upload(params).promise();
     // アップロード成功時の処理
-    console.log("アップロード成功:", data.Location);
-    console.log("アップロード情報:", data);
+    // console.log("アップロード成功:", data.Location);
+    // console.log("アップロード情報:", data);
     // アップロードされた画像のURLを取得
     return data;
   } catch (error) {

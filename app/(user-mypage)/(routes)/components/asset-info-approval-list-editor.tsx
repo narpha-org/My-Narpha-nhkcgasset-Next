@@ -24,7 +24,8 @@ import {
   ApplyDownload,
   PaginatorInfo,
   ApplyDownloadPaginator,
-  StatusApplyDownload
+  StatusApplyDownload,
+  SectionApplyDownload
 } from "@/graphql/generated/graphql";
 import { ROW_COUNT } from "@/lib/pagenation";
 import paginateStyles from "@/styles/components/paginate-block.module.scss";
@@ -67,12 +68,12 @@ const AssetInfoApprovalListEditor: React.FC<AssetInfoApprovalListEditorProps> = 
         .query({
           query: GetApplyDownloadsApplyOrApprovalDocument,
           variables: {
-            user_id: (session?.user as { userId: string }).userId,
+            apply_user_id: (session?.user as { userId: string }).userId,
             first: rowCount,
             page: param.page, // pageIndex + 1,
             order: param.order, // order,
             orderAsc: (param.orderAsc ? 'ASC' : 'DESC'), // (orderAsc ? 'ASC' : 'DESC'),
-            section_adl: 'APPROVAL_EDITOR',
+            section_adl: SectionApplyDownload.ApprovalEditor,
             searchTxt: param.searchTxt, // searchTxt
           }
         });

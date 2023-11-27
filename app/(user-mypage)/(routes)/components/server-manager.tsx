@@ -11,6 +11,7 @@ import {
   ApplyDownload,
   CgAsset,
   PaginatorInfo,
+  CgAssetsSearchSection,
 } from "@/graphql/generated/graphql";
 import { ROW_COUNT } from "@/lib/pagenation";
 import paginateStyles from "@/styles/components/paginate-block.module.scss";
@@ -32,7 +33,7 @@ const HomeDashboardServerManager = async ({ }: HomeDashboardServerManagerProps) 
           create_user_id: (session?.user as { userId: string }).userId,
           first: rowCount,
           page: 1,
-          section: 'CGASSETS_CREATED_BY_USER'
+          section: CgAssetsSearchSection.CgassetsCreatedByUser
         }
       });
   const systemNotices = ret.data.SystemNoticesValid as SystemNotice[];

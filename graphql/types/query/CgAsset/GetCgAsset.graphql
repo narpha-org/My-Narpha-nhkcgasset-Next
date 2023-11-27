@@ -108,6 +108,7 @@ query GetCgAsset($id: ID!) {
         ongoing_request
         expiry_date
         presigned_url
+        file_name
       }
     }
     download_count

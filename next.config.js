@@ -2,11 +2,31 @@
 const nextConfig = {
   crossOrigin: "anonymous",
   images: {
-    domains: [
-      "mynarpha.s3.ap-northeast-1.amazonaws.com",
-      "res.cloudinary.com",
-      "picsum.photos",
-      "rawr.narpha.org",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "mynarpha.s3.ap-northeast-1.amazonaws.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "rawr.narpha.org",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   env: {

@@ -1,7 +1,0 @@
-mutation CreateSample($text: String!) {
-  createSample(text: $text) {
-    __typename
-    id
-    text
-  }
-}

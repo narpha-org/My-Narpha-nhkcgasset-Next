@@ -68,16 +68,16 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
                     <p>ダウンロード</p><GlacierDLDialog applyDownloads={applyDownloads} cgAsset={cgAsset} />
                   </div>
                 )}
-                {(await isServerRoleUser() || await isServerRoleOther()) && (
+                {downloadable === false && (await isServerRoleUser() || await isServerRoleOther()) && (
                   <div className="detail__sidedl">
-                    <ApplyDownloadDialog cgAssetId={cgAsset.id} />
+                    <p>ダウンロード</p><ApplyDownloadDialog cgAssetId={cgAsset.id} />
                   </div>
                 )}
                 {(!await isServerRoleUser() && !await isServerRoleOther()) && (
                   <div className="detail__sidedl">
                     <Link href={`/c_g_assets/${cgAsset.id}/edit`}>
                       <Button>
-                        <FileEdit className="mr-2 h-4 w-4" /> 修正
+                        編集
                       </Button>
                     </Link>
                   </div>

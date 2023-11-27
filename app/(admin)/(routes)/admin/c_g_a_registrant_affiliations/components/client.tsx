@@ -26,7 +26,7 @@ export const CGARegistrantAffiliationClient: React.FC<CGARegistrantAffiliationCl
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`登録者所属 (${paginatorInfo.total})`} description="登録者所属管理" />
+        <Heading title={`[Okta Profile項目] 登録者所属 (${paginatorInfo.total})`} description="登録者所属管理<br />Okta Profile項目: user.cgAssetStoreRgstAffiDesc と完全一致でOktaログインユーザに適用" />
         <Button onClick={() => router.push(`/admin/c_g_a_registrant_affiliations/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>

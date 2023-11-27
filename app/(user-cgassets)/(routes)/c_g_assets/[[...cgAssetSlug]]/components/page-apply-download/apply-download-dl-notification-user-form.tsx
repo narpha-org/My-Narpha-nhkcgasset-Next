@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { X, Send, DownloadCloud } from "lucide-react"
-import { dateFormat } from "@/lib/utils"
+import { dateFormat, isPastDate } from "@/lib/utils"
 
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
@@ -154,7 +154,7 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
     document.body.removeChild(element);
   };
 
-  const handleDownload = async (e, presigned_url: string) => {
+  const handleDownload = async (e, presigned_url: string, file_name: string) => {
     try {
       const result = await fetch(presigned_url, {
         method: "GET",
@@ -162,7 +162,7 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
       });
       const blob = await result.blob();
       const url = URL.createObjectURL(blob);
-      download(cgAsset?.asset_name, url);
+      download(file_name || cgAsset?.asset_name, url);
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error(error);
@@ -322,11 +322,29 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
           <div className="flex flex-col justify-items-center">
             {appDLGlaciers && appDLGlaciers.map((elem: ApplyDownloadGlacier | null) => {
               if (elem) {
+
+                if (isPastDate(elem.expiry_date) || !elem.presigned_url) {
+                  return <div key={elem.id} className="mx-auto my-2">
+                    <Button
+                      variant="ghost"
+                      className="opacity-50"
+                      type="button"
+                      style={{ cursor: "default" }}
+                    >
+                      <X className="mr-2 h-4 w-4" /> ダウンロード期限切れ
+                    </Button>
+                  </div>
+                }
+
                 return <div key={elem.id} className="mx-auto my-2">
                   <Button
                     className=""
                     type="button"
-                    onClick={(event) => handleDownload(event, elem.presigned_url as string)}
+                    onClick={(event) => handleDownload(
+                      event,
+                      elem.presigned_url as string,
+                      elem.file_name as string
+                    )}
                   >
                     <DownloadCloud className="mr-2 h-4 w-4" /> ダウンロード
                   </Button>

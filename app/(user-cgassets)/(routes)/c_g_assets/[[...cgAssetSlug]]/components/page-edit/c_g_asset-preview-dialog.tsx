@@ -5,6 +5,17 @@ import { useState } from "react"
 import { Layout } from "lucide-react";
 // import { IsRoleAdmin, IsRoleManager, IsRoleUser } from "@/lib/check-role-client";
 
+import {
+  CgAsset,
+  CgAssetCate,
+  CgAssetTag,
+  CgAssetUploadDir,
+  CgaBroadcastingRight,
+  CgaRegistrantAffiliation,
+  CgaSharedArea,
+  CgaViewingRestriction
+} from "@/graphql/generated/graphql";
+
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -15,13 +26,14 @@ import {
   // DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { cn } from '@/lib/utils';
 
 import CGAssetDetailClientPreview from "../client-detail-preview";
-import { CgAsset, CgAssetCate, CgAssetTag, CgAssetUploadDir, CgaBroadcastingRight, CgaRegistrantAffiliation, CgaSharedArea, CgaViewingRestriction } from "@/graphql/generated/graphql";
 
 
 interface CGAssetPreviewDialogProps {
   form: any;
+  disabled?: boolean;
   assetCates: CgAssetCate[];
   registrantAffiliations: CgaRegistrantAffiliation[];
   viewingRestrictions: CgaViewingRestriction[];
@@ -32,6 +44,7 @@ interface CGAssetPreviewDialogProps {
 
 const CGAssetPreviewDialog: React.FC<CGAssetPreviewDialogProps> = ({
   form,
+  disabled,
   assetCates,
   registrantAffiliations,
   viewingRestrictions,
@@ -173,7 +186,13 @@ const CGAssetPreviewDialog: React.FC<CGAssetPreviewDialogProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button
+          className={cn(
+            '',
+            disabled && 'opacity-50'
+          )}
+          style={disabled ? { cursor: 'default' } : { cursor: 'pointer' }}
+        >
           <Layout className="mr-2 h-4 w-4" /> プレビュー
         </Button>
       </DialogTrigger>

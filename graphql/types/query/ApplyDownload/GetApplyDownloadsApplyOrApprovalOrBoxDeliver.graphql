@@ -1,5 +1,5 @@
 query GetApplyDownloadsApplyOrApprovalOrBoxDeliver(
-  $user_id: ID
+  $apply_user_id: ID
   $manage_user_id: ID
   $first: Int!
   $page: Int!
@@ -9,7 +9,7 @@ query GetApplyDownloadsApplyOrApprovalOrBoxDeliver(
   $searchTxt: String
 ) {
   ApplyDownloadsApplyOrApprovalOrBoxDeliver(
-    user_id: $user_id
+    apply_user_id: $apply_user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
@@ -38,6 +38,7 @@ query GetApplyDownloadsApplyOrApprovalOrBoxDeliver(
         ongoing_request
         expiry_date
         presigned_url
+        file_name
       }
       status
       created_at

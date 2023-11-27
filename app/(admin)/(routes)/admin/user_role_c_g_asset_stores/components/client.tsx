@@ -30,7 +30,7 @@ export const UserRoleCgAssetStoreClient: React.FC<UserRoleCgAssetStoreClientProp
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`CGアセットストアロール (${paginatorInfo.total})`} description="CGアセットストアロール管理" />
+        <Heading title={`[Okta Profile項目] CGアセットストアロール (${paginatorInfo.total})`} description="CGアセットストアロール管理<br />Okta Profile項目: user.cgAssetStoreRoleDesc と完全一致でOktaログインユーザに適用" />
         <Button onClick={() => router.push(`/admin/user_role_c_g_asset_stores/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>

@@ -141,7 +141,10 @@ query CGAssetDetailClient($id: ID!, $apply_user_id: ID!) {
     desc
     id
   }
-  ApplyDownloadsBoxDeliverGlacierAll(apply_user_id: $apply_user_id) {
+  ApplyDownloadsBoxDeliverGlacierAll(
+    apply_user_id: $apply_user_id
+    asset_db_id: $id
+  ) {
     id
     status
     applyDownloadGlaciers {
@@ -149,6 +152,7 @@ query CGAssetDetailClient($id: ID!, $apply_user_id: ID!) {
       ongoing_request
       expiry_date
       presigned_url
+      file_name
     }
   }
 }

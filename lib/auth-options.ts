@@ -6,7 +6,7 @@ import { Adapter } from "next-auth/adapters";
 
 import { MyApolloAdapter } from "@/lib/auth-adp-my-apollo-adapter";
 import { getClient as apolloServer } from "@/lib/apollo-server";
-import { unknown } from "zod";
+// import { unknown } from "zod";
 import { UpdateUserAuthCustomDocument } from "@/graphql/generated/graphql";
 // import { PrismaAdapter } from "@auth/prisma-adapter";
 // import { PrismaAdapter } from "@/lib/auth-adp-prisma-adapter";
@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user, account, profile, isNewUser }) => {
       if (process.env.NODE_ENV === "development") {
-        console.log("in jwt", { user, token, account, profile });
+        // console.log("in jwt", { user, token, account, profile });
       }
 
       if (user) {
@@ -115,14 +115,14 @@ export const authOptions: NextAuthOptions = {
       yourToken.user = null;
 
       if (process.env.NODE_ENV === "development") {
-        console.log("your token", yourToken);
+        // console.log("your token", yourToken);
       }
 
       return Promise.resolve(yourToken);
     },
     session: async ({ session, token }) => {
       if (process.env.NODE_ENV === "development") {
-        console.log("in session", { session, token });
+        // console.log("in session", { session, token });
       }
 
       token.idToken;
@@ -141,7 +141,7 @@ export const authOptions: NextAuthOptions = {
       };
 
       if (process.env.NODE_ENV === "development") {
-        console.log("your session", yourSession);
+        // console.log("your session", yourSession);
       }
 
       return Promise.resolve(yourSession);

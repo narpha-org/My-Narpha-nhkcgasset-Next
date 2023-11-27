@@ -24,7 +24,8 @@ import {
   ApplyDownload,
   PaginatorInfo,
   ApplyDownloadPaginator,
-  StatusApplyDownload
+  StatusApplyDownload,
+  SectionApplyDownload
 } from "@/graphql/generated/graphql";
 import { ROW_COUNT } from "@/lib/pagenation";
 import paginateStyles from "@/styles/components/paginate-block.module.scss";
@@ -73,7 +74,7 @@ const AssetInfoApplyListManager: React.FC<AssetInfoApplyListManagerProps> = forw
             page: param.page, // pageIndex + 1,
             order: param.order, // order,
             orderAsc: (param.orderAsc ? 'ASC' : 'DESC'), // (orderAsc ? 'ASC' : 'DESC'),
-            section_adl: 'APPLY_MANAGER',
+            section_adl: SectionApplyDownload.ApplyManager,
             searchTxt: param.searchTxt, // searchTxt
           }
         });

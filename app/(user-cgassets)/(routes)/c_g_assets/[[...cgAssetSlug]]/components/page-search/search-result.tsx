@@ -1,4 +1,6 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link"
 import Image from 'next/image';
 import classNames from "classnames";
@@ -36,8 +38,17 @@ export const SearchResult: React.FC<SearchResultProps> = ({
 
   const rowCount = ROW_COUNT_CGASSETS;
 
-  const [pageIndex, setPageIndex] = useState((paginatorInfo?.currentPage || 1) - 1);
+  const [pageIndex, setPageIndex] = useState(0);
   const pageCount = Math.ceil((paginatorInfo?.total || 0) / rowCount);
+
+  useEffect(() => {
+    setPageIndex((paginatorInfo?.currentPage || 1) - 1)
+  }, [paginatorInfo?.currentPage]);
+
+  // console.log(`paginatorInfo.currentPage: ${paginatorInfo?.currentPage}`);
+  // console.log(`paginatorInfo.total: ${paginatorInfo?.total}`);
+  // console.log(`pageIndex: ${pageIndex}`);
+  // console.log(`pageCount: ${pageCount}`);
 
   const targetPage = async (newIndex) => {
     setLoadingChild(true);

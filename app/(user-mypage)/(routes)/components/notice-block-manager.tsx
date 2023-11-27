@@ -28,6 +28,7 @@ const NoticeBlockManager: React.FC<NoticeBlockManagerProps> = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [deleteSystemNoticeId, setDeleteSystemNoticeId] = useState('');
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
   useEffect(() => {
     setLoading(false)
@@ -78,6 +79,7 @@ const NoticeBlockManager: React.FC<NoticeBlockManagerProps> = ({
         onClose={() => setOpen(false)}
         onConfirm={onDelete}
         loading={loading}
+        title={deleteConfirmText}
       />
       <div v-if="title" className="flex text-lg items-center justify-between mb-5">
         <div className="flex flex-row items-center">
@@ -118,7 +120,8 @@ const NoticeBlockManager: React.FC<NoticeBlockManagerProps> = ({
                     className="ml-auto"
                     type="button"
                     onClick={() => {
-                      setDeleteSystemNoticeId(elem.id);
+                      setDeleteSystemNoticeId(() => elem.id);
+                      setDeleteConfirmText(() => `このお知らせ削除を実行してよろしいですか？`);
                       setOpen(true);
                     }}
                   >

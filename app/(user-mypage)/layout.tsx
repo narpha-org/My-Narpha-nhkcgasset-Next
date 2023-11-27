@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 import Navbar from '@/components/navbar'
 
-import '@/app/tailwind-globals.css'
+// import '@/app/tailwind-globals.css'
 
 export default async function DashboardLayout({
   children

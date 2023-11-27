@@ -77,7 +77,7 @@ const CGAssetApplyDownloadClientOther: React.FC<CGAssetPageProps & {
                 id: params.cgAssetSlug[2]
               },
             });
-        setApplyDownload(ret.data.ApplyDownload as ApplyDownload);
+        setApplyDownload(ret.data.ApplyDownloadWithPresignedUrl as ApplyDownload);
       }
 
       setIsMounted(true);

@@ -62,8 +62,8 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
       const ret = await fetchData({
         first: rowCount, page: 1, search: storeSearchInfo.cgAssetsSearchFormData, session //as CgAssetsSearchFormValues
       })
-      setData(ret.data);
-      setPaginatorInfo(ret.paginatorInfo);
+      setData(() => [...ret.data]);
+      setPaginatorInfo(() => ret.paginatorInfo);
       if (_.isEqual(storeSearchInfo.cgAssetsSearchFormData, INIT_CGASSET_SEARCH_FORM_VALUES) === false) {
         setIsInitPage(false)
       }
@@ -85,7 +85,8 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
     setSearchData(data);
 
     const ret = await fetchData({ first: rowCount, page: 1, search: data, session })
-    setData(() => ret.data);
+    // console.log(`fetchData ret.paginatorInfo: ${JSON.stringify(ret.paginatorInfo)}`);
+    setData(() => [...ret.data]);
     setPaginatorInfo(() => ret.paginatorInfo);
     storeSearchInfo.setCgAssetsSearchFormData(data)
     setIsInitPage(false)
@@ -100,7 +101,8 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
     setSearchData(data);
 
     const ret = await fetchData({ first: rowCount, page: 1, search: data, session })
-    setData(() => ret.data);
+    // console.log(`fetchData ret.paginatorInfo: ${JSON.stringify(ret.paginatorInfo)}`);
+    setData(() => [...ret.data]);
     setPaginatorInfo(() => ret.paginatorInfo);
     storeSearchInfo.setCgAssetsSearchFormData(data)
     setIsInitPage(false)
@@ -110,6 +112,7 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
 
   const onLoadPagenation = async ({ page }) => {
     const ret = await fetchData({ first: rowCount, page: page, search: searchData, session })
+    // console.log(`fetchData ret.paginatorInfo: ${JSON.stringify(ret.paginatorInfo)}`);
     setData(() => [...ret.data]);
     setPaginatorInfo(() => ret.paginatorInfo);
     setIsInitPage(false)
@@ -118,6 +121,7 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
   const onLoadMorePage = async () => {
     const page = (paginatorInfo?.currentPage ? paginatorInfo?.currentPage + 1 : 1);
     const ret = await fetchData({ first: rowCount, page: page, search: searchData, session })
+    // console.log(`fetchData ret.paginatorInfo: ${JSON.stringify(ret.paginatorInfo)}`);
     setData(() => [...data, ...ret.data]);
     setPaginatorInfo(() => ret.paginatorInfo);
     setIsInitPage(false)

@@ -24,11 +24,15 @@ export const Modal: React.FC<ModalProps> = ({
     }
   };
 
-  return ( 
+  return (
     <Dialog open={isOpen} onOpenChange={onChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle
+            dangerouslySetInnerHTML={{
+              __html: title
+            }}
+          />
           <DialogDescription>
             {description}
           </DialogDescription>

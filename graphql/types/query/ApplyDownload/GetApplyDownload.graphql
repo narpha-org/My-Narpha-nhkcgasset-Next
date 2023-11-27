@@ -1,5 +1,5 @@
 query GetApplyDownload($id: ID!) {
-  ApplyDownload(id: $id) {
+  ApplyDownloadWithPresignedUrl(id: $id) {
     id
     cgAsset {
       id
@@ -26,6 +26,7 @@ query GetApplyDownload($id: ID!) {
       ongoing_request
       expiry_date
       presigned_url
+      file_name
     }
     removal_limit_date
     download_date

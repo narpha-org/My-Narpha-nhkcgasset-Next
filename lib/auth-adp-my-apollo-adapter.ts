@@ -15,14 +15,21 @@
  *
  * @module @auth/prisma-adapter
  */
-import type { PrismaClient, Prisma } from "@prisma/client";
-import type {
+// import type { PrismaClient, Prisma } from "@prisma/client";
+// import type {
+//   Adapter,
+//   AdapterAccount,
+//   AdapterUser,
+//   AdapterSession,
+//   VerificationToken,
+// } from "@auth/core/adapters";
+import {
   Adapter,
   AdapterAccount,
   AdapterUser,
   AdapterSession,
   VerificationToken,
-} from "@auth/core/adapters";
+} from "next-auth/adapters";
 
 /**
  * ## Setup

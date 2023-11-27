@@ -12,10 +12,12 @@ export const formatter = new Intl.NumberFormat("ja-JP", {
 });
 
 export const recursiveRemoveKey = (object, deleteKey) => {
+  if (!object || typeof object !== "object") return;
+
   delete object[deleteKey];
 
   Object.values(object).forEach((val) => {
-    if (typeof val !== "object") return;
+    if (!val || typeof val !== "object") return;
     recursiveRemoveKey(val, deleteKey);
   });
 };
@@ -31,4 +33,23 @@ export const dateFormat = (value, dateTpl, altStr = "---") => {
   }
 
   return date_str;
+};
+
+export const isPastDate = (value) => {
+  let flg: boolean = true;
+
+  try {
+    const tgtDate = format(new Date(value), "yyyyMMddHHii");
+    if (!tgtDate) {
+      return flg;
+    }
+    const curDate = format(new Date(), "yyyyMMddHHii");
+    if (tgtDate > curDate) {
+      flg = false;
+    }
+  } catch (error) {
+    console.log(`err: ${error}`);
+  }
+
+  return flg;
 };

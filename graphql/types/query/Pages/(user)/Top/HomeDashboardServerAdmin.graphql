@@ -1,5 +1,5 @@
 query HomeDashboardServerAdmin(
-  $user_id: ID
+  $apply_user_id: ID
   $manage_user_id: ID
   $create_user_id: ID!
   $first: Int!
@@ -7,7 +7,7 @@ query HomeDashboardServerAdmin(
   $section: String
 ) {
   ApplyDownloadsNotDone(
-    user_id: $user_id
+    apply_user_id: $apply_user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
@@ -36,6 +36,7 @@ query HomeDashboardServerAdmin(
         ongoing_request
         expiry_date
         presigned_url
+        file_name
       }
       status
       created_at
@@ -48,7 +49,7 @@ query HomeDashboardServerAdmin(
     }
   }
   ApplyDownloadsOnlyApply(
-    user_id: $user_id
+    apply_user_id: $apply_user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
@@ -76,6 +77,7 @@ query HomeDashboardServerAdmin(
         ongoing_request
         expiry_date
         presigned_url
+        file_name
       }
       status
       created_at
@@ -88,7 +90,7 @@ query HomeDashboardServerAdmin(
     }
   }
   ApplyDownloadsApplyOrApprovalOrBoxDeliver(
-    user_id: $user_id
+    apply_user_id: $apply_user_id
     manage_user_id: $manage_user_id
     first: $first
     page: $page
@@ -116,6 +118,7 @@ query HomeDashboardServerAdmin(
         ongoing_request
         expiry_date
         presigned_url
+        file_name
       }
       status
       created_at

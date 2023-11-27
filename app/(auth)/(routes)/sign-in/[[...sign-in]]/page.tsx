@@ -68,6 +68,7 @@ const SignIn = ({ params, searchParams }: SignInPageParams) => {
           <div key={provider.name}>
             <Button
               disabled={loading}
+              size="lg"
               onClick={() => onSignIn(provider.id)}
             >
               <LogIn className="mr-2 h-4 w-4" /> {provider.name} でサインイン

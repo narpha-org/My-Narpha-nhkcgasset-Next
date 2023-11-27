@@ -1,14 +1,15 @@
 "use client";
 
+import { useEffect, useState, useRef, ChangeEventHandler } from 'react';
+import Image from 'next/image';
+// import Link from 'next/link';
+// import { FileVideo, Trash } from 'lucide-react';
+
 import { ManagedUpload } from 'aws-sdk/clients/s3';
 import { uploadImageToS3 } from '@/lib/aws-s3';
 import { uploadImageToS3Glacier } from '@/lib/aws-s3-glacier';
-import { useEffect, useState, useRef, ChangeEventHandler } from 'react';
-
-import { Button } from '@/components/ui/button-raw';
-import Image from 'next/image';
-import { FileVideo, Trash } from 'lucide-react';
-import Link from 'next/link';
+import { cn } from '@/lib/utils';
+// import { Button } from '@/components/ui/button-raw';
 
 export type UploadFileProps = {
   file_name: string;
@@ -102,7 +103,10 @@ const FileUpload: React.FC<FileUploadProps> = ({
   return (
     <>
       <h2>アップロード<button
-        className="select"
+        className={cn(
+          'select',
+          disabled && 'opacity-50'
+        )}
         type="button"
         disabled={disabled}
         onClick={handleClick}
@@ -118,8 +122,8 @@ const FileUpload: React.FC<FileUploadProps> = ({
         ファイルから選択
       </button></h2>
       <div className="deco-file">
-        {value.map((obj) => (
-          <label key={obj.url} className="">
+        {value.map((obj, idx) => (
+          <label key={idx} className="">
             {obj.file_name}
             <Image
               src="/assets/images/up_close.svg"
@@ -127,8 +131,12 @@ const FileUpload: React.FC<FileUploadProps> = ({
               height="15"
               decoding="async"
               alt="close"
-              className="up_close"
-              onClick={() => onRemove(obj.url)}
+              className={cn(
+                'up_close',
+                disabled && 'opacity-50'
+              )}
+              onClick={() => { if (!disabled) onRemove(obj.url) }}
+              style={disabled ? { cursor: 'default' } : { cursor: 'pointer' }}
             />
           </label>
         ))}

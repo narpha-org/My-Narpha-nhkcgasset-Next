@@ -1,14 +1,15 @@
 "use client";
 
+import { useEffect, useState, useRef, ChangeEventHandler } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { ManagedUpload } from 'aws-sdk/clients/s3';
+
 import { uploadImageToS3 } from '@/lib/aws-s3';
 import { uploadImageToS3Glacier } from '@/lib/aws-s3-glacier';
-import { useEffect, useState, useRef, ChangeEventHandler } from 'react';
-
-import { Button } from '@/components/ui/button-raw';
-import Image from 'next/image';
-import { ImagePlus, Trash } from 'lucide-react';
-import Link from 'next/link';
+import { cn } from '@/lib/utils';
+// import { Button } from '@/components/ui/button-raw';
+// import { ImagePlus, Trash } from 'lucide-react';
 
 export type UploadImageProps = {
   thumb_file_name: string;
@@ -101,7 +102,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   return (
     <>
       <h2>サムネイル<button
-        className="select"
+        className={cn(
+          'select',
+          disabled && 'opacity-50'
+        )}
         type="button"
         disabled={disabled}
         onClick={handleClick}
@@ -117,8 +121,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         ファイルから選択
       </button></h2>
       <ul>
-        {value.map((obj) => (
-          <li key={obj.thumb_url} className="">
+        {value.map((obj, idx) => (
+          <li key={idx} className="">
             <Link href={obj.thumb_url} rel="noopener noreferrer" target="_blank" className="my-assets-thumbnail-link">
               <Image
                 src={obj.thumb_url}
@@ -130,17 +134,20 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             </Link>
             <Image
               src="/assets/images/file_close.svg"
-              className="file_close"
+              className={cn(
+                'file_close',
+                disabled && 'opacity-50'
+              )}
               width={16.5}
               height={16.5}
               alt=""
-              onClick={() => onRemove(obj.thumb_url)}
-              style={{ cursor: 'pointer' }}
+              onClick={() => { if (!disabled) onRemove(obj.thumb_url) }}
+              style={disabled ? { cursor: 'default' } : { cursor: 'pointer' }}
             />
           </li>
         ))}
         {value.length < 12 && [...Array(12 - value.length)].map((_, i) => (
-          <li key={i}><Image src="/assets/images/file_tumb.webp" width="80" height="80" alt="" />
+          <li key={`blank_${i}`}><Image src="/assets/images/file_tumb.webp" width="80" height="80" alt="" />
             <Image src="/assets/images/file_close.svg" className="file_close" width={16.5} height={16.5} alt="" />
           </li>
         ))

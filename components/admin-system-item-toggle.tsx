@@ -44,19 +44,19 @@ export function SystemItemToggle() {
           メール雛形
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/user_role_c_g_asset_stores`)}>
-          CGアセットストアロール
+          [Okta Profile項目] CGアセットストアロール
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/c_g_a_registrant_affiliations`)}>
-          登録者所属
+          [Okta Profile項目] 登録者所属
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/users`)}>
-          ログイン済Oktaユーザ
+          [閲覧のみ] Oktaユーザ
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/bulk_registration`)}>
-          データ一括登録
+          CGアセット データ一括登録
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/bulk_export`)}>
-          データエクスポート
+          CGアセット データエクスポート
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

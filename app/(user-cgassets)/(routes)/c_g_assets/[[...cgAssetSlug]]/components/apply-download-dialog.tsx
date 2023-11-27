@@ -69,7 +69,7 @@ const ApplyDownloadDialog = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          <Download className="mr-2 h-4 w-4" /> ダウンロード申請
+          申請
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-7xl" style={{

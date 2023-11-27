@@ -45,30 +45,6 @@ query ApiGetCgAssets(
       uploadDir {
         base_path
       }
-      assetImages {
-        file_name
-        url
-        file_path
-        thumb_file_name
-        thumb_url
-        thumb_file_path
-      }
-      assetVideos {
-        file_name
-        url
-        file_path
-        thumb_file_name
-        thumb_url
-        thumb_file_path
-      }
-      asset3DCGs {
-        file_name
-        url
-        file_path
-        thumb_file_name
-        thumb_url
-        thumb_file_path
-      }
       assetUploads {
         file_name
         url
@@ -104,27 +80,9 @@ query ApiGetCgAssets(
       download_count
       userCreate {
         name
-        email
-        registrantAffiliation {
-          desc
-        }
-        regist_affili_code
-        roleCGAssetStore {
-          desc
-          role
-        }
       }
       userUpdate {
         name
-        email
-        registrantAffiliation {
-          desc
-        }
-        regist_affili_code
-        roleCGAssetStore {
-          desc
-          role
-        }
       }
       valid_flg
       created_at

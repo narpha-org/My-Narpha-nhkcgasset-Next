@@ -51,6 +51,7 @@ import ImageUpload, { UploadImageProps } from "@/components/ui/image-upload-cgas
 import FileUpload, { UploadFileProps } from "@/components/ui/file-upload-cgasset"
 // import { Switch } from "@/components/ui/switch"
 import { NavHeaderMypage } from '@/components/nav-header-mypage';
+import { cn } from '@/lib/utils';
 
 import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 import CGAssetPreviewDialog from "./c_g_asset-preview-dialog"
@@ -66,13 +67,13 @@ const formSchema = z.object({
   assetCateId: z.string().min(1, {
     message: "必須選択",
   }),
-  asset_genre: z.string().min(0),
-  asset_app_prod: z.string().min(0),
-  asset_format: z.string().min(0),
-  asset_size: z.string().min(0),
-  asset_renderer: z.string().min(0),
-  program_id: z.string().min(0),
-  program_name: z.string().min(0),
+  asset_genre: z.string().optional(),
+  asset_app_prod: z.string().optional(),
+  asset_format: z.string().optional(),
+  asset_size: z.string().optional(),
+  asset_renderer: z.string().optional(),
+  program_id: z.string().optional(),
+  program_name: z.string().optional(),
   registrantAffiliationId: z.string().min(1, {
     message: "必須選択",
   }),
@@ -101,7 +102,7 @@ const formSchema = z.object({
     .max(1000, {
       message: "アセット詳細説明 は最大 1000 文字以内でご入力ください。",
     }),
-  assetTagsStr: z.string().min(0),
+  assetTagsStr: z.string().optional(),
   // asset_media_base: z
   //   .string()
   //   .min(1, {
@@ -128,27 +129,27 @@ const formSchema = z.object({
   //   file_name: z.string(),
   //   url: z.string(),
   //   file_path: z.string(),
-  //   thumb_file_name: z.string().min(0),
-  //   thumb_url: z.string().min(0),
-  //   thumb_file_path: z.string().min(0)
+  //   thumb_file_name: z.string().optional(),
+  //   thumb_url: z.string().optional(),
+  //   thumb_file_path: z.string().optional()
   // }).array(),
   // asset3DCGs: z.object({
   //   file_name: z.string(),
   //   url: z.string(),
   //   file_path: z.string(),
-  //   thumb_file_name: z.string().min(0),
-  //   thumb_url: z.string().min(0),
-  //   thumb_file_path: z.string().min(0)
+  //   thumb_file_name: z.string().optional(),
+  //   thumb_url: z.string().optional(),
+  //   thumb_file_path: z.string().optional()
   // }).array(),
   assetUploads: z.object({
     file_name: z.string(),
-    url: z.string(),
+    url: z.string().nullable(),
     file_path: z.string()
   }).array(),
   assetThumbs: z.object({
-    thumb_file_name: z.string().min(0),
-    thumb_url: z.string().min(0),
-    thumb_file_path: z.string().min(0)
+    thumb_file_name: z.string(),
+    thumb_url: z.string().nullable(),
+    thumb_file_path: z.string()
   }).array(),
   revision_history: z.string().optional(),
   valid_flg: z.boolean().default(true).optional(),
@@ -191,23 +192,23 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
   const defaultValues = initialData ? {
     ...initialData,
     assetCateId: initialData?.assetCate?.id,
-    asset_genre: initialData?.asset_genre as string | undefined,
-    asset_app_prod: initialData?.asset_app_prod as string | undefined,
-    asset_format: initialData?.asset_format as string | undefined,
-    asset_size: initialData?.asset_size as string | undefined,
-    asset_renderer: initialData?.asset_renderer as string | undefined,
-    program_id: initialData?.program_id as string | undefined,
-    program_name: initialData?.program_name as string | undefined,
+    asset_genre: initialData?.asset_genre as string | undefined ?? "",
+    asset_app_prod: initialData?.asset_app_prod as string | undefined ?? "",
+    asset_format: initialData?.asset_format as string | undefined ?? "",
+    asset_size: initialData?.asset_size as string | undefined ?? "",
+    asset_renderer: initialData?.asset_renderer as string | undefined ?? "",
+    program_id: initialData?.program_id as string | undefined ?? "",
+    program_name: initialData?.program_name as string | undefined ?? "",
     registrantAffiliationId: initialData?.registrantAffiliation?.id,
     viewingRestrictionId: initialData?.viewingRestriction?.id,
     broadcastingRightId: initialData?.broadcastingRight?.id,
     sharedAreaId: initialData?.sharedArea?.id,
-    rights_supplement: initialData?.rights_supplement as string | undefined,
-    asset_detail: initialData?.asset_detail as string | undefined,
+    rights_supplement: initialData?.rights_supplement as string | undefined ?? "",
+    asset_detail: initialData?.asset_detail as string | undefined ?? "",
     assetTagsStr: initialData?.assetTags?.map((assetTag: CgAssetTag | null) => {
       return assetTag?.tag
     }).join(','),
-    // asset_media_base: initialData?.asset_media_base as string | undefined,
+    // asset_media_base: initialData?.asset_media_base as string | undefined ?? "",
     uploadDirId: initialData?.uploadDir?.id,
     // assetImages: initialData?.assetImages as UploadImageProps[],
     // assetVideos: initialData?.assetVideos as UploadImageProps[],
@@ -286,7 +287,8 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
           throw new Error(ret.errors[0].message as string)
         }
 
-        router.refresh();
+        // router.refresh();
+        // router.prefetch(`/`);
         router.push(`/c_g_assets/${params.cgAssetSlug[0]}`);
 
       } else {
@@ -320,11 +322,13 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
           throw new Error(ret.errors[0].message as string)
         }
 
-        router.refresh();
+        // router.refresh();
+        // router.prefetch(`/`);
         router.push(`/c_g_assets/${newCgAssetId}`);
       }
       toast.success(toastMessage);
     } catch (error: any) {
+      console.log(`err: ${JSON.stringify(error)}`);
       toast.error('CGアセットの保存に失敗しました。');
     } finally {
       setLoading(false);
@@ -412,6 +416,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                     <div className="">
                       <CGAssetPreviewDialog
                         form={form}
+                        disabled={loading}
                         assetCates={assetCates}
                         registrantAffiliations={registrantAffiliations}
                         viewingRestrictions={viewingRestrictions}
@@ -915,8 +920,15 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                     <div className="registration__sidestatus-con">
                       <h2>公開ステータス</h2>
                       <div className="keepbox">
-                        <button id="dl-btn02" type="submit"
-                          className="btn">保存</button>
+                        <button
+                          id="dl-btn02"
+                          type="submit"
+                          className={cn(
+                            'btn',
+                            loading && 'opacity-50'
+                          )}
+                          style={loading ? { cursor: 'default' } : { cursor: 'pointer' }}
+                        >保存</button>
                         <FormField
                           control={form.control}
                           name="updated_at"
@@ -934,7 +946,10 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                       <div className="togglebox">
                         <p>公開</p>
 
-                        <div className="toggle_button">
+                        <div className={cn(
+                          'toggle_button',
+                          loading && 'opacity-50'
+                        )}>
                           <FormField
                             control={form.control}
                             name="valid_flg"
@@ -945,6 +960,8 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                                 type='checkbox'
                                 checked={field.value}
                                 onChange={field.onChange}
+                                disabled={loading}
+                                style={loading ? { cursor: 'default' } : { cursor: 'pointer' }}
                               />
                             )}
                           />
@@ -998,12 +1015,20 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
                     </div>
                   </div>
                   <div className="registration__sidelog">
-                    <Button disabled={loading} className="flex flex-row m-auto" type="button"
+                    <Button
+                      disabled={loading}
+                      className={cn(
+                        'flex flex-row m-auto',
+                        loading && 'opacity-50'
+                      )}
+                      style={loading ? { cursor: 'default' } : { cursor: 'pointer' }}
+                      type="button"
                       onClick={() => router.push(`/${(
                         params.cgAssetSlug[0] !== CGAssetPageSlug.New ?
                           "c_g_assets/" + params.cgAssetSlug[0] :
                           ""
-                      )}`)}>
+                      )}`)}
+                    >
                       <Undo2 className="mr-2 h-4 w-4" /> {action}しないで終了
                     </Button>
                   </div>

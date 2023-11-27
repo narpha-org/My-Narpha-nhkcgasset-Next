@@ -50,40 +50,52 @@ export const columns: ColumnDef<SystemMailTemplateColumn>[] = [
 
 export const codeMailTemplates: { key: CodeMailTemplate; value: string }[] = [
   {
-    key: CodeMailTemplate.AssetDeleteConfirm,
-    value: "アセット削除確認"
-  },
-  {
-    key: CodeMailTemplate.AssetComment,
-    value: "コメント通知"
-  },
-  {
-    key: CodeMailTemplate.RemovalAlert,
-    value: "放送後のデータ削除アラート"
-  },
-  {
-    key: CodeMailTemplate.PendingList,
-    value: "管理者あて未決リスト"
-  },
-  {
-    key: CodeMailTemplate.AdminComment,
-    value: "管理者へコメント"
-  },
-  {
     key: CodeMailTemplate.ApplyDownloadApply,
     value: "ダウンロード申請"
   },
   {
     key: CodeMailTemplate.ApplyDownloadApproval,
-    value: "ダウンロード承認"
+    value: "ダウンロード承認許可"
   },
   {
     key: CodeMailTemplate.ApplyDownloadBoxDeliver,
-    value: "Box送付"
+    value: "ダウンロードBoxリンクご用意中"
+  },
+  {
+    key: CodeMailTemplate.ApplyDownloadBoxReady,
+    value: "ダウンロードBoxリンク準備完了"
+  },
+  {
+    key: CodeMailTemplate.ApplyDownloadDlNotice,
+    value: "ダウンロード済み通知"
   },
   {
     key: CodeMailTemplate.ApplyDownloadRemoval,
-    value: "アセット消去"
+    value: "ダウンロードBoxデータ削除期限通知"
+  },
+  {
+    key: CodeMailTemplate.ApplyDownloadDone,
+    value: "ダウンロードBoxデータ削除通知"
+  },
+  {
+    key: CodeMailTemplate.AssetComment,
+    value: "アセットに対するコメントの通知"
+  },
+  {
+    key: CodeMailTemplate.AssetDeleteConfirm,
+    value: "（未使用）アセット削除確認"
+  },
+  {
+    key: CodeMailTemplate.RemovalAlert,
+    value: "（未使用）放送後のデータ削除アラート"
+  },
+  {
+    key: CodeMailTemplate.PendingList,
+    value: "（未使用）管理者あて未決リスト"
+  },
+  {
+    key: CodeMailTemplate.AdminComment,
+    value: "（未使用）管理者へコメント"
   },
 ]
 

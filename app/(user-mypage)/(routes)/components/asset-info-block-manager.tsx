@@ -11,7 +11,8 @@ import {
   ApplyDownload,
   ApplyDownloadPaginator,
   CgAsset,
-  CgAssetPaginator
+  CgAssetPaginator,
+  CgAssetsSearchSection
 } from "@/graphql/generated/graphql";
 
 import AssetInfoApplyDownloadManager from "./asset-info-apply-download-manager";
@@ -127,6 +128,7 @@ const AssetInfoBlockManager: React.FC<AssetInfoBlockManagerProps> = ({
             searchRef={assetRegisterdListRef}
             cgAssets={cgAssets}
             cgAssetsPg={cgAssetsPg}
+            cgAssetsSearchSection={`${CgAssetsSearchSection.CgassetsCreatedByUser}`}
           />
         </TabsContent>
       </Tabs>

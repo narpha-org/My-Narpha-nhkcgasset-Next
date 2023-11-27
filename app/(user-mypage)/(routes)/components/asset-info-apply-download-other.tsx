@@ -24,7 +24,8 @@ import {
   ApplyDownload,
   PaginatorInfo,
   ApplyDownloadPaginator,
-  StatusApplyDownload
+  StatusApplyDownload,
+  SectionApplyDownload
 } from "@/graphql/generated/graphql";
 import { ROW_COUNT } from "@/lib/pagenation";
 import paginateStyles from "@/styles/components/paginate-block.module.scss";
@@ -66,12 +67,12 @@ const AssetInfoApplyDownloadOther: React.FC<AssetInfoApplyDownloadOtherProps> = 
         .query({
           query: GetApplyDownloadsNotDoneDocument,
           variables: {
-            user_id: (session?.user as { userId: string }).userId,
+            apply_user_id: (session?.user as { userId: string }).userId,
             first: rowCount,
             page: param.page, // pageIndex + 1,
             order: param.order, // order,
             orderAsc: (param.orderAsc ? 'ASC' : 'DESC'), // (orderAsc ? 'ASC' : 'DESC'),
-            section_adl: 'ADL_OTHER',
+            section_adl: SectionApplyDownload.AdlOther,
             searchTxt: param.searchTxt, // searchTxt
           }
         });

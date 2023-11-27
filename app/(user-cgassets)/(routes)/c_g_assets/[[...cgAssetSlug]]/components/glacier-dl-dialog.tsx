@@ -48,7 +48,7 @@ const GlacierDLDialog = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          <DownloadCloud className="mr-2 h-4 w-4" /> ダウンロード
+          開始
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-7xl" style={{

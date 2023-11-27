@@ -41,6 +41,7 @@ const SignOut = () => {
       {providers && Object.values(providers).map((provider) => (
         <div key={provider.name}>
           <Button
+            size="lg"
             onClick={() => signOut().then(async () => {
               storeSearchInfo.resetCgAssetsSearchFormData()
 
