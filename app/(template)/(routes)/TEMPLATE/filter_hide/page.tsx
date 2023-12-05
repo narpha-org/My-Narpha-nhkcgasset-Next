@@ -2,18 +2,18 @@ import { Metadata } from 'next'
 
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 
-import { TemplateTop2Client } from './components/client'
+import { TemplateClient } from './components/client'
 
 export const metadata: Metadata = {
-  title: 'TOP',
+  title: 'TOP（フィルター閉）',
   openGraph: {
-    title: 'TOP',
+    title: 'TOP（フィルター閉）',
     ...commonMetadataOpenGraph,
   }
 }
 
 const TemplateTop2Page = () => {
-  return <TemplateTop2Client />
+  return <TemplateClient />
 }
 
 export default TemplateTop2Page

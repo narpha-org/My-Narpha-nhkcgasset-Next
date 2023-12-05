@@ -1,0 +1,14 @@
+<svg id="toppage" xmlns="http://www.w3.org/2000/svg" width="18.62" height="22" viewBox="0 0 18.62 22">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2d2f34;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <g id="グループ_2" data-name="グループ 2">
+    <path id="page_top" class="cls-1" d="M1108,7633.63l18.63-11v22Z" transform="translate(-1108 -7622.62)"/>
+    <path id="bar" class="cls-1" d="M1108,7622.64h3.38v21.99H1108v-21.99Z" transform="translate(-1108 -7622.62)"/>
+  </g>
+</svg>

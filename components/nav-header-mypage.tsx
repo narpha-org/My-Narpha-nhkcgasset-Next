@@ -3,6 +3,7 @@
 import { useRouter, usePathname } from "next/navigation"
 import Image from "next/image";
 import classNames from "classnames";
+import Link from "next/link";
 
 interface NavSideboxCgAssetsProps {
   isNavSideboxClosed?: boolean;
@@ -41,11 +42,13 @@ export const NavHeaderMypage: React.FC<NavSideboxCgAssetsProps> = ({
     <>
       <header className="header">
         <div className="header__inner">
-          <h1 className={classNames({
-            "h1_main":
-              true,
-            "left": isNavSideboxClosed === true,
-          })}>CG ASSET STORE</h1>
+          <Link href={`/c_g_assets`}>
+            <h1 className={classNames({
+              "h1_main":
+                true,
+              "left": isNavSideboxClosed === true,
+            })}>CG ASSET STORE</h1>
+          </Link>
           {myButtons}
         </div>
       </header>

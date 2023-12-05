@@ -5,10 +5,10 @@ import { NextAuthProvider } from "@/providers/next-auth-provider";
 import { ToastProvider } from '@/providers/toast-provider'
 // import { ThemeProvider } from '@/providers/theme-provider'
 
-import './reset.css'
-import '@/app/tailwind-globals.css'
-import './my-style.scss'
-import './style.scss'
+import '@/styles/reset.css'
+import '@/styles/tailwind-globals.css'
+import '@/styles/my-style.scss'
+import '@/styles/style.scss'
 import { Noto_Sans_JP } from 'next/font/google'
 
 const notoSansJP400 = Noto_Sans_JP({
@@ -32,7 +32,7 @@ const notoSansJP400 = Noto_Sans_JP({
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(`https://nhkcgasset-app.${process.env.NEXT_PUBLIC_BASE_DOMAIN}`),
+  metadataBase: new URL(`https://app.${process.env.NEXT_PUBLIC_BASE_DOMAIN}`),
   title: {
     default: "CGアセットストア",
     template: "%s | NHK CGアセットストア",

@@ -5,15 +5,15 @@ import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 import { TemplateClient } from './components/client'
 
 export const metadata: Metadata = {
-  title: 'アセット登録',
+  title: 'detail-dialog',
   openGraph: {
-    title: 'アセット登録',
+    title: 'detail-dialog',
     ...commonMetadataOpenGraph,
   }
 }
 
-const TemplateRegistrationPage = () => {
+const TemplateDetailDialogPage = () => {
   return <TemplateClient />
 }
 
-export default TemplateRegistrationPage
+export default TemplateDetailDialogPage

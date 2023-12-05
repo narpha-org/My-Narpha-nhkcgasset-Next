@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 16px;
+        fill: #fff;
+        text-anchor: middle;
+        font-family: "Noto Sans JP";
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <text id="Asset_create_new" class="cls-1" x="4.225" y="9.898"><tspan x="4.225">+</tspan></text>
+</svg>

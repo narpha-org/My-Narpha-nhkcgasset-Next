@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 
 import { SystemNotice } from "@/graphql/generated/graphql";
 import { IsRoleAdmin, IsRoleEditor, IsRoleManager, IsRoleOther, IsRoleUser } from "@/lib/check-role-client";
+import { Loader } from '@/components/ui/loader';
 
 import NoticeBlockAdmin from "./notice-block-admin";
 import NoticeBlockManager from "./notice-block-manager";
@@ -46,7 +47,7 @@ const NoticeBlock: React.FC<NoticeBlockProps> = ({
     />
   }
 
-  return <div>Not Valid</div>
+  return <Loader />
 }
 
 export default NoticeBlock

@@ -24,6 +24,22 @@ export const TemplateClient: React.FC<TemplateClientProps> = ({ }) => {
       <NavHeaderMypage />
 
       {/* <!-- main --> */}
+      <div className="dialog">
+        <div className="dialog__text">
+          <div className="dialog__text-box">
+            <div className="dialog__text-main">
+              <p>ダウンロード用データを再構築中です<br />
+                再構築には時間を要する可能性がございます</p>
+              <p>データを、マイページのダウンロード申請リストの<br />
+                「ダウンロード」ボタンから、ダウンロードしてください</p>
+            </div>
+            <a href="">
+              <Image src="/assets/images/dialog-close.svg" width="15" height="15" decoding="async" alt="CLOSE"
+                className="dialog__close" />
+            </a>
+          </div>
+        </div>
+      </div>
       <main className="maincon">
         <div className="detail">
           <div className="detail__inner">

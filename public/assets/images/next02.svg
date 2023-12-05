@@ -1,0 +1,12 @@
+<svg id="グループ_3" data-name="グループ 3" xmlns="http://www.w3.org/2000/svg" width="18.63" height="22" viewBox="0 0 18.63 22">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2d2f34;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="page_top" class="cls-1" d="M1514.21,7633.64l-18.63,11v-22Z" transform="translate(-1495.59 -7622.66)"/>
+  <path id="bar" class="cls-1" d="M1514.21,7622.64h-3.38v21.99h3.38v-21.99Z" transform="translate(-1495.59 -7622.66)"/>
+</svg>

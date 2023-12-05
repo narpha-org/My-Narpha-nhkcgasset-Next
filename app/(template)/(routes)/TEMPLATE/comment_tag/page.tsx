@@ -5,15 +5,15 @@ import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 import { TemplateClient } from './components/client'
 
 export const metadata: Metadata = {
-  title: 'アセット登録',
+  title: 'comment_tag',
   openGraph: {
-    title: 'アセット登録',
+    title: 'comment_tag',
     ...commonMetadataOpenGraph,
   }
 }
 
-const TemplateRegistrationPage = () => {
+const TemplateCommentTagPage = () => {
   return <TemplateClient />
 }
 
-export default TemplateRegistrationPage
+export default TemplateCommentTagPage

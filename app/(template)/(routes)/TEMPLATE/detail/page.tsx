@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 
-import { TemplateDetailClient } from './components/client'
+import { TemplateClient } from './components/client'
 
 export const metadata: Metadata = {
   title: 'アセット詳細',
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 const TemplateDetailPage = () => {
-  return <TemplateDetailClient />
+  return <TemplateClient />
 }
 
 export default TemplateDetailPage
