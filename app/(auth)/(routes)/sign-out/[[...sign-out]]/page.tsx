@@ -29,7 +29,7 @@ const SignOut = () => {
   }, []);
 
   if (!session || !session?.user || !session?.user.name) {
-    router.push(`/c_g_assets`);
+    // router.push(`/`);
   }
 
   if (!isMounted || !session) {

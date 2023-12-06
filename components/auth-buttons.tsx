@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Session } from "next-auth";
 // import { toast } from "react-hot-toast"
@@ -39,6 +40,8 @@ export const LoginButton = () => {
 
 // ログアウトボタン
 export const LogoutButton = (props: { session: Session | null }) => {
+  // const router = useRouter();
+
   const { data: session, status } = useSession()
   const storeSearchInfo = useCgAssetsSearchForm();
 
@@ -59,6 +62,7 @@ export const LogoutButton = (props: { session: Session | null }) => {
         '?' + 'id_token_hint=' + (session as unknown as { idToken: string }).idToken +
         '&' + 'post_logout_redirect_uri=' + encodeURIComponent(process.env.NEXTAUTH_URL as string)
       );
+      // router.push(`/`);
     });
 
     // toast.success('ログアウトました。');
