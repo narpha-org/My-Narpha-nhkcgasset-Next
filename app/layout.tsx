@@ -7,8 +7,8 @@ import { ToastProvider } from '@/providers/toast-provider'
 
 import '@/styles/reset.css'
 import '@/styles/tailwind-globals.css'
-import '@/styles/my-style.scss'
 import '@/styles/style.scss'
+import '@/styles/my-style.scss'
 import { Noto_Sans_JP } from 'next/font/google'
 
 const notoSansJP400 = Noto_Sans_JP({

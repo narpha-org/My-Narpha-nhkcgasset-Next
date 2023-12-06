@@ -56,10 +56,12 @@ const GlacierDLDialog = ({
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: "90vw",
-        maxWidth: "350px",
-        maxHeight: "50vh",
+        width: "26.6666666667vw",
+        // height: "50vh",
+        maxWidth: "26.6666666667vw",
+        maxHeight: "100vh",
         overflowY: "auto",
+        // zIndex: 1002,
       }}>
         {child}
       </DialogContent>

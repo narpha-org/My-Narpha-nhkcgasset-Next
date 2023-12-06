@@ -41,10 +41,6 @@ query ApiGetCgAssets(
       }
       rights_supplement
       asset_detail
-      asset_media_base
-      uploadDir {
-        base_path
-      }
       assetUploads {
         file_name
         url
@@ -76,6 +72,7 @@ query ApiGetCgAssets(
         reviewedUser {
           name
         }
+        valid_flg
       }
       download_count
       userCreate {

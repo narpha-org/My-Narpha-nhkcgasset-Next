@@ -16,13 +16,17 @@ import {
   StatusApplyDownload,
 } from "@/graphql/generated/graphql";
 import { Loader } from "@/components/ui/loader";
+import { checkGlacierStatus } from "@/lib/check-glacier-status";
 
-import { CGAssetPageProps, CGAssetPageSlug } from '../../../components/page-slug';
-import CGAssetApplyDownloadForm from './page-apply-download/apply-download-form';
-import CGAssetApplyDownloadApprovalForm from './page-apply-download/apply-download-approval-form';
-import CGAssetApplyDownloadRemovalForm from './page-apply-download/apply-download-removal-form';
+import { CGAssetPageProps, CGAssetPageSlug } from './page-slug';
+import CGAssetApplyDownloadForm from './page-apply-download/apply-download-apply-form';
+import CGAssetApplyDownloadApplyView from './page-apply-download/apply-download-apply-view';
 import CGAssetApplyDownloadApprovalView from './page-apply-download/apply-download-approval-view';
-import CGAssetApplyDownloadDLNotificationUserForm from './page-apply-download/apply-download-dl-notification-user-form';
+import CGAssetApplyDownloadBoxDeliverViewUser from './page-apply-download/apply-download-box-deliver-view-user';
+import CGAssetApplyDownloadDLNoticeUserForm from './page-apply-download/apply-download-dl-notice-user-form';
+import CGAssetApplyDownloadRemovalForm from './page-apply-download/apply-download-removal-form';
+import CGAssetApplyDownloadDoneForm from './page-apply-download/apply-download-done-form';
+import CGAssetApplyDownloadDoneView from "./page-apply-download/apply-download-done-view";
 
 const CGAssetApplyDownloadClientOther: React.FC<CGAssetPageProps & {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -87,7 +91,7 @@ const CGAssetApplyDownloadClientOther: React.FC<CGAssetPageProps & {
   }, []);
 
   if (!isMounted) {
-    return <div className="flex items-center justify-center h-screen">
+    return <div className="flex items-center justify-center h-full">
       <Loader />
     </div>;
   }
@@ -110,7 +114,7 @@ const CGAssetApplyDownloadClientOther: React.FC<CGAssetPageProps & {
         return (
           <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-              <CGAssetApplyDownloadApprovalForm
+              <CGAssetApplyDownloadApplyView
                 initialData={ApplyDownload}
                 cgAsset={cgAsset}
                 manageUsers={manageUsers}
@@ -137,20 +141,37 @@ const CGAssetApplyDownloadClientOther: React.FC<CGAssetPageProps & {
         );
 
       case StatusApplyDownload.BoxDeliver: // DL済み通知
-        /* DL済み通知内容 */
-        return (
-          <div className="flex-col">
-            <div className="flex-1 space-y-4 p-8 pt-6">
-              <CGAssetApplyDownloadDLNotificationUserForm
-                initialData={ApplyDownload}
-                cgAsset={cgAsset}
-                manageUsers={manageUsers}
-                setDialogOpen={setDialogOpen}
-                params={params}
-              />
+        if (checkGlacierStatus([ApplyDownload]) === 0) {
+          /* ダウンロード準備中 */
+          return (
+            <div className="flex-col">
+              <div className="flex-1 space-y-4 p-8 pt-6">
+                <CGAssetApplyDownloadBoxDeliverViewUser
+                  initialData={ApplyDownload}
+                  cgAsset={cgAsset}
+                  manageUsers={manageUsers}
+                  setDialogOpen={setDialogOpen}
+                  params={params}
+                />
+              </div>
             </div>
-          </div>
-        );
+          );
+        } else {
+          /* ダウンロード可能 */
+          return (
+            <div className="flex-col">
+              <div className="flex-1 space-y-4 p-8 pt-6">
+                <CGAssetApplyDownloadDLNoticeUserForm
+                  initialData={ApplyDownload}
+                  cgAsset={cgAsset}
+                  manageUsers={manageUsers}
+                  setDialogOpen={setDialogOpen}
+                  params={params}
+                />
+              </div>
+            </div>
+          );
+        }
       case StatusApplyDownload.DlNotice: // DL済み通知
         /* データ削除期限へ */
         return (
@@ -171,7 +192,22 @@ const CGAssetApplyDownloadClientOther: React.FC<CGAssetPageProps & {
         return (
           <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-              <CGAssetApplyDownloadRemovalForm
+              <CGAssetApplyDownloadDoneForm
+                initialData={ApplyDownload}
+                cgAsset={cgAsset}
+                manageUsers={manageUsers}
+                setDialogOpen={setDialogOpen}
+                params={params}
+              />
+            </div>
+          </div>
+        );
+      case StatusApplyDownload.Done: // データ消去完了
+        /* 消去へ */
+        return (
+          <div className="flex-col">
+            <div className="flex-1 space-y-4 p-8 pt-6">
+              <CGAssetApplyDownloadDoneView
                 initialData={ApplyDownload}
                 cgAsset={cgAsset}
                 manageUsers={manageUsers}

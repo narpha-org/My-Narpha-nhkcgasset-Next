@@ -4,15 +4,15 @@ import { format } from "date-fns";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  GetCgAssetSearchTagsQuery,
-  GetCgAssetSearchTagsDocument,
+  GetCgAssetSearchGenresQuery,
+  GetCgAssetSearchGenresDocument,
   PaginatorInfo,
 } from "@/graphql/generated/graphql";
 
 import { formatter } from "@/lib/utils";
 
-import { CGAssetSearchTagClient } from "./components/client";
-import { CGAssetSearchTagColumn } from "./components/columns";
+import { CGAssetSearchGenreClient } from "./components/client";
+import { CGAssetSearchGenreColumn } from "./components/columns";
 
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 export const metadata: Metadata = {
@@ -20,28 +20,33 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'ジャンル',
     ...commonMetadataOpenGraph,
-  }
+  },
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_DOMAIN ?
+      `https://app.${process.env.NEXT_PUBLIC_BASE_DOMAIN}` :
+      `http://localhost:3000`
+  )
 }
 
-const CGAssetSearchTagsPage = async ({
+const CGAssetSearchGenresPage = async ({
   params
 }: {
   params: {}
 }) => {
-  const ret: ApolloQueryResult<GetCgAssetSearchTagsQuery>
+  const ret: ApolloQueryResult<GetCgAssetSearchGenresQuery>
     = await apolloServer()
       .query({
-        query: GetCgAssetSearchTagsDocument,
+        query: GetCgAssetSearchGenresDocument,
         variables: {
           first: 999,
           page: 1
         },
         fetchPolicy: 'network-only'
       });
-  const CGAssetSearchTags = ret.data.CGAssetSearchTags.data;
-  const paginatorInfo = ret.data.CGAssetSearchTags.paginatorInfo as PaginatorInfo;
+  const CGAssetSearchGenres = ret.data.CGAssetSearchGenres.data;
+  const paginatorInfo = ret.data.CGAssetSearchGenres.paginatorInfo as PaginatorInfo;
 
-  const formattedCGAssetSearchTags: CGAssetSearchTagColumn[] = CGAssetSearchTags.map((item) => ({
+  const formattedCGAssetSearchGenres: CGAssetSearchGenreColumn[] = CGAssetSearchGenres.map((item) => ({
     id: item.id,
     code: item.code,
     desc: item.desc,
@@ -53,10 +58,10 @@ const CGAssetSearchTagsPage = async ({
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <CGAssetSearchTagClient data={formattedCGAssetSearchTags} paginatorInfo={paginatorInfo} />
+        <CGAssetSearchGenreClient data={formattedCGAssetSearchGenres} paginatorInfo={paginatorInfo} />
       </div>
     </div>
   );
 };
 
-export default CGAssetSearchTagsPage;
+export default CGAssetSearchGenresPage;

@@ -9,7 +9,10 @@ import {
 } from "@/graphql/generated/graphql";
 import { commonMetadataOpenGraph } from "@/app/shared-metadata";
 
-import { CGAssetPageProps, CGAssetPageSlug } from "./page-slug";
+import {
+  CGAssetPageProps,
+  CGAssetPageSlug,
+} from "../c_g_assets/[[...cgAssetSlug]]/components/page-slug";
 
 export async function generateMetadata({
   params,

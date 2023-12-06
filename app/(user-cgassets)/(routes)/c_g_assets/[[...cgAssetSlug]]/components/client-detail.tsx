@@ -41,10 +41,13 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
 }) => {
 
   if (!cgAsset) {
-    redirect('/c_g_assets');
+    redirect('/');
   }
 
-  const downloadable = checkGlacierStatus(applyDownloads) === 1;
+  console.log(`applyDownloads: ${JSON.stringify(applyDownloads)}`);
+  console.log(`checkGlacierStatus(applyDownloads): ${checkGlacierStatus(applyDownloads)}`);
+
+  const downloadable = checkGlacierStatus(applyDownloads) === 1 || checkGlacierStatus(applyDownloads) === 0;
 
   return (
     <>

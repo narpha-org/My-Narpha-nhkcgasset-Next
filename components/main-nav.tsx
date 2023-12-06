@@ -19,14 +19,14 @@ export function MainNav({
 
   const routes = [
     {
-      href: `/`,
+      href: `/mypage`,
       label: 'HOME',
-      active: pathname === `/`,
+      active: pathname === `/mypage`,
     },
     {
-      href: `/c_g_assets`,
+      href: `/`,
       label: 'CGアセット',
-      active: pathname === `/c_g_assets`,
+      active: pathname === `/`,
     },
   ]
 

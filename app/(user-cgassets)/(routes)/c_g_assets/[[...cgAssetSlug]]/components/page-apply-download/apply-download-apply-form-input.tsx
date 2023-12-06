@@ -25,10 +25,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/text-area"
 import { DatePicker } from "@/components/ui/date-picker"
 
-import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 // import { ApplyDownloadFormSchema, ApplyDownloadFormValues } from "./apply-download-form"
 
-interface CGAssetApplyDownloadFormInputProps {
+interface CGAssetApplyDownloadApplyFormInputProps {
   form: UseFormReturn<any>;
   initialData: ApplyDownload | null;
   cgAsset: CgAsset | null;
@@ -41,7 +41,7 @@ interface CGAssetApplyDownloadFormInputProps {
   onNext: () => void;
 };
 
-export const CGAssetApplyDownloadFormInput: React.FC<CGAssetApplyDownloadFormInputProps> = ({
+export const CGAssetApplyDownloadApplyFormInput: React.FC<CGAssetApplyDownloadApplyFormInputProps> = ({
   form,
   initialData,
   cgAsset,
@@ -53,6 +53,7 @@ export const CGAssetApplyDownloadFormInput: React.FC<CGAssetApplyDownloadFormInp
 }) => {
   // const params = useParams() as unknown as CGAssetPageProps['params'];
   // const router = useRouter();
+  console.log(`manageUsers: ${JSON.stringify(manageUsers)}`)
 
   return (
     <>
@@ -189,4 +190,4 @@ export const CGAssetApplyDownloadFormInput: React.FC<CGAssetApplyDownloadFormInp
   )
 }
 
-export default CGAssetApplyDownloadFormInput
+export default CGAssetApplyDownloadApplyFormInput

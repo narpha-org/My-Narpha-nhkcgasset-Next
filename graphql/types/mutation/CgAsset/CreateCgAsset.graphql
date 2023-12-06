@@ -28,35 +28,6 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
     }
     rights_supplement
     asset_detail
-    asset_media_base
-    uploadDir {
-      id
-      base_path
-    }
-    assetImages {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    assetVideos {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    asset3DCGs {
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
     assetUploads {
       file_name
       url
@@ -89,6 +60,7 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
       reviewedUser {
         name
       }
+      valid_flg
     }
     download_count
     valid_flg

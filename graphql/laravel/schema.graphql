@@ -79,11 +79,11 @@ type Query {
   "List all available CGAssetSearchAppProd."
   CGAssetSearchAppProdsValid: [CGAssetSearchAppProd!]!
 
-  "Find a single CGAssetSearchTag by an identifying attribute."
-  CGAssetSearchTag("Search by primary key." id: ID): CGAssetSearchTag
+  "Find a single CGAssetSearchGenre by an identifying attribute."
+  CGAssetSearchGenre("Search by primary key." id: ID): CGAssetSearchGenre
 
-  "List all available CGAssetSearchTag."
-  CGAssetSearchTagsValid: [CGAssetSearchTag!]!
+  "List all available CGAssetSearchGenre."
+  CGAssetSearchGenresValid: [CGAssetSearchGenre!]!
 
   "Find a single CGAssetTag by an identifying attribute."
   CGAssetTag("Search by primary key." id: ID): CGAssetTag
@@ -163,7 +163,24 @@ type Query {
     page: Int
   ): ApplyDownloadCommentPaginator!
 
-  "申請中 or 承認許可 or DL済み通知 or データ削除期限"
+  "申請中 or 承認許可 or DL済み通知 or データ消去 or データ消去完了"
+  ApplyDownloadsWithDone(
+    apply_user_id: ID
+    manage_user_id: ID
+
+    "Limits number of fetched items. Maximum allowed value: 100."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+
+    order: String
+    orderAsc: String
+    section_adl: String
+    searchTxt: String
+  ): ApplyDownloadPaginator!
+
+  "申請中 or 承認許可 or DL済み通知 or データ消去"
   ApplyDownloadsNotDone(
     apply_user_id: ID
     manage_user_id: ID
@@ -351,8 +368,8 @@ type Query {
     page: Int
   ): CGAssetSearchAppProdPaginator!
 
-  "List multiple CGAssetSearchTag."
-  CGAssetSearchTags(
+  "List multiple CGAssetSearchGenre."
+  CGAssetSearchGenres(
     "Filters by text. Accepts SQL LIKE wildcards `%` and `_`."
     desc: String
 
@@ -361,7 +378,7 @@ type Query {
 
     "The offset from which items are returned."
     page: Int
-  ): CGAssetSearchTagPaginator!
+  ): CGAssetSearchGenrePaginator!
 
   "List multiple CGAssetTag."
   CGAssetTags(
@@ -579,8 +596,8 @@ type Mutation {
   ): ApplyDownload
 
   "DL済み通知"
-  updateApplyDownloadDLNotification(
-    input: UpdateApplyDownloadDLNotificationArgs!
+  updateApplyDownloadDLNotice(
+    input: UpdateApplyDownloadDLNoticeArgs!
   ): ApplyDownload
 
   "データ削除期限"
@@ -782,25 +799,25 @@ type Mutation {
   "Delete a CGAssetSearchAppProd."
   deleteCGAssetSearchAppProd(id: ID!): CGAssetSearchAppProd
 
-  "Create a CGAssetSearchTag."
-  createCGAssetSearchTag(
+  "Create a CGAssetSearchGenre."
+  createCGAssetSearchGenre(
     code: String!
     desc: String!
     order: Int!
     valid_flg: Boolean!
-  ): CGAssetSearchTag
+  ): CGAssetSearchGenre
 
-  "Update a CGAssetSearchTag."
-  updateCGAssetSearchTag(
+  "Update a CGAssetSearchGenre."
+  updateCGAssetSearchGenre(
     id: ID!
     code: String!
     desc: String!
     order: Int!
     valid_flg: Boolean!
-  ): CGAssetSearchTag
+  ): CGAssetSearchGenre
 
-  "Delete a CGAssetSearchTag."
-  deleteCGAssetSearchTag(id: ID!): CGAssetSearchTag
+  "Delete a CGAssetSearchGenre."
+  deleteCGAssetSearchGenre(id: ID!): CGAssetSearchGenre
 
   "Create a CGAssetTag."
   createCGAssetTag(
@@ -1250,7 +1267,7 @@ input UpdateApplyDownloadBoxDeliverArgs {
   removal_limit_date: DateTime
 }
 
-input UpdateApplyDownloadDLNotificationArgs {
+input UpdateApplyDownloadDLNoticeArgs {
   id: ID!
   user_id: ID!
 }
@@ -1563,10 +1580,10 @@ type CGAssetSearchAppProd {
 }
 
 """
-CGAssetSearchTag.
+CGAssetSearchGenre.
 アセット検索項目・ジャンル
 """
-type CGAssetSearchTag {
+type CGAssetSearchGenre {
   "Unique primary key."
   id: ID!
 
@@ -1582,10 +1599,10 @@ type CGAssetSearchTag {
   "有効フラグ"
   valid_flg: Boolean!
 
-  "When the CGAssetSearchTag was created."
+  "When the CGAssetSearchGenre was created."
   created_at: DateTime!
 
-  "When the CGAssetSearchTag was last updated."
+  "When the CGAssetSearchGenre was last updated."
   updated_at: DateTime!
 }
 
@@ -1840,14 +1857,14 @@ type CGAsset {
 
 input CGAssetSearchFormValues {
   assetCates: [ID]
-  assetTags: [String]
+  assetGenres: [String]
   assetAppProds: [String]
   keyword: String
 }
 
 input ApiCgAssetsSearchFormValues {
   assetCateDescs: [String]
-  assetTags: [String]
+  assetGenres: [String]
   assetAppProds: [String]
   keyword: String
 }
@@ -1858,6 +1875,9 @@ enum CgAssetsSearchSection {
 }
 
 input CreateCGAssetInput {
+  "フォーム送信区分"
+  submitFormInput: Int
+
   "登録ユーザID"
   create_user_id: ID!
 
@@ -1933,6 +1953,12 @@ input CreateCGAssetInput {
   "アセットタグ文字列"
   assetTagsStr: String
 
+  "アセットタグ"
+  assetTags: [CGAssetTagInput]
+
+  "コメント・レビュー"
+  reviews: [CGAssetReviewInput]
+
   "修正履歴"
   revision_history: String
 
@@ -1942,6 +1968,9 @@ input CreateCGAssetInput {
 
 input UpdateCGAssetInput {
   id: ID!
+
+  "フォーム送信区分"
+  submitFormInput: Int
 
   "更新ユーザID"
   update_user_id: ID!
@@ -2018,6 +2047,12 @@ input UpdateCGAssetInput {
   "アセットタグ文字列"
   assetTagsStr: String
 
+  "アセットタグ"
+  assetTags: [CGAssetTagInput]
+
+  "コメント・レビュー"
+  reviews: [CGAssetReviewInput]
+
   "修正履歴"
   revision_history: String
 
@@ -2087,6 +2122,19 @@ input CGAssetThumbInput {
   thumb_file_name: String!
   thumb_url: String
   thumb_file_path: String!
+}
+
+"アセットタグ"
+input CGAssetTagInput {
+  tag: String!
+  tag_add_edit_flg: Boolean!
+}
+
+"コメント・レビュー"
+input CGAssetReviewInput {
+  id: ID!
+  review: String
+  valid_flg: Boolean!
 }
 
 type ExportCGAssets {
@@ -2502,6 +2550,7 @@ input UpdateUserInput {
 input UpdateUserAuthCustomInput {
   "Unique primary key."
   id: ID!
+  name: String
   cg_asset_store_role_desc: String
   cg_asset_store_rgst_affi_desc: String
   cg_asset_store_rgst_affi_code: String
@@ -2642,13 +2691,13 @@ type CGAssetSearchAppProdPaginator {
   data: [CGAssetSearchAppProd!]!
 }
 
-"A paginated list of CGAssetSearchTag items."
-type CGAssetSearchTagPaginator {
+"A paginated list of CGAssetSearchGenre items."
+type CGAssetSearchGenrePaginator {
   "Pagination information about the list of items."
   paginatorInfo: PaginatorInfo!
 
-  "A list of CGAssetSearchTag items."
-  data: [CGAssetSearchTag!]!
+  "A list of CGAssetSearchGenre items."
+  data: [CGAssetSearchGenre!]!
 }
 
 "A paginated list of CGAssetTag items."

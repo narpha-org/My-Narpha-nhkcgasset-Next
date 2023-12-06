@@ -4,7 +4,7 @@ query CGAssetSearchClient {
     desc
     id
   }
-  CGAssetSearchTagsValid {
+  CGAssetSearchGenresValid {
     code
     desc
     id

@@ -16,14 +16,14 @@ import { recursiveRemoveKey } from "@/lib/utils";
 
 // type ApiCgAssetsSearchFormValues = {
 //   assetCateDescs: string[];
-//   assetTags: string[];
+//   assetGenres: string[];
 //   assetAppProds: string[];
 //   keyword: string;
 // };
 
 interface CgAssetsSearchParams {
   cates: string;
-  tags: string;
+  genres: string;
   appprods: string;
   keyword: string;
   first: number;
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
   // const session: Session | null = await getServerSession(authOptions);
   const searchParams = req.nextUrl.searchParams;
   const cates = searchParams.get("cates");
-  const tags = searchParams.get("tags");
+  const genres = searchParams.get("genres");
   const appprods = searchParams.get("appprods");
   const keyword = searchParams.get("keyword");
   const first = searchParams.get("first");
@@ -44,13 +44,13 @@ export async function GET(req: NextRequest) {
   //   return new NextResponse("Unauthorized", { status: 403 });
   // }
 
-  if (!cates && !tags && !appprods && !keyword) {
+  if (!cates && !genres && !appprods && !keyword) {
     return new NextResponse("Search condition is required", { status: 400 });
   }
 
   const searchData: ApiCgAssetsSearchFormValues = {
     assetCateDescs: [],
-    assetTags: [],
+    assetGenres: [],
     assetAppProds: [],
     keyword: "",
   };
@@ -58,8 +58,8 @@ export async function GET(req: NextRequest) {
   if (cates) {
     searchData.assetCateDescs = cates.split(",");
   }
-  if (tags) {
-    searchData.assetTags = tags.split(",");
+  if (genres) {
+    searchData.assetGenres = genres.split(",");
   }
   if (appprods) {
     searchData.assetAppProds = appprods.split(",");

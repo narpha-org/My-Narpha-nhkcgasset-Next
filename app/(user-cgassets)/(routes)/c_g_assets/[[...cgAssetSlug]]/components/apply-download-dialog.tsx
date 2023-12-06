@@ -22,7 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { CGAssetPageSlug } from "../../../components/page-slug";
+import { CGAssetPageSlug } from "./page-slug";
 import CGAssetApplyDownloadClientAdmin from "./client-apply-download-admin";
 import CGAssetApplyDownloadClientManager from "./client-apply-download-manager";
 import CGAssetApplyDownloadClientEditor from "./client-apply-download-editor";
@@ -78,9 +78,11 @@ const ApplyDownloadDialog = ({
         left: "50%",
         transform: "translate(-50%, -50%)",
         width: "90vw",
+        // height: "90vh",
         maxWidth: "1250px",
         maxHeight: "90vh",
         overflowY: "auto",
+        // zIndex: 1002,
       }}>
         {child}
       </DialogContent>

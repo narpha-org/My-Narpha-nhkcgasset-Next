@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/form"
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
-import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 
 export const ApplyDownloadRemovalViewSchema = z.object({
   manage_user_id: z.string({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
@@ -97,7 +97,7 @@ export const CGAssetApplyDownloadRemovalView: React.FC<CGAssetApplyDownloadRemov
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title="アセットデータ削除の通知内容" description={`アセットID: ${cgAsset?.asset_id} のデータ削除通知内容`} />
+        <Heading title="アセットデータ消去の報告内容" description={`アセットID: ${cgAsset?.asset_id} のデータ消去報告内容`} />
       </div>
       <Separator />
       <Form {...form}>

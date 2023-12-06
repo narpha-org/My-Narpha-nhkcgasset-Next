@@ -52,7 +52,7 @@ interface NoticeClientAdminFormProps {
   initialData: SystemNotice | null;
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
   params: {
-    systemNoticeId: string;
+    systemNoticeId: string | null;
   };
 };
 

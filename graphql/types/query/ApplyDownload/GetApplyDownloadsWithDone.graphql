@@ -1,4 +1,4 @@
-query GetApplyDownloadsNotDone(
+query GetApplyDownloadsWithDone(
   $apply_user_id: ID
   $manage_user_id: ID
   $first: Int!
@@ -8,7 +8,7 @@ query GetApplyDownloadsNotDone(
   $section_adl: String
   $searchTxt: String
 ) {
-  ApplyDownloadsNotDone(
+  ApplyDownloadsWithDone(
     apply_user_id: $apply_user_id
     manage_user_id: $manage_user_id
     first: $first

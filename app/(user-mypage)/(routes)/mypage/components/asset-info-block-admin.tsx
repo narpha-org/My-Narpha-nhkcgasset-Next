@@ -1,12 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Plus, Search } from "lucide-react";
+// import { Plus, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from 'next/image'
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs-raw"
+// import { Input } from "@/components/ui/input-raw";
+// import { Button } from "@/components/ui/button-raw";
 import {
   ApplyDownload,
   ApplyDownloadPaginator,
@@ -66,42 +68,40 @@ const AssetInfoBlockAdmin: React.FC<AssetInfoBlockAdminProps> = ({
 
   return (
     <>
-      <div v-if="title" className="flex flex-row items-center mb-2">
-        <div className="grow w-64">
-          <i className="title_icon" />
-          アセット情報
-        </div>
-        <div className="shrink w-48 justify-items-end mr-2">
-          <Input
-            placeholder="検索文字入力"
-            onChange={(event) => setSearchTxt((event.target as HTMLInputElement).value)}
-            onKeyDown={(event) => { console.log(`event.code: ${event.code}`); if (event.code.toLowerCase() === 'enter') { console.log(`event.code is ${event.code}`); handleSearch(); } }}
-          />
-        </div>
-        <div className="shrink w-48 justify-items-end mr-2">
-          <Button size="sm" onClick={handleSearch}>
-            <Search className="mr-2 h-4 w-4" /> 検索
-          </Button>
-        </div>
-        <div className="shrink w-48 justify-items-end mr-2">
-          <Button onClick={() => router.push(`/c_g_assets/new`)}>
-            <Plus className="mr-2 h-4 w-4" /> アセット新規登録
-          </Button>
-        </div>
-      </div>
-      <Tabs defaultValue={selectedTab} className="flex flex-col w-full basis-2/3">
-        <TabsList>
-          <TabsTrigger value="apply_download" onClick={() => setSelectedTab('apply_download')}>ダウンロード申請</TabsTrigger>
-          <TabsTrigger value="asset_registerd_list" onClick={() => setSelectedTab('asset_registerd_list')}> 登録一覧</TabsTrigger>
+      <h2 className="mypage__title">アセット情報
+        {/* <Input
+          placeholder="検索文字入力"
+          onChange={(event) => setSearchTxt((event.target as HTMLInputElement).value)}
+          onKeyDown={(event) => { console.log(`event.code: ${event.code}`); if (event.code.toLowerCase() === 'enter') { console.log(`event.code is ${event.code}`); handleSearch(); } }}
+        />
+        <Button onClick={handleSearch}>
+          検索
+        </Button> */}
+        <button
+          className="registration"
+          onClick={() => router.push(`/c_g_assets/new`)}
+        >アセット新規登録<Image
+            src="/assets/images/plus.svg" width="9" height="9" decoding="async" alt="" /></button></h2>
+
+      <Tabs defaultValue={selectedTab} className="">
+        <TabsList className="mypage__appry">
+          <TabsTrigger className={cn(
+            'li_alt',
+            selectedTab === 'apply_download' ? 'on' : ''
+          )} value="apply_download" onClick={() => setSelectedTab('apply_download')}>ダウンロード申請</TabsTrigger>
+          <TabsTrigger className={cn(
+            'li_alt',
+            selectedTab === 'asset_registerd_list' ? 'on' : ''
+          )} value="asset_registerd_list" onClick={() => setSelectedTab('asset_registerd_list')}>アセット登録</TabsTrigger>
         </TabsList>
-        <TabsContent value="apply_download" className="flex-grow h-full overflow-y-auto">
+        <TabsContent value="apply_download" className="">
           <AssetInfoApplyDownloadAdmin
             searchRef={assetInfoApplyDownloadAdminRef}
             downloadApplies={downloadApplies}
             downloadAppliesPg={downloadAppliesPg}
           />
         </TabsContent>
-        <TabsContent value="asset_registerd_list" className="flex-grow h-full overflow-y-auto">
+        <TabsContent value="asset_registerd_list" className="">
           <AssetRegisterdList
             searchRef={assetRegisterdListRef}
             cgAssets={cgAssets}

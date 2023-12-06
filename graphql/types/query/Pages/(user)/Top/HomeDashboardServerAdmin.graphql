@@ -6,7 +6,7 @@ query HomeDashboardServerAdmin(
   $page: Int!
   $section: String
 ) {
-  ApplyDownloadsNotDone(
+  ApplyDownloadsWithDone(
     apply_user_id: $apply_user_id
     manage_user_id: $manage_user_id
     first: $first

@@ -47,7 +47,7 @@
             "deprecationReason": null
           },
           {
-            "name": "assetTags",
+            "name": "assetGenres",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -3351,6 +3351,61 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "CGAssetReviewInput",
+        "description": "コメント・レビュー",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "review",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "valid_flg",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "CGAssetReviewPaginator",
         "description": "A paginated list of CGAssetReview items.",
@@ -3610,7 +3665,7 @@
             "deprecationReason": null
           },
           {
-            "name": "assetTags",
+            "name": "assetGenres",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -3644,8 +3699,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "CGAssetSearchTag",
-        "description": "CGAssetSearchTag.\nアセット検索項目・ジャンル",
+        "name": "CGAssetSearchGenre",
+        "description": "CGAssetSearchGenre.\nアセット検索項目・ジャンル",
         "fields": [
           {
             "name": "code",
@@ -3665,7 +3720,7 @@
           },
           {
             "name": "created_at",
-            "description": "When the CGAssetSearchTag was created.",
+            "description": "When the CGAssetSearchGenre was created.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -3725,7 +3780,7 @@
           },
           {
             "name": "updated_at",
-            "description": "When the CGAssetSearchTag was last updated.",
+            "description": "When the CGAssetSearchGenre was last updated.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -3763,12 +3818,12 @@
       },
       {
         "kind": "OBJECT",
-        "name": "CGAssetSearchTagPaginator",
-        "description": "A paginated list of CGAssetSearchTag items.",
+        "name": "CGAssetSearchGenrePaginator",
+        "description": "A paginated list of CGAssetSearchGenre items.",
         "fields": [
           {
             "name": "data",
-            "description": "A list of CGAssetSearchTag items.",
+            "description": "A list of CGAssetSearchGenre items.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -3781,7 +3836,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "CGAssetSearchTag",
+                    "name": "CGAssetSearchGenre",
                     "ofType": null
                   }
                 }
@@ -3924,6 +3979,49 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CGAssetTagInput",
+        "description": "アセットタグ",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "tag",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tag_add_edit_flg",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -5204,6 +5302,22 @@
             "deprecationReason": null
           },
           {
+            "name": "assetTags",
+            "description": "アセットタグ",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "CGAssetTagInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "assetTagsStr",
             "description": "アセットタグ文字列",
             "type": {
@@ -5436,6 +5550,22 @@
             "deprecationReason": null
           },
           {
+            "name": "reviews",
+            "description": "コメント・レビュー",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "CGAssetReviewInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "revision_history",
             "description": "修正履歴",
             "type": {
@@ -5465,6 +5595,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "submitFormInput",
+            "description": "フォーム送信区分",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -7118,8 +7260,8 @@
             "deprecationReason": null
           },
           {
-            "name": "createCGAssetSearchTag",
-            "description": "Create a CGAssetSearchTag.",
+            "name": "createCGAssetSearchGenre",
+            "description": "Create a CGAssetSearchGenre.",
             "args": [
               {
                 "name": "code",
@@ -7188,7 +7330,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "CGAssetSearchTag",
+              "name": "CGAssetSearchGenre",
               "ofType": null
             },
             "isDeprecated": false,
@@ -8408,8 +8550,8 @@
             "deprecationReason": null
           },
           {
-            "name": "deleteCGAssetSearchTag",
-            "description": "Delete a CGAssetSearchTag.",
+            "name": "deleteCGAssetSearchGenre",
+            "description": "Delete a CGAssetSearchGenre.",
             "args": [
               {
                 "name": "id",
@@ -8430,7 +8572,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "CGAssetSearchTag",
+              "name": "CGAssetSearchGenre",
               "ofType": null
             },
             "isDeprecated": false,
@@ -8933,7 +9075,7 @@
             "deprecationReason": null
           },
           {
-            "name": "updateApplyDownloadDLNotification",
+            "name": "updateApplyDownloadDLNotice",
             "description": "DL済み通知",
             "args": [
               {
@@ -8944,7 +9086,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "UpdateApplyDownloadDLNotificationArgs",
+                    "name": "UpdateApplyDownloadDLNoticeArgs",
                     "ofType": null
                   }
                 },
@@ -9888,8 +10030,8 @@
             "deprecationReason": null
           },
           {
-            "name": "updateCGAssetSearchTag",
-            "description": "Update a CGAssetSearchTag.",
+            "name": "updateCGAssetSearchGenre",
+            "description": "Update a CGAssetSearchGenre.",
             "args": [
               {
                 "name": "code",
@@ -9974,7 +10116,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "CGAssetSearchTag",
+              "name": "CGAssetSearchGenre",
               "ofType": null
             },
             "isDeprecated": false,
@@ -11934,7 +12076,7 @@
           },
           {
             "name": "ApplyDownloadsNotDone",
-            "description": "申請中 or 承認許可 or DL済み通知 or データ削除期限",
+            "description": "申請中 or 承認許可 or DL済み通知 or データ消去",
             "args": [
               {
                 "name": "apply_user_id",
@@ -12052,6 +12194,123 @@
           {
             "name": "ApplyDownloadsOnlyApply",
             "description": "承認待ち",
+            "args": [
+              {
+                "name": "apply_user_id",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "first",
+                "description": "Limits number of fetched items. Maximum allowed value: 100.",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "10",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "manage_user_id",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "order",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "orderAsc",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "page",
+                "description": "The offset from which items are returned.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "searchTxt",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "section_adl",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ApplyDownloadPaginator",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ApplyDownloadsWithDone",
+            "description": "申請中 or 承認許可 or DL済み通知 or データ消去 or データ消去完了",
             "args": [
               {
                 "name": "apply_user_id",
@@ -13204,8 +13463,8 @@
             "deprecationReason": null
           },
           {
-            "name": "CGAssetSearchTag",
-            "description": "Find a single CGAssetSearchTag by an identifying attribute.",
+            "name": "CGAssetSearchGenre",
+            "description": "Find a single CGAssetSearchGenre by an identifying attribute.",
             "args": [
               {
                 "name": "id",
@@ -13222,15 +13481,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "CGAssetSearchTag",
+              "name": "CGAssetSearchGenre",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "CGAssetSearchTags",
-            "description": "List multiple CGAssetSearchTag.",
+            "name": "CGAssetSearchGenres",
+            "description": "List multiple CGAssetSearchGenre.",
             "args": [
               {
                 "name": "desc",
@@ -13278,7 +13537,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "CGAssetSearchTagPaginator",
+                "name": "CGAssetSearchGenrePaginator",
                 "ofType": null
               }
             },
@@ -13286,8 +13545,8 @@
             "deprecationReason": null
           },
           {
-            "name": "CGAssetSearchTagsValid",
-            "description": "List all available CGAssetSearchTag.",
+            "name": "CGAssetSearchGenresValid",
+            "description": "List all available CGAssetSearchGenre.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -13300,7 +13559,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "CGAssetSearchTag",
+                    "name": "CGAssetSearchGenre",
                     "ofType": null
                   }
                 }
@@ -15545,7 +15804,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UpdateApplyDownloadDLNotificationArgs",
+        "name": "UpdateApplyDownloadDLNoticeArgs",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -15715,6 +15974,22 @@
               "ofType": {
                 "kind": "INPUT_OBJECT",
                 "name": "CGAssetImageInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "assetTags",
+            "description": "アセットタグ",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "CGAssetTagInput",
                 "ofType": null
               }
             },
@@ -15955,6 +16230,22 @@
             "deprecationReason": null
           },
           {
+            "name": "reviews",
+            "description": "コメント・レビュー",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "CGAssetReviewInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "revision_history",
             "description": "修正履歴",
             "type": {
@@ -15984,6 +16275,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "submitFormInput",
+            "description": "フォーム送信区分",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -16123,6 +16426,18 @@
                 "name": "ID",
                 "ofType": null
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,

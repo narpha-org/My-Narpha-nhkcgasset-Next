@@ -10,7 +10,7 @@ import {
   IsRoleOther
 } from "@/lib/check-role-client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button-raw"
 import {
   Dialog,
   DialogContent,
@@ -21,7 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { CGAssetPageSlug } from "@/app/(user-cgassets)/(routes)/components/page-slug";
+import { CGAssetPageSlug } from "@/app/(user-cgassets)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/page-slug";
 import CGAssetApplyDownloadClientAdmin from "@/app/(user-cgassets)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-admin";
 import CGAssetApplyDownloadClientManager from "@/app/(user-cgassets)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-manager";
 import CGAssetApplyDownloadClientEditor from "@/app/(user-cgassets)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-editor";
@@ -32,7 +32,7 @@ const ApplyDownloadDialog = ({
   cgAssetId,
   applyDownloadId,
   action,
-  variant
+  className
 }) => {
   const { data: session, status } = useSession();
 
@@ -72,8 +72,7 @@ const ApplyDownloadDialog = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          variant={variant}
-          className="ml-auto"
+          className={className}
           type="button"
         >
           {action}
@@ -85,9 +84,11 @@ const ApplyDownloadDialog = ({
         left: "50%",
         transform: "translate(-50%, -50%)",
         width: "90vw",
+        // height: "90vh",
         maxWidth: "1250px",
         maxHeight: "90vh",
         overflowY: "auto",
+        // zIndex: 1002,
       }}>
         {child}
       </DialogContent>

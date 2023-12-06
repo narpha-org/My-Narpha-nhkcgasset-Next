@@ -17,11 +17,13 @@ import {
 } from "@/graphql/generated/graphql";
 import { Loader } from "@/components/ui/loader";
 
-import { CGAssetPageProps, CGAssetPageSlug } from '../../../components/page-slug';
-import CGAssetApplyDownloadView from './page-apply-download/apply-download-view';
+import { CGAssetPageProps, CGAssetPageSlug } from './page-slug';
+import CGAssetApplyDownloadApplyView from './page-apply-download/apply-download-apply-view';
 import CGAssetApplyDownloadBoxDeliverForm from './page-apply-download/apply-download-box-deliver-form';
 import CGAssetApplyDownloadBoxDeliverViewAdmin from './page-apply-download/apply-download-box-deliver-view-admin';
+import CGAssetApplyDownloadDlNoticeViewAdmin from './page-apply-download/apply-download-dl-notice-view-admin';
 import CGAssetApplyDownloadRemovalView from './page-apply-download/apply-download-removal-view';
+import CGAssetApplyDownloadDoneView from "./page-apply-download/apply-download-done-view";
 
 const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -86,7 +88,7 @@ const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
   }, []);
 
   if (!isMounted) {
-    return <div className="flex items-center justify-center h-screen">
+    return <div className="flex items-center justify-center h-full">
       <Loader />
     </div>;
   }
@@ -108,7 +110,7 @@ const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
         return (
           <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-              <CGAssetApplyDownloadView
+              <CGAssetApplyDownloadApplyView
                 initialData={ApplyDownload}
                 cgAsset={cgAsset}
                 manageUsers={manageUsers}
@@ -133,11 +135,24 @@ const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
           </div>
         );
       case StatusApplyDownload.BoxDeliver: // Boxリンク通知
-      case StatusApplyDownload.DlNotice: // DL済み通知
         return (
           <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
               <CGAssetApplyDownloadBoxDeliverViewAdmin
+                initialData={ApplyDownload}
+                cgAsset={cgAsset}
+                manageUsers={manageUsers}
+                setDialogOpen={setDialogOpen}
+                params={params}
+              />
+            </div>
+          </div>
+        );
+      case StatusApplyDownload.DlNotice: // DL済み通知
+        return (
+          <div className="flex-col">
+            <div className="flex-1 space-y-4 p-8 pt-6">
+              <CGAssetApplyDownloadDlNoticeViewAdmin
                 initialData={ApplyDownload}
                 cgAsset={cgAsset}
                 manageUsers={manageUsers}
@@ -152,6 +167,21 @@ const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
           <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
               <CGAssetApplyDownloadRemovalView
+                initialData={ApplyDownload}
+                cgAsset={cgAsset}
+                manageUsers={manageUsers}
+                setDialogOpen={setDialogOpen}
+                params={params}
+              />
+            </div>
+          </div>
+        );
+      case StatusApplyDownload.Done: // データ消去完了
+        /* 消去へ */
+        return (
+          <div className="flex-col">
+            <div className="flex-1 space-y-4 p-8 pt-6">
+              <CGAssetApplyDownloadDoneView
                 initialData={ApplyDownload}
                 cgAsset={cgAsset}
                 manageUsers={manageUsers}

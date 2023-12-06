@@ -60,12 +60,14 @@ export const authOptions: NextAuthOptions = {
           : "";
         token.rgstAffiCode = u.regist_affili_code;
         token.userId = u.id;
+        token.userName = u.name;
       }
       if (account) {
         // token.accessToken = account.access_token;
         token.idToken = account.id_token;
       }
       if (profile) {
+        token.OktaUserName = (profile as { name: string }).name;
         token.OktaRoleDesc = (
           profile as { cgAssetStoreRoleDesc: string }
         ).cgAssetStoreRoleDesc;
@@ -79,10 +81,12 @@ export const authOptions: NextAuthOptions = {
 
       if (
         token.userId &&
-        (token.OktaRoleDesc ||
+        (token.OktaUserName ||
+          token.OktaRoleDesc ||
           token.OktaRgstAffiDesc ||
           token.OktaRgstAffiCode) &&
-        (token.OktaRoleDesc !== token.roleDesc ||
+        (token.OktaUserName !== token.userName ||
+          token.OktaRoleDesc !== token.roleDesc ||
           token.OktaRgstAffiDesc != token.rgstAffiDesc ||
           token.OktaRgstAffiCode !== token.rgstAffiCode)
       ) {
@@ -91,6 +95,7 @@ export const authOptions: NextAuthOptions = {
           variables: {
             user: {
               id: token.userId,
+              name: token.OktaUserName,
               cg_asset_store_role_desc: token.OktaRoleDesc,
               cg_asset_store_rgst_affi_desc: token.OktaRgstAffiDesc,
               cg_asset_store_rgst_affi_code: token.OktaRgstAffiCode,
@@ -108,6 +113,7 @@ export const authOptions: NextAuthOptions = {
           ? updU.registrantAffiliation.desc
           : "";
         token.rgstAffiCode = updU.regist_affili_code;
+        token.userName = updU.name;
       }
 
       let yourToken = token;

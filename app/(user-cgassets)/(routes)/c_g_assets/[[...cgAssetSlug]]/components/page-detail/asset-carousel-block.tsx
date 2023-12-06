@@ -45,10 +45,11 @@ const AssetsCarouselBlock: React.FC<AssetsCarouselBlockProps> = ({
                 height={0}
                 sizes="100%"
                 style={{
-                  width: '52.7083333333vw',
-                  minWidth: '52.7083333333vw',
-                  maxWidth: '52.7083333333vw',
-                  height: 'auto'
+                  width: '100%',
+                  minWidth: '100%',
+                  maxWidth: '100%',
+                  height: '29.4791666667vw',
+                  objectFit: 'cover'
                 }}
               />
             );

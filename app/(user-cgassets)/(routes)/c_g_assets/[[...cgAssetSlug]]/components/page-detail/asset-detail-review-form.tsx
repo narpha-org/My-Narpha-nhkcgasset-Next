@@ -110,7 +110,11 @@ export const AssetDetailReviewForm: React.FC<AssetDetailReviewFormProps> = ({
 
       toast.success(toastMessage);
     } catch (error: any) {
-      toast.error('Something went wrong.');
+      if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setLoading(false);
     }

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import {
   CgAssetCate,
   CgAssetSearchAppProd,
-  CgAssetSearchTag,
+  CgAssetSearchGenre,
 } from '@/graphql/generated/graphql';
 
 import { useCgAssetsSearchForm, CgAssetsSearchFormValues } from '@/hooks/use-cgassets-search-form';
@@ -17,7 +17,7 @@ import styles from "@/styles/components/nav-sidebox.module.css";
 interface NavSideboxCgAssetsProps {
   searchData: CgAssetsSearchFormValues;
   assetCates: CgAssetCate[];
-  assetSearchTags: CgAssetSearchTag[];
+  assetSearchGenres: CgAssetSearchGenre[];
   assetSearchAppProds: CgAssetSearchAppProd[];
   onSearchFromSubmit: (data: CgAssetsSearchFormValues) => void;
   setIsNavSideboxClosed: Dispatch<SetStateAction<boolean>>;
@@ -28,7 +28,7 @@ interface NavSideboxCgAssetsProps {
 export const NavSideboxCgAssets: React.FC<NavSideboxCgAssetsProps> = ({
   searchData,
   assetCates,
-  assetSearchTags,
+  assetSearchGenres,
   assetSearchAppProds,
   onSearchFromSubmit,
   setIsNavSideboxClosed,
@@ -74,7 +74,7 @@ export const NavSideboxCgAssets: React.FC<NavSideboxCgAssetsProps> = ({
           <NavSideboxCgAssetsForm
             searchData={searchData}
             assetCates={assetCates}
-            assetSearchTags={assetSearchTags}
+            assetSearchGenres={assetSearchGenres}
             assetSearchAppProds={assetSearchAppProds}
             onSearchFromSubmit={onSearchFromSubmit}
             isNavHeaderSubmitting={isNavHeaderSubmitting}

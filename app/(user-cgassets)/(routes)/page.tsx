@@ -9,14 +9,22 @@ import {
   CgAssetSearchClientQuery,
   CgAssetSearchClientDocument,
   CgAssetCate,
-  CgAssetSearchTag,
+  CgAssetSearchGenre,
   CgAssetSearchAppProd,
+  // CgAssetDetailClientQuery,
+  // CgAssetDetailClientDocument,
+  // CgAsset,
+  // CgaViewingRestriction,
+  // ApplyDownload,
 } from "@/graphql/generated/graphql";
 
-import { CGAssetPageProps, CGAssetPageSlug } from './components/page-slug';
+import { CGAssetPageProps, CGAssetPageSlug } from '@/app/(user-cgassets)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/page-slug';
 import { CGAssetSearchClient } from './components/client-search';
 import { generateMetadata as generateMetadataFunc } from './components/metadata';
-import { isServerRoleAdmin, isServerRoleManager } from '@/lib/check-role-server';
+// import { isServerRoleAdmin, isServerRoleManager } from '@/lib/check-role-server';
+// import CGAssetApplyDownloadClientManager from './components/client-apply-download-manager';
+// import CGAssetApplyDownloadClientAdmin from './components/client-apply-download-admin';
+// import CGAssetApplyDownloadClientUser from './components/client-apply-download-user';
 
 export async function generateMetadata({
   params,
@@ -35,13 +43,13 @@ const CGAssetPage: React.FC<CGAssetPageProps> = async ({ params }) => {
         query: CgAssetSearchClientDocument,
       });
   const assetCates = ret.data.CGAssetCatesValid as CgAssetCate[];
-  const assetSearchTags = ret.data.CGAssetSearchTagsValid as CgAssetSearchTag[];
+  const assetSearchGenres = ret.data.CGAssetSearchGenresValid as CgAssetSearchGenre[];
   const assetSearchAppProds = ret.data.CGAssetSearchAppProdsValid as CgAssetSearchAppProd[];
 
   return (
     <CGAssetSearchClient
       assetCates={assetCates}
-      assetSearchTags={assetSearchTags}
+      assetSearchGenres={assetSearchGenres}
       assetSearchAppProds={assetSearchAppProds}
     />
   );

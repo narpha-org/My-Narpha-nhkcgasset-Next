@@ -21,7 +21,7 @@ const AssetRevisionHistoryBlock: React.FC<AssetRevisionHistoryBlockProps> = ({
         {cgAsset && cgAsset.revisionHistories?.map((elem: CgaRevisionHistory | null) => {
 
           if (elem) {
-            return <li key={elem.id} className="flex flex-wrap justify-between mb-5">
+            return <li key={elem.id} className="">
               <span>{dateFormat(elem.created_at, 'yyyy.MM.dd')}</span>
               <p>{elem.desc.split("\n").map((item, index) => {
                 return (

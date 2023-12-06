@@ -172,16 +172,15 @@ body::-webkit-scrollbar-thumb {
       font-size: vw(16);
       letter-spacing: 0.1em;
       line-height: 1.5;
-      &:nth-child(2){
+      &:nth-child(2) {
         margin-top: vw(25);
-
       }
     }
   }
   &__text-main {
     position: relative;
   }
-  &__close{
+  &__close {
     display: block;
     width: vw(15);
     height: vw(15);
@@ -214,7 +213,7 @@ body::-webkit-scrollbar-thumb {
       color: #fff;
       border-radius: vw(50) 0 0 vw(50);
       background: #212121;
-      background-image: url("../images/pull_arrow.svg");
+      background-image: url("/assets/images/pull_arrow.svg");
       background-position: right vw(15) center;
       background-repeat: no-repeat;
       background-size: vw(20) vw(11);
@@ -925,7 +924,7 @@ body::-webkit-scrollbar-thumb {
             border-radius: vw(5);
             border: vw(1) solid #bab9b9;
             background: #f8fafc;
-            background-image: url(../images/triangle.svg);
+            background-image: url(/assets/images/triangle.svg);
             background-position: right vw(15) center;
             background-repeat: no-repeat;
             background-size: vw(15) vw(13);
@@ -1099,7 +1098,7 @@ body::-webkit-scrollbar-thumb {
           font-weight: 700;
           letter-spacing: 0.03em;
           line-height: 1;
-          &.hide{
+          &.hide {
             display: none;
           }
         }
@@ -1543,7 +1542,7 @@ body::-webkit-scrollbar-thumb {
         font-weight: 500;
         letter-spacing: 0.03em;
         line-height: 1;
-        &.hide{
+        &.hide {
           display: none;
         }
       }
@@ -1566,7 +1565,7 @@ body::-webkit-scrollbar-thumb {
         font-weight: 500;
         letter-spacing: 0.03em;
         line-height: 1;
-        &.hide{
+        &.hide {
           display: none;
         }
         img {
@@ -1633,7 +1632,7 @@ body::-webkit-scrollbar-thumb {
           text-align: center;
           border-radius: vw(50);
         }
-        &.hide{
+        &.hide {
           display: none;
         }
       }
@@ -1707,7 +1706,7 @@ body::-webkit-scrollbar-thumb {
             background-color: #33cccc;
           }
         }
-        &.hide{
+        &.hide {
           display: none;
         }
       }

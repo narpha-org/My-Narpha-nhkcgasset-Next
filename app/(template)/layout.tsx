@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth/next";
 import { Session } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
 import { redirect } from 'next/navigation';
-import Image from "next/image";
+// import Image from "next/image";
 
 import './reset.css'
 import './style.scss'
@@ -38,7 +38,7 @@ export default async function TemplateLayout({
   const session: Session | null = await getServerSession(authOptions)
 
   if (!session || !session?.user || !session?.user.name) {
-    redirect('/sign-in');
+    // redirect('/sign-in');
   }
 
   return (

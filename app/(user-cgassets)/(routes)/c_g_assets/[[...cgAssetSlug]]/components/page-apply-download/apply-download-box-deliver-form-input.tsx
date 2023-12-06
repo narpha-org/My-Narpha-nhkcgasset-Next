@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/text-area"
 import { DatePicker } from "@/components/ui/date-picker"
-import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 
 interface CGAssetApplyDownloadBoxDeliverFormInputProps {
   form: UseFormReturn<any>;

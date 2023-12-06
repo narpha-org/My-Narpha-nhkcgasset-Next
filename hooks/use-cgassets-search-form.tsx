@@ -4,14 +4,14 @@ import type { } from '@redux-devtools/extension'
 
 export type CgAssetsSearchFormValues = {
   assetCates: string[],
-  assetTags: string[],
+  assetGenres: string[],
   assetAppProds: string[],
   keyword: string;
 }
 
 export const INIT_CGASSET_SEARCH_FORM_VALUES = {
   assetCates: [],
-  assetTags: [],
+  assetGenres: [],
   assetAppProds: [],
   keyword: ""
 }

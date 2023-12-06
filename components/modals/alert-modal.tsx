@@ -12,6 +12,9 @@ interface AlertModalProps {
   loading: boolean;
   title?: string;
   description?: string;
+  btnCancelVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  btnDoVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  btnDoText?: string;
 }
 
 export const AlertModal: React.FC<AlertModalProps> = ({
@@ -20,7 +23,10 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   onConfirm,
   loading,
   title = "実行してもよろしいですか？",
-  description = "この操作は取り消せません。"
+  description = "この操作は取り消せません。",
+  btnCancelVariant = "outline",
+  btnDoVariant = "destructive",
+  btnDoText = "実行"
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -40,10 +46,10 @@ export const AlertModal: React.FC<AlertModalProps> = ({
       onClose={onClose}
     >
       <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-        <Button disabled={loading} variant="outline" onClick={onClose}>
+        <Button disabled={loading} variant={btnCancelVariant} onClick={onClose}>
           キャンセル
         </Button>
-        <Button disabled={loading} variant="destructive" onClick={onConfirm}>実行</Button>
+        <Button disabled={loading} variant={btnDoVariant} onClick={onConfirm}>{btnDoText}</Button>
       </div>
     </Modal>
   );

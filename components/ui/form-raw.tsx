@@ -151,6 +151,8 @@ const FormMessage = React.forwardRef<
     return null
   }
 
+  console.log(`err: ${JSON.stringify(error)}`)
+
   return (
     <p
       ref={ref}

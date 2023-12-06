@@ -32,12 +32,12 @@ const CarouselAssetIcons = ({ medias, selectedIndex, onMove }: Props) => {
             >
               <Image
                 src={media.thumb_url as string}
-                alt={media.id}
+                alt="サムネイル" // {media.id}
                 decoding="async"
                 width={0}
                 height={0}
                 sizes="100%"
-                style={{ width: '100%', height: 'auto' }}
+                style={{ width: '4.5833333333vw', height: '2.6041666667vw' }}
               />
             </a>
           </li>

@@ -15,7 +15,7 @@ import NoticeClientAdminForm from "./notice-client-admin-form";
 interface NoticeClientAdminProps {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
   params: {
-    systemNoticeId: string;
+    systemNoticeId: string | null;
   };
 };
 
@@ -56,7 +56,7 @@ const NoticeClientAdmin: React.FC<NoticeClientAdminProps> = ({ params, setDialog
   }, []);
 
   if (!isMounted) {
-    return <div className="flex items-center justify-center h-screen">
+    return <div className="flex items-center justify-center h-full">
       <Loader />
     </div>;
   }

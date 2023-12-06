@@ -1,8 +1,9 @@
 "use client";
 
 import { Ref, forwardRef, useEffect, useState, useImperativeHandle } from "react"
+import Image from 'next/image'
 import { useSession } from "next-auth/react"
-import ReactPaginate from 'react-paginate';
+// import ReactPaginate from 'react-paginate';
 import { format } from 'date-fns'
 
 import { apolloClient } from "@/lib/apollo-client";
@@ -17,7 +18,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table-raw"
 import {
   GetApplyDownloadsOnlyApplyQuery,
   GetApplyDownloadsOnlyApplyDocument,
@@ -27,8 +28,8 @@ import {
   // StatusApplyDownload,
   SectionApplyDownload
 } from "@/graphql/generated/graphql";
+import { MyPagenator } from "@/components/ui/pagenator";
 import { ROW_COUNT } from "@/lib/pagenation";
-import paginateStyles from "@/styles/components/paginate-block.module.scss";
 import { formatStatusApplyDownload } from "@/lib/enums";
 
 interface AssetInfoApplyListUserProps {
@@ -38,10 +39,9 @@ interface AssetInfoApplyListUserProps {
 }
 
 const AssetInfoApplyListUser: React.FC<AssetInfoApplyListUserProps> = forwardRef(({
-  searchRef,
   applies,
   appliesPg
-}) => {
+}, searchRef) => {
   const { data: session, status } = useSession()
 
   const [loading, setLoading] = useState(true);
@@ -165,17 +165,14 @@ const AssetInfoApplyListUser: React.FC<AssetInfoApplyListUserProps> = forwardRef
 
   return (
     <>
-      <Table>
-        <TableCaption>申請一覧</TableCaption>
-        <TableHeader>
-          <TableRow>
+      <Table className="mypage__mainlist">
+        <TableBody>
+          <TableRow className="top">
             <TableHead className="w-[100px]">Date</TableHead>
             <TableHead>Asset ID</TableHead>
             <TableHead>Asset Name</TableHead>
             <TableHead className="">Status</TableHead>
           </TableRow>
-        </TableHeader>
-        <TableBody>
           {items && items.map((elem: ApplyDownload | null) => {
 
             if (elem) {
@@ -190,45 +187,54 @@ const AssetInfoApplyListUser: React.FC<AssetInfoApplyListUserProps> = forwardRef
           })}
         </TableBody>
       </Table>
-      <div className={paginateStyles.paginateBlock}>
-        <div className="flex items-center gap-2 mt-3">
-          {pageCount > 0 && (
+      <MyPagenator
+        className="mypage__pagenation"
+        pageIndex={pageIndex}
+        pageCount={pageCount}
+        handlePageClick={handlePageClick}
+        targetPage={targetPage}
+        getCanPreviousPage={getCanPreviousPage}
+        getCanNextPage={getCanNextPage}
+      />
+      {/* <div className="mypage__pagenation">
+        {pageCount > 0 && (
+          <div className="prev">
             <Button
-              variant="default"
-              size="icon"
               onClick={() => targetPage(0)}
               disabled={!getCanPreviousPage()}
             >
-              {'<<'}
+              <Image src="/assets/images/prev02.svg" width="19" height="22" decoding="async" alt="最初のページへ" />
             </Button>
-          )}
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel=">"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
-            pageCount={pageCount}
-            previousLabel="<"
-            renderOnZeroPageCount={undefined}
-            breakClassName=""
-            breakLinkClassName=""
-            containerClassName="flex items-center gap-2"
-            activeClassName="opacity-50"
-            disabledClassName="disabled"
-            forcePage={pageIndex}
-          />
-          {pageCount > 0 && (
+          </div>
+        )}
+        <ReactPaginate
+          breakLabel={`・・・`}
+          nextLabel={<Image src="/assets/images/next01.svg" width="19" height="22"
+            decoding="async" alt="次のページへ" />}
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel={<Image src="/assets/images/prev01.svg" width="19" height="22"
+            decoding="async" alt="前のページへ" />}
+          renderOnZeroPageCount={undefined}
+          breakClassName="ellipsis"
+          breakLinkClassName=""
+          containerClassName="ul_alt"
+          activeClassName="opacity-50"
+          disabledClassName="disabled"
+          forcePage={pageIndex}
+        />
+        {pageCount > 0 && (
+          <div className="next">
             <Button
-              variant="default"
-              size="icon"
               onClick={() => targetPage(pageCount - 1)}
               disabled={!getCanNextPage()}
             >
-              {'>>'}
+              <Image src="/assets/images/next02.svg" width="19" height="22" decoding="async" alt="最後のページへ" />
             </Button>
-          )}
-        </div>
-      </div>
+          </div>
+        )}
+      </div> */}
     </>
   )
 });

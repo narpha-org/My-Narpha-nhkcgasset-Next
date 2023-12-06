@@ -10,9 +10,8 @@ import {
   CgAsset,
   CgAssetPaginator,
 } from "@/graphql/generated/graphql";
+import { NavHeaderMypage } from '@/components/nav-header-mypage';
 
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
 import NoticeBlock from "./notice-block";
 import AssetInfoBlock from "./asset-info-block";
 import UserInfoBlock from "./user-info-block";
@@ -60,36 +59,37 @@ export const HomeDashboardClientEditor: React.FC<HomeDashboardClientEditorProps>
 
   return (
     <>
-      <div className="flex items-center justify-between">
-        <Heading title="ホーム画面" description="お知らせ、申請等" />
-      </div>
-      <Separator />
-      <div className="flex flex-row">
-        <div className="basis-1/3">
-          <div className="flex flex-col w-full overflow-hidden h-64 px-3 py-2">
-            <NoticeBlock
-              systemNotices={systemNotices}
-            />
-          </div>
-          <div className="flex flex-col w-full overflow-hidden h-full px-3 py-2">
-            <UserInfoBlock />
+      <NavHeaderMypage />
+
+      {/* <!-- main --> */}
+      <main className="maincon">
+        <div className="mypage">
+          <div className="mypage__inner">
+            <div className="mypage__mainbox">
+              <div className="mypage__maincon">
+                <div className="mypage__maincon-left">
+                  <NoticeBlock
+                    systemNotices={systemNotices}
+                  />
+                  <UserInfoBlock />
+                </div>
+                <div className="mypage__maincon-right">
+                  <AssetInfoBlock
+                    downloadApplies={downloadApplies}
+                    downloadAppliesPg={downloadAppliesPg}
+                    applies={applies}
+                    appliesPg={appliesPg}
+                    approvals={approvals}
+                    approvalsPg={approvalsPg}
+                    cgAssets={cgAssets}
+                    cgAssetsPg={cgAssetsPg}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="basis-2/3">
-          <div className="flex flex-col w-full px-3 py-2">
-            <AssetInfoBlock
-              downloadApplies={downloadApplies}
-              downloadAppliesPg={downloadAppliesPg}
-              applies={applies}
-              appliesPg={appliesPg}
-              approvals={approvals}
-              approvalsPg={approvalsPg}
-              cgAssets={cgAssets}
-              cgAssetsPg={cgAssetsPg}
-            />
-          </div>
-        </div>
-      </div>
+      </main>
     </>
   );
 };

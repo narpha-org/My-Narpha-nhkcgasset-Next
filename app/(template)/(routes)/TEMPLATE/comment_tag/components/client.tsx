@@ -113,6 +113,7 @@ export const TemplateClient: React.FC<TemplateClientProps> = ({ }) => {
                         className="tag_gray on">テキスト</button>
                       <button id="tag_gray-btn02" type="submit"
                         className="tag_gray on">テキストテキスト</button>
+                      <input id="tag_form" className="input-text js-input" type="text" required />
                     </div>
                   </div>
 

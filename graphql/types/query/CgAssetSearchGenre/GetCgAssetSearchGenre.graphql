@@ -1,0 +1,10 @@
+query GetCgAssetSearchGenre($id: ID!) {
+  CGAssetSearchGenre(id: $id) {
+    id
+    code
+    desc
+    order
+    valid_flg
+    created_at
+  }
+}

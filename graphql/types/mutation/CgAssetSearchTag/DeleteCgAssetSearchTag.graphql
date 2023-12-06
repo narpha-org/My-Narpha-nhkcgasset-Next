@@ -1,5 +1,5 @@
-mutation DeleteCgAssetSearchTag($id: ID!) {
-  deleteCGAssetSearchTag(id: $id) {
+mutation DeleteCgAssetSearchGenre($id: ID!) {
+  deleteCGAssetSearchGenre(id: $id) {
     __typename
     id
     code

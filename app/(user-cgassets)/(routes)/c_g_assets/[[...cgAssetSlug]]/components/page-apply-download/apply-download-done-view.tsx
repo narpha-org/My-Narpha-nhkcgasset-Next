@@ -2,11 +2,12 @@
 
 import * as z from "zod"
 import { Fragment, useState, Dispatch, SetStateAction } from "react";
+// import { useParams, useRouter } from "next/navigation"
+import Link from "next/link"
+import { useSession } from "next-auth/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { X, Undo2 } from "lucide-react"
-// import { useParams, useRouter } from "next/navigation"
-import { useSession } from "next-auth/react"
 import { dateFormat } from "@/lib/utils"
 
 import {
@@ -27,9 +28,9 @@ import {
 } from "@/components/ui/form"
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
-import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 
-export const ApplyDownloadViewSchema = z.object({
+export const ApplyDownloadDoneViewSchema = z.object({
   manage_user_id: z.string({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
   program_id: z.string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' }),
   program_name: z.string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' }),
@@ -47,9 +48,9 @@ export const ApplyDownloadViewSchema = z.object({
     }),
 });
 
-export type ApplyDownloadViewValues = z.infer<typeof ApplyDownloadViewSchema>
+export type ApplyDownloadDoneViewValues = z.infer<typeof ApplyDownloadDoneViewSchema>
 
-interface CGAssetApplyDownloadViewProps {
+interface CGAssetApplyDownloadDoneViewProps {
   initialData: ApplyDownload | null;
   cgAsset: CgAsset | null;
   manageUsers: User[] | null;
@@ -59,7 +60,7 @@ interface CGAssetApplyDownloadViewProps {
   };
 };
 
-export const CGAssetApplyDownloadView: React.FC<CGAssetApplyDownloadViewProps> = ({
+export const CGAssetApplyDownloadDoneView: React.FC<CGAssetApplyDownloadDoneViewProps> = ({
   initialData,
   cgAsset,
   manageUsers,
@@ -89,14 +90,14 @@ export const CGAssetApplyDownloadView: React.FC<CGAssetApplyDownloadViewProps> =
   }
 
   const form = useForm<any>({
-    resolver: zodResolver(ApplyDownloadViewSchema),
+    resolver: zodResolver(ApplyDownloadDoneViewSchema),
     defaultValues
   });
 
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title="ダウンロード申請" description={`アセットID: ${cgAsset?.asset_id} のダウンロード申請内容`} />
+        <Heading title="アセットデータ消去完了の報告内容" description={`アセットID: ${cgAsset?.asset_id} のデータ消去完了報告内容`} />
       </div>
       <Separator />
       <Form {...form}>
@@ -198,6 +199,46 @@ export const CGAssetApplyDownloadView: React.FC<CGAssetApplyDownloadViewProps> =
                 </FormItem>
               )}
             />
+            {/* <FormField
+              control={form.control}
+              name="box_link"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Boxリンク</FormLabel>
+                  <div>
+                    {field.value && (
+                      <Link href={field.value} rel="noopener noreferrer" target="_blank">
+                        {field.value}
+                      </Link>
+                    )}
+                  </div>
+                </FormItem>
+              )}
+            /> */}
+            <FormField
+              control={form.control}
+              name="download_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>ダウンロード日</FormLabel>
+                  <div>
+                    {dateFormat(field.value, 'yyyy/MM/dd')}
+                  </div>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="removal_limit_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>データ削除期限</FormLabel>
+                  <div>
+                    {dateFormat(field.value, 'yyyy/MM/dd')}
+                  </div>
+                </FormItem>
+              )}
+            />
           </div>
           <Button disabled={loading} className="ml-auto mr-2" variant="outline" type="button"
             onClick={() => setDialogOpen(false)}>
@@ -209,4 +250,4 @@ export const CGAssetApplyDownloadView: React.FC<CGAssetApplyDownloadViewProps> =
   )
 }
 
-export default CGAssetApplyDownloadView
+export default CGAssetApplyDownloadDoneView

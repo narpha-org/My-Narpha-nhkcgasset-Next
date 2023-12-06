@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 import AdminNavbar from '@/components/admin-navbar'
 // import { RoleCgAssetStore } from "@/graphql/generated/graphql";
-import AdminUnauthorized from "@/app/(admin)/admin-unauthorized";
+import AdminUnauthorized from "./admin-unauthorized";
 import { isServerRoleAdmin } from "@/lib/check-role-server";
 
 export default async function DashboardLayout({

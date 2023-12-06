@@ -10,7 +10,7 @@ import {
   CgAsset,
   CgAssetCate,
   CgAssetSearchAppProd,
-  CgAssetSearchTag,
+  CgAssetSearchGenre,
   PaginatorInfo
 } from '@/graphql/generated/graphql';
 import {
@@ -32,13 +32,13 @@ import { SearchResult } from "./page-search/search-result";
 
 interface CGAssetSearchClientProps {
   assetCates: CgAssetCate[];
-  assetSearchTags: CgAssetSearchTag[];
+  assetSearchGenres: CgAssetSearchGenre[];
   assetSearchAppProds: CgAssetSearchAppProd[];
 }
 
 export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
   assetCates,
-  assetSearchTags,
+  assetSearchGenres,
   assetSearchAppProds,
 }) => {
   // const router = useRouter();
@@ -147,7 +147,7 @@ export const CGAssetSearchClient: React.FC<CGAssetSearchClientProps> = ({
           <NavSideboxCgAssets
             searchData={searchData}
             assetCates={assetCates}
-            assetSearchTags={assetSearchTags}
+            assetSearchGenres={assetSearchGenres}
             assetSearchAppProds={assetSearchAppProds}
             onSearchFromSubmit={onNavSideboxCgAssetsFromSubmit}
             setIsNavSideboxClosed={setIsNavSideboxClosed}

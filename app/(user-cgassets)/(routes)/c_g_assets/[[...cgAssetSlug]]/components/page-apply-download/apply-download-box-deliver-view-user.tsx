@@ -2,62 +2,55 @@
 
 import * as z from "zod"
 import { Fragment, useState, Dispatch, SetStateAction } from "react";
-import { useParams, useRouter } from "next/navigation"
-// import Link from "next/link"
-import { useSession } from "next-auth/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { X, Send, DownloadCloud } from "lucide-react"
-import { dateFormat, isPastDate } from "@/lib/utils"
+import { X, Undo2 } from "lucide-react"
+// import { useParams, useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
+import { dateFormat } from "@/lib/utils"
 
-import { apolloClient } from "@/lib/apollo-client";
-import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  UpdateApplyDownloadDlNotificationMutation,
-  UpdateApplyDownloadDlNotificationDocument,
   ApplyDownload,
   CgAsset,
   User,
-  ApplyDownloadGlacier,
 } from "@/graphql/generated/graphql";
 
 import { Button } from "@/components/ui/button"
 import {
   Form,
-  // FormControl,
-  // FormDescription,
+  FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  // FormMessage,
+  FormMessage,
 } from "@/components/ui/form"
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
-// import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
-import { getAppDLGlaciers } from "@/lib/check-glacier-status";
+import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+import Link from "next/link"
 
-export const ApplyDownloadDLNotificationUserFormSchema = z.object({
-  // manage_user_id: z.string({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
-  // program_id: z.string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' }),
-  // program_name: z.string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' }),
-  // date_usage_start: z.date({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
-  // date_usage_end: z.date({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
-  // purpose_of_use_txt: z
-  //   .string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' })
-  //   .max(1000, {
-  //     message: "利用目的 は最大 1000 文字以内でご入力ください。",
-  //   }),
-  // etc_txt: z
-  //   .string()
-  //   .max(1000, {
-  //     message: "その他 は最大 1000 文字以内でご入力ください。",
-  //   }),
+export const ApplyDownloadBoxDeliverViewUserSchema = z.object({
+  manage_user_id: z.string({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
+  program_id: z.string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' }),
+  program_name: z.string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' }),
+  date_usage_start: z.date({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
+  date_usage_end: z.date({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
+  purpose_of_use_txt: z
+    .string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' })
+    .max(1000, {
+      message: "利用目的 は最大 1000 文字以内でご入力ください。",
+    }),
+  etc_txt: z
+    .string()
+    .max(1000, {
+      message: "その他 は最大 1000 文字以内でご入力ください。",
+    }),
 });
 
-export type ApplyDownloadDLNotificationUserFormValues = z.infer<typeof ApplyDownloadDLNotificationUserFormSchema>
+export type ApplyDownloadBoxDeliverViewUserValues = z.infer<typeof ApplyDownloadBoxDeliverViewUserSchema>
 
-interface CGAssetApplyDownloadDLNotificationUserFormProps {
+interface CGAssetApplyDownloadBoxDeliverViewUserProps {
   initialData: ApplyDownload | null;
   cgAsset: CgAsset | null;
   manageUsers: User[] | null;
@@ -67,7 +60,7 @@ interface CGAssetApplyDownloadDLNotificationUserFormProps {
   };
 };
 
-export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDownloadDLNotificationUserFormProps> = ({
+export const CGAssetApplyDownloadBoxDeliverViewUser: React.FC<CGAssetApplyDownloadBoxDeliverViewUserProps> = ({
   initialData,
   cgAsset,
   manageUsers,
@@ -75,10 +68,11 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
   params
 }) => {
   // const params = useParams() as unknown as CGAssetPageProps['params'];
-  const router = useRouter();
+  // const router = useRouter();
   const { data: session, status } = useSession()
 
   const [loading, setLoading] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
 
   const defaultValues = initialData ? {
     ...initialData,
@@ -96,80 +90,9 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
   }
 
   const form = useForm<any>({
-    resolver: zodResolver(ApplyDownloadDLNotificationUserFormSchema),
+    resolver: zodResolver(ApplyDownloadBoxDeliverViewUserSchema),
     defaultValues
   });
-
-  const onSubmit = async (data: ApplyDownloadDLNotificationUserFormValues) => {
-    try {
-      setLoading(true);
-
-      const ret: FetchResult<UpdateApplyDownloadDlNotificationMutation>
-        = await apolloClient
-          .mutate({
-            mutation: UpdateApplyDownloadDlNotificationDocument,
-            variables: {
-              input: {
-                id: params.cgAssetSlug[2],
-                user_id: (session?.user as { userId: string }).userId,
-              }
-            },
-          })
-
-      // console.log("ret", ret);
-      if (
-        ret.errors &&
-        ret.errors[0] &&
-        ret.errors[0].extensions &&
-        ret.errors[0].extensions.debugMessage
-      ) {
-        throw new Error(ret.errors[0].extensions.debugMessage as string)
-      } else if (
-        ret.errors &&
-        ret.errors[0]
-      ) {
-        throw new Error(ret.errors[0].message as string)
-      }
-
-      router.refresh();
-      setDialogOpen(false);
-
-      toast.success('ダウンロード済みを報告しました。');
-    } catch (error: any) {
-      toast.error('ダウンロード済み報告に失敗しました。');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const download = (filename, content) => {
-    var element = document.createElement("a");
-    element.setAttribute("href", content);
-    element.setAttribute("download", filename);
-    element.style.display = "none";
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
-  };
-
-  const handleDownload = async (e, presigned_url: string, file_name: string) => {
-    try {
-      const result = await fetch(presigned_url, {
-        method: "GET",
-        headers: {}
-      });
-      const blob = await result.blob();
-      const url = URL.createObjectURL(blob);
-      download(file_name || cgAsset?.asset_name, url);
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const appDLGlaciers = getAppDLGlaciers(cgAsset?.applyDownloads as ApplyDownload[]);
 
   return (
     <>
@@ -178,7 +101,7 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
       </div>
       <Separator />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <form className="space-y-8 w-full">
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
@@ -319,45 +242,9 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
               )}
             />
           </div>
-          <div className="flex flex-col justify-items-center">
-            {appDLGlaciers && appDLGlaciers.map((elem: ApplyDownloadGlacier | null) => {
-              if (elem) {
-
-                if (isPastDate(elem.expiry_date) || !elem.presigned_url) {
-                  return <div key={elem.id} className="mx-auto my-2">
-                    <Button
-                      variant="ghost"
-                      className="opacity-50"
-                      type="button"
-                      style={{ cursor: "default" }}
-                    >
-                      <X className="mr-2 h-4 w-4" /> ダウンロード期限切れ
-                    </Button>
-                  </div>
-                }
-
-                return <div key={elem.id} className="mx-auto my-2">
-                  <Button
-                    className=""
-                    type="button"
-                    onClick={(event) => handleDownload(
-                      event,
-                      elem.presigned_url as string,
-                      elem.file_name as string
-                    )}
-                  >
-                    <DownloadCloud className="mr-2 h-4 w-4" /> ダウンロード
-                  </Button>
-                </div>
-              }
-            })}
-          </div>
           <Button disabled={loading} className="ml-auto mr-2" variant="outline" type="button"
             onClick={() => setDialogOpen(false)}>
             <X className="mr-2 h-4 w-4" /> 閉じる
-          </Button>
-          <Button disabled={loading} className="ml-auto" type="submit">
-            <Send className="mr-2 h-4 w-4" /> ダウンロード済み報告
           </Button>
         </form>
       </Form>
@@ -365,4 +252,4 @@ export const CGAssetApplyDownloadDLNotificationUserForm: React.FC<CGAssetApplyDo
   )
 }
 
-export default CGAssetApplyDownloadDLNotificationUserForm
+export default CGAssetApplyDownloadBoxDeliverViewUser

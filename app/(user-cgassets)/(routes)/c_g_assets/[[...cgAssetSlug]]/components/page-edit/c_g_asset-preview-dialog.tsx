@@ -202,10 +202,12 @@ const CGAssetPreviewDialog: React.FC<CGAssetPreviewDialogProps> = ({
         left: "50%",
         transform: "translate(-50%, -50%)",
         width: "95vw",
+        // height: "90vh",
         maxWidth: "95vw",
         maxHeight: "90vh",
         overflowX: "auto",
         overflowY: "auto",
+        // zIndex: 1002,
       }}>
         {child}
       </DialogContent>

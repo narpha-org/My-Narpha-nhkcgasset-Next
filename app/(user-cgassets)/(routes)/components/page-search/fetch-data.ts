@@ -14,7 +14,7 @@ import {
 } from "@/graphql/generated/graphql";
 
 import { CgAssetsSearchFormValues } from "@/hooks/use-cgassets-search-form";
-import { IsRoleUser } from "@/lib/check-role-client";
+import { IsRoleOther, IsRoleUser } from "@/lib/check-role-client";
 // import { isServerRoleUser } from "@/lib/check-role-server";
 
 interface FetchDataProps {
@@ -28,7 +28,7 @@ export async function fetchData(params: FetchDataProps) {
   let data: CgAsset[];
   let paginatorInfo: PaginatorInfo;
 
-  if (IsRoleUser(params.session)) {
+  if (IsRoleUser(params.session) || IsRoleOther(params.session)) {
     // 有効データのみ
     const ret: ApolloQueryResult<GetCgAssetsValidQuery> =
       await apolloClient.query({

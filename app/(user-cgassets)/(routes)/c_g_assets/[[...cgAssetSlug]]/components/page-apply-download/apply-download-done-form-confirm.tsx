@@ -1,8 +1,10 @@
 "use client"
 
 import { Fragment, Dispatch, SetStateAction } from "react";
+// import { useParams, useRouter } from "next/navigation"
+import Link from "next/link";
 import { UseFormReturn } from "react-hook-form";
-import { Undo2, Save, Plus } from "lucide-react"
+import { X, Send } from "lucide-react"
 import { dateFormat } from "@/lib/utils"
 
 import {
@@ -13,6 +15,7 @@ import {
 
 import { Button } from "@/components/ui/button"
 import {
+  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -20,9 +23,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-// import { ApplyDownloadFormSchema, ApplyDownloadFormValues } from "./apply-download-form"
+import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 
-interface CGAssetApplyDownloadFormConfirmProps {
+interface CGAssetApplyDownloadDoneFormConfirmProps {
   form: UseFormReturn<any>;
   initialData: ApplyDownload | null;
   cgAsset: CgAsset | null;
@@ -35,7 +38,7 @@ interface CGAssetApplyDownloadFormConfirmProps {
   onPrev: () => void;
 };
 
-export const CGAssetApplyDownloadFormConfirm: React.FC<CGAssetApplyDownloadFormConfirmProps> = ({
+export const CGAssetApplyDownloadDoneFormConfirm: React.FC<CGAssetApplyDownloadDoneFormConfirmProps> = ({
   form,
   initialData,
   cgAsset,
@@ -45,6 +48,8 @@ export const CGAssetApplyDownloadFormConfirm: React.FC<CGAssetApplyDownloadFormC
   loading,
   onPrev,
 }) => {
+  // const params = useParams() as unknown as CGAssetPageProps['params'];
+  // const router = useRouter();
 
   return (
     <>
@@ -56,12 +61,7 @@ export const CGAssetApplyDownloadFormConfirm: React.FC<CGAssetApplyDownloadFormC
             <FormItem>
               <FormLabel>番組責任者</FormLabel>
               <div>
-                {manageUsers && manageUsers.filter((manageUser) => {
-                  return manageUser.id === field.value;
-                })
-                  .map((manageUser) => {
-                    return manageUser.name;
-                  })}
+                {form.getValues('manageUser.name')}
               </div>
             </FormItem>
           )}
@@ -150,16 +150,56 @@ export const CGAssetApplyDownloadFormConfirm: React.FC<CGAssetApplyDownloadFormC
             </FormItem>
           )}
         />
+        {/* <FormField
+          control={form.control}
+          name="box_link"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Boxリンク</FormLabel>
+              <div>
+                {field.value && (
+                  <Link href={field.value} rel="noopener noreferrer" target="_blank">
+                    {field.value}
+                  </Link>
+                )}
+              </div>
+            </FormItem>
+          )}
+        /> */}
+        <FormField
+          control={form.control}
+          name="download_date"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>ダウンロード日</FormLabel>
+              <div>
+                {dateFormat(field.value, 'yyyy/MM/dd')}
+              </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="removal_limit_date"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>データ削除期限</FormLabel>
+              <div>
+                {dateFormat(field.value, 'yyyy/MM/dd')}
+              </div>
+            </FormItem>
+          )}
+        />
       </div>
       <Button disabled={loading} className="ml-auto mr-2" variant="outline" type="button"
-        onClick={onPrev}>
-        <Undo2 className="mr-2 h-4 w-4" /> 修正する
+        onClick={() => setDialogOpen(false)}>
+        <X className="mr-2 h-4 w-4" /> 閉じる
       </Button>
       <Button disabled={loading} className="ml-auto" type="submit">
-        {initialData ? <Save className="mr-2 h-4 w-4" /> : <Plus className="mr-2 h-4 w-4" />} 申請
+        <Send className="mr-2 h-4 w-4" /> データ消去完了報告
       </Button>
     </>
   )
 }
 
-export default CGAssetApplyDownloadFormConfirm
+export default CGAssetApplyDownloadDoneFormConfirm

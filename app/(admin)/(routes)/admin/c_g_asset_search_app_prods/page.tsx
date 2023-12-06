@@ -20,7 +20,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: '制作ソフトウェア',
     ...commonMetadataOpenGraph,
-  }
+  },
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_DOMAIN ?
+      `https://app.${process.env.NEXT_PUBLIC_BASE_DOMAIN}` :
+      `http://localhost:3000`
+  )
 }
 
 const CGAssetSearchAppProdsPage = async ({

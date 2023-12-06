@@ -6,11 +6,11 @@ import { authOptions } from "@/lib/auth-options";
 import { getClient as apolloServer } from "@/lib/apollo-server";
 import { ApolloQueryResult } from "@apollo/client";
 import {
-  CgAssetSearchClientQuery,
-  CgAssetSearchClientDocument,
-  CgAssetCate,
-  CgAssetSearchTag,
-  CgAssetSearchAppProd,
+  // CgAssetSearchClientQuery,
+  // CgAssetSearchClientDocument,
+  // CgAssetCate,
+  // CgAssetSearchGenre,
+  // CgAssetSearchAppProd,
   CgAssetDetailClientQuery,
   CgAssetDetailClientDocument,
   CgAsset,
@@ -19,9 +19,8 @@ import {
 } from "@/graphql/generated/graphql";
 
 import CGAssetDetailClient from './components/client-detail';
-import { CGAssetPageProps, CGAssetPageSlug } from '../../components/page-slug';
+import { CGAssetPageProps, CGAssetPageSlug } from './components/page-slug';
 import CGAssetEditClient from './components/client-edit';
-import { CGAssetSearchClient } from '../../components/client-search';
 import { generateMetadata as generateMetadataFunc } from '../../components/metadata';
 import { isServerRoleAdmin, isServerRoleManager } from '@/lib/check-role-server';
 // import CGAssetApplyDownloadClientManager from './components/client-apply-download-manager';
@@ -36,28 +35,6 @@ export async function generateMetadata({
 
 const CGAssetPage: React.FC<CGAssetPageProps> = async ({ params }) => {
   const session: Session | null = await getServerSession(authOptions)
-
-  if (!params.cgAssetSlug) {
-
-    /* CGアセット一覧 */
-
-    const ret: ApolloQueryResult<CgAssetSearchClientQuery>
-      = await apolloServer()
-        .query({
-          query: CgAssetSearchClientDocument,
-        });
-    const assetCates = ret.data.CGAssetCatesValid as CgAssetCate[];
-    const assetSearchTags = ret.data.CGAssetSearchTagsValid as CgAssetSearchTag[];
-    const assetSearchAppProds = ret.data.CGAssetSearchAppProdsValid as CgAssetSearchAppProd[];
-
-    return (
-      <CGAssetSearchClient
-        assetCates={assetCates}
-        assetSearchTags={assetSearchTags}
-        assetSearchAppProds={assetSearchAppProds}
-      />
-    );
-  }
 
   if (
     params.cgAssetSlug[0] &&

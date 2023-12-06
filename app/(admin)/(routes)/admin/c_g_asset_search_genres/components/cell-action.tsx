@@ -8,9 +8,9 @@ import { useParams, useRouter } from "next/navigation";
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  // CgAssetSearchTag,
-  DeleteCgAssetSearchTagMutation,
-  DeleteCgAssetSearchTagDocument,
+  // CgAssetSearchGenre,
+  DeleteCgAssetSearchGenreMutation,
+  DeleteCgAssetSearchGenreDocument,
 } from "@/graphql/generated/graphql";
 
 import { Button } from "@/components/ui/button";
@@ -23,10 +23,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import { CGAssetSearchTagColumn } from "./columns";
+import { CGAssetSearchGenreColumn } from "./columns";
 
 interface CellActionProps {
-  data: CGAssetSearchTagColumn;
+  data: CGAssetSearchGenreColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
@@ -41,10 +41,10 @@ export const CellAction: React.FC<CellActionProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<DeleteCgAssetSearchTagMutation>
+      const ret: FetchResult<DeleteCgAssetSearchGenreMutation>
         = await apolloClient
           .mutate({
-            mutation: DeleteCgAssetSearchTagDocument,
+            mutation: DeleteCgAssetSearchGenreDocument,
             variables: {
               id: data.id,
             },

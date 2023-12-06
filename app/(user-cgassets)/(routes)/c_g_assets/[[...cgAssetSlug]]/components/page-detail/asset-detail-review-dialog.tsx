@@ -49,9 +49,11 @@ const AssetDetailReviewDialog = ({
         left: "50%",
         transform: "translate(-50%, -50%)",
         width: "90vw",
+        // height: "90vh",
         maxWidth: "1250px",
         maxHeight: "90vh",
         overflowY: "auto",
+        // zIndex: 1002,
       }}>
         {child}
       </DialogContent>

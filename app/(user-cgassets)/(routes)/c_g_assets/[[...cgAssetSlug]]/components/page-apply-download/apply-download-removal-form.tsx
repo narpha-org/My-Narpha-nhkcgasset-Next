@@ -12,8 +12,8 @@ import { useSession } from "next-auth/react"
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  UpdateApplyDownloadDoneMutation,
-  UpdateApplyDownloadDoneDocument,
+  UpdateApplyDownloadRemovalMutation,
+  UpdateApplyDownloadRemovalDocument,
   ApplyDownload,
   CgAsset,
   User,
@@ -79,10 +79,10 @@ export const CGAssetApplyDownloadRemovalForm: React.FC<CGAssetApplyDownloadRemov
     try {
       setLoading(true);
 
-      const ret: FetchResult<UpdateApplyDownloadDoneMutation>
+      const ret: FetchResult<UpdateApplyDownloadRemovalMutation>
         = await apolloClient
           .mutate({
-            mutation: UpdateApplyDownloadDoneDocument,
+            mutation: UpdateApplyDownloadRemovalDocument,
             variables: {
               input: {
                 id: params.cgAssetSlug[2],
@@ -134,7 +134,7 @@ export const CGAssetApplyDownloadRemovalForm: React.FC<CGAssetApplyDownloadRemov
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title="データ消去報告" description={`下記のデータを消去いたしました。`} />
+        <Heading title="データ消去報告" description={`下記のデータ消去を報告いたします。`} />
       </div>
       <Separator />
       <Form {...form}>

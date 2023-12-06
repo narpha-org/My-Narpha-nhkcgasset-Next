@@ -1,11 +1,11 @@
-mutation UpdateCgAssetSearchTag(
+mutation UpdateCgAssetSearchGenre(
   $id: ID!
   $code: String!
   $desc: String!
   $order: Int!
   $valid_flg: Boolean!
 ) {
-  updateCGAssetSearchTag(
+  updateCGAssetSearchGenre(
     id: $id
     code: $code
     desc: $desc

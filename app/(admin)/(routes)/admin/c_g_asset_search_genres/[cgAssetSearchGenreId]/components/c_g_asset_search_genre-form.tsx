@@ -11,13 +11,13 @@ import { useParams, useRouter } from "next/navigation"
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
-  CgAssetSearchTag,
-  CreateCgAssetSearchTagMutation,
-  CreateCgAssetSearchTagDocument,
-  UpdateCgAssetSearchTagMutation,
-  UpdateCgAssetSearchTagDocument,
-  DeleteCgAssetSearchTagMutation,
-  DeleteCgAssetSearchTagDocument,
+  CgAssetSearchGenre,
+  CreateCgAssetSearchGenreMutation,
+  CreateCgAssetSearchGenreDocument,
+  UpdateCgAssetSearchGenreMutation,
+  UpdateCgAssetSearchGenreDocument,
+  DeleteCgAssetSearchGenreMutation,
+  DeleteCgAssetSearchGenreDocument,
 } from "@/graphql/generated/graphql";
 
 import { Input } from "@/components/ui/input"
@@ -54,13 +54,13 @@ const formSchema = z.object({
   valid_flg: z.boolean().default(false).optional(),
 });
 
-type CGAssetSearchTagFormValues = z.infer<typeof formSchema>
+type CGAssetSearchGenreFormValues = z.infer<typeof formSchema>
 
-interface CGAssetSearchTagFormProps {
-  initialData: CgAssetSearchTag | null;
+interface CGAssetSearchGenreFormProps {
+  initialData: CgAssetSearchGenre | null;
 };
 
-export const CGAssetSearchTagForm: React.FC<CGAssetSearchTagFormProps> = ({
+export const CGAssetSearchGenreForm: React.FC<CGAssetSearchGenreFormProps> = ({
   initialData
 }) => {
   const params = useParams();
@@ -84,12 +84,12 @@ export const CGAssetSearchTagForm: React.FC<CGAssetSearchTagFormProps> = ({
     valid_flg: false,
   }
 
-  const form = useForm<CGAssetSearchTagFormValues>({
+  const form = useForm<CGAssetSearchGenreFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues
   });
 
-  const onSubmit = async (data: CGAssetSearchTagFormValues) => {
+  const onSubmit = async (data: CGAssetSearchGenreFormValues) => {
     try {
       setLoading(true);
 
@@ -97,20 +97,20 @@ export const CGAssetSearchTagForm: React.FC<CGAssetSearchTagFormProps> = ({
       if (initialData) {
         ret = await apolloClient
           .mutate({
-            mutation: UpdateCgAssetSearchTagDocument,
+            mutation: UpdateCgAssetSearchGenreDocument,
             variables: {
-              id: params.cgAssetSearchTagId,
+              id: params.cgAssetSearchGenreId,
               ...data
             },
-          }) as FetchResult<UpdateCgAssetSearchTagMutation>
+          }) as FetchResult<UpdateCgAssetSearchGenreMutation>
       } else {
         ret = await apolloClient
           .mutate({
-            mutation: CreateCgAssetSearchTagDocument,
+            mutation: CreateCgAssetSearchGenreDocument,
             variables: {
               ...data
             },
-          }) as FetchResult<CreateCgAssetSearchTagMutation>
+          }) as FetchResult<CreateCgAssetSearchGenreMutation>
       }
 
       // console.log("ret", ret);
@@ -142,12 +142,12 @@ export const CGAssetSearchTagForm: React.FC<CGAssetSearchTagFormProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<DeleteCgAssetSearchTagMutation>
+      const ret: FetchResult<DeleteCgAssetSearchGenreMutation>
         = await apolloClient
           .mutate({
-            mutation: DeleteCgAssetSearchTagDocument,
+            mutation: DeleteCgAssetSearchGenreDocument,
             variables: {
-              id: params.cgAssetSearchTagId,
+              id: params.cgAssetSearchGenreId,
             },
           })
 

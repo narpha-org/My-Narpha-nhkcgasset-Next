@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link"
 import Image from 'next/image';
 import classNames from "classnames";
-import ReactPaginate from 'react-paginate';
+// import ReactPaginate from 'react-paginate';
 
 import { CgAsset, PaginatorInfo } from '@/graphql/generated/graphql';
 
 import { Loader } from "@/components/ui/loader";
-import { Button } from "@/components/ui/button";
-import paginateStyles from "@/styles/components/paginate-block.module.scss";
+// import { Button } from "@/components/ui/button-raw";
+import { MyPagenator } from "@/components/ui/pagenator";
 import { ROW_COUNT_CGASSETS } from "@/lib/pagenation";
 
 import { getAssetMedias } from "../../c_g_assets/[[...cgAssetSlug]]/components/page-detail/asset-media";
@@ -150,49 +150,56 @@ export const SearchResult: React.FC<SearchResultProps> = ({
             })}
           </ul>
           {!loading && !isInitPage && paginatorInfo && (
-            <div className={paginateStyles.paginateBlock}>
-              <div className="flow-root h-16 items-center px-4 my-4">
-                <div className="float-right flex items-center space-x-4">
-                  <div className="flex items-center gap-2 mt-3">
-                    {pageCount > 0 && (
-                      <Button
-                        variant="default"
-                        size="icon"
-                        onClick={() => targetPage(0)}
-                        disabled={!getCanPreviousPage()}
-                      >
-                        {'<<'}
-                      </Button>
-                    )}
-                    <ReactPaginate
-                      breakLabel="..."
-                      nextLabel=">"
-                      onPageChange={handlePageClick}
-                      pageRangeDisplayed={5}
-                      pageCount={pageCount}
-                      previousLabel="<"
-                      renderOnZeroPageCount={undefined}
-                      breakClassName=""
-                      breakLinkClassName=""
-                      containerClassName="flex items-center gap-2"
-                      activeClassName="opacity-50"
-                      disabledClassName="disabled"
-                      forcePage={pageIndex}
-                    />
-                    {pageCount > 0 && (
-                      <Button
-                        variant="default"
-                        size="icon"
-                        onClick={() => targetPage(pageCount - 1)}
-                        disabled={!getCanNextPage()}
-                      >
-                        {'>>'}
-                      </Button>
-                    )}
+            <>
+              <MyPagenator
+                className="search__pagenation"
+                pageIndex={pageIndex}
+                pageCount={pageCount}
+                handlePageClick={handlePageClick}
+                targetPage={targetPage}
+                getCanPreviousPage={getCanPreviousPage}
+                getCanNextPage={getCanNextPage}
+              />
+              {/* <div className="search__pagenation">
+                {pageCount > 0 && (
+                  <div className="prev">
+                    <Button
+                      onClick={() => targetPage(0)}
+                      disabled={!getCanPreviousPage()}
+                    >
+                      <Image src="/assets/images/prev02.svg" width="19" height="22" decoding="async" alt="最初のページへ" />
+                    </Button>
                   </div>
-                </div>
-              </div>
-            </div>
+                )}
+                <ReactPaginate
+                  breakLabel={`・・・`}
+                  nextLabel={<Image src="/assets/images/next01.svg" width="19" height="22"
+                    decoding="async" alt="次のページへ" />}
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={5}
+                  pageCount={pageCount}
+                  previousLabel={<Image src="/assets/images/prev01.svg" width="19" height="22"
+                    decoding="async" alt="前のページへ" />}
+                  renderOnZeroPageCount={undefined}
+                  breakClassName="ellipsis"
+                  breakLinkClassName=""
+                  containerClassName="ul_alt"
+                  activeClassName="opacity-50"
+                  disabledClassName="disabled"
+                  forcePage={pageIndex}
+                />
+                {pageCount > 0 && (
+                  <div className="next">
+                    <Button
+                      onClick={() => targetPage(pageCount - 1)}
+                      disabled={!getCanNextPage()}
+                    >
+                      <Image src="/assets/images/next02.svg" width="19" height="22" decoding="async" alt="最後のページへ" />
+                    </Button>
+                  </div>
+                )}
+              </div> */}
+            </>
           )}
           {/* {!loading && !isInitPage && paginatorInfo && paginatorInfo.hasMorePages && (
         <div className="flow-root h-16 items-center px-4 my-4">
@@ -206,7 +213,7 @@ export const SearchResult: React.FC<SearchResultProps> = ({
           </div>
         </div>
       )} */}
-        </div >
+        </div>
       )}
     </>
   )

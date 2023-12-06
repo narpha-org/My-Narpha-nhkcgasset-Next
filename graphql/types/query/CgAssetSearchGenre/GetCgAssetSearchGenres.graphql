@@ -1,5 +1,5 @@
-query GetCgAssetSearchTags($first: Int!, $page: Int!) {
-  CGAssetSearchTags(first: $first, page: $page) {
+query GetCgAssetSearchGenres($first: Int!, $page: Int!) {
+  CGAssetSearchGenres(first: $first, page: $page) {
     data {
       id
       code

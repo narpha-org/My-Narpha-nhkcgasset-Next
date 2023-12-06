@@ -33,38 +33,6 @@ query GetCgAsset($id: ID!) {
     }
     rights_supplement
     asset_detail
-    asset_media_base
-    uploadDir {
-      id
-      base_path
-    }
-    assetImages {
-      id
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    assetVideos {
-      id
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
-    asset3DCGs {
-      id
-      file_name
-      url
-      file_path
-      thumb_file_name
-      thumb_url
-      thumb_file_path
-    }
     assetUploads {
       file_name
       url
@@ -99,6 +67,7 @@ query GetCgAsset($id: ID!) {
       reviewedUser {
         name
       }
+      valid_flg
     }
     applyDownloads {
       id

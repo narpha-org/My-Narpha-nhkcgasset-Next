@@ -7,26 +7,30 @@ const UserInfoBlock = () => {
 
   return (
     <>
-      <div v-if="title" className="block text-lg font-semibold py-2 px-2">
-        <i className="title_icon" />
-        ユーザ情報
-      </div>
-      <div className="flex-grow h-full overflow-y-auto">
-        <div className="mt-6">
-          Oktaユーザ名: {session?.user?.name}
-        </div>
-        <div className="mt-6">
-          メールアドレス: {session?.user?.email}
-        </div>
-        <div className="mt-6">
-          主所属名: {session?.user && (session?.user as { rgstAffiDesc: string }).rgstAffiDesc}
-        </div>
-        <div className="mt-6">
-          主所属コード: {session?.user && (session?.user as { rgstAffiCode: string }).rgstAffiCode}
-        </div>
-        <div className="mt-6">
-          CGアセットストア ロール: {session?.user && (session?.user as { roleDesc: string }).roleDesc}
-        </div>
+      <div className="mypage__userinfo">
+        <h2 className="mypage__title">ユーザー情報</h2>
+        <ul>
+          <li>
+            <h3>Oktaユーザ名</h3>
+            <p>{session?.user?.name}</p>
+          </li>
+          <li>
+            <h3>メールアドレス</h3>
+            <p>{session?.user?.email}</p>
+          </li>
+          <li>
+            <h3>主所属名</h3>
+            <p>{session?.user && (session?.user as { rgstAffiDesc: string }).rgstAffiDesc}</p>
+          </li>
+          <li>
+            <h3>主所属コード</h3>
+            <p>{session?.user && (session?.user as { rgstAffiCode: string }).rgstAffiCode}</p>
+          </li>
+          <li>
+            <h3>CGアセットストアロール</h3>
+            <p>{session?.user && (session?.user as { roleDesc: string }).roleDesc}</p>
+          </li>
+        </ul>
       </div>
     </>
   )

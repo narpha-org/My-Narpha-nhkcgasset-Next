@@ -1,10 +1,10 @@
-mutation CreateCgAssetSearchTag(
+mutation CreateCgAssetSearchGenre(
   $code: String!
   $desc: String!
   $order: Int!
   $valid_flg: Boolean!
 ) {
-  createCGAssetSearchTag(
+  createCGAssetSearchGenre(
     code: $code
     desc: $desc
     order: $order

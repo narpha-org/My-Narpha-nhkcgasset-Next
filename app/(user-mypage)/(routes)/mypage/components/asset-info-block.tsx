@@ -2,8 +2,17 @@
 
 import { useSession } from "next-auth/react";
 
-import { ApplyDownload, ApplyDownloadPaginator, CgAsset, CgAssetPaginator } from "@/graphql/generated/graphql";
-import { IsRoleAdmin, IsRoleManager } from "@/lib/check-role-client";
+import {
+  ApplyDownload,
+  ApplyDownloadPaginator,
+  CgAsset,
+  CgAssetPaginator
+} from "@/graphql/generated/graphql";
+import {
+  IsRoleAdmin,
+  IsRoleManager,
+  IsRoleEditor
+} from "@/lib/check-role-client";
 
 import AssetInfoBlockAdmin from "./asset-info-block-admin";
 import AssetInfoBlockManager from "./asset-info-block-manager";
@@ -45,7 +54,7 @@ const AssetInfoBlock: React.FC<AssetInfoBlockProps> = ({
     />
   }
 
-  if (IsRoleManager(session)) {
+  if (IsRoleManager(session) || IsRoleEditor(session)) {
     return <AssetInfoBlockManager
       downloadApplies={downloadApplies}
       downloadAppliesPg={downloadAppliesPg}

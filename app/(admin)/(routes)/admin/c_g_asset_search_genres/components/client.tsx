@@ -9,14 +9,14 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { PaginatorInfo } from "@/graphql/generated/graphql";
 
-import { columns, CGAssetSearchTagColumn } from "./columns";
+import { columns, CGAssetSearchGenreColumn } from "./columns";
 
-interface CGAssetSearchTagClientProps {
-  data: CGAssetSearchTagColumn[];
+interface CGAssetSearchGenreClientProps {
+  data: CGAssetSearchGenreColumn[];
   paginatorInfo: PaginatorInfo;
 }
 
-export const CGAssetSearchTagClient: React.FC<CGAssetSearchTagClientProps> = ({
+export const CGAssetSearchGenreClient: React.FC<CGAssetSearchGenreClientProps> = ({
   data,
   paginatorInfo
 }) => {

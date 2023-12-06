@@ -7,7 +7,7 @@ import { BuiltInProviderType } from "next-auth/providers";
 import { LogIn } from "lucide-react";
 
 import { useCgAssetsSearchForm } from "@/hooks/use-cgassets-search-form";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button-raw";
 
 interface SignInPageParams {
   params: {
@@ -58,24 +58,29 @@ const SignIn = ({ params, searchParams }: SignInPageParams) => {
 
   return (
     <>
-      <div className="card">
-        {params.error && (
-          <div className="error">
-            <p>別アカウントでサインインをお願いします。</p>
+      {/* <!-- main --> */}
+      <main className="maincon">
+        <div className="loginpage">
+          <div className="loginpage__inner">
+            {params.error && (
+              <div className="error">
+                <p>別アカウントでサインインをお願いします。</p>
+              </div>
+            )}
+            {providers && Object.values(providers).map((provider) => (
+              <div key={provider.name}>
+                <Button
+                  disabled={loading}
+                  className="btn btn__signin"
+                  onClick={() => onSignIn(provider.id)}
+                >
+                  <LogIn className="mr-4 h-8 w-8" /> {provider.name} でサインイン
+                </Button>
+              </div>
+            ))}
           </div>
-        )}
-        {providers && Object.values(providers).map((provider) => (
-          <div key={provider.name}>
-            <Button
-              disabled={loading}
-              size="lg"
-              onClick={() => onSignIn(provider.id)}
-            >
-              <LogIn className="mr-2 h-4 w-4" /> {provider.name} でサインイン
-            </Button>
-          </div>
-        ))}
-      </div>
+        </div>
+      </main>
     </>
   )
 }

@@ -1,7 +1,0 @@
-query GetCgAssetSearchTagsValid {
-  CGAssetSearchTagsValid {
-    code
-    desc
-    id
-  }
-}

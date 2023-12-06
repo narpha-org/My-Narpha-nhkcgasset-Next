@@ -13,8 +13,8 @@ import {
   PaginatorInfo,
   CgAssetsSearchSection,
 } from "@/graphql/generated/graphql";
+import { MyPagenator } from "@/components/ui/pagenator";
 import { ROW_COUNT } from "@/lib/pagenation";
-import paginateStyles from "@/styles/components/paginate-block.module.scss";
 
 import { HomeDashboardClientEditor } from './client-editor';
 
@@ -37,8 +37,8 @@ const HomeDashboardServerEditor = async ({ }: HomeDashboardServerEditorProps) =>
         }
       });
   const systemNotices = ret.data.SystemNoticesValid as SystemNotice[];
-  const dls_NotDone = ret.data.ApplyDownloadsNotDone.data as ApplyDownload[];
-  const dls_NotDone_pginfo = ret.data.ApplyDownloadsNotDone.paginatorInfo as PaginatorInfo;
+  const dls_WithDone = ret.data.ApplyDownloadsWithDone.data as ApplyDownload[];
+  const dls_WithDone_pginfo = ret.data.ApplyDownloadsWithDone.paginatorInfo as PaginatorInfo;
   const dls_OnlyApply = ret.data.ApplyDownloadsOnlyApply.data as ApplyDownload[];
   const dls_OnlyApply_pginfo = ret.data.ApplyDownloadsOnlyApply.paginatorInfo as PaginatorInfo;
   const dls_ApplyOrApproval = ret.data.ApplyDownloadsApplyOrApproval.data as ApplyDownload[];
@@ -47,21 +47,17 @@ const HomeDashboardServerEditor = async ({ }: HomeDashboardServerEditorProps) =>
   const cgAssets_pginfo = ret.data.CGAssetsCreatedAll.paginatorInfo as PaginatorInfo;
 
   return (
-    <div className="flex-col">
-      <div className="flex-1 space-y-4 p-8 pt-6">
-        <HomeDashboardClientEditor
-          systemNotices={systemNotices}
-          downloadApplies={dls_NotDone}
-          downloadAppliesPg={dls_NotDone_pginfo}
-          applies={dls_OnlyApply}
-          appliesPg={dls_OnlyApply_pginfo}
-          approvals={dls_ApplyOrApproval}
-          approvalsPg={dls_ApplyOrApproval_pginfo}
-          cgAssets={cgAssets}
-          cgAssetsPg={cgAssets_pginfo}
-        />
-      </div>
-    </div>
+    <HomeDashboardClientEditor
+      systemNotices={systemNotices}
+      downloadApplies={dls_WithDone}
+      downloadAppliesPg={dls_WithDone_pginfo}
+      applies={dls_OnlyApply}
+      appliesPg={dls_OnlyApply_pginfo}
+      approvals={dls_ApplyOrApproval}
+      approvalsPg={dls_ApplyOrApproval_pginfo}
+      cgAssets={cgAssets}
+      cgAssetsPg={cgAssets_pginfo}
+    />
   );
 };
 

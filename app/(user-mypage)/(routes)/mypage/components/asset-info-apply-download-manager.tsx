@@ -1,8 +1,9 @@
 "use client";
 
 import { Ref, forwardRef, useEffect, useState, useImperativeHandle } from "react"
+import Image from 'next/image'
 import { useSession } from "next-auth/react"
-import ReactPaginate from 'react-paginate';
+// import ReactPaginate from 'react-paginate';
 import { format } from 'date-fns'
 
 import { apolloClient } from "@/lib/apollo-client";
@@ -17,18 +18,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table-raw"
 import {
-  GetApplyDownloadsNotDoneQuery,
-  GetApplyDownloadsNotDoneDocument,
+  GetApplyDownloadsWithDoneQuery,
+  GetApplyDownloadsWithDoneDocument,
   ApplyDownload,
   PaginatorInfo,
   ApplyDownloadPaginator,
   StatusApplyDownload,
   SectionApplyDownload
 } from "@/graphql/generated/graphql";
+import { MyPagenator } from "@/components/ui/pagenator";
 import { ROW_COUNT } from "@/lib/pagenation";
-import paginateStyles from "@/styles/components/paginate-block.module.scss";
+import { cn } from "@/lib/utils"
+import { checkGlacierStatus } from "@/lib/check-glacier-status";
+
+import ApplyDownloadDialog from "./apply-download-dialog";
 
 interface AssetInfoApplyDownloadManagerProps {
   searchRef: Ref<{ handleSearch(txt: string): void; } | undefined>
@@ -37,10 +42,9 @@ interface AssetInfoApplyDownloadManagerProps {
 }
 
 const AssetInfoApplyDownloadManager: React.FC<AssetInfoApplyDownloadManagerProps> = forwardRef(({
-  searchRef,
   downloadApplies,
   downloadAppliesPg,
-}) => {
+}, searchRef) => {
   const { data: session, status } = useSession()
 
   const [loading, setLoading] = useState(true);
@@ -62,10 +66,10 @@ const AssetInfoApplyDownloadManager: React.FC<AssetInfoApplyDownloadManagerProps
   const fetchData = async (param) => {
     setLoading(true)
 
-    const ret: ApolloQueryResult<GetApplyDownloadsNotDoneQuery>
+    const ret: ApolloQueryResult<GetApplyDownloadsWithDoneQuery>
       = await apolloClient
         .query({
-          query: GetApplyDownloadsNotDoneDocument,
+          query: GetApplyDownloadsWithDoneDocument,
           variables: {
             manage_user_id: (session?.user as { userId: string }).userId,
             first: rowCount,
@@ -76,9 +80,9 @@ const AssetInfoApplyDownloadManager: React.FC<AssetInfoApplyDownloadManagerProps
             searchTxt: param.searchTxt, // searchTxt
           }
         });
-    setItems(() => ret.data.ApplyDownloadsNotDone.data as ApplyDownload[]);
-    setPgInfo(() => ret.data.ApplyDownloadsNotDone.paginatorInfo as PaginatorInfo);
-    setPageCount(() => Math.ceil(ret.data.ApplyDownloadsNotDone.paginatorInfo.total / rowCount));
+    setItems(() => ret.data.ApplyDownloadsWithDone.data as ApplyDownload[]);
+    setPgInfo(() => ret.data.ApplyDownloadsWithDone.paginatorInfo as PaginatorInfo);
+    setPageCount(() => Math.ceil(ret.data.ApplyDownloadsWithDone.paginatorInfo.total / rowCount));
 
     setLoading(false)
   }
@@ -164,38 +168,50 @@ const AssetInfoApplyDownloadManager: React.FC<AssetInfoApplyDownloadManagerProps
 
   return (
     <>
-      <Table>
-        <TableCaption>ダウンロード申請</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead onClick={(e) => handleSort('apply_downloads.created_at')} className="w-[100px]">Date</TableHead>
-            <TableHead onClick={(e) => handleSort('cgAsset.asset_id')}>Asset ID</TableHead>
-            <TableHead onClick={(e) => handleSort('cgAsset.asset_name')}>Asset Name</TableHead>
-            <TableHead onClick={(e) => handleSort('applyUser.name')}>申請者</TableHead>
-            <TableHead onClick={(e) => handleSort('apply_downloads.status')} className="">Status</TableHead>
-          </TableRow>
-        </TableHeader>
+      <Table className="mypage__mainlist">
         <TableBody>
+          <TableRow className="top">
+            <TableHead className="sortable w-[100px]" onClick={(e) => handleSort('apply_downloads.created_at')}>Date</TableHead>
+            <TableHead className="sortable" onClick={(e) => handleSort('cgAsset.asset_id')}>Asset ID</TableHead>
+            <TableHead className="sortable asset_name" onClick={(e) => handleSort('cgAsset.asset_name')}>Asset Name</TableHead>
+            <TableHead className="sortable asset_min" onClick={(e) => handleSort('applyUser.name')}>申請者</TableHead>
+            <TableHead className="sortable" onClick={(e) => handleSort('manageUser.name')}>番組許可者</TableHead>
+            <TableHead className="sortable" onClick={(e) => handleSort('apply_downloads.status')}>Status</TableHead>
+          </TableRow>
           {items && items.map((elem: ApplyDownload | null) => {
 
             if (elem) {
 
-              let action = "-次へ-"
+              let action = "[-未使用-]"
+              let tag_gray_on = "";
               switch (elem.status) {
                 case StatusApplyDownload.Apply: // 申請中
-                  action = "申請中"
+                  action = "申請承認"
+                  tag_gray_on = "on"
                   break;
                 case StatusApplyDownload.Approval: // 承認済
                   action = "承認済み"
+                  // tag_gray_on = "on"
                   break;
                 case StatusApplyDownload.BoxDeliver: // DL済み通知
-                  action = "送付済み"
+
+                  if (checkGlacierStatus([elem]) === 0) {
+                    action = "ダウンロード準備中"
+                    // tag_gray_on = "on"
+                  } else {
+                    action = "ダウンロード"
+                    tag_gray_on = "on"
+                  }
+
                   break;
                 case StatusApplyDownload.DlNotice: // DL済み通知
-                  action = "DL済み通知"
-                  break;
                 case StatusApplyDownload.Removal: // データ削除期限
-                  action = "データ削除期限"
+                  action = "ダウンロード済み"
+                  // tag_gray_on = "on"
+                  break;
+                case StatusApplyDownload.Done: // データ消去完了
+                  action = "データ消去完了"
+                  // tag_gray_on = "on"
                   break;
                 default:
                   break;
@@ -206,8 +222,17 @@ const AssetInfoApplyDownloadManager: React.FC<AssetInfoApplyDownloadManagerProps
                 <TableCell>{elem.cgAsset.asset_id}</TableCell>
                 <TableCell>{elem.cgAsset.asset_name}</TableCell>
                 <TableCell>{elem.applyUser?.name}</TableCell>
+                <TableCell>{elem.manageUser?.name}</TableCell>
                 <TableCell>
-                  {action}
+                  <ApplyDownloadDialog
+                    cgAssetId={elem.cgAsset.id}
+                    applyDownloadId={elem.id}
+                    action={action}
+                    className={cn(
+                      'tag_gray',
+                      tag_gray_on ? tag_gray_on : ''
+                    )}
+                  />
                 </TableCell>
               </TableRow>
             }
@@ -215,45 +240,54 @@ const AssetInfoApplyDownloadManager: React.FC<AssetInfoApplyDownloadManagerProps
           })}
         </TableBody>
       </Table>
-      <div className={paginateStyles.paginateBlock}>
-        <div className="flex items-center gap-2 mt-3">
-          {pageCount > 0 && (
+      <MyPagenator
+        className="mypage__pagenation"
+        pageIndex={pageIndex}
+        pageCount={pageCount}
+        handlePageClick={handlePageClick}
+        targetPage={targetPage}
+        getCanPreviousPage={getCanPreviousPage}
+        getCanNextPage={getCanNextPage}
+      />
+      {/* <div className="mypage__pagenation">
+        {pageCount > 0 && (
+          <div className="prev">
             <Button
-              variant="default"
-              size="icon"
               onClick={() => targetPage(0)}
               disabled={!getCanPreviousPage()}
             >
-              {'<<'}
+              <Image src="/assets/images/prev02.svg" width="19" height="22" decoding="async" alt="最初のページへ" />
             </Button>
-          )}
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel=">"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
-            pageCount={pageCount}
-            previousLabel="<"
-            renderOnZeroPageCount={undefined}
-            breakClassName=""
-            breakLinkClassName=""
-            containerClassName="flex items-center gap-2"
-            activeClassName="opacity-50"
-            disabledClassName="disabled"
-            forcePage={pageIndex}
-          />
-          {pageCount > 0 && (
+          </div>
+        )}
+        <ReactPaginate
+          breakLabel={`・・・`}
+          nextLabel={<Image src="/assets/images/next01.svg" width="19" height="22"
+            decoding="async" alt="次のページへ" />}
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel={<Image src="/assets/images/prev01.svg" width="19" height="22"
+            decoding="async" alt="前のページへ" />}
+          renderOnZeroPageCount={undefined}
+          breakClassName="ellipsis"
+          breakLinkClassName=""
+          containerClassName="ul_alt"
+          activeClassName="opacity-50"
+          disabledClassName="disabled"
+          forcePage={pageIndex}
+        />
+        {pageCount > 0 && (
+          <div className="next">
             <Button
-              variant="default"
-              size="icon"
               onClick={() => targetPage(pageCount - 1)}
               disabled={!getCanNextPage()}
             >
-              {'>>'}
+              <Image src="/assets/images/next02.svg" width="19" height="22" decoding="async" alt="最後のページへ" />
             </Button>
-          )}
-        </div>
-      </div>
+          </div>
+        )}
+      </div> */}
     </>
   )
 });

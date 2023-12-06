@@ -20,7 +20,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Oktaユーザ',
     ...commonMetadataOpenGraph,
-  }
+  },
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_DOMAIN ?
+      `https://app.${process.env.NEXT_PUBLIC_BASE_DOMAIN}` :
+      `http://localhost:3000`
+  )
 }
 
 const UsersPage = async ({

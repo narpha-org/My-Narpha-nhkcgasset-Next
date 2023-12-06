@@ -12,7 +12,7 @@ import {
   DeleteSystemNoticeDocument,
   SystemNotice,
 } from "@/graphql/generated/graphql";
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button-raw';
 import { AlertModal } from '@/components/modals/alert-modal';
 import NoticeBlockDialog from './notice-block-dialog';
 
@@ -81,62 +81,52 @@ const NoticeBlockAdmin: React.FC<NoticeBlockAdminProps> = ({
         loading={loading}
         title={deleteConfirmText}
       />
-      <div v-if="title" className="flex text-lg items-center justify-between mb-5">
-        <div className="flex flex-row items-center">
-          <div className="grow w-72">
-            <i className="title_icon" />
-            お知らせ
-          </div>
-          <div className="flex-auto w-32 mr-2">
-            <NoticeBlockDialog
-              systemNoticeId={null}
-              action={"新規作成"}
-              variant="default"
-              size="sm"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="flex-grow h-full overflow-y-auto">
-        {systemNotices?.map((elem: SystemNotice | null) => {
+      <div className="mypage__maincon-news">
+        <h2 className="mypage__title">お知らせ<NoticeBlockDialog
+          id={undefined}
+          className="select"
+          systemNoticeId={null}
+          action={"新規作成"}
+        /></h2>
+        <div className="mypage__news">
+          {systemNotices?.map((elem: SystemNotice | null) => {
 
-          if (elem) {
-            return <div key={elem.id} className="flex flex-col mb-8">
-              <div className="flex flex-row items-center mb-6">
-                <div className="grow w-72">{format(new Date(elem.notice_date), "yyyy/MM/dd")}</div>
-                <div className="flex-auto w-8">
-                  <NoticeBlockDialog
-                    systemNoticeId={elem.id}
-                    action={"編集"}
-                    variant="default"
-                    size="icon"
-                  />
+            if (elem) {
+              return <>
+                <div key={elem.id} className="mypage__news-box">
+                  <p>
+                    <span>{format(new Date(elem.notice_date), "yyyy年MM月dd日")}</span>{elem.message?.split("\n").map((item, index) => {
+                      return (
+                        <Fragment key={index}>{item}<br /></Fragment>
+                      );
+                    })}
+                  </p>
+                  <div className="toggle_button_box">
+                    <NoticeBlockDialog
+                      id="tag_gray-btn01"
+                      className="tag_gray"
+                      systemNoticeId={elem.id}
+                      action={"編集"}
+                    />
+                    <Button
+                      id="tag_gray-btn01"
+                      className="tag_gray"
+                      disabled={loading}
+                      type="button"
+                      onClick={() => {
+                        setDeleteSystemNoticeId(() => elem.id);
+                        setDeleteConfirmText(() => `このお知らせ削除を実行してよろしいですか？`);
+                        setOpen(true);
+                      }}
+                    >
+                      削除
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex-auto w-8 ml-2">
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    disabled={loading}
-                    className="ml-auto"
-                    type="button"
-                    onClick={() => {
-                      setDeleteSystemNoticeId(() => elem.id);
-                      setDeleteConfirmText(() => `このお知らせ削除を実行してよろしいですか？`);
-                      setOpen(true);
-                    }}
-                  >
-                    削除
-                  </Button>
-                </div>
-              </div>
-              <div className="ml-2">{elem.message?.split("\n").map((item, index) => {
-                return (
-                  <Fragment key={index}>{item}<br /></Fragment>
-                );
-              })}</div>
-            </div>
-          }
-        })}
+              </>
+            }
+          })}
+        </div>
       </div>
     </>
   )

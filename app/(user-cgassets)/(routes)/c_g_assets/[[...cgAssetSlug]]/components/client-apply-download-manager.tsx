@@ -17,11 +17,14 @@ import {
 } from "@/graphql/generated/graphql";
 import { Loader } from "@/components/ui/loader";
 
-import { CGAssetPageProps, CGAssetPageSlug } from '../../../components/page-slug';
-import CGAssetApplyDownloadForm from './page-apply-download/apply-download-form';
+import { CGAssetPageProps, CGAssetPageSlug } from './page-slug';
+import CGAssetApplyDownloadForm from './page-apply-download/apply-download-apply-form';
 import CGAssetApplyDownloadApprovalForm from './page-apply-download/apply-download-approval-form';
-import CGAssetApplyDownloadBoxDeliverForm from './page-apply-download/apply-download-box-deliver-form';
-import CGAssetApplyDownloadRemovalForm from './page-apply-download/apply-download-removal-form';
+import CGAssetApplyDownloadApprovalView from './page-apply-download/apply-download-approval-view';
+import CGAssetApplyDownloadBoxDeliverViewManager from './page-apply-download/apply-download-box-deliver-view-manager';
+import CGAssetApplyDownloadDlNoticeViewManager from './page-apply-download/apply-download-dl-notice-view-manager';
+import CGAssetApplyDownloadRemovalView from "./page-apply-download/apply-download-removal-view";
+import CGAssetApplyDownloadDoneView from "./page-apply-download/apply-download-done-view";
 
 const CGAssetApplyDownloadClientManager: React.FC<CGAssetPageProps & {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -86,7 +89,7 @@ const CGAssetApplyDownloadClientManager: React.FC<CGAssetPageProps & {
   }, []);
 
   if (!isMounted) {
-    return <div className="flex items-center justify-center h-screen">
+    return <div className="flex items-center justify-center h-full">
       <Loader />
     </div>;
   }
@@ -124,7 +127,7 @@ const CGAssetApplyDownloadClientManager: React.FC<CGAssetPageProps & {
         return (
           <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-              <CGAssetApplyDownloadBoxDeliverForm
+              <CGAssetApplyDownloadApprovalView
                 initialData={ApplyDownload}
                 cgAsset={cgAsset}
                 manageUsers={manageUsers}
@@ -135,12 +138,54 @@ const CGAssetApplyDownloadClientManager: React.FC<CGAssetPageProps & {
           </div>
         );
       case StatusApplyDownload.BoxDeliver: // Boxリンク通知
+        return (
+          <div className="flex-col">
+            <div className="flex-1 space-y-4 p-8 pt-6">
+              <CGAssetApplyDownloadBoxDeliverViewManager
+                initialData={ApplyDownload}
+                cgAsset={cgAsset}
+                manageUsers={manageUsers}
+                setDialogOpen={setDialogOpen}
+                params={params}
+              />
+            </div>
+          </div>
+        );
       case StatusApplyDownload.DlNotice: // DL済み通知
+        return (
+          <div className="flex-col">
+            <div className="flex-1 space-y-4 p-8 pt-6">
+              <CGAssetApplyDownloadDlNoticeViewManager
+                initialData={ApplyDownload}
+                cgAsset={cgAsset}
+                manageUsers={manageUsers}
+                setDialogOpen={setDialogOpen}
+                params={params}
+              />
+            </div>
+          </div>
+        );
+      case StatusApplyDownload.Removal: // データ消去
         /* 消去へ */
         return (
           <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-              <CGAssetApplyDownloadRemovalForm
+              <CGAssetApplyDownloadRemovalView
+                initialData={ApplyDownload}
+                cgAsset={cgAsset}
+                manageUsers={manageUsers}
+                setDialogOpen={setDialogOpen}
+                params={params}
+              />
+            </div>
+          </div>
+        );
+      case StatusApplyDownload.Done: // データ消去完了
+        /* 消去へ */
+        return (
+          <div className="flex-col">
+            <div className="flex-1 space-y-4 p-8 pt-6">
+              <CGAssetApplyDownloadDoneView
                 initialData={ApplyDownload}
                 cgAsset={cgAsset}
                 manageUsers={manageUsers}

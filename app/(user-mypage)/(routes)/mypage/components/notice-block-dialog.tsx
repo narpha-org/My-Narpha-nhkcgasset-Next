@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useSession } from "next-auth/react";
 import { IsRoleAdmin, IsRoleManager } from "@/lib/check-role-client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button-raw"
 import {
   Dialog,
   DialogContent,
@@ -18,10 +18,15 @@ import {
 import NoticeClientAdmin from "./notice-client-admin";
 
 const NoticeBlockDialog = ({
+  id,
+  className,
   systemNoticeId,
   action,
-  variant,
-  size
+}: {
+  id: string | undefined;
+  className: string;
+  systemNoticeId: string | null;
+  action: string;
 }) => {
   const { data: session, status } = useSession();
 
@@ -48,9 +53,8 @@ const NoticeBlockDialog = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          variant={variant}
-          size={size}
-          className="ml-auto"
+          id={id}
+          className={className}
           type="button"
         >
           {action}
@@ -62,9 +66,11 @@ const NoticeBlockDialog = ({
         left: "50%",
         transform: "translate(-50%, -50%)",
         width: "90vw",
+        // height: "90vh",
         maxWidth: "1250px",
         maxHeight: "90vh",
         overflowY: "auto",
+        // zIndex: 1002,
       }}>
         {child}
       </DialogContent>

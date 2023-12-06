@@ -1,15 +1,16 @@
 "use client";
 
 import { Ref, forwardRef, useEffect, useState, useImperativeHandle } from "react"
+import Image from 'next/image'
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast"
-import ReactPaginate from 'react-paginate';
+// import ReactPaginate from 'react-paginate';
 import { format } from 'date-fns'
 
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button-raw";
 import { Loader } from "@/components/ui/loader";
 import { AlertModal } from "@/components/modals/alert-modal"
 import {
@@ -21,8 +22,8 @@ import {
   DeleteCgAssetMutation,
   DeleteCgAssetDocument,
 } from "@/graphql/generated/graphql";
+import { MyPagenator } from "@/components/ui/pagenator";
 import { ROW_COUNT } from "@/lib/pagenation";
-import paginateStyles from "@/styles/components/paginate-block.module.scss";
 import {
   Table,
   TableBody,
@@ -31,7 +32,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table-raw"
 
 interface AssetRegisterdListProps {
   searchRef: Ref<{ handleSearch(txt: string): void; } | undefined>
@@ -41,11 +42,10 @@ interface AssetRegisterdListProps {
 }
 
 const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
-  searchRef,
   cgAssets,
   cgAssetsPg,
   cgAssetsSearchSection,
-}) => {
+}, searchRef) => {
   const { data: session, status } = useSession()
 
   const [loading, setLoading] = useState(true);
@@ -99,7 +99,7 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
       }
 
       router.refresh();
-      // router.push(`/`);
+      // router.push(`/mypage`);
       refreshPage();
       toast.success('CGアセットが削除されました。');
     } catch (error: any) {
@@ -232,39 +232,34 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
         loading={loading}
         title={deleteConfirmText}
       />
-      <Table>
-        <TableCaption>登録一覧</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead onClick={(e) => handleSort('created_at')} className="w-[100px]">Date</TableHead>
-            <TableHead onClick={(e) => handleSort('asset_id')}>Asset ID</TableHead>
-            <TableHead onClick={(e) => handleSort('asset_name')}>Asset Name</TableHead>
+      <Table className="mypage__mainlist">
+        <TableBody>
+          <TableRow className="top">
+            <TableHead className="sortable" onClick={(e) => handleSort('created_at')}>Date</TableHead>
+            <TableHead className="sortable" onClick={(e) => handleSort('asset_id')}>Asset ID</TableHead>
+            <TableHead className="sortable" onClick={(e) => handleSort('asset_name')}>Asset Name</TableHead>
             <TableHead></TableHead>
           </TableRow>
-        </TableHeader>
-        <TableBody>
           {items && items.map((elem: CgAsset | null) => {
 
             if (elem) {
 
               return <TableRow key={elem.id}>
-                <TableCell className="">{format(new Date(elem.created_at), "yyyy/MM/dd")}</TableCell>
+                <TableCell className="">{format(new Date(elem.created_at), "yyyy年MM月dd日")}</TableCell>
                 <TableCell>{elem.asset_id}</TableCell>
                 <TableCell>{elem.asset_name}</TableCell>
                 <TableCell className="flex items-center justify-between">
                   <Button
-                    variant="default"
                     disabled={loading}
-                    className="ml-auto"
+                    className="tag_gray"
                     type="button"
                     onClick={() => router.push(`/c_g_assets/${elem.id}/edit`)}
                   >
                     編集
                   </Button>
                   <Button
-                    variant="destructive"
                     disabled={loading}
-                    className="ml-auto"
+                    className="tag_gray"
                     type="button"
                     onClick={() => {
                       setDeleteCgAssetId(() => elem.id);
@@ -281,45 +276,54 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
           })}
         </TableBody>
       </Table>
-      <div className={paginateStyles.paginateBlock}>
-        <div className="flex items-center gap-2 mt-3">
-          {pageCount > 0 && (
+      <MyPagenator
+        className="mypage__pagenation"
+        pageIndex={pageIndex}
+        pageCount={pageCount}
+        handlePageClick={handlePageClick}
+        targetPage={targetPage}
+        getCanPreviousPage={getCanPreviousPage}
+        getCanNextPage={getCanNextPage}
+      />
+      {/* <div className="mypage__pagenation">
+        {pageCount > 0 && (
+          <div className="prev">
             <Button
-              variant="default"
-              size="icon"
               onClick={() => targetPage(0)}
               disabled={!getCanPreviousPage()}
             >
-              {'<<'}
+              <Image src="/assets/images/prev02.svg" width="19" height="22" decoding="async" alt="最初のページへ" />
             </Button>
-          )}
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel=">"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
-            pageCount={pageCount}
-            previousLabel="<"
-            renderOnZeroPageCount={undefined}
-            breakClassName=""
-            breakLinkClassName=""
-            containerClassName="flex items-center gap-2"
-            activeClassName="opacity-50"
-            disabledClassName="disabled"
-            forcePage={pageIndex}
-          />
-          {pageCount > 0 && (
+          </div>
+        )}
+        <ReactPaginate
+          breakLabel={`・・・`}
+          nextLabel={<Image src="/assets/images/next01.svg" width="19" height="22"
+            decoding="async" alt="次のページへ" />}
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel={<Image src="/assets/images/prev01.svg" width="19" height="22"
+            decoding="async" alt="前のページへ" />}
+          renderOnZeroPageCount={undefined}
+          breakClassName="ellipsis"
+          breakLinkClassName=""
+          containerClassName="ul_alt"
+          activeClassName="opacity-50"
+          disabledClassName="disabled"
+          forcePage={pageIndex}
+        />
+        {pageCount > 0 && (
+          <div className="next">
             <Button
-              variant="default"
-              size="icon"
               onClick={() => targetPage(pageCount - 1)}
               disabled={!getCanNextPage()}
             >
-              {'>>'}
+              <Image src="/assets/images/next02.svg" width="19" height="22" decoding="async" alt="最後のページへ" />
             </Button>
-          )}
-        </div>
-      </div>
+          </div>
+        )}
+      </div> */}
     </>
   )
 });

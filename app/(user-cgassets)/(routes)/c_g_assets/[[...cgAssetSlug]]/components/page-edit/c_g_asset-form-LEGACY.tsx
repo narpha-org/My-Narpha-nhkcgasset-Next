@@ -49,7 +49,7 @@ import ImageUpload, { UploadImageProps, UploadThumbProps } from "@/components/ui
 import FileUpload, { UploadFileProps, UploadOnlyFileProps } from "@/components/ui/file-upload"
 import { Switch } from "@/components/ui/switch"
 
-import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 import CGAssetPreviewDialog from "./c_g_asset-preview-dialog"
 import AssetRevisionHistoryBlock from "../page-detail/asset-revision-history-block"
 
@@ -357,7 +357,7 @@ export const CGAssetForm: React.FC<CGAssetFormProps> = ({
       }
 
       router.refresh();
-      router.push(`/c_g_assets`);
+      router.push(`/`);
       toast.success('CGアセットが削除されました。');
     } catch (error: any) {
       toast.error('CGアセットの削除に失敗しました。');

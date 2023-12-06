@@ -34,9 +34,9 @@ export function AdminNav({
       label: 'SystemItemToggle',
     },
     {
-      href: `/`,
+      href: `/mypage`,
       label: 'ユーザTOP',
-      active: pathname === `/`,
+      active: pathname === `/mypage`,
     },
   ]
 

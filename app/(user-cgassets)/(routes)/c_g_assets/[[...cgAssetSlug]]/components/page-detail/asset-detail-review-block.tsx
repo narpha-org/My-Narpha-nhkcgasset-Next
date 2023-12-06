@@ -63,7 +63,7 @@ const AssetDetailReviewBlock: React.FC<AssetDetailReviewBlockProps> = ({
         }}>
           {cgAsset.reviews?.map((elem: CgAssetReview | null) => {
 
-            if (elem) {
+            if (elem && elem.valid_flg === true) {
               return <p key={elem.id}>{elem.review.split("\n").map((item, index) => {
                 return (
                   <Fragment key={index}>{item}<br /></Fragment>

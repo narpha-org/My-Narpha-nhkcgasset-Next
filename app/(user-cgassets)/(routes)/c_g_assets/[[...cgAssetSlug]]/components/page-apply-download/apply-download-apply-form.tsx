@@ -26,8 +26,8 @@ import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
 // import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 
-import CGAssetApplyDownloadFormInput from "./apply-download-form-input"
-import CGAssetApplyDownloadFormConfirm from "./apply-download-form-confirm"
+import CGAssetApplyDownloadApplyFormInput from "./apply-download-apply-form-input"
+import CGAssetApplyDownloadApplyFormConfirm from "./apply-download-apply-form-confirm"
 
 export const ApplyDownloadFormSchema = z.object({
   manage_user_id: z.string({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
@@ -49,7 +49,7 @@ export const ApplyDownloadFormSchema = z.object({
 
 export type ApplyDownloadFormValues = z.infer<typeof ApplyDownloadFormSchema>
 
-interface CGAssetApplyDownloadFormProps {
+interface CGAssetApplyDownloadApplyFormProps {
   initialData: ApplyDownload | null;
   cgAsset: CgAsset | null;
   manageUsers: User[] | null;
@@ -59,7 +59,7 @@ interface CGAssetApplyDownloadFormProps {
   };
 };
 
-export const CGAssetApplyDownloadForm: React.FC<CGAssetApplyDownloadFormProps> = ({
+export const CGAssetApplyDownloadApplyForm: React.FC<CGAssetApplyDownloadApplyFormProps> = ({
   initialData,
   cgAsset,
   manageUsers,
@@ -160,7 +160,7 @@ export const CGAssetApplyDownloadForm: React.FC<CGAssetApplyDownloadFormProps> =
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-          {pageNumber === 0 && <CGAssetApplyDownloadFormInput
+          {pageNumber === 0 && <CGAssetApplyDownloadApplyFormInput
             form={form}
             initialData={initialData}
             cgAsset={cgAsset}
@@ -170,7 +170,7 @@ export const CGAssetApplyDownloadForm: React.FC<CGAssetApplyDownloadFormProps> =
             loading={loading}
             onNext={onNext}
           />}
-          {pageNumber === 1 && <CGAssetApplyDownloadFormConfirm
+          {pageNumber === 1 && <CGAssetApplyDownloadApplyFormConfirm
             form={form}
             initialData={initialData}
             cgAsset={cgAsset}
@@ -186,4 +186,4 @@ export const CGAssetApplyDownloadForm: React.FC<CGAssetApplyDownloadFormProps> =
   )
 }
 
-export default CGAssetApplyDownloadForm
+export default CGAssetApplyDownloadApplyForm

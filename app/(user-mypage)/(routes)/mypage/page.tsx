@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 import { isServerRoleAdmin, isServerRoleEditor, isServerRoleManager, isServerRoleOther, isServerRoleUser } from '@/lib/check-role-server';
+import Loading from '@/app/loading';
 
 import HomeDashboardServerAdmin from './components/server-admin';
 import HomeDashboardServerManager from './components/server-manager';
@@ -14,7 +15,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'NHK CGアセットストア',
     ...commonMetadataOpenGraph,
-  }
+  },
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_DOMAIN ?
+      `https://app.${process.env.NEXT_PUBLIC_BASE_DOMAIN}` :
+      `http://localhost:3000`
+  )
 }
 
 interface HomeDashboardPageProps {
@@ -46,7 +52,7 @@ const HomeDashboardPage: React.FC<HomeDashboardPageProps> = async ({
     return <HomeDashboardServerOther />;
   }
 
-  return <div>Not Valid</div>;
+  return <Loading />;
 };
 
 export default HomeDashboardPage;

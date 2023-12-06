@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { CellAction } from "./cell-action"
 
-export type CGAssetSearchTagColumn = {
+export type CGAssetSearchGenreColumn = {
   id: string
   code: string;
   desc: string;
@@ -13,7 +13,7 @@ export type CGAssetSearchTagColumn = {
   created_at: string;
 }
 
-export const columns: ColumnDef<CGAssetSearchTagColumn>[] = [
+export const columns: ColumnDef<CGAssetSearchGenreColumn>[] = [
   {
     accessorKey: "desc",
     header: "検索表記",

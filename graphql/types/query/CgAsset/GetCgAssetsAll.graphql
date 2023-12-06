@@ -46,38 +46,6 @@ query GetCgAssetsAll(
       }
       rights_supplement
       asset_detail
-      asset_media_base
-      uploadDir {
-        id
-        base_path
-      }
-      assetImages {
-        id
-        file_name
-        url
-        file_path
-        thumb_file_name
-        thumb_url
-        thumb_file_path
-      }
-      assetVideos {
-        id
-        file_name
-        url
-        file_path
-        thumb_file_name
-        thumb_url
-        thumb_file_path
-      }
-      asset3DCGs {
-        id
-        file_name
-        url
-        file_path
-        thumb_file_name
-        thumb_url
-        thumb_file_path
-      }
       assetUploads {
         file_name
         url
@@ -112,6 +80,7 @@ query GetCgAssetsAll(
         reviewedUser {
           name
         }
+        valid_flg
       }
       download_count
       userCreate {

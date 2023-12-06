@@ -1,7 +1,7 @@
 import {
   CgAsset,
 } from "@/graphql/generated/graphql";
-import { getAssetMedias } from "../page-detail/asset-media";
+import { getAssetMedias } from "./asset-media";
 
 interface AssetHeadlineBlockProps {
   cgAsset: CgAsset;

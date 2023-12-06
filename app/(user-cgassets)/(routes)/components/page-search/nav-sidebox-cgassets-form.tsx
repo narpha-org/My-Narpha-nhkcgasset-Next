@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {
   CgAssetCate,
   CgAssetSearchAppProd,
-  CgAssetSearchTag
+  CgAssetSearchGenre
 } from '@/graphql/generated/graphql';
 
 import {
@@ -22,7 +22,7 @@ import { useCgAssetsSearchForm, CgAssetsSearchFormValues } from '@/hooks/use-cga
 interface NavSideboxCgAssetsFormProps {
   searchData: CgAssetsSearchFormValues;
   assetCates: CgAssetCate[];
-  assetSearchTags: CgAssetSearchTag[];
+  assetSearchGenres: CgAssetSearchGenre[];
   assetSearchAppProds: CgAssetSearchAppProd[];
   onSearchFromSubmit: (data: CgAssetsSearchFormValues) => void;
   isNavHeaderSubmitting: boolean;
@@ -32,7 +32,7 @@ interface NavSideboxCgAssetsFormProps {
 export const NavSideboxCgAssetsForm: React.FC<NavSideboxCgAssetsFormProps> = ({
   searchData,
   assetCates,
-  assetSearchTags,
+  assetSearchGenres,
   assetSearchAppProds,
   onSearchFromSubmit,
   isNavHeaderSubmitting,
@@ -59,12 +59,12 @@ export const NavSideboxCgAssetsForm: React.FC<NavSideboxCgAssetsFormProps> = ({
     isNavHeaderSubmitting &&
     (
       _.isEqual(form.getValues("assetCates"), searchData.assetCates) === false ||
-      _.isEqual(form.getValues("assetTags"), searchData.assetTags) === false ||
+      _.isEqual(form.getValues("assetGenres"), searchData.assetGenres) === false ||
       _.isEqual(form.getValues("assetAppProds"), searchData.assetAppProds) === false
     )
   ) {
     form.setValue("assetCates", searchData.assetCates)
-    form.setValue("assetTags", searchData.assetTags)
+    form.setValue("assetGenres", searchData.assetGenres)
     form.setValue("assetAppProds", searchData.assetAppProds)
   }
 
@@ -121,11 +121,11 @@ export const NavSideboxCgAssetsForm: React.FC<NavSideboxCgAssetsFormProps> = ({
         </dl>
         <dl className="sidebox__genre">
           <dt>ジャンル</dt>
-          {assetSearchTags.map((assetTag) => (
+          {assetSearchGenres.map((assetGenre) => (
             <FormField
-              key={assetTag.code}
+              key={assetGenre.code}
               control={form.control}
-              name="assetTags"
+              name="assetGenres"
               render={({ field }) => {
                 return (
                   <dd>
@@ -133,24 +133,24 @@ export const NavSideboxCgAssetsForm: React.FC<NavSideboxCgAssetsFormProps> = ({
                       <input
                         type="checkbox"
                         className="sidebox__input"
-                        checked={field.value?.includes(assetTag.code)}
+                        checked={field.value?.includes(assetGenre.code)}
                         disabled={loading}
                         onChange={(event) => {
                           const checked = event.target.checked;
 
                           const ret = checked
-                            ? field.onChange([...field.value, assetTag.code])
+                            ? field.onChange([...field.value, assetGenre.code])
                             : field.onChange(
                               field.value?.filter(
-                                (value) => value !== assetTag.code
+                                (value) => value !== assetGenre.code
                               )
                             )
 
                           if (checked) {
-                            if (assetTag.code === '_ALL_') {
-                              form.setValue("assetTags", ['_ALL_'])
+                            if (assetGenre.code === '_ALL_') {
+                              form.setValue("assetGenres", ['_ALL_'])
                             } else {
-                              form.setValue("assetTags", form.getValues("assetTags").filter(
+                              form.setValue("assetGenres", form.getValues("assetGenres").filter(
                                 (value) => value !== '_ALL_'
                               ))
                             }
@@ -162,7 +162,7 @@ export const NavSideboxCgAssetsForm: React.FC<NavSideboxCgAssetsFormProps> = ({
                         }}
                       />
                       <span className="sidebox__input-text">
-                        {assetTag.desc}
+                        {assetGenre.desc}
                       </span>
                     </label>
                   </dd>
