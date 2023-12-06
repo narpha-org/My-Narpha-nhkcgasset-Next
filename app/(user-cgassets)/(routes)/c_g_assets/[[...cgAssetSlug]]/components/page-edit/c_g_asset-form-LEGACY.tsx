@@ -49,7 +49,7 @@ import ImageUpload, { UploadImageProps, UploadThumbProps } from "@/components/ui
 import FileUpload, { UploadFileProps, UploadOnlyFileProps } from "@/components/ui/file-upload"
 import { Switch } from "@/components/ui/switch"
 
-import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
 import CGAssetPreviewDialog from "./c_g_asset-preview-dialog"
 import AssetRevisionHistoryBlock from "../page-detail/asset-revision-history-block"
 

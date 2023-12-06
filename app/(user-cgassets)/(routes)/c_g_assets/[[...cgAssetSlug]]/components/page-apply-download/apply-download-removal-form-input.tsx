@@ -25,7 +25,7 @@ import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/components/ui/text-area"
-import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
 
 interface CGAssetApplyDownloadRemovalFormInputProps {
   form: UseFormReturn<any>;

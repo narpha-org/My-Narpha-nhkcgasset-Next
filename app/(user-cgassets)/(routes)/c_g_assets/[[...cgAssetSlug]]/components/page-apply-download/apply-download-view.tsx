@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form"
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
-import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
 
 export const ApplyDownloadViewSchema = z.object({
   manage_user_id: z.string({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),

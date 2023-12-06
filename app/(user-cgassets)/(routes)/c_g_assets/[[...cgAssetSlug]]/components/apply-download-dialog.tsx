@@ -22,7 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { CGAssetPageSlug } from "./page-slug";
+import { CGAssetPageSlug } from "../../../components/page-slug";
 import CGAssetApplyDownloadClientAdmin from "./client-apply-download-admin";
 import CGAssetApplyDownloadClientManager from "./client-apply-download-manager";
 import CGAssetApplyDownloadClientEditor from "./client-apply-download-editor";

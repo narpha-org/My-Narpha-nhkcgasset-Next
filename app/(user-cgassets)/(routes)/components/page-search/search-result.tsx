@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import paginateStyles from "@/styles/components/paginate-block.module.scss";
 import { ROW_COUNT_CGASSETS } from "@/lib/pagenation";
 
-import { getAssetMedias } from "../page-detail/asset-media";
+import { getAssetMedias } from "../../c_g_assets/[[...cgAssetSlug]]/components/page-detail/asset-media";
 
 interface SearchResultProps {
   data: CgAsset[];

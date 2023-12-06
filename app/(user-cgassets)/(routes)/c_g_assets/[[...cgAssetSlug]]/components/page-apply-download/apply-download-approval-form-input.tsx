@@ -22,7 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
 
 interface CGAssetApplyDownloadApprovalFormInputProps {
   form: UseFormReturn<any>;

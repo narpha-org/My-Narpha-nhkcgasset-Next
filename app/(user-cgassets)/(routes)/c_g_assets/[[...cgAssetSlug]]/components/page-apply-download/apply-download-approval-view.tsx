@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form"
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
-import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
 import Link from "next/link"
 
 export const ApplyDownloadApprovalViewSchema = z.object({

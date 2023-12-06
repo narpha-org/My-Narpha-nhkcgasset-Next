@@ -25,7 +25,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/text-area"
 import { DatePicker } from "@/components/ui/date-picker"
 
-import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
 // import { ApplyDownloadFormSchema, ApplyDownloadFormValues } from "./apply-download-form"
 
 interface CGAssetApplyDownloadFormInputProps {

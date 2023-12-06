@@ -21,7 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { CGAssetPageSlug } from "@/app/(user-cgassets)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/page-slug";
+import { CGAssetPageSlug } from "@/app/(user-cgassets)/(routes)/components/page-slug";
 import CGAssetApplyDownloadClientAdmin from "@/app/(user-cgassets)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-admin";
 import CGAssetApplyDownloadClientManager from "@/app/(user-cgassets)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-manager";
 import CGAssetApplyDownloadClientEditor from "@/app/(user-cgassets)/(routes)/c_g_assets/[[...cgAssetSlug]]/components/client-apply-download-editor";

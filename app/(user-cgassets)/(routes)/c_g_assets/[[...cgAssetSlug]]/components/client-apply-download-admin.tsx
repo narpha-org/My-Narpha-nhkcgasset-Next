@@ -17,7 +17,7 @@ import {
 } from "@/graphql/generated/graphql";
 import { Loader } from "@/components/ui/loader";
 
-import { CGAssetPageProps, CGAssetPageSlug } from './page-slug';
+import { CGAssetPageProps, CGAssetPageSlug } from '../../../components/page-slug';
 import CGAssetApplyDownloadView from './page-apply-download/apply-download-view';
 import CGAssetApplyDownloadBoxDeliverForm from './page-apply-download/apply-download-box-deliver-form';
 import CGAssetApplyDownloadBoxDeliverViewAdmin from './page-apply-download/apply-download-box-deliver-view-admin';

@@ -19,10 +19,10 @@ import {
 } from "@/graphql/generated/graphql";
 
 import CGAssetDetailClient from './components/client-detail';
-import { CGAssetPageProps, CGAssetPageSlug } from './components/page-slug';
+import { CGAssetPageProps, CGAssetPageSlug } from '../../components/page-slug';
 import CGAssetEditClient from './components/client-edit';
-import { CGAssetSearchClient } from './components/client-search';
-import { generateMetadata as generateMetadataFunc } from './components/metadata';
+import { CGAssetSearchClient } from '../../components/client-search';
+import { generateMetadata as generateMetadataFunc } from '../../components/metadata';
 import { isServerRoleAdmin, isServerRoleManager } from '@/lib/check-role-server';
 // import CGAssetApplyDownloadClientManager from './components/client-apply-download-manager';
 // import CGAssetApplyDownloadClientAdmin from './components/client-apply-download-admin';

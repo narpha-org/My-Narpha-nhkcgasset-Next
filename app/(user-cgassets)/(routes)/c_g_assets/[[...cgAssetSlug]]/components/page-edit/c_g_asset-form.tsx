@@ -53,7 +53,7 @@ import FileUpload, { UploadFileProps } from "@/components/ui/file-upload-cgasset
 import { NavHeaderMypage } from '@/components/nav-header-mypage';
 import { cn } from '@/lib/utils';
 
-import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+import { CGAssetPageProps, CGAssetPageSlug } from "../../../../components/page-slug"
 import CGAssetPreviewDialog from "./c_g_asset-preview-dialog"
 // import AssetRevisionHistoryBlock from "../page-detail/asset-revision-history-block"
 
