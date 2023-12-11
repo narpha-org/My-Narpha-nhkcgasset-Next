@@ -129,7 +129,7 @@ export const CGAssetSearchGenreForm: React.FC<CGAssetSearchGenreFormProps> = ({
       }
 
       router.refresh();
-      router.push(`/admin/c_g_asset_search_tags`);
+      router.push(`/admin/c_g_asset_search_genres`);
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error('Something went wrong.');
@@ -167,7 +167,7 @@ export const CGAssetSearchGenreForm: React.FC<CGAssetSearchGenreFormProps> = ({
       }
 
       router.refresh();
-      router.push(`/admin/c_g_asset_search_tags`);
+      router.push(`/admin/c_g_asset_search_genres`);
       toast.success('ジャンルが削除されました。');
     } catch (error: any) {
       toast.error('削除できません。');
@@ -266,7 +266,7 @@ export const CGAssetSearchGenreForm: React.FC<CGAssetSearchGenreFormProps> = ({
             />
           </div>
           <Button disabled={loading} className="ml-auto mr-2" variant="outline" type="button"
-            onClick={() => router.push(`/admin/c_g_asset_search_tags`)}>
+            onClick={() => router.push(`/admin/c_g_asset_search_genres`)}>
             キャンセル
           </Button>
           <Button disabled={loading} className="ml-auto" type="submit">

@@ -44,8 +44,8 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
     redirect('/');
   }
 
-  console.log(`applyDownloads: ${JSON.stringify(applyDownloads)}`);
-  console.log(`checkGlacierStatus(applyDownloads): ${checkGlacierStatus(applyDownloads)}`);
+  // console.log(`applyDownloads: ${JSON.stringify(applyDownloads)}`);
+  // console.log(`checkGlacierStatus(applyDownloads): ${checkGlacierStatus(applyDownloads)}`);
 
   const downloadable = checkGlacierStatus(applyDownloads) === 1 || checkGlacierStatus(applyDownloads) === 0;
 

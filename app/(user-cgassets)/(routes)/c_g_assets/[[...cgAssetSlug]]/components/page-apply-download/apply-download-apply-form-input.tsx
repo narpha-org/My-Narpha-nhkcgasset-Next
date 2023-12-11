@@ -53,7 +53,7 @@ export const CGAssetApplyDownloadApplyFormInput: React.FC<CGAssetApplyDownloadAp
 }) => {
   // const params = useParams() as unknown as CGAssetPageProps['params'];
   // const router = useRouter();
-  console.log(`manageUsers: ${JSON.stringify(manageUsers)}`)
+  // console.log(`manageUsers: ${JSON.stringify(manageUsers)}`)
 
   return (
     <>

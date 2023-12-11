@@ -98,7 +98,7 @@ export const CellAction: React.FC<CellActionProps> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>レコード操作</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => router.push(`/admin/c_g_asset_search_tags/${data.id}`)}
+            onClick={() => router.push(`/admin/c_g_asset_search_genres/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> 編集
           </DropdownMenuItem>

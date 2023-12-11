@@ -26,7 +26,7 @@ export const CGAssetUploadDirClient: React.FC<CGAssetUploadDirClientProps> = ({
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`アップロード場所 (${paginatorInfo.total})`} description="アップロード場所管理" />
+        <Heading title={`[未使用] アップロード場所 (${paginatorInfo.total})`} description="アップロード場所管理<br />アセットIDをベースに保存階層を定める仕様をとるため本システムでは使用しない。" />
         <Button onClick={() => router.push(`/admin/c_g_asset_upload_dirs/new`)}>
           <Plus className="mr-2 h-4 w-4" /> 新規追加
         </Button>

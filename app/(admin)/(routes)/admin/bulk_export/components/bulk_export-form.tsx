@@ -107,8 +107,8 @@ export const BulkExportForm: React.FC<BulkExportFormProps> = ({ }) => {
             <div>
               [Excel見出し]<br />
               <br />
-              id:                       : Database id (指定時は更新)<br />
-              asset_id                  : アセットID (未指定時は自動採番)<br />
+              id:                       : Database id<br />
+              asset_id                  : アセットID<br />
               <br />
               asset_name                : アセット名<br />
               asset_cate                : アセット種別<br />

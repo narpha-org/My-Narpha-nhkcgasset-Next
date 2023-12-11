@@ -18,7 +18,7 @@ export function SearchItemToggle() {
 
   const active = [
     `/admin/c_g_asset_cates`,
-    `/admin/c_g_asset_search_tags`,
+    `/admin/c_g_asset_search_genres`,
     `/admin/c_g_asset_search_app_prods`,
   ].includes(pathname)
 
@@ -36,7 +36,7 @@ export function SearchItemToggle() {
         <DropdownMenuItem onClick={() => router.push(`/admin/c_g_asset_cates`)}>
           アセット種別
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push(`/admin/c_g_asset_search_tags`)}>
+        <DropdownMenuItem onClick={() => router.push(`/admin/c_g_asset_search_genres`)}>
           ジャンル
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/c_g_asset_search_app_prods`)}>

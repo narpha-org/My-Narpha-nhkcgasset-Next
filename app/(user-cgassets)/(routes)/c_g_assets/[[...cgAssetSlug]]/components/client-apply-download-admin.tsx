@@ -191,6 +191,7 @@ const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
             </div>
           </div>
         );
+      case StatusApplyDownload.BoxReady: // リンク準備完了
       default:
         break;
     }

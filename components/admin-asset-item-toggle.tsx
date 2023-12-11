@@ -44,7 +44,7 @@ export function AssetItemToggle() {
           公開エリア
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/c_g_asset_upload_dirs`)}>
-          アップロード場所
+          [未使用] アップロード場所
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

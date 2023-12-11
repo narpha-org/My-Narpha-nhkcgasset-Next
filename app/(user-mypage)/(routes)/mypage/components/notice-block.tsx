@@ -47,7 +47,9 @@ const NoticeBlock: React.FC<NoticeBlockProps> = ({
     />
   }
 
-  return <Loader />
+  return <NoticeBlockOther
+    systemNotices={systemNotices}
+  />
 }
 
 export default NoticeBlock

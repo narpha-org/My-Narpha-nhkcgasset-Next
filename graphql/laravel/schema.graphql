@@ -440,7 +440,19 @@ type Query {
     page: Int
   ): CGAssetVideoPaginator!
 
-  "List all available CGAsset."
+  "List initial CGAssets."
+  CGAssetsInit(
+    "Limits number of fetched items. Maximum allowed value: 100."
+    first: Int! = 10
+
+    "The offset from which items are returned."
+    page: Int
+
+    orderBy: [OrderByClause!]
+    valid: Boolean
+  ): CGAssetPaginator!
+
+  "List all available CGAssets."
   CGAssetsAll(
     "Limits number of fetched items. Maximum allowed value: 100."
     first: Int! = 10
@@ -452,7 +464,7 @@ type Query {
     search: CGAssetSearchFormValues
   ): CGAssetPaginator!
 
-  "List all valid CGAsset."
+  "List all valid CGAssets."
   CGAssetsValid(
     "Limits number of fetched items. Maximum allowed value: 100."
     first: Int! = 10
@@ -464,7 +476,7 @@ type Query {
     search: CGAssetSearchFormValues
   ): CGAssetPaginator!
 
-  "List all valid CGAsset."
+  "List all valid CGAssets."
   ApiCGAssetsValid(
     "Limits number of fetched items. Maximum allowed value: 100."
     first: Int! = 10
@@ -476,7 +488,7 @@ type Query {
     search: ApiCgAssetsSearchFormValues
   ): CGAssetPaginator!
 
-  "List all available own created CGAsset."
+  "List all available own created CGAssets."
   CGAssetsCreatedAll(
     create_user_id: ID!
 

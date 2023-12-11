@@ -20,7 +20,7 @@ import { CGAssetForm } from "./page-edit/c_g_asset-form";
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 import { CGAssetPageProps, CGAssetPageSlug } from './page-slug';
 import { isServerRoleOther, isServerRoleUser } from '@/lib/check-role-server';
-import UserUnauthorized from "@/app/user-unauthorized";
+import UserUnauthorized from "@/app/unauthorized-user";
 
 export async function generateMetadata({
   params,

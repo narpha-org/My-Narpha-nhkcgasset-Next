@@ -1,8 +1,14 @@
 import { Metadata } from 'next'
 
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
-import { isServerRoleAdmin, isServerRoleEditor, isServerRoleManager, isServerRoleOther, isServerRoleUser } from '@/lib/check-role-server';
-import Loading from '@/app/loading';
+import {
+  isServerRoleAdmin,
+  isServerRoleEditor,
+  isServerRoleManager,
+  isServerRoleOther,
+  isServerRoleUser
+} from '@/lib/check-role-server';
+import { Loader } from "@/components/ui/loader";
 
 import HomeDashboardServerAdmin from './components/server-admin';
 import HomeDashboardServerManager from './components/server-manager';
@@ -52,7 +58,7 @@ const HomeDashboardPage: React.FC<HomeDashboardPageProps> = async ({
     return <HomeDashboardServerOther />;
   }
 
-  return <Loading />;
+  return <Loader />;
 };
 
 export default HomeDashboardPage;

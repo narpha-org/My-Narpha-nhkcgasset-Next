@@ -32,16 +32,16 @@ export function MainNav({
 
   if (IsRoleAdmin(session)) {
     routes.push({
-      href: `/admin/`,
+      href: `/admin`,
       label: '管理TOP',
-      active: pathname === `/admin/`,
+      active: pathname === `/admin`,
     });
   }
   // if (session?.user && (session?.user as unknown as { role: string }).role === RoleCgAssetStore.Admin) {
   //   routes.push({
-  //     href: `/admin/`,
+  //     href: `/admin`,
   //     label: '管理TOP',
-  //     active: pathname === `/admin/`,
+  //     active: pathname === `/admin`,
   //   });
   // }
 

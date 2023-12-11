@@ -1,6 +1,6 @@
 "use client";
 
-import { Ref, forwardRef, useEffect, useState, useImperativeHandle } from "react"
+import { Ref, forwardRef, useEffect, useState, useImperativeHandle, useCallback } from "react"
 import Image from 'next/image'
 import { useSession } from "next-auth/react"
 // import ReactPaginate from 'react-paginate';
@@ -59,7 +59,11 @@ const AssetInfoApprovalListManager: React.FC<AssetInfoApprovalListManagerProps> 
     setLoading(false)
   }, [])
 
-  const fetchData = async (param) => {
+  const fetchData = useCallback(async (param) => {
+    if (!session?.user) {
+      return;
+    }
+
     setLoading(true)
 
     const ret: ApolloQueryResult<GetApplyDownloadsApplyOrApprovalQuery>
@@ -81,17 +85,22 @@ const AssetInfoApprovalListManager: React.FC<AssetInfoApprovalListManagerProps> 
     setPageCount(() => Math.ceil(ret.data.ApplyDownloadsApplyOrApproval.paginatorInfo.total / rowCount));
 
     setLoading(false)
-  }
+  }, [rowCount, session?.user]);
+
+  useEffect(() => {
+    const f = async () => {
+      await fetchData({
+        page: pageIndex + 1,
+        order: order,
+        orderAsc: orderAsc,
+        searchTxt: searchTxt,
+      });
+    }
+    f();
+  }, [fetchData, pageIndex, order, orderAsc, searchTxt])
 
   const targetPage = async (newIndex) => {
     setPageIndex(() => newIndex);
-    // console.log(`targetPage pageIndex:${pageIndex}`);
-    await fetchData({
-      page: newIndex + 1,
-      order: order,
-      orderAsc: orderAsc,
-      searchTxt: searchTxt,
-    });
   }
 
   const getCanPreviousPage = () => {
@@ -110,56 +119,29 @@ const AssetInfoApprovalListManager: React.FC<AssetInfoApprovalListManagerProps> 
 
   const handlePageClick = async (data) => {
     setPageIndex(() => data.selected);
-    // console.log(`handlePageClick pageIndex:${pageIndex}`);
-    await fetchData({
-      page: data.selected + 1,
-      order: order,
-      orderAsc: orderAsc,
-      searchTxt: searchTxt,
-    });
   }
 
   const handleSort = async (column: string) => {
     setOrder(() => column);
-    // console.log(`handleSort order:${order}`);
     setOrderAsc((_orderAsc) => !_orderAsc);
-    // console.log(`handleSort orderAsc:${orderAsc}`);
     setPageIndex(() => 0);
-    // console.log(`handleSort pageIndex:${pageIndex}`);
-    await fetchData({
-      page: 1,
-      order: column,
-      orderAsc: orderAsc,
-      searchTxt: searchTxt,
-    });
   }
 
   useImperativeHandle(searchRef, () => ({
 
     handleSearch: async (txt: string) => {
-      // console.log(`child handleSearch txt:${txt}`);
       setSearchTxt(() => txt);
-      // console.log(`child handleSearch searchTxt:${searchTxt}`);
       setOrder('');
-      // console.log(`handleSort order:${order}`);
       setOrderAsc(true);
-      // console.log(`handleSort orderAsc:${orderAsc}`);
       setPageIndex(() => 0);
-      // console.log(`child handleSearch pageIndex:${pageIndex}`);
-      await fetchData({
-        page: 1,
-        order: null,
-        orderAsc: null,
-        searchTxt: txt,
-      });
     }
 
   }));
 
   if (loading) {
-    return <div className="flex items-center justify-center h-96">
-      <Loader />
-    </div>;
+    // return <div className="flex items-center justify-center h-96">
+    //   <Loader />
+    // </div>;
   }
 
   return (
@@ -195,6 +177,8 @@ const AssetInfoApprovalListManager: React.FC<AssetInfoApprovalListManagerProps> 
                 case StatusApplyDownload.Removal: // データ削除期限
                   action = "-消去済-"
                   break;
+                case StatusApplyDownload.Done: // データ消去完了
+                case StatusApplyDownload.BoxReady: // リンク準備完了
                 default:
                   break;
               }

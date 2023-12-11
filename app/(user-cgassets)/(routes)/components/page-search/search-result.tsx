@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Link from "next/link"
 import Image from 'next/image';
 import classNames from "classnames";
@@ -19,9 +19,11 @@ interface SearchResultProps {
   data: CgAsset[];
   paginatorInfo: PaginatorInfo | null;
   loading: boolean;
+  pageIndex: number;
+  setPageIndex: Dispatch<SetStateAction<number>>;
   isInitPage: boolean;
-  onLoadPagenation: (params: { page: number }) => Promise<void>;
-  onLoadMorePage: () => Promise<void>;
+  // onLoadPagenation: (params: { page: number }) => Promise<void>;
+  // onLoadMorePage: () => Promise<void>;
   isNavSideboxClosed: boolean;
 }
 
@@ -29,21 +31,21 @@ export const SearchResult: React.FC<SearchResultProps> = ({
   data,
   paginatorInfo,
   loading,
+  pageIndex,
+  setPageIndex,
   isInitPage,
-  onLoadPagenation,
-  onLoadMorePage,
+  // onLoadPagenation,
+  // onLoadMorePage,
   isNavSideboxClosed,
 }) => {
-  const [loadingChild, setLoadingChild] = useState(false);
+  // const [loadingChild, setLoadingChild] = useState(false);
 
   const rowCount = ROW_COUNT_CGASSETS;
-
-  const [pageIndex, setPageIndex] = useState(0);
   const pageCount = Math.ceil((paginatorInfo?.total || 0) / rowCount);
 
-  useEffect(() => {
-    setPageIndex((paginatorInfo?.currentPage || 1) - 1)
-  }, [paginatorInfo?.currentPage]);
+  // useEffect(() => {
+  //   setPageIndex((paginatorInfo?.currentPage || 1) - 1)
+  // }, [paginatorInfo?.currentPage]);
 
   // console.log(`paginatorInfo.currentPage: ${paginatorInfo?.currentPage}`);
   // console.log(`paginatorInfo.total: ${paginatorInfo?.total}`);
@@ -51,15 +53,15 @@ export const SearchResult: React.FC<SearchResultProps> = ({
   // console.log(`pageCount: ${pageCount}`);
 
   const targetPage = async (newIndex) => {
-    setLoadingChild(true);
+    // setLoadingChild(true);
 
     setPageIndex(() => newIndex);
     // console.log(`targetPage pageIndex:${pageIndex}`);
-    await onLoadPagenation({
-      page: newIndex + 1,
-    });
+    // await onLoadPagenation({
+    //   page: newIndex + 1,
+    // });
 
-    setLoadingChild(false);
+    // setLoadingChild(false);
   }
 
   const getCanPreviousPage = () => {
@@ -77,15 +79,15 @@ export const SearchResult: React.FC<SearchResultProps> = ({
   }
 
   const handlePageClick = async (data) => {
-    setLoadingChild(true);
+    // setLoadingChild(true);
 
     setPageIndex(() => data.selected);
     // console.log(`handlePageClick pageIndex:${pageIndex}`);
-    await onLoadPagenation({
-      page: data.selected + 1,
-    });
+    // await onLoadPagenation({
+    //   page: data.selected + 1,
+    // });
 
-    setLoadingChild(false);
+    // setLoadingChild(false);
   }
 
   return (
@@ -98,7 +100,7 @@ export const SearchResult: React.FC<SearchResultProps> = ({
               '最新アセット'
           )}
       </div> */}
-      {loading || loadingChild ? (
+      {loading /* || loadingChild */ ? (
         <div className={classNames({
           "mainbox__inner":
             true,
@@ -160,45 +162,6 @@ export const SearchResult: React.FC<SearchResultProps> = ({
                 getCanPreviousPage={getCanPreviousPage}
                 getCanNextPage={getCanNextPage}
               />
-              {/* <div className="search__pagenation">
-                {pageCount > 0 && (
-                  <div className="prev">
-                    <Button
-                      onClick={() => targetPage(0)}
-                      disabled={!getCanPreviousPage()}
-                    >
-                      <Image src="/assets/images/prev02.svg" width="19" height="22" decoding="async" alt="最初のページへ" />
-                    </Button>
-                  </div>
-                )}
-                <ReactPaginate
-                  breakLabel={`・・・`}
-                  nextLabel={<Image src="/assets/images/next01.svg" width="19" height="22"
-                    decoding="async" alt="次のページへ" />}
-                  onPageChange={handlePageClick}
-                  pageRangeDisplayed={5}
-                  pageCount={pageCount}
-                  previousLabel={<Image src="/assets/images/prev01.svg" width="19" height="22"
-                    decoding="async" alt="前のページへ" />}
-                  renderOnZeroPageCount={undefined}
-                  breakClassName="ellipsis"
-                  breakLinkClassName=""
-                  containerClassName="ul_alt"
-                  activeClassName="opacity-50"
-                  disabledClassName="disabled"
-                  forcePage={pageIndex}
-                />
-                {pageCount > 0 && (
-                  <div className="next">
-                    <Button
-                      onClick={() => targetPage(pageCount - 1)}
-                      disabled={!getCanNextPage()}
-                    >
-                      <Image src="/assets/images/next02.svg" width="19" height="22" decoding="async" alt="最後のページへ" />
-                    </Button>
-                  </div>
-                )}
-              </div> */}
             </>
           )}
           {/* {!loading && !isInitPage && paginatorInfo && paginatorInfo.hasMorePages && (

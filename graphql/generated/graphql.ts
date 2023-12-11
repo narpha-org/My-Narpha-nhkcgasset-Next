@@ -1891,7 +1891,7 @@ export type PaginatorInfo = {
 
 export type Query = {
   __typename?: 'Query';
-  /** List all valid CGAsset. */
+  /** List all valid CGAssets. */
   ApiCGAssetsValid: CgAssetPaginator;
   /** Find a single ApplyDownload by an identifying attribute. */
   ApplyDownload?: Maybe<ApplyDownload>;
@@ -2005,11 +2005,13 @@ export type Query = {
   CGAssetVideo?: Maybe<CgAssetVideo>;
   /** List multiple CGAssetVideo. */
   CGAssetVideos: CgAssetVideoPaginator;
-  /** List all available CGAsset. */
+  /** List all available CGAssets. */
   CGAssetsAll: CgAssetPaginator;
-  /** List all available own created CGAsset. */
+  /** List all available own created CGAssets. */
   CGAssetsCreatedAll: CgAssetPaginator;
-  /** List all valid CGAsset. */
+  /** List initial CGAssets. */
+  CGAssetsInit: CgAssetPaginator;
+  /** List all valid CGAssets. */
   CGAssetsValid: CgAssetPaginator;
   /** Find a single SystemMailTemplate by an identifying attribute. */
   SystemMailTemplate?: Maybe<SystemMailTemplate>;
@@ -2365,6 +2367,14 @@ export type QueryCgAssetsCreatedAllArgs = {
   page?: InputMaybe<Scalars['Int']['input']>;
   searchTxt?: InputMaybe<Scalars['String']['input']>;
   section?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryCgAssetsInitArgs = {
+  first?: Scalars['Int']['input'];
+  orderBy?: InputMaybe<Array<OrderByClause>>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  valid?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -3663,10 +3673,13 @@ export type CgAssetEditClientQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CgAssetEditClientQuery = { __typename?: 'Query', CGAssetCatesValid: Array<{ __typename?: 'CGAssetCate', code: CodeCgAssetCate, desc: string, id: string }>, CGARegistrantAffiliationsValid: Array<{ __typename?: 'CGARegistrantAffiliation', desc: string, id: string }>, CGAViewingRestrictionsValid: Array<{ __typename?: 'CGAViewingRestriction', desc: string, id: string }>, CGABroadcastingRightsValid: Array<{ __typename?: 'CGABroadcastingRight', desc: string, id: string }>, CGASharedAreasValid: Array<{ __typename?: 'CGASharedArea', desc: string, id: string }>, CGAssetUploadDirsValid: Array<{ __typename?: 'CGAssetUploadDir', base_path: string, id: string }> };
 
-export type CgAssetSearchClientQueryVariables = Exact<{ [key: string]: never; }>;
+export type CgAssetSearchClientQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  valid: Scalars['Boolean']['input'];
+}>;
 
 
-export type CgAssetSearchClientQuery = { __typename?: 'Query', CGAssetCatesValid: Array<{ __typename?: 'CGAssetCate', code: CodeCgAssetCate, desc: string, id: string }>, CGAssetSearchGenresValid: Array<{ __typename?: 'CGAssetSearchGenre', code: string, desc: string, id: string }>, CGAssetSearchAppProdsValid: Array<{ __typename?: 'CGAssetSearchAppProd', code: string, desc: string, id: string }> };
+export type CgAssetSearchClientQuery = { __typename?: 'Query', CGAssetCatesValid: Array<{ __typename?: 'CGAssetCate', code: CodeCgAssetCate, desc: string, id: string }>, CGAssetSearchGenresValid: Array<{ __typename?: 'CGAssetSearchGenre', code: string, desc: string, id: string }>, CGAssetSearchAppProdsValid: Array<{ __typename?: 'CGAssetSearchAppProd', code: string, desc: string, id: string }>, CGAssetsInit: { __typename?: 'CGAssetPaginator', data: Array<{ __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string, asset_genre?: string | null, asset_app_prod?: string | null, asset_format?: string | null, asset_size?: string | null, asset_renderer?: string | null, program_id?: string | null, program_name?: string | null, rights_supplement?: string | null, asset_detail: string, download_count?: number | null, valid_flg: boolean, created_at: any, updated_at: any, assetCate?: { __typename?: 'CGAssetCate', id: string, code: CodeCgAssetCate, desc: string } | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, viewingRestriction?: { __typename?: 'CGAViewingRestriction', id: string, desc: string } | null, broadcastingRight?: { __typename?: 'CGABroadcastingRight', id: string, desc: string } | null, sharedArea?: { __typename?: 'CGASharedArea', id: string, desc: string } | null, assetUploads?: Array<{ __typename?: 'CGAssetUpload', file_name: string, url?: string | null, file_path: string } | null> | null, assetThumbs?: Array<{ __typename?: 'CGAssetThumb', thumb_file_name: string, thumb_url?: string | null, thumb_file_path: string } | null> | null, assetTags?: Array<{ __typename?: 'CGAssetTag', id: string, tag: string, tag_add_edit_flg: boolean, created_at: any, taggedUser?: { __typename?: 'User', name: string } | null } | null> | null, revisionHistories?: Array<{ __typename?: 'CGARevisionHistory', id: string, created_at: any, desc: string, revisedUser?: { __typename?: 'User', name: string } | null } | null> | null, reviews?: Array<{ __typename?: 'CGAssetReview', id: string, created_at: any, review: string, valid_flg: boolean, reviewedUser?: { __typename?: 'User', name: string } | null } | null> | null, userCreate: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null }, userUpdate?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', id: string, desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', id: string, desc: string, role: RoleCgAssetStore, valid_flg: boolean } | null } | null }>, paginatorInfo: { __typename?: 'PaginatorInfo', count: number, currentPage: number, hasMorePages: boolean, total: number } } };
 
 export type HomeDashboardServerAdminQueryVariables = Exact<{
   apply_user_id?: InputMaybe<Scalars['ID']['input']>;
@@ -9512,7 +9525,7 @@ export type CgAssetEditClientQueryHookResult = ReturnType<typeof useCgAssetEditC
 export type CgAssetEditClientLazyQueryHookResult = ReturnType<typeof useCgAssetEditClientLazyQuery>;
 export type CgAssetEditClientQueryResult = Apollo.QueryResult<CgAssetEditClientQuery, CgAssetEditClientQueryVariables>;
 export const CgAssetSearchClientDocument = gql`
-    query CGAssetSearchClient {
+    query CGAssetSearchClient($first: Int!, $valid: Boolean!) {
   CGAssetCatesValid {
     code
     desc
@@ -9527,6 +9540,126 @@ export const CgAssetSearchClientDocument = gql`
     code
     desc
     id
+  }
+  CGAssetsInit(
+    first: $first
+    page: 1
+    orderBy: [{column: "created_at", order: DESC}, {column: "asset_id", order: ASC}]
+    valid: $valid
+  ) {
+    data {
+      id
+      asset_id
+      asset_name
+      assetCate {
+        id
+        code
+        desc
+      }
+      asset_genre
+      asset_app_prod
+      asset_format
+      asset_size
+      asset_renderer
+      program_id
+      program_name
+      registrantAffiliation {
+        id
+        desc
+      }
+      viewingRestriction {
+        id
+        desc
+      }
+      broadcastingRight {
+        id
+        desc
+      }
+      sharedArea {
+        id
+        desc
+      }
+      rights_supplement
+      asset_detail
+      assetUploads {
+        file_name
+        url
+        file_path
+      }
+      assetThumbs {
+        thumb_file_name
+        thumb_url
+        thumb_file_path
+      }
+      assetTags {
+        id
+        tag
+        tag_add_edit_flg
+        taggedUser {
+          name
+        }
+        created_at
+      }
+      revisionHistories {
+        id
+        created_at
+        desc
+        revisedUser {
+          name
+        }
+      }
+      reviews {
+        id
+        created_at
+        review
+        reviewedUser {
+          name
+        }
+        valid_flg
+      }
+      download_count
+      userCreate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      userUpdate {
+        id
+        name
+        email
+        registrantAffiliation {
+          id
+          desc
+        }
+        regist_affili_code
+        roleCGAssetStore {
+          id
+          desc
+          role
+          valid_flg
+        }
+      }
+      valid_flg
+      created_at
+      updated_at
+    }
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      total
+    }
   }
 }
     `;
@@ -9543,10 +9676,12 @@ export const CgAssetSearchClientDocument = gql`
  * @example
  * const { data, loading, error } = useCgAssetSearchClientQuery({
  *   variables: {
+ *      first: // value for 'first'
+ *      valid: // value for 'valid'
  *   },
  * });
  */
-export function useCgAssetSearchClientQuery(baseOptions?: Apollo.QueryHookOptions<CgAssetSearchClientQuery, CgAssetSearchClientQueryVariables>) {
+export function useCgAssetSearchClientQuery(baseOptions: Apollo.QueryHookOptions<CgAssetSearchClientQuery, CgAssetSearchClientQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<CgAssetSearchClientQuery, CgAssetSearchClientQueryVariables>(CgAssetSearchClientDocument, options);
       }
