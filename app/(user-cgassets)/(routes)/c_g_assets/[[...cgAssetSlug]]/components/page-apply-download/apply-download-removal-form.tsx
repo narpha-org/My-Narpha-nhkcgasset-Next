@@ -136,7 +136,7 @@ export const CGAssetApplyDownloadRemovalForm: React.FC<CGAssetApplyDownloadRemov
       <div className="flex items-center justify-between">
         <Heading title="データ消去報告" description={`下記のデータ消去を報告いたします。`} />
       </div>
-      <Separator />
+      {/* <Separator /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
           {pageNumber === 0 && <CGAssetApplyDownloadRemovalFormConfirm

@@ -77,10 +77,10 @@ const ApplyDownloadDialog = ({
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: "90vw",
+        width: "95vw",
         // height: "90vh",
         maxWidth: "1250px",
-        maxHeight: "90vh",
+        maxHeight: "95vh",
         overflowY: "auto",
         // zIndex: 1002,
       }}>

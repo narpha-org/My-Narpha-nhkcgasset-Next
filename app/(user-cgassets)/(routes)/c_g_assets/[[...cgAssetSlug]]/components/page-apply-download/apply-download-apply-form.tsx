@@ -157,7 +157,7 @@ export const CGAssetApplyDownloadApplyForm: React.FC<CGAssetApplyDownloadApplyFo
       <div className="flex items-center justify-between">
         <Heading title="ダウンロード申請" description={`アセットID: ${cgAsset?.asset_id} のダウンロードを申請する`} />
       </div>
-      <Separator />
+      {/* <Separator /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
           {pageNumber === 0 && <CGAssetApplyDownloadApplyFormInput

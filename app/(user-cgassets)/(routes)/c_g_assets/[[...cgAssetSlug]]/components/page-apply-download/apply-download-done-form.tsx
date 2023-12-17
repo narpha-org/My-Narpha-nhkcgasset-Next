@@ -136,7 +136,7 @@ export const CGAssetApplyDownloadDoneForm: React.FC<CGAssetApplyDownloadDoneForm
       <div className="flex items-center justify-between">
         <Heading title="データ消去完了報告" description={`下記のデータ消去完了を報告いたします。`} />
       </div>
-      <Separator />
+      {/* <Separator /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
           {pageNumber === 0 && <CGAssetApplyDownloadDoneFormConfirm

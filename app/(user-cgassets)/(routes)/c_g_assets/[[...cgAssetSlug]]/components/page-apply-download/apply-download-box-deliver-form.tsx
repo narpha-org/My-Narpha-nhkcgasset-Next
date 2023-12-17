@@ -173,7 +173,7 @@ export const CGAssetApplyDownloadBoxDeliverForm: React.FC<CGAssetApplyDownloadBo
       <div className="flex items-center justify-between">
         <Heading title="ダウンロード用 S3 Glacier 復元キュー送信" description={`アセットID: ${cgAsset?.asset_id} のS3 Glacier 復元キューを送信する`} />
       </div>
-      <Separator />
+      {/* <Separator /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
           {pageNumber === 0 && <CGAssetApplyDownloadBoxDeliverFormInput

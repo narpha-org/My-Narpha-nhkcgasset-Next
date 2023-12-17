@@ -16,6 +16,7 @@ import {
 
 import AssetInfoBlockAdmin from "./asset-info-block-admin";
 import AssetInfoBlockManager from "./asset-info-block-manager";
+import AssetInfoBlockEditor from "./asset-info-block-editor";
 import AssetInfoBlockUser from "./asset-info-block-user";
 
 interface AssetInfoBlockProps {
@@ -54,8 +55,21 @@ const AssetInfoBlock: React.FC<AssetInfoBlockProps> = ({
     />
   }
 
-  if (IsRoleManager(session) || IsRoleEditor(session)) {
+  if (IsRoleManager(session)) {
     return <AssetInfoBlockManager
+      downloadApplies={downloadApplies}
+      downloadAppliesPg={downloadAppliesPg}
+      applies={applies}
+      appliesPg={appliesPg}
+      approvals={approvals}
+      approvalsPg={approvalsPg}
+      cgAssets={cgAssets}
+      cgAssetsPg={cgAssetsPg}
+    />
+  }
+
+  if (IsRoleEditor(session)) {
+    return <AssetInfoBlockEditor
       downloadApplies={downloadApplies}
       downloadAppliesPg={downloadAppliesPg}
       applies={applies}

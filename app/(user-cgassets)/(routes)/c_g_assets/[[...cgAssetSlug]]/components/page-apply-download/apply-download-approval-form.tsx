@@ -166,7 +166,7 @@ export const CGAssetApplyDownloadApprovalForm: React.FC<CGAssetApplyDownloadAppr
       <div className="flex items-center justify-between">
         <Heading title="ダウンロード承認" description={`アセットID: ${cgAsset?.asset_id} のダウンロードを承認する`} />
       </div>
-      <Separator />
+      {/* <Separator /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
           {pageNumber === 999 && <CGAssetApplyDownloadApprovalFormInput

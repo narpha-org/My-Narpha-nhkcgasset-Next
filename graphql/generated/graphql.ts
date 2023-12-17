@@ -3342,7 +3342,7 @@ export type GetApplyDownloadQueryVariables = Exact<{
 }>;
 
 
-export type GetApplyDownloadQuery = { __typename?: 'Query', ApplyDownloadWithPresignedUrl?: { __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, program_id?: string | null, program_name?: string | null, date_usage_start?: any | null, date_usage_end?: any | null, purpose_of_use_txt?: string | null, etc_txt?: string | null, removal_limit_date?: any | null, download_date?: any | null, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null, file_name: string } | null> | null } | null };
+export type GetApplyDownloadQuery = { __typename?: 'Query', ApplyDownloadWithPresignedUrl?: { __typename?: 'ApplyDownload', id: string, status: StatusApplyDownload, program_id?: string | null, program_name?: string | null, date_usage_start?: any | null, date_usage_end?: any | null, purpose_of_use_txt?: string | null, etc_txt?: string | null, removal_limit_date?: any | null, download_date?: any | null, created_at: any, cgAsset: { __typename?: 'CGAsset', id: string, asset_id: string, asset_name: string }, manageUser: { __typename?: 'User', id: string, name: string }, applyUser?: { __typename?: 'User', id: string, name: string, email: string, regist_affili_code?: string | null, registrantAffiliation?: { __typename?: 'CGARegistrantAffiliation', desc: string } | null, roleCGAssetStore?: { __typename?: 'UserRoleCGAssetStore', desc: string } | null } | null, applyDownloadGlaciers?: Array<{ __typename?: 'ApplyDownloadGlacier', id: string, ongoing_request: boolean, expiry_date?: any | null, presigned_url?: string | null, file_name: string } | null> | null } | null };
 
 export type GetApplyDownloadsApplyOrApprovalQueryVariables = Exact<{
   apply_user_id?: InputMaybe<Scalars['ID']['input']>;
@@ -6796,6 +6796,14 @@ export const GetApplyDownloadDocument = gql`
     applyUser {
       id
       name
+      email
+      regist_affili_code
+      registrantAffiliation {
+        desc
+      }
+      roleCGAssetStore {
+        desc
+      }
     }
     applyDownloadGlaciers {
       id

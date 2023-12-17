@@ -20,6 +20,14 @@ query GetApplyDownload($id: ID!) {
     applyUser {
       id
       name
+      email
+      regist_affili_code
+      registrantAffiliation {
+        desc
+      }
+      roleCGAssetStore {
+        desc
+      }
     }
     applyDownloadGlaciers {
       id
