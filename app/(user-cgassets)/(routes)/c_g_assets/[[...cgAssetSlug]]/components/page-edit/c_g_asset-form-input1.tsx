@@ -453,7 +453,7 @@ export const CGAssetFormInput1: React.FC<CGAssetFormInput1Props> = ({
                               // cols={33}
                               className="assets-textarea"
                               disabled={loading}
-                              placeholder="権利補足（使用上の注意）"
+                              placeholder="権利使用条件"
                               {...field}
                             />
                             <FormMessage />

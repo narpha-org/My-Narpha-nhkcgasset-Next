@@ -1809,7 +1809,7 @@ type CGAsset {
   "公開エリア"
   sharedArea: CGASharedArea
 
-  "権利補足（使用上の注意）"
+  "権利使用条件"
   rights_supplement: String
 
   "アセット詳細説明"
@@ -1935,7 +1935,7 @@ input CreateCGAssetInput {
   "公開エリアID"
   sharedAreaId: ID
 
-  "権利補足（使用上の注意）"
+  "権利使用条件"
   rights_supplement: String
 
   "アセット詳細説明"
@@ -2029,7 +2029,7 @@ input UpdateCGAssetInput {
   "公開エリアID"
   sharedAreaId: ID
 
-  "権利補足（使用上の注意）"
+  "権利使用条件"
   rights_supplement: String
 
   "アセット詳細説明"

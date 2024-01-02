@@ -96,7 +96,7 @@ const formSchema = z.object({
       message: "必須入力",
     })
     .max(500, {
-      message: "権利補足（使用上の注意）は最大 500 文字以内でご入力ください。",
+      message: "権利使用条件は最大 500 文字以内でご入力ください。",
     }),
   asset_detail: z
     .string()

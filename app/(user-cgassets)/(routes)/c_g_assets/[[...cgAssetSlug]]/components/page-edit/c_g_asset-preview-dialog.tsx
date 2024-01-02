@@ -159,7 +159,7 @@ const CGAssetPreviewDialog: React.FC<CGAssetPreviewDialogProps> = ({
     reviews: form.getValues('reviews'),
     /** 修正履歴 */
     revisionHistories: form.getValues('revisionHistories'),
-    /** 権利補足（使用上の注意） */
+    /** 権利使用条件 */
     rights_supplement: form.getValues('rights_supplement'),
     /** 公開エリア */
     sharedArea: form.getValues('sharedArea'),

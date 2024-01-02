@@ -344,7 +344,7 @@ export const CGAssetApplyDownloadRemovalView: React.FC<CGAssetApplyDownloadRemov
                       <dt>番組名</dt>
                       <dd>{cgAsset?.program_name ?? "--"}</dd>
                       <dt>登録者所属</dt>
-                      <dd>{cgAsset?.userCreate.registrantAffiliation?.desc ?? "--"}</dd>
+                      <dd>{cgAsset?.registrantAffiliation?.desc ?? "--"}</dd>
                       <dt>公開範囲</dt>
                       <dd>{cgAsset?.sharedArea?.desc ?? "--"}</dd>
                     </dl>
