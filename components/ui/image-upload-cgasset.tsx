@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, ChangeEventHandler } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ManagedUpload } from 'aws-sdk/clients/s3';
+import { CompleteMultipartUploadCommandOutput } from '@aws-sdk/client-s3';
 
 import { uploadImageToS3 } from '@/lib/aws-s3';
 import { uploadImageToS3Glacier } from '@/lib/aws-s3-glacier';
@@ -62,7 +62,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     console.log(fileObj);
     console.log(fileObj.name);
 
-    let fileData: ManagedUpload.SendData | null = null;
+    let fileData: CompleteMultipartUploadCommandOutput | null = null;
 
     fileData = await uploadImageToS3(fileObj);
 
@@ -70,7 +70,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     console.log(fileData?.Key);
     console.log(fileData?.Location);
 
-    let fileDataGlacier: ManagedUpload.SendData | null = null;
+    let fileDataGlacier: CompleteMultipartUploadCommandOutput | null = null;
 
     if (glacier) {
       fileDataGlacier = await uploadImageToS3Glacier(fileObj);
@@ -83,14 +83,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     if (glacier && fileData && fileDataGlacier) {
       onChange({
         thumb_file_name: fileObj.name,
-        thumb_url: fileData?.Location,
-        thumb_file_path: fileData?.Key,
+        thumb_url: fileData?.Location as string,
+        thumb_file_path: fileData?.Key as string,
       });
     } else if (fileData) {
       onChange({
         thumb_file_name: fileObj.name,
-        thumb_url: fileData?.Location,
-        thumb_file_path: fileData?.Key,
+        thumb_url: fileData?.Location as string,
+        thumb_file_path: fileData?.Key as string,
       });
     }
   };

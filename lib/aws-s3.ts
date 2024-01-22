@@ -1,21 +1,27 @@
-import { S3 } from "aws-sdk";
-import { PutObjectRequest } from "aws-sdk/clients/s3";
+import { Upload } from "@aws-sdk/lib-storage";
+import {
+  PutObjectCommandInput,
+  CompleteMultipartUploadCommandOutput,
+  S3Client,
+} from "@aws-sdk/client-s3";
 
 // S3の設定
-const s3 = new S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+const client = new S3Client({
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
+  },
   region: process.env.AWS_DEFAULT_REGION,
 });
 
 // S3に画像をアップロードし、そのURLを取得する関数
 export const uploadImageToS3 = async (
   file: File
-): Promise<S3.ManagedUpload.SendData | null> => {
+): Promise<CompleteMultipartUploadCommandOutput | null> => {
   // アップロード時のファイル名を作成
   const fileName = `${Date.now()}-${file.name}`;
   // S3へのアップロードに必要な情報をまとめるオブジェクト
-  const params: PutObjectRequest = {
+  const params: PutObjectCommandInput = {
     Bucket: process.env.AWS_BUCKET as string,
     Key:
       (process.env.AWS_BUCKET_PATH ? process.env.AWS_BUCKET_PATH : "") +
@@ -32,7 +38,10 @@ export const uploadImageToS3 = async (
 
   try {
     // S3に画像をアップロードする
-    const data = await s3.upload(params).promise();
+    const data = await new Upload({
+      client,
+      params,
+    }).done();
     // アップロード成功時の処理
     // console.log("アップロード成功:", data.Location);
     // console.log("アップロード情報:", data);

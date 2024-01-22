@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development NODE_OPTIONS='--dns-result-order=ipv4first --inspect' next dev",
+    "dev": "NODE_ENV=development NODE_OPTIONS='--dns-result-order=ipv4first --inspect --trace-warnings' next dev",
     "build": "NODE_ENV=production NODE_OPTIONS='--dns-result-order=ipv4first' next build",
     "start": "NODE_ENV=production NODE_OPTIONS='--dns-result-order=ipv4first' next build && next start",
     "lint": "next lint",
@@ -12,6 +12,7 @@
   "dependencies": {
     "@apollo/client": "^3.8.2",
     "@apollo/experimental-nextjs-app-support": "^0.5.2",
+    "@aws-sdk/lib-storage": "^3.496.0",
     "@hookform/resolvers": "^3.1.1",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -31,7 +32,6 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
-    "aws-sdk": "^2.1510.0",
     "class-variance-authority": "^0.6.0",
     "classnames": "^2.3.2",
     "clsx": "^1.2.1",

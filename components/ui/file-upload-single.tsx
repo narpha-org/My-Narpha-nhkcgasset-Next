@@ -1,6 +1,6 @@
 "use client";
 
-import { ManagedUpload } from 'aws-sdk/clients/s3';
+import { CompleteMultipartUploadCommandOutput } from '@aws-sdk/client-s3';
 import { uploadImageToS3 } from '@/lib/aws-s3';
 import { uploadImageToS3Glacier } from '@/lib/aws-s3-glacier';
 import { useEffect, useState, useRef, ChangeEventHandler } from 'react';
@@ -66,8 +66,8 @@ const FileUploadSingle: React.FC<FileUploadSingleProps> = ({
     console.log(fileObj);
     console.log(fileObj.name);
 
-    let fileData: ManagedUpload.SendData | null = null;
-    let fileDataGlacier: ManagedUpload.SendData | null = null;
+    let fileData: CompleteMultipartUploadCommandOutput | null = null;
+    let fileDataGlacier: CompleteMultipartUploadCommandOutput | null = null;
 
     if (glacier) {
       fileDataGlacier = await uploadImageToS3Glacier(fileObj);
@@ -86,8 +86,8 @@ const FileUploadSingle: React.FC<FileUploadSingleProps> = ({
     if (glacier && fileDataGlacier) {
       onChange({
         file_name: fileObj.name,
-        url: fileDataGlacier?.Location,
-        file_path: fileDataGlacier?.Key,
+        url: fileDataGlacier?.Location as string,
+        file_path: fileDataGlacier?.Key as string,
         thumb_file_name: '',
         thumb_url: '',
         thumb_file_path: '',
@@ -95,8 +95,8 @@ const FileUploadSingle: React.FC<FileUploadSingleProps> = ({
     } else if (fileData) {
       onChange({
         file_name: fileObj.name,
-        url: fileData?.Location,
-        file_path: fileData?.Key,
+        url: fileData?.Location as string,
+        file_path: fileData?.Key as string,
         thumb_file_name: '',
         thumb_url: '',
         thumb_file_path: '',

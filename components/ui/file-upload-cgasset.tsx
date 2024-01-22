@@ -5,7 +5,7 @@ import Image from 'next/image';
 // import Link from 'next/link';
 // import { FileVideo, Trash } from 'lucide-react';
 
-import { ManagedUpload } from 'aws-sdk/clients/s3';
+import { CompleteMultipartUploadCommandOutput } from '@aws-sdk/client-s3';
 import { uploadImageToS3 } from '@/lib/aws-s3';
 import { uploadImageToS3Glacier } from '@/lib/aws-s3-glacier';
 import { cn } from '@/lib/utils';
@@ -64,8 +64,8 @@ const FileUpload: React.FC<FileUploadProps> = ({
     console.log(fileObj);
     console.log(fileObj.name);
 
-    let fileData: ManagedUpload.SendData | null = null;
-    let fileDataGlacier: ManagedUpload.SendData | null = null;
+    let fileData: CompleteMultipartUploadCommandOutput | null = null;
+    let fileDataGlacier: CompleteMultipartUploadCommandOutput | null = null;
 
     if (glacier) {
       fileDataGlacier = await uploadImageToS3Glacier(fileObj);
@@ -84,14 +84,14 @@ const FileUpload: React.FC<FileUploadProps> = ({
     if (glacier && fileData && fileDataGlacier) {
       onChange({
         file_name: fileObj.name,
-        url: fileDataGlacier?.Location,
-        file_path: fileDataGlacier?.Key,
+        url: fileDataGlacier?.Location as string,
+        file_path: fileDataGlacier?.Key as string,
       });
     } else if (fileData) {
       onChange({
         file_name: fileObj.name,
-        url: fileData?.Location,
-        file_path: fileData?.Key,
+        url: fileData?.Location as string,
+        file_path: fileData?.Key as string,
       });
     }
   };
