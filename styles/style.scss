@@ -295,6 +295,8 @@ body::-webkit-scrollbar-thumb {
           color: #fff;
           padding: vw(15) 0 vw(15);
           text-align: center;
+          display: block;
+          height: 3.125vw;
         }
 
         dl {
