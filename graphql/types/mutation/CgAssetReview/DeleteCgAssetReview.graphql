@@ -1,13 +1,5 @@
-mutation CreateCgAssetReview(
-  $asset_db_id: ID!
-  $review: String!
-  $reviewed_user_id: ID!
-) {
-  createCGAssetReview(
-    asset_db_id: $asset_db_id
-    review: $review
-    reviewed_user_id: $reviewed_user_id
-  ) {
+mutation DeleteCgAssetReview($id: ID!) {
+  deleteCGAssetReview(id: $id) {
     __typename
     id
     review

@@ -65,6 +65,7 @@ query GetCgAsset($id: ID!) {
       created_at
       review
       reviewedUser {
+        id
         name
       }
       valid_flg

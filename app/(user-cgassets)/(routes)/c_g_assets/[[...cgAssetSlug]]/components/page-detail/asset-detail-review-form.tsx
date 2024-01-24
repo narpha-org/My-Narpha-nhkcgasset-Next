@@ -1,7 +1,7 @@
 "use client"
 
 import * as z from "zod"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useState, useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
@@ -14,6 +14,10 @@ import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import {
   CreateCgAssetReviewMutation,
   CreateCgAssetReviewDocument,
+  UpdateCgAssetReviewMutation,
+  UpdateCgAssetReviewDocument,
+  GetCgAssetReviewQuery,
+  GetCgAssetReviewDocument,
   CgAsset,
   // CgAssetReview,
 } from "@/graphql/generated/graphql";
@@ -30,6 +34,7 @@ import {
 } from "@/components/ui/form"
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
+import { Loader } from "@/components/ui/loader";
 
 const formSchema = z.object({
   review: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }),
@@ -38,11 +43,13 @@ const formSchema = z.object({
 type AssetDetailReviewFormValues = z.infer<typeof formSchema>
 
 interface AssetDetailReviewFormProps {
+  cgAssetReviewId: string | null;
   cgAsset: CgAsset;
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export const AssetDetailReviewForm: React.FC<AssetDetailReviewFormProps> = ({
+  cgAssetReviewId,
   cgAsset,
   setDialogOpen,
 }) => {
@@ -50,12 +57,13 @@ export const AssetDetailReviewForm: React.FC<AssetDetailReviewFormProps> = ({
   const router = useRouter();
   const { data: session, status } = useSession()
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // const title = 'コメント追加';
-  // const description = 'コメントの追加';
-  const toastMessage = 'コメントが追加されました。';
-  const action = '追加';
+  const title = cgAssetReviewId ? 'コメント編集' : 'コメント追加';
+  const description = cgAssetReviewId ? `アセットID: ${cgAsset?.asset_id} の指定コメントを編集する` : `アセットID: ${cgAsset?.asset_id} にコメントする`;
+  const toastMessage = cgAssetReviewId ? 'コメントが更新されました。' : 'コメントが追加されました。';
+  const action = cgAssetReviewId ? '更新' : '追加';
 
   const defaultValues = {
     review: ''
@@ -65,6 +73,37 @@ export const AssetDetailReviewForm: React.FC<AssetDetailReviewFormProps> = ({
     resolver: zodResolver(formSchema),
     defaultValues
   });
+
+  useEffect(() => {
+
+    (async () => {
+      if (isMounted) {
+        return;
+      }
+
+      if (!cgAssetReviewId) {
+        /* 新規追加 */
+        setLoading(false);
+        setIsMounted(true);
+        return
+      }
+
+      const ret: ApolloQueryResult<GetCgAssetReviewQuery>
+        = await apolloClient
+          .query({
+            query: GetCgAssetReviewDocument,
+            variables: {
+              id: cgAssetReviewId
+            },
+          });
+      form.setValue("review", ret.data.CGAssetReview?.review as string);
+
+      setLoading(false);
+      setIsMounted(true);
+    })()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async (data: AssetDetailReviewFormValues) => {
 
@@ -78,8 +117,19 @@ export const AssetDetailReviewForm: React.FC<AssetDetailReviewFormProps> = ({
     try {
       setLoading(true);
 
-      const ret: FetchResult<CreateCgAssetReviewMutation>
-        = await apolloClient
+
+      let ret: FetchResult;
+      if (cgAssetReviewId) {
+        ret = await apolloClient
+          .mutate({
+            mutation: UpdateCgAssetReviewDocument,
+            variables: {
+              id: cgAssetReviewId,
+              ...data,
+            },
+          }) as FetchResult<UpdateCgAssetReviewMutation>
+      } else {
+        ret = await apolloClient
           .mutate({
             mutation: CreateCgAssetReviewDocument,
             variables: {
@@ -87,7 +137,8 @@ export const AssetDetailReviewForm: React.FC<AssetDetailReviewFormProps> = ({
               reviewed_user_id: (session?.user as { userId: string }).userId,
               ...data
             },
-          })
+          }) as FetchResult<CreateCgAssetReviewMutation>
+      }
 
       // console.log("ret", ret);
       if (
@@ -120,10 +171,17 @@ export const AssetDetailReviewForm: React.FC<AssetDetailReviewFormProps> = ({
     }
   };
 
+
+  if (!isMounted) {
+    return <div className="flex items-center justify-center h-full">
+      <Loader />
+    </div>;
+  }
+
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title="コメント追加" description={`アセットID: ${cgAsset?.asset_id} にコメントする`} />
+        <Heading title={title} description={description} />
       </div>
       <Separator />
       <Form {...form}>

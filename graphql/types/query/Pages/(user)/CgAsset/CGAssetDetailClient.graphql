@@ -65,6 +65,7 @@ query CGAssetDetailClient($id: ID!, $apply_user_id: ID!) {
       created_at
       review
       reviewedUser {
+        id
         name
       }
       valid_flg

@@ -58,6 +58,7 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
       created_at
       review
       reviewedUser {
+        id
         name
       }
       valid_flg

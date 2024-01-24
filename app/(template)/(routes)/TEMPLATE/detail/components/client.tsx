@@ -38,55 +38,77 @@ export const TemplateClient: React.FC<TemplateClientProps> = ({ }) => {
                 </a>
                 <div className="detail__listbox">
                   <ul>
-                    <li><a href="" className="active"><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71}
+                    <li><a href="" className="active"><Image src="/assets/images/detail_tumb.jpg" width={66.29}
+                      height={37.71} decoding="async" alt="" />
+                    </a></li>
+                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71}
+                      decoding="async" alt="" />
+                    </a ></li >
+                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71}
                       decoding="async" alt="" />
                     </a></li>
-                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71} decoding="async" alt="" />
+                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71}
+                      decoding="async" alt="" />
                     </a></li>
-                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71} decoding="async" alt="" />
+                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71}
+                      decoding="async" alt="" />
                     </a></li>
-                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71} decoding="async" alt="" />
+                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71}
+                      decoding="async" alt="" />
                     </a></li>
-                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71} decoding="async" alt="" />
+                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71}
+                      decoding="async" alt="" />
                     </a></li>
-                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71} decoding="async" alt="" />
+                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71}
+                      decoding="async" alt="" />
                     </a></li>
-                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71} decoding="async" alt="" />
+                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71}
+                      decoding="async" alt="" />
                     </a></li>
-                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71} decoding="async" alt="" />
-                    </a></li>
-                    <li><a href=""><Image src="/assets/images/detail_tumb.jpg" width={66.29} height={37.71} decoding="async" alt="" />
-                    </a></li>
-                  </ul>
+                  </ul >
                   <a href="#" className="detail__prev">
-                    <Image src="/assets/images/detail-arrow-l.svg" alt="前のスライダーへ" width="16" height="45" decoding="async" />
+                    <Image src="/assets/images/detail-arrow-l.svg" alt="前のスライダーへ" width="16" height="45"
+                      decoding="async" />
                   </a>
                   <a href="#" className="detail__next">
-                    <Image src="/assets/images/detail-arrow-r.svg" alt="次のスライダーへ" width="16" height="45" decoding="async" />
+                    <Image src="/assets/images/detail-arrow-r.svg" alt="次のスライダーへ" width="16" height="45"
+                      decoding="async" />
                   </a>
-                </div>
-              </div>
+                </div >
+              </div >
               <div className="detail__textbox">
                 <h2>アセット詳細</h2>
-                <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                <p className="p_txt">テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                   テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                   テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                   テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                   テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                   テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
-                <button className="detail__closebtn">Close<Image src="/assets/images/close.svg" width="8" height="8"
-                  decoding="async" alt="close" /></button>
+                <button className="detail__closebtn">Close<Image src="/assets/images/close.svg" width="8"
+                  height="8" decoding="async" alt="close" /></button>
               </div>
               <div className="detail__textbox">
                 <h2>コメント</h2>
-                <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
-                  テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
-                  テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
-                <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
-                  テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
-                  テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
-                <button className="detail__closebtn">Close<Image src="/assets/images/close.svg" width="8" height="8"
-                  decoding="async" alt="close" /></button>
+                <div className="txt">
+                  <div className="toggle_button_box">
+                    <button id="tag_gray-btn01" type="submit"
+                      className="tag_gray">編集</button>
+                    <button id="tag_gray-btn01" type="submit"
+                      className="tag_gray">削除</button>
+                  </div>
+                  <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                    テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                    テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                  </p>
+
+                </div>
+                <div className="txt">
+                  <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                    テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                    テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
+                </div>
+                <button className="detail__closebtn">Close<Image src="/assets/images/close.svg" width="8"
+                  height="8" decoding="async" alt="close" /></button>
               </div>
               <div className="detail__textbox tagbox">
                 <h2>タグ</h2>
@@ -97,21 +119,28 @@ export const TemplateClient: React.FC<TemplateClientProps> = ({ }) => {
                   </form>
                 </div>
                 <div className="tag_gray_box">
-                  <button id="tag_gray-btn01" type="submit" className="tag_gray">タグ</button>
-                  <button id="tag_gray-btn02" type="submit" className="tag_gray">テキストテキスト</button>
-                  <button id="tag_gray-btn03" type="submit" className="tag_gray">テキスト</button>
+                  <button id="tag_gray-btn01" type="submit"
+                    className="tag_gray">タグ</button>
+                  <button id="tag_gray-btn02" type="submit"
+                    className="tag_gray">テキストテキスト</button>
+                  <button id="tag_gray-btn03" type="submit"
+                    className="tag_gray">テキスト</button>
                 </div>
                 <div className="tag_white_box">
-                  <button id="tag_white-btn01" type="submit" className="tag_gray">タグ</button>
-                  <button id="tag_white-btn02" type="submit" className="tag_gray">テキストテキスト</button>
-                  <button id="tag_white-btn03" type="submit" className="tag_gray">テキスト</button>
+                  <button id="tag_white-btn01" type="submit"
+                    className="tag_gray">タグ</button>
+                  <button id="tag_white-btn02" type="submit"
+                    className="tag_gray">テキストテキスト</button>
+                  <button id="tag_white-btn03" type="submit"
+                    className="tag_gray">テキスト</button>
                 </div>
               </div>
-            </div>
+            </div >
             <div className="detail__side">
               <div className="detail__sidebtn">
                 <div className="detail__sidedl">
-                  <p>ダウンロード</p><button id="dl-btn01" type="submit" className="btn">開始</button>
+                  <p>ダウンロード</p><button id="dl-btn01" type="submit"
+                    className="btn">開始</button>
                 </div>
                 <div className="detail__sidedl">
                   <button id="dl-btn02" type="submit" className="btn">編集</button>

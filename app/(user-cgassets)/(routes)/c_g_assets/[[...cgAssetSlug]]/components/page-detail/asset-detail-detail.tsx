@@ -55,7 +55,7 @@ const AssetDetailDetailBlock: React.FC<AssetDetailDetailBlockProps> = ({
     <>
       <div className="detail__textbox">
         <h2>アセット詳細</h2>
-        <p ref={refChild} className={`${styles.childItem}`} style={{
+        <p ref={refChild} className={`p_txt ${styles.childItem}`} style={{
           top: isClosed ? `-10vh` : '0',
           opacity: isClosed ? 0 : 1,
         }}>{cgAsset.asset_detail.split("\n").map((item, index) => {

@@ -89,6 +89,7 @@ query CGAssetSearchClient($first: Int!, $valid: Boolean!) {
         created_at
         review
         reviewedUser {
+          id
           name
         }
         valid_flg

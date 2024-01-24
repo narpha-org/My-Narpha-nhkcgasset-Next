@@ -58,6 +58,7 @@ mutation DeleteCgAsset($id: ID!) {
       created_at
       review
       reviewedUser {
+        id
         name
       }
       valid_flg

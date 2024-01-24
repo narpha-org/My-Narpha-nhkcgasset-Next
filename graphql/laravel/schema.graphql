@@ -786,7 +786,7 @@ type Mutation {
   ): CGAssetReview
 
   "Update a CGAssetReview."
-  updateCGAssetReview(review: String!): CGAssetReview
+  updateCGAssetReview(id: ID!, review: String!): CGAssetReview
 
   "Delete a CGAssetReview."
   deleteCGAssetReview(id: ID!): CGAssetReview
