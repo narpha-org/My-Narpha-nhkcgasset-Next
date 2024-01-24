@@ -28,6 +28,7 @@ body {
   color: #211a14;
   letter-spacing: 0.03em;
   font-feature-settings: "palt";
+  background: #f3f3f3;
 }
 
 a:hover,
@@ -51,6 +52,7 @@ img {
 
 #wrapper {
   overflow: hidden;
+  min-height: 100vh;
 }
 
 .inner {
@@ -144,6 +146,11 @@ body::-webkit-scrollbar-thumb {
     }
   }
 }
+main {
+  @media screen and (max-width: 768px) {
+    min-height: unset;
+  }
+}
 
 /* header
 ------------------------------------- */
@@ -200,7 +207,9 @@ body::-webkit-scrollbar-thumb {
 ------------------------------------- */
 .maincon {
   .search {
-    margin-top: vw(80);
+    padding-top: vw(80);
+    padding-bottom: vw(28);
+    background: #fff;
 
     &__title {
       font-size: vw(20);
@@ -253,12 +262,12 @@ body::-webkit-scrollbar-thumb {
 
   .contents {
     display: flex;
-    margin-top: vw(28);
-
+    height: 100%;
     .sidebox {
       max-width: vw(300);
       display: flex;
-
+      background: #fff;
+      position: relative;
       &__iconbox {
         width: vw(60);
         height: vw(60);
@@ -278,14 +287,14 @@ body::-webkit-scrollbar-thumb {
         width: vw(240);
         position: relative;
 
-        &::before {
+        &::after {
+          position: absolute;
           content: "";
           width: vw(1);
+          min-height: 100vh;
           height: 100%;
-          display: inline-block;
           background-color: #212121;
-          position: absolute;
-          bottom: 0;
+          top: 0;
           left: 0;
         }
 
@@ -295,8 +304,6 @@ body::-webkit-scrollbar-thumb {
           color: #fff;
           padding: vw(15) 0 vw(15);
           text-align: center;
-          display: block;
-          height: 3.125vw;
         }
 
         dl {
@@ -351,11 +358,21 @@ body::-webkit-scrollbar-thumb {
           }
         }
       }
+      &::after {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100vh;
+        background-color: #fff;
+        z-index: -1;
+      }
     }
 
     .mainbox {
       background: #f3f3f3;
       width: 100%;
+      height: 100%;
+      padding-bottom: vw(30);
 
       &__inner {
         min-width: vw(1620);
@@ -554,13 +571,49 @@ body::-webkit-scrollbar-thumb {
         font-size: vw(18);
         font-weight: 700;
       }
-
-      p {
-        margin-top: vw(15);
+      .p_txt {
+        position: relative;
         padding: vw(20) vw(25) vw(15);
         background-color: #f4f4f4;
+        margin-top: vw(15);
         border-radius: vw(10);
         font-size: vw(14);
+      }
+      .txt {
+        position: relative;
+        padding: vw(20) vw(25) vw(15);
+        background-color: #f4f4f4;
+        margin-top: vw(15);
+        p {
+          border-radius: vw(10);
+          font-size: vw(14);
+        }
+        .toggle_button_box {
+          margin: vw(0) vw(5) vw(10) vw(0);
+          display: flex;
+          justify-content: right;
+          gap: vw(7);
+
+          button {
+            padding: vw(5) vw(10) vw(5.5) vw(10);
+            background: #434343;
+            color: #fff;
+            border-radius: vw(50);
+            border: vw(1) solid #f4f4f4;
+            font-size: vw(9.49);
+            letter-spacing: 0.03rem;
+            line-height: 1;
+            text-align: center;
+            border-radius: vw(50);
+          }
+
+          &.hide {
+            display: none;
+          }
+        }
+        &:first-child {
+          margin-top: 0;
+        }
       }
 
       .input_box {
