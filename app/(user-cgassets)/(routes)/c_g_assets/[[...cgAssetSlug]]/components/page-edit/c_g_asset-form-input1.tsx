@@ -126,7 +126,7 @@ export const CGAssetFormInput1: React.FC<CGAssetFormInput1Props> = ({
                   render={({ field }) => (
                     <FormItem
                       style={{
-                        width: '45vw'
+                        width: '52vw'
                       }}
                     >
                       <Input
@@ -140,7 +140,7 @@ export const CGAssetFormInput1: React.FC<CGAssetFormInput1Props> = ({
                     </FormItem>
                   )}
                 />
-                <div className="">
+                {/*                 <div className="">
                   <CGAssetPreviewDialog
                     form={form}
                     disabled={loading}
@@ -151,7 +151,7 @@ export const CGAssetFormInput1: React.FC<CGAssetFormInput1Props> = ({
                     sharedAreas={sharedAreas}
                     uploadDirs={uploadDirs}
                   />
-                </div>
+                </div> */}
               </div>
               <div className="registration__maincon">
                 <div className="registration__maincon-left">
