@@ -36,53 +36,57 @@ export const TemplateClient: React.FC<TemplateClientProps> = ({ }) => {
                   <h2 className="comment_title">コメント</h2>
                   <div className="comment_block">
                     <div className="comment-box">
+                      <div className="toggle_button">
+                        <input id="toggle" className="toggle_input" type='checkbox' />
+                        <label htmlFor="toggle" className="toggle_label" />
+                      </div>
                       <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                         テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                         テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
+                    </div>
+                    <div className="comment-box">
                       <div className="toggle_button">
                         <input id="toggle" className="toggle_input" type='checkbox' />
                         <label htmlFor="toggle" className="toggle_label" />
                       </div>
-                    </div>
-                    <div className="comment-box">
                       <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                         テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
+
+                    </div>
+                    <div className="comment-box">
                       <div className="toggle_button">
                         <input id="toggle" className="toggle_input" type='checkbox' />
                         <label htmlFor="toggle" className="toggle_label" />
                       </div>
-                    </div>
-                    <div className="comment-box">
                       <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                         テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                         テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
+                    </div>
+                    <div className="comment-box">
                       <div className="toggle_button">
                         <input id="toggle" className="toggle_input" type='checkbox' />
                         <label htmlFor="toggle" className="toggle_label" />
                       </div>
-                    </div>
-                    <div className="comment-box">
                       <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
                         テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
+
+                    </div>
+                    <div className="comment-box">
                       <div className="toggle_button">
                         <input id="toggle" className="toggle_input" type='checkbox' />
                         <label htmlFor="toggle" className="toggle_label" />
                       </div>
-                    </div>
-                    <div className="comment-box">
                       <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
-                      <div className="toggle_button">
-                        <input id="toggle" className="toggle_input" type='checkbox' />
-                        <label htmlFor="toggle" className="toggle_label" />
-                      </div>
+
                     </div>
                     <div className="comment-box">
-                      <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
-                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
                       <div className="toggle_button">
                         <input id="toggle" className="toggle_input" type='checkbox' />
                         <label htmlFor="toggle" className="toggle_label" />
                       </div>
+                      <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>
+
                     </div>
                   </div>
                 </div>
@@ -91,28 +95,34 @@ export const TemplateClient: React.FC<TemplateClientProps> = ({ }) => {
                   <div className="registration__maincon-user-tag">
                     <h2>ユーザータグリスト</h2>
                     <div className="tag_list">
-                      <button id="tag_gray-btn01" type="submit" className="tag_gray">タグ</button>
+                      <button id="tag_gray-btn01" type="submit"
+                        className="tag_gray">タグ</button>
                       <button id="tag_gray-btn02" type="submit"
                         className="tag_gray">テキストテキスト</button>
                       <button id="tag_gray-btn03" type="submit"
                         className="tag_gray on">テキスト</button>
-                      <button id="tag_gray-btn01" type="submit" className="tag_gray">タグ</button>
+                      <button id="tag_gray-btn01" type="submit"
+                        className="tag_gray">タグ</button>
                       <button id="tag_gray-btn02" type="submit"
                         className="tag_gray on">テキストテキスト</button>
-                      <button id="tag_gray-btn03" type="submit" className="tag_gray">テキスト</button>
+                      <button id="tag_gray-btn03" type="submit"
+                        className="tag_gray">テキスト</button>
                       <button id="tag_gray-btn02" type="submit"
                         className="tag_gray">テキストテキスト</button>
-                      <button id="tag_gray-btn03" type="submit" className="tag_gray">テキスト</button>
+                      <button id="tag_gray-btn03" type="submit"
+                        className="tag_gray">テキスト</button>
                       <button id="tag_gray-btn02" type="submit"
                         className="tag_gray">テキストテキスト</button>
-                      <button id="tag_gray-btn03" type="submit" className="tag_gray">テキスト</button>
-                      <button id="tag_gray-btn01" type="submit" className="tag_gray">タグ</button>
+                      <button id="tag_gray-btn03" type="submit"
+                        className="tag_gray">テキスト</button>
+                      <button id="tag_gray-btn01" type="submit"
+                        className="tag_gray">タグ</button>
                       <button id="tag_gray-btn02" type="submit"
                         className="tag_gray">テキストテキスト</button>
                       <button id="tag_gray-btn03" type="submit"
                         className="tag_gray on">テキスト</button>
-                      <button id="tag_gray-btn02" type="submit"
-                        className="tag_gray on">テキストテキスト</button>
+                      <button id="tag_gray-btn03" type="submit"
+                        className="tag_gray on">テキスト</button>
                       <input id="tag_form" className="input-text js-input" type="text" required />
                     </div>
                   </div>
@@ -126,7 +136,8 @@ export const TemplateClient: React.FC<TemplateClientProps> = ({ }) => {
                 <div className="registration__sidestatus-con">
                   <h2>公開ステータス</h2>
                   <div className="keepbox">
-                    <button id="dl-btn02" type="submit" className="btn">保存</button>
+                    <button id="dl-btn02" type="submit"
+                      className="btn">保存</button>
                     <p>2023.11.11</p>
                   </div>
                 </div>
@@ -134,8 +145,8 @@ export const TemplateClient: React.FC<TemplateClientProps> = ({ }) => {
 
             </div>
             <a href="" className="registration__regist_back_btn">
-              <Image src="/assets/images/regist_back_btn_arrow.svg" alt="矢印" width="13" height="22" decoding="async"
-                className="arrow" />
+              <Image src="../assets/images/regist_back_btn_arrow.svg" alt="矢印" width="13" height="22"
+                decoding="async" className="arrow" />
             </a>
           </div>
         </div>

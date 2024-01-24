@@ -143,11 +143,6 @@ export const CGAssetFormInput2: React.FC<CGAssetFormInput2Props> = ({
                             {field.value && field.value.map((reviewObj: CgAssetReview, idx) => {
                               return (
                                 <div key={idx} className="comment-box">
-                                  <p>{reviewObj.review.split("\n").map((item, index) => {
-                                    return (
-                                      <Fragment key={index}>{item}<br /></Fragment>
-                                    );
-                                  })}</p>
                                   <div className="toggle_button">
                                     <input
                                       id="toggle"
@@ -173,6 +168,11 @@ export const CGAssetFormInput2: React.FC<CGAssetFormInput2Props> = ({
                                       loading && 'opacity-50'
                                     )} />
                                   </div>
+                                  <p>{reviewObj.review.split("\n").map((item, index) => {
+                                    return (
+                                      <Fragment key={index}>{item}<br /></Fragment>
+                                    );
+                                  })}</p>
                                 </div>
                               )
                             })}
