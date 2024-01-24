@@ -57,6 +57,18 @@
 
 /* header
 ------------------------------------- */
+.header {
+  &__inner {
+    .h1_main {
+      &.left {
+        text-align: center;
+      }
+    }
+  }
+}
+
+/* header
+------------------------------------- */
 .dialog {
   z-index: 50 !important;
 
