@@ -44,9 +44,13 @@ const CGAssetPage: React.FC<CGAssetPageProps> = async ({ params }) => {
   const rowCount = ROW_COUNT_CGASSETS;
   let valid: boolean;
   if (await isServerRoleUser() || await isServerRoleOther()) {
+    // 有効データのみ
     valid = true;
   } else {
-    valid = false;
+    // 全データ
+    // valid = false;
+    // 有効データのみ
+    valid = true;
   }
 
   const ret: ApolloQueryResult<CgAssetSearchClientQuery>

@@ -40,14 +40,23 @@ export async function fetchData(params: FetchDataProps) {
     paginatorInfo = ret.data.CGAssetsValid.paginatorInfo as PaginatorInfo;
   } else {
     // 全データ
-    const ret: ApolloQueryResult<GetCgAssetsAllQuery> =
+    // const ret: ApolloQueryResult<GetCgAssetsAllQuery> =
+    //   await apolloClient.query({
+    //     query: GetCgAssetsAllDocument,
+    //     variables: params,
+    //     fetchPolicy: "network-only",
+    //   });
+    // data = ret.data.CGAssetsAll.data as CgAsset[];
+    // paginatorInfo = ret.data.CGAssetsAll.paginatorInfo as PaginatorInfo;
+    // 有効データのみ
+    const ret: ApolloQueryResult<GetCgAssetsValidQuery> =
       await apolloClient.query({
-        query: GetCgAssetsAllDocument,
+        query: GetCgAssetsValidDocument,
         variables: params,
         fetchPolicy: "network-only",
       });
-    data = ret.data.CGAssetsAll.data as CgAsset[];
-    paginatorInfo = ret.data.CGAssetsAll.paginatorInfo as PaginatorInfo;
+    data = ret.data.CGAssetsValid.data as CgAsset[];
+    paginatorInfo = ret.data.CGAssetsValid.paginatorInfo as PaginatorInfo;
   }
 
   return {
