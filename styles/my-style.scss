@@ -384,6 +384,24 @@
   .registration {
     &__maincon-tag {
       .tag_list {
+        // margin: vw(15) vw(15) 0 0;
+        padding: vw(7) vw(14) vw(7) vw(14);
+        // display: flex;
+        flex-wrap: wrap;
+        gap: vw(20) vw(11);
+        // border-radius: vw(5);
+        // background-color: #ffffff;
+        max-width: vw(478);
+
+        .on {
+          background-color: #bdbaba;
+          border: vw(1) solid #bdbaba;
+        }
+      }
+    }
+
+    &__maincon-user-tag {
+      .tag_list {
         .on {
           background-color: #bdbaba;
           border: vw(1) solid #bdbaba;

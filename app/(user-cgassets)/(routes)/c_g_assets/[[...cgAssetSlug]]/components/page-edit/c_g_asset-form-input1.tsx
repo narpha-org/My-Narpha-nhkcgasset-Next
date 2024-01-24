@@ -1,6 +1,6 @@
 "use client"
 
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 // import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Image from 'next/image'
@@ -22,13 +22,14 @@ import {
 
 import { Input } from "@/components/ui/input-raw"
 import { Button } from "@/components/ui/button-raw"
+import { AlertModal } from "@/components/modals/alert-modal"
 import {
-  Form,
+  // Form,
   FormControl,
   // FormDescription,
   FormField,
   FormItem,
-  FormLabel,
+  // FormLabel,
   FormMessage,
 } from "@/components/ui/form-raw"
 import { Textarea } from "@/components/ui/text-area-raw"
@@ -73,6 +74,15 @@ export const CGAssetFormInput1: React.FC<CGAssetFormInput1Props> = ({
 }) => {
   const router = useRouter();
 
+  const [open, setOpen] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [composing, setComposition] = useState(false);
+  const startComposition = () => setComposition(true);
+  const endComposition = () => setComposition(false);
+
+  const [inputTag, setInputTag] = useState('');
+  const [deleteAssetTagId, setDeleteAssetTagId] = useState('');
+
   // console.log(`CGAssetFormInput1 form.getValues("assetTags"): ${JSON.stringify(form.getValues("assetTags"))}`);
   const onSubmitFormInput1 = () => {
     if (cgAsset) {
@@ -81,8 +91,28 @@ export const CGAssetFormInput1: React.FC<CGAssetFormInput1Props> = ({
     form.handleSubmit(onSubmit)();
   }
 
+  const onTagDelete = () => {
+    const newValue = [...form.getValues('assetTags')
+      .filter((current) => current.id !== deleteAssetTagId)
+    ];
+    form.setValue("assetTags", [...newValue]);
+
+    setOpen(false);
+  }
+
   return (
     <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onTagDelete}
+        loading={loading}
+        title={deleteConfirmText}
+        description=""
+        btnCancelVariant="outline"
+        btnDoVariant="default"
+        btnDoText="削除"
+      />
       {/* <!-- main --> */}
       <main className="maincon">
         <div className="registration">
@@ -577,23 +607,79 @@ export const CGAssetFormInput1: React.FC<CGAssetFormInput1Props> = ({
                   </div> */}
                   <div className="registration__maincon-tag">
                     <h2>タグ</h2>
-                    <div className="tag_list">
-                      {form.getValues("assetTags") && form.getValues("assetTags").map(assetTag => {
+                    <FormField
+                      control={form.control}
+                      name="assetTags"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="tag_list">
+                            {field.value && field.value.map((assetTag: CgAssetTag, idx) => {
+                              return (
+                                <>
+                                  <Button
+                                    id={idx}
+                                    key={assetTag?.id}
+                                    type="button"
+                                    disabled={loading}
+                                    className={cn(
+                                      'tag_gray',
+                                      assetTag?.tag_add_edit_flg === true && 'on',
+                                      loading && 'opacity-50'
+                                    )}
+                                    onClick={() => {
+                                      setDeleteAssetTagId(() => assetTag?.id);
+                                      setDeleteConfirmText(() => `タグ: ${assetTag?.tag} を削除します`);
+                                      setOpen(true);
+                                    }}
+                                  >
+                                    {assetTag?.tag}
+                                  </Button>
+                                </>
+                              )
+                            })}
+                            <Input
+                              id="tag_form"
+                              className={cn(
+                                'input-text js-input',
+                                loading && 'opacity-50'
+                              )}
+                              type="text"
+                              value={inputTag}
+                              disabled={loading}
+                              onCompositionStart={startComposition}
+                              onCompositionEnd={endComposition}
+                              onChange={(event) => setInputTag((event.target as HTMLInputElement).value)}
+                              onKeyDown={(event) => {
 
-                        return (
-                          <Button
-                            key={assetTag?.id}
-                            type="button"
-                            className={cn(
-                              'tag_gray',
-                              assetTag?.tag_add_edit_flg === true && 'on'
-                            )}
-                          >
-                            {assetTag?.tag}
-                          </Button>
-                        )
-                      })}
-                    </div>
+                                if (event && event.code && event.code.toLowerCase() === 'enter') {
+                                  event.preventDefault();
+                                } else {
+                                  return;
+                                }
+
+                                if (!inputTag) {
+                                  return;
+                                }
+
+                                if (composing) {
+                                  return;
+                                }
+
+                                const newTag = inputTag;
+                                setInputTag('');
+
+                                return field.onChange([...field.value, {
+                                  id: "new" + (field.value.length + 1),
+                                  tag: newTag,
+                                  tag_add_edit_flg: true
+                                }])
+                              }}
+                            />
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
                     <button className="edit" type="button" onClick={form.handleSubmit(onNext)}>ユーザーコメント・タグ編集<Image
                       src="/assets/images/edit_arrow.svg" className="arrow" width="8" height="12" decoding="async"
                       alt="矢印" /></button>

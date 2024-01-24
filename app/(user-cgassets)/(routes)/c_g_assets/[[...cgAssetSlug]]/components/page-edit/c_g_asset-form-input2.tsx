@@ -2,10 +2,10 @@
 
 import { Fragment, useState } from "react"
 import Image from 'next/image'
-import Link from "next/link"
+// import Link from "next/link"
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import { format } from 'date-fns'
-import { dateFormat } from "@/lib/utils"
+// import { dateFormat } from "@/lib/utils"
 
 import {
   CgAsset,
@@ -16,7 +16,7 @@ import {
   CgaSharedArea,
   CgAssetTag,
   CgAssetUploadDir,
-  CgaRevisionHistory,
+  // CgaRevisionHistory,
   CgAssetReview,
 } from "@/graphql/generated/graphql";
 
@@ -24,21 +24,21 @@ import { Input } from "@/components/ui/input-raw"
 import { Button } from "@/components/ui/button-raw"
 import { AlertModal } from "@/components/modals/alert-modal"
 import {
-  Form,
+  // Form,
   FormControl,
   // FormDescription,
   FormField,
   FormItem,
-  FormLabel,
+  // FormLabel,
   FormMessage,
 } from "@/components/ui/form-raw"
-import { Textarea } from "@/components/ui/text-area-raw"
-import ImageUpload, { UploadImageProps } from "@/components/ui/image-upload-cgasset"
-import FileUpload, { UploadFileProps } from "@/components/ui/file-upload-cgasset"
+// import { Textarea } from "@/components/ui/text-area-raw"
+// import ImageUpload, { UploadImageProps } from "@/components/ui/image-upload-cgasset"
+// import FileUpload, { UploadFileProps } from "@/components/ui/file-upload-cgasset"
 import { cn } from '@/lib/utils';
 
-import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
-import CGAssetPreviewDialog from "./c_g_asset-preview-dialog"
+// import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+// import CGAssetPreviewDialog from "./c_g_asset-preview-dialog"
 // import AssetRevisionHistoryBlock from "../page-detail/asset-revision-history-block"
 
 interface CGAssetFormInput2Props {
