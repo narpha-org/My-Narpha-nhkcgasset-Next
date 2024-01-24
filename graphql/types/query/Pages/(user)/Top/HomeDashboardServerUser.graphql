@@ -94,8 +94,8 @@ query HomeDashboardServerUser(
     first: $first
     page: $page
     orderBy: [
-      { column: "created_at", order: DESC }
-      { column: "asset_id", order: ASC }
+      { column: "c_g_assets.created_at", order: DESC }
+      { column: "c_g_assets.asset_id", order: ASC }
     ]
     section: $section
     order: null
@@ -106,6 +106,9 @@ query HomeDashboardServerUser(
       id
       asset_id
       asset_name
+      userCreate {
+        name
+      }
       valid_flg
       created_at
       updated_at

@@ -217,9 +217,10 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
       <Table className="mypage__mainlist">
         <TableBody>
           <TableRow className="top">
-            <TableHead className="sortable" onClick={(e) => handleSort('created_at')}>Date</TableHead>
+            <TableHead className="sortable" onClick={(e) => handleSort('c_g_assets.created_at')}>Date</TableHead>
             <TableHead className="sortable" onClick={(e) => handleSort('asset_id')}>Asset ID</TableHead>
             <TableHead className="sortable" onClick={(e) => handleSort('asset_name')}>Asset Name</TableHead>
+            <TableHead className="sortable" onClick={(e) => handleSort('users_create.name')}>登録者</TableHead>
             <TableHead></TableHead>
           </TableRow>
           {items && items.map((elem: CgAsset | null) => {
@@ -230,6 +231,7 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
                 <TableCell className="">{format(new Date(elem.created_at), "yyyy年MM月dd日")}</TableCell>
                 <TableCell>{elem.asset_id}</TableCell>
                 <TableCell>{elem.asset_name}</TableCell>
+                <TableCell>{elem.userCreate.name}</TableCell>
                 <TableCell className="flex items-center justify-between">
                   <Button
                     disabled={loading}
