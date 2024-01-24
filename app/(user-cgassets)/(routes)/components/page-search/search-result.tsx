@@ -151,7 +151,7 @@ export const SearchResult: React.FC<SearchResultProps> = ({
               </li>
             })}
           </ul>
-          {!loading && !isInitPage && paginatorInfo && (
+          {!loading /* && !isInitPage */ && paginatorInfo && (
             <>
               <MyPagenator
                 className="search__pagenation"
