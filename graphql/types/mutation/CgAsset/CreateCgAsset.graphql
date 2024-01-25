@@ -37,6 +37,8 @@ mutation CreateCgAsset($input: CreateCGAssetInput!) {
       thumb_file_name
       thumb_url
       thumb_file_path
+      order
+      id
     }
     assetTags {
       tag

@@ -4142,6 +4142,18 @@
             "deprecationReason": null
           },
           {
+            "name": "order",
+            "description": "表示順",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "thumb_file_name",
             "description": "サムネイルファイル名",
             "args": [],
@@ -4214,8 +4226,32 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "id",
+            "description": "Unique primary key.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "order",
+            "description": "表示順",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "thumb_file_name",
-            "description": null,
+            "description": "サムネイルファイル名",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -4231,7 +4267,7 @@
           },
           {
             "name": "thumb_file_path",
-            "description": null,
+            "description": "サムネイルファイルパス",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -4247,7 +4283,7 @@
           },
           {
             "name": "thumb_url",
-            "description": null,
+            "description": "サムネイルURL",
             "type": {
               "kind": "SCALAR",
               "name": "String",

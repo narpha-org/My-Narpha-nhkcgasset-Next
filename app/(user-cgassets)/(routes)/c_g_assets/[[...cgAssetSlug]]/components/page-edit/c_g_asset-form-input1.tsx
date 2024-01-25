@@ -33,7 +33,7 @@ import {
   FormMessage,
 } from "@/components/ui/form-raw"
 import { Textarea } from "@/components/ui/text-area-raw"
-import ImageUpload, { UploadImageProps } from "@/components/ui/image-upload-cgasset"
+import ImageUpload, { UploadImageProps } from "@/components/ui/image-upload-cgasset-drg"
 import FileUpload, { UploadFileProps } from "@/components/ui/file-upload-cgasset"
 import { cn } from '@/lib/utils';
 
@@ -556,15 +556,7 @@ export const CGAssetFormInput1: React.FC<CGAssetFormInput1Props> = ({
                               glacier={false}
                               value={field.value as UploadImageProps[]}
                               disabled={loading}
-                              onChange={({
-                                thumb_file_name,
-                                thumb_url,
-                                thumb_file_path
-                              }) => field.onChange([...field.value, {
-                                thumb_file_name,
-                                thumb_url,
-                                thumb_file_path
-                              }])}
+                              onChange={(items) => field.onChange(items)}
                               onRemove={(thumb_url) => field.onChange([...field.value.filter((current) => current.thumb_url !== thumb_url)])}
                             />
                           </FormControl>

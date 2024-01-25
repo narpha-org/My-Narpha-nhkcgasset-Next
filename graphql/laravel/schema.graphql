@@ -1676,6 +1676,9 @@ type CGAssetThumb {
   "サムネイルファイルパス"
   thumb_file_path: String!
 
+  "表示順"
+  order: Int
+
   "When the CGAssetThumb was created."
   created_at: DateTime!
 
@@ -2142,9 +2145,20 @@ input CGAssetUploadInput {
 
 "アセットサムネイル"
 input CGAssetThumbInput {
+  "サムネイルファイル名"
   thumb_file_name: String!
+
+  "サムネイルURL"
   thumb_url: String
+
+  "サムネイルファイルパス"
   thumb_file_path: String!
+
+  "表示順"
+  order: Int
+
+  "Unique primary key."
+  id: String
 }
 
 "アセットタグ"

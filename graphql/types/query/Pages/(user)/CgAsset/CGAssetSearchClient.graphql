@@ -67,6 +67,8 @@ query CGAssetSearchClient($first: Int!, $valid: Boolean!) {
         thumb_file_name
         thumb_url
         thumb_file_path
+        order
+        id
       }
       assetTags {
         id

@@ -49,7 +49,7 @@ import {
 // import { Heading } from "@/components/ui/heading"
 import { AlertModal } from "@/components/modals/alert-modal"
 // import { Textarea } from "@/components/ui/text-area-raw"
-import ImageUpload, { UploadImageProps } from "@/components/ui/image-upload-cgasset"
+import ImageUpload, { UploadImageProps } from "@/components/ui/image-upload-cgasset-drg"
 import FileUpload, { UploadFileProps } from "@/components/ui/file-upload-cgasset"
 // import { Switch } from "@/components/ui/switch"
 import { NavHeaderMypage } from '@/components/nav-header-mypage';
@@ -167,7 +167,9 @@ const formSchema = z.object({
   assetThumbs: z.object({
     thumb_file_name: z.string(),
     thumb_url: z.string().nullable(),
-    thumb_file_path: z.string()
+    thumb_file_path: z.string(),
+    order: z.number().nullable(),
+    id: z.string().nullable()
   }).array(),
   revision_history: z.string().optional(),
   valid_flg: z.boolean().default(true).optional(),

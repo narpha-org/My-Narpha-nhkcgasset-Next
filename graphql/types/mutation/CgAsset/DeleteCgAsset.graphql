@@ -37,6 +37,8 @@ mutation DeleteCgAsset($id: ID!) {
       thumb_file_name
       thumb_url
       thumb_file_path
+      order
+      id
     }
     assetTags {
       tag

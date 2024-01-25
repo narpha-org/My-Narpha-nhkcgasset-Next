@@ -43,6 +43,8 @@ query CGAssetDetailClient($id: ID!, $apply_user_id: ID!) {
       thumb_file_name
       thumb_url
       thumb_file_path
+      order
+      id
     }
     assetTags {
       id
