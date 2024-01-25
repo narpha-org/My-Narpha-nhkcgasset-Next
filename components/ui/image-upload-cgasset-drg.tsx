@@ -118,24 +118,31 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       console.log(fileDataGlacier?.Location);
     }
 
+    let newItems;
     if (glacier && fileData && fileDataGlacier) {
-      setItems([...items, {
+      newItems = [...items, {
         thumb_file_name: fileObj.name,
         thumb_url: fileData?.Location as string,
         thumb_file_path: fileData?.Key as string,
         order: value.length + 1,
         id: "new" + Date.now(),
-      }]);
-      onChange(items);
+      }];
+
+      setItems(newItems);
+      onChange(newItems);
+
     } else if (fileData) {
-      setItems([...items, {
+      newItems = [...items, {
         thumb_file_name: fileObj.name,
         thumb_url: fileData?.Location as string,
         thumb_file_path: fileData?.Key as string,
         order: value.length + 1,
         id: "new" + Date.now(),
-      }]);
-      onChange(items);
+      }];
+
+      setItems(newItems);
+      onChange(newItems);
+
     }
   };
 
@@ -235,6 +242,121 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     };
   };
 
+  const getGhostProps = (
+    item: Item,
+    index: number
+  ): ComponentProps<"li"> => {
+    return {
+      onDragOver(event) {
+        event.preventDefault();
+        // ゴーストの表示位置 = 移動先のindexなので座標計算は必要ない
+        setTargetIndex(index);
+      },
+      onDragEnter(event) {
+        event.preventDefault();
+      },
+      onDragLeave(event) {
+        event.preventDefault();
+      },
+      onDrop(event) {
+        event.preventDefault();
+      }
+    };
+  };
+
+  // 表示用のJSX.Elementを生成する
+  const getViews = (): JSX.Element[] => {
+    let views = items.map((obj, idx) => {
+      return (
+        <li
+          key={idx}
+          className=""
+          // data-objId={obj.id}
+          // data-objOrder={obj.order}
+          {...getHandleProps(obj, idx)}
+          {...getItemProps(obj, idx)}
+        >
+          <Link
+            href={obj.thumb_url}
+            rel="noopener noreferrer"
+            target="_blank"
+            className="my-assets-thumbnail-link"
+          >
+            <Image
+              src={obj.thumb_url}
+              width={80}
+              height={80}
+              // style={{ objectFit: 'cover' }}
+              alt="Image"
+            />
+          </Link>
+          <Image
+            src="/assets/images/file_close.svg"
+            className={cn(
+              'file_close',
+              disabled && 'opacity-50'
+            )}
+            width={16.5}
+            height={16.5}
+            alt=""
+            onClick={() => { if (!disabled) onRemove(obj.thumb_url) }}
+            style={disabled ? { cursor: 'default' } : { cursor: 'pointer' }}
+          />
+        </li>
+      );
+    });
+
+    if (activeId && targetIndex >= 0) {
+      const ghostItem = items.find((target) => target.id === activeId);
+      // ゴーストが必要なら作成
+      if (ghostItem) {
+        const ghost = (
+          <li
+            key="__ghost__"
+            className="ghost"
+            {...getGhostProps(ghostItem, targetIndex)}
+          >
+            <Link
+              href={ghostItem.thumb_url}
+              rel="noopener noreferrer"
+              target="_blank"
+              className="my-assets-thumbnail-link"
+            >
+              <Image
+                src={ghostItem.thumb_url}
+                width={80}
+                height={80}
+                // style={{ objectFit: 'cover' }}
+                alt="Image"
+              />
+            </Link>
+            <Image
+              src="/assets/images/file_close.svg"
+              className={cn(
+                'file_close',
+                disabled && 'opacity-50'
+              )}
+              width={16.5}
+              height={16.5}
+              alt=""
+              onClick={() => { if (!disabled) onRemove(ghostItem.thumb_url) }}
+              style={disabled ? { cursor: 'default' } : { cursor: 'pointer' }}
+            />
+          </li>
+        );
+
+        // targetIndexの位置にゴーストを挿入
+        views = [
+          ...views.slice(0, targetIndex),
+          ghost,
+          ...views.slice(targetIndex)
+        ];
+      }
+    }
+
+    return views;
+  };
+
   return (
     <>
       <h2>サムネイル<button
@@ -257,43 +379,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         ファイルから選択
       </button></h2>
       <ul>
-        {items.map((obj, idx) => (
-          <li
-            key={idx}
-            className=""
-            data-objId={obj.id}
-            data-objOrder={obj.order}
-            {...getHandleProps(obj, idx)}
-            {...getItemProps(obj, idx)}
-          >
-            <Link
-              href={obj.thumb_url}
-              rel="noopener noreferrer"
-              target="_blank"
-              className="my-assets-thumbnail-link"
-            >
-              <Image
-                src={obj.thumb_url}
-                width={80}
-                height={80}
-                // style={{ objectFit: 'cover' }}
-                alt="Image"
-              />
-            </Link>
-            <Image
-              src="/assets/images/file_close.svg"
-              className={cn(
-                'file_close',
-                disabled && 'opacity-50'
-              )}
-              width={16.5}
-              height={16.5}
-              alt=""
-              onClick={() => { if (!disabled) onRemove(obj.thumb_url) }}
-              style={disabled ? { cursor: 'default' } : { cursor: 'pointer' }}
-            />
-          </li>
-        ))}
+        {getViews()}
         {value.length < 12 && [...Array(12 - value.length)].map((_, i) => (
           <li key={`blank_${i}`}><Image src="/assets/images/file_tumb.webp" width="80" height="80" alt="" />
             <Image src="/assets/images/file_close.svg" className="file_close" width={16.5} height={16.5} alt="" />

@@ -78,12 +78,13 @@ const CGAssetEditClient: React.FC<CGAssetPageProps> = async ({ params }) => {
           variables: {
             id: params.cgAssetSlug[0]
           },
+          fetchPolicy: "network-only",
         });
     CGAsset = ret.data.CGAsset as CgAsset;
-  }
 
-  if (await checkCgAssetRegisterer(CGAsset) === 0) {
-    return <RegistererOnlyUnauthorized />;
+    if (await checkCgAssetRegisterer(CGAsset) === 0) {
+      return <RegistererOnlyUnauthorized />;
+    }
   }
 
   const ret: ApolloQueryResult<CgAssetEditClientQuery>

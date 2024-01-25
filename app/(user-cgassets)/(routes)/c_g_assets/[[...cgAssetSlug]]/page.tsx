@@ -85,6 +85,7 @@ const CGAssetPage: React.FC<CGAssetPageProps> = async ({ params }) => {
           id: params.cgAssetSlug[0],
           apply_user_id: (session?.user as { userId: string }).userId,
         },
+        fetchPolicy: "network-only",
       });
   const CGAsset = ret.data.CGAsset as CgAsset;
   const CgaViewingRestrictions = ret.data.CGAViewingRestrictionsValid as CgaViewingRestriction[];
