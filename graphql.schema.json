@@ -1733,6 +1733,22 @@
             "deprecationReason": null
           },
           {
+            "name": "code",
+            "description": "閲覧制限 区分",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "CodeCGAViewingRestriction",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "created_at",
             "description": "When the CGAViewingRestriction was created.",
             "args": [],
@@ -5010,6 +5026,35 @@
       },
       {
         "kind": "ENUM",
+        "name": "CodeCGAViewingRestriction",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "GROUP_ONLY",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NO_LIMIT",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "REGISTERER_ONLY",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
         "name": "CodeCGAssetCate",
         "description": null,
         "fields": null,
@@ -6676,6 +6721,22 @@
             "name": "createCGAViewingRestriction",
             "description": "Create a CGAViewingRestriction.",
             "args": [
+              {
+                "name": "code",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "CodeCGAViewingRestriction",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
               {
                 "name": "desc",
                 "description": null,
@@ -9494,6 +9555,22 @@
             "name": "updateCGAViewingRestriction",
             "description": "Update a CGAViewingRestriction.",
             "args": [
+              {
+                "name": "code",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "CodeCGAViewingRestriction",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
               {
                 "name": "desc",
                 "description": null,

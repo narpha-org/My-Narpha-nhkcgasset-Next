@@ -34,9 +34,15 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
 import { AlertModal } from "@/components/modals/alert-modal"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 
+import { codeCGAViewingRestrictions } from "@/lib/enums"
+
 const formSchema = z.object({
+  code: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
+    message: "必須入力",
+  }),
   desc: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
     message: "必須入力",
   }),
@@ -68,6 +74,7 @@ export const CGAViewingRestrictionForm: React.FC<CGAViewingRestrictionFormProps>
     ...initialData,
     order: initialData?.order as number | undefined,
   } : {
+    code: '',
     desc: '',
     order: undefined,
     valid_flg: false,
@@ -196,10 +203,32 @@ export const CGAViewingRestrictionForm: React.FC<CGAViewingRestrictionFormProps>
               name="desc"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>表記</FormLabel>
+                  <FormLabel>閲覧制限表記</FormLabel>
                   <FormControl>
                     <Input disabled={loading} placeholder="閲覧制限 表記" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="code"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>閲覧制限区分</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="アセット区分の選択" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {codeCGAViewingRestrictions.map((codeCGAViewingRestriction) => (
+                        <SelectItem key={codeCGAViewingRestriction.key} value={codeCGAViewingRestriction.key}>{codeCGAViewingRestriction.key} ({codeCGAViewingRestriction.value})</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

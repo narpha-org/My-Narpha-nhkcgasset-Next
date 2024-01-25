@@ -1,5 +1,6 @@
 import {
   CodeCgAssetCate,
+  CodeCgaViewingRestriction,
   StatusApplyDownload,
 } from "@/graphql/generated/graphql";
 
@@ -21,6 +22,34 @@ export const codeCGAssetCates: { key: CodeCgAssetCate; value: string }[] = [
 export const formatCodeCGAssetCate = (role: string) => {
   const obj = codeCGAssetCates.filter(
     (codeCGAssetCate) => role === codeCGAssetCate.key
+  );
+  if (obj && obj[0] && obj[0].key) {
+    return `${obj[0].key} (${obj[0].value})`;
+  }
+  return role;
+};
+
+export const codeCGAViewingRestrictions: {
+  key: CodeCgaViewingRestriction;
+  value: string;
+}[] = [
+  {
+    key: CodeCgaViewingRestriction.NoLimit,
+    value: "制限なし",
+  },
+  {
+    key: CodeCgaViewingRestriction.GroupOnly,
+    value: "グループのみ",
+  },
+  {
+    key: CodeCgaViewingRestriction.RegistererOnly,
+    value: "登録者のみ",
+  },
+];
+
+export const formatCodeCGAViewingRestriction = (role: string) => {
+  const obj = codeCGAViewingRestrictions.filter(
+    (codeCGAViewingRestriction) => role === codeCGAViewingRestriction.key
   );
   if (obj && obj[0] && obj[0].key) {
     return `${obj[0].key} (${obj[0].value})`;

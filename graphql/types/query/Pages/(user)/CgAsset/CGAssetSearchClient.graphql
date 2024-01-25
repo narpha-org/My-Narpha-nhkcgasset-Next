@@ -45,6 +45,7 @@ query CGAssetSearchClient($first: Int!, $valid: Boolean!) {
       }
       viewingRestriction {
         id
+        code
         desc
       }
       broadcastingRight {

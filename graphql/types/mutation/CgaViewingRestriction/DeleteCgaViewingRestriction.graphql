@@ -2,6 +2,7 @@ mutation DeleteCgaViewingRestriction($id: ID!) {
   deleteCGAViewingRestriction(id: $id) {
     __typename
     id
+    code
     desc
     order
     valid_flg

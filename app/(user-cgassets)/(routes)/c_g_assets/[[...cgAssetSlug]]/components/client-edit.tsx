@@ -21,6 +21,8 @@ import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 import { CGAssetPageProps, CGAssetPageSlug } from './page-slug';
 import { isServerRoleOther, isServerRoleUser } from '@/lib/check-role-server';
 import UserUnauthorized from "@/app/unauthorized-user";
+import { checkCgAssetRegisterer } from '@/lib/check-cgasset-registerer';
+import RegistererOnlyUnauthorized from '@/app/unauthorized-registerer-only';
 
 export async function generateMetadata({
   params,
@@ -78,6 +80,10 @@ const CGAssetEditClient: React.FC<CGAssetPageProps> = async ({ params }) => {
           },
         });
     CGAsset = ret.data.CGAsset as CgAsset;
+  }
+
+  if (await checkCgAssetRegisterer(CGAsset) === 0) {
+    return <RegistererOnlyUnauthorized />;
   }
 
   const ret: ApolloQueryResult<CgAssetEditClientQuery>

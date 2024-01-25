@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { PaginatorInfo } from "@/graphql/generated/graphql";
 
 import { columns, CGAViewingRestrictionColumn } from "./columns";
+import { formatCodeCGAViewingRestriction } from "@/lib/enums"
 
 interface CGAViewingRestrictionClientProps {
   data: CGAViewingRestrictionColumn[];
@@ -20,8 +21,12 @@ export const CGAViewingRestrictionClient: React.FC<CGAViewingRestrictionClientPr
   data,
   paginatorInfo
 }) => {
-  const params = useParams();
+  // const params = useParams();
   const router = useRouter();
+
+  data.map(elem => {
+    elem.code = formatCodeCGAViewingRestriction(elem.code)
+  })
 
   return (
     <>

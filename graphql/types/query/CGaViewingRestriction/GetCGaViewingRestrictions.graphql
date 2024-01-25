@@ -2,6 +2,7 @@ query GetCgaViewingRestrictions($first: Int!, $page: Int!) {
   CGAViewingRestrictions(first: $first, page: $page) {
     data {
       id
+      code
       desc
       order
       valid_flg

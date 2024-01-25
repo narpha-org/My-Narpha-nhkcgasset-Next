@@ -21,6 +21,7 @@ query GetCgAsset($id: ID!) {
     }
     viewingRestriction {
       id
+      code
       desc
     }
     broadcastingRight {

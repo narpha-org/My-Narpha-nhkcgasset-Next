@@ -15,6 +15,8 @@ import { isServerRoleOther, isServerRoleUser } from "@/lib/check-role-server";
 import { Button } from "@/components/ui/button";
 import { NavHeaderMypage } from '@/components/nav-header-mypage';
 import { checkGlacierStatus } from '@/lib/check-glacier-status';
+import { checkCgAssetRegisterer } from '@/lib/check-cgasset-registerer';
+import RegistererOnlyUnauthorized from '@/app/unauthorized-registerer-only';
 
 import AssetSpecBlock from './page-detail/asset-spec-block';
 import AssetViewingRestrictionBlock from './page-detail/asset-viewing-restriction-block';
@@ -42,6 +44,10 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
 
   if (!cgAsset) {
     redirect('/');
+  }
+
+  if (await checkCgAssetRegisterer(cgAsset) === 0) {
+    return <RegistererOnlyUnauthorized />;
   }
 
   // console.log(`applyDownloads: ${JSON.stringify(applyDownloads)}`);

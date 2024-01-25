@@ -21,6 +21,7 @@ query CGAssetDetailClient($id: ID!, $apply_user_id: ID!) {
     }
     viewingRestriction {
       id
+      code
       desc
     }
     broadcastingRight {

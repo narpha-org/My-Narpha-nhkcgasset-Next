@@ -692,6 +692,7 @@ type Mutation {
 
   "Create a CGAViewingRestriction."
   createCGAViewingRestriction(
+    code: CodeCGAViewingRestriction!
     desc: String!
     order: Int!
     valid_flg: Boolean!
@@ -700,6 +701,7 @@ type Mutation {
   "Update a CGAViewingRestriction."
   updateCGAViewingRestriction(
     id: ID!
+    code: CodeCGAViewingRestriction!
     desc: String!
     order: Int!
     valid_flg: Boolean!
@@ -1410,6 +1412,9 @@ type CGAViewingRestriction {
   "Unique primary key."
   id: ID!
 
+  "閲覧制限 区分"
+  code: CodeCGAViewingRestriction!
+
   "表記"
   desc: String!
 
@@ -1427,6 +1432,12 @@ type CGAViewingRestriction {
 
   "When the CGAViewingRestriction was last updated."
   updated_at: DateTime!
+}
+
+enum CodeCGAViewingRestriction {
+  NO_LIMIT
+  GROUP_ONLY
+  REGISTERER_ONLY
 }
 
 """

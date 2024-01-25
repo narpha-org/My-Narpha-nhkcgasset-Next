@@ -48,6 +48,7 @@ const CGAViewingRestrictionsPage = async ({
 
   const formattedCGAViewingRestrictions: CGAViewingRestrictionColumn[] = CGAViewingRestrictions.map((item) => ({
     id: item.id,
+    code: item.code,
     desc: item.desc,
     order: item.order as number,
     valid_flg: (item.valid_flg ? '○' : '-'),
