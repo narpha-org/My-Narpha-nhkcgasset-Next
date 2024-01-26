@@ -335,7 +335,7 @@ main {
             label {
               display: flex;
               gap: vw(10);
-              align-items: end;
+              align-items: flex-end;
             }
 
             input[type="checkbox"] {
