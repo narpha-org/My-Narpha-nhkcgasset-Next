@@ -2,13 +2,13 @@
 
 import * as React from 'react';
 import { DateTime } from 'luxon';
-import { Calendar as CalendarIcon } from 'lucide-react';
+// import { Calendar as CalendarIcon } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
-import { SelectSingleEventHandler } from 'react-day-picker';
+// import { Button } from '@/components/ui/button';
+import { CalendarDate } from '@/components/ui/calendar-date';
+// import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+// import { cn } from '@/lib/utils';
+// import { SelectSingleEventHandler } from 'react-day-picker';
 
 interface DatePickerProps {
   date: Date;
@@ -20,7 +20,7 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
     DateTime.fromJSDate(date)
   );
 
-  const handleSelect: SelectSingleEventHandler = (day, selected) => {
+  const handleSelect = (day, selected) => {
     const selectedDay = DateTime.fromJSDate(selected);
 
     setSelectedDate(selectedDay);
@@ -28,31 +28,11 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
   };
 
   return (
-    <Popover>
-      <PopoverTrigger asChild className="z-10">
-        <Button
-          variant={'outline'}
-          className={cn(
-            'justify-start text-left font-normal w-full',
-            !date && 'text-muted-foreground'
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? (
-            selectedDate.toFormat('DDD')
-          ) : (
-            <span>日付を選択</span>
-          )}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={selectedDate.toJSDate()}
-          onSelect={handleSelect}
-          initialFocus
-        />
-      </PopoverContent>
-    </Popover>
+    <CalendarDate
+      mode="single"
+      selected={selectedDate.toJSDate()}
+      onSelect={handleSelect}
+      initialFocus
+    />
   );
 }

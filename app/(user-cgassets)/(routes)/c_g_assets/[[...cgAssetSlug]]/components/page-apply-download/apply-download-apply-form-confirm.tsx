@@ -52,6 +52,13 @@ export const CGAssetApplyDownloadApplyFormConfirm: React.FC<CGAssetApplyDownload
 
   const { mediaDesc, medias, notFound } = getAssetMedias(cgAsset as CgAsset);
 
+  if (form.getValues("date_usage_start") > form.getValues("date_usage_end")) {
+    const dateUsageStart = form.getValues("date_usage_start");
+    const dateUsageEnd = form.getValues("date_usage_end");
+    form.setValue("date_usage_start", dateUsageEnd);
+    form.setValue("date_usage_end", dateUsageStart);
+  }
+
   return (
     <div className="maincon">
       <div className="applypage flex flex-row space-x-4">

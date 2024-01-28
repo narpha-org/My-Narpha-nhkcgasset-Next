@@ -60,35 +60,35 @@
 
 /* tailwind CUSTOM
 ------------------------------------- */
-$my-font-scale: 1.4;
+$my-font-scale: 1.1;
 
 .text-xs {
-  font-size: calc(0.75rem * $my-font-scale); // 0.75rem; /* 12px */
-  line-height: calc(1rem * $my-font-scale); // 1rem; /* 16px */
+  font-size: calc(0.75vw * $my-font-scale); // 0.75rem; /* 12px */
+  line-height: calc(1vw * $my-font-scale); // 1rem; /* 16px */
 }
 .text-sm {
-  font-size: calc(0.875rem * $my-font-scale); // 0.875rem; /* 14px */
-  line-height: calc(1.25rem * $my-font-scale); // 1.25rem; /* 20px */
+  font-size: calc(0.875vw * $my-font-scale); // 0.875rem; /* 14px */
+  line-height: calc(1.25vw * $my-font-scale); // 1.25rem; /* 20px */
 }
 .text-base {
-  font-size: calc(1rem * $my-font-scale); // 1rem; /* 16px */
-  line-height: calc(1.5rem * $my-font-scale); // 1.5rem; /* 24px */
+  font-size: calc(1vw * $my-font-scale); // 1rem; /* 16px */
+  line-height: calc(1.5vw * $my-font-scale); // 1.5rem; /* 24px */
 }
 .text-lg {
-  font-size: calc(1.125rem * $my-font-scale); // 1.125rem; /* 18px */
-  line-height: calc(1.75rem * $my-font-scale); // 1.75rem; /* 28px */
+  font-size: calc(1.125vw * $my-font-scale); // 1.125rem; /* 18px */
+  line-height: calc(1.75vw * $my-font-scale); // 1.75rem; /* 28px */
 }
 .text-xl {
-  font-size: calc(1.25rem * $my-font-scale); // 1.25rem; /* 20px */
-  line-height: calc(1.75rem * $my-font-scale); // 1.75rem; /* 28px */
+  font-size: calc(1.25vw * $my-font-scale); // 1.25rem; /* 20px */
+  line-height: calc(1.75vw * $my-font-scale); // 1.75rem; /* 28px */
 }
 .text-2xl {
-  font-size: calc(1.5rem * $my-font-scale); // 1.5rem; /* 24px */
-  line-height: calc(2rem * $my-font-scale); // 2rem; /* 32px */
+  font-size: calc(1.5vw * $my-font-scale); // 1.5rem; /* 24px */
+  line-height: calc(2vw * $my-font-scale); // 2rem; /* 32px */
 }
 text-3xl {
-  font-size: calc(1.875rem * $my-font-scale); // 1.875rem; /* 30px */
-  line-height: calc(2.25rem * $my-font-scale); // 2.25rem; /* 36px */
+  font-size: calc(1.875vw * $my-font-scale); // 1.875rem; /* 30px */
+  line-height: calc(2.25vw * $my-font-scale); // 2.25rem; /* 36px */
 }
 
 /* header
