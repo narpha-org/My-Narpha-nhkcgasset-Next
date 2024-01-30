@@ -91,7 +91,7 @@ export const BulkExportForm: React.FC<BulkExportFormProps> = ({ }) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`CGアセット データエクスポート`} description="アセット情報Excelとしてデータをエクスポート" />
+        <Heading title={`CGアセット データExcelエクスポート`} description="アセット情報Excelとしてデータをエクスポート" />
       </div>
       <Separator />
       <Form {...form}>

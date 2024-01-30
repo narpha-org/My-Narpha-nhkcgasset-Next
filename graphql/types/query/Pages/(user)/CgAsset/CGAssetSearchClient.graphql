@@ -39,6 +39,8 @@ query CGAssetSearchClient($first: Int!, $valid: Boolean!) {
       asset_renderer
       program_id
       program_name
+      asset_author
+      asset_4k
       registrantAffiliation {
         id
         desc

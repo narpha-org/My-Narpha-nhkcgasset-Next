@@ -1,0 +1,6 @@
+mutation ImportZipCgAssets($input: ImportZipCGAssetsInput!) {
+  importZipCGAssets(input: $input) {
+    __typename
+    total
+  }
+}

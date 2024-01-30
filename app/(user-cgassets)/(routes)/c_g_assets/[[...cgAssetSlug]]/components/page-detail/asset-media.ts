@@ -36,7 +36,7 @@ export const getAssetMedias = (elem: CgAsset) => {
       break;
     default:
       ret.mediaDesc = "";
-      ret.medias = null;
+      ret.medias = elem.assetThumbs as CgAssetThumb[];
       ret.notFound = "/images/asset_image_notfound.png";
   }
 

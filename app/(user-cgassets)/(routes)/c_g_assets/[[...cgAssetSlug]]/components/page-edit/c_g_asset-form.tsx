@@ -62,13 +62,13 @@ import { CGAssetFormInput2 } from "./c_g_asset-form-input2"
 // import AssetRevisionHistoryBlock from "../page-detail/asset-revision-history-block"
 
 const formSchema = z.object({
-  asset_id: z.string().min(1, {
+  asset_id: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
     message: "必須入力",
   }),
-  asset_name: z.string().min(1, {
+  asset_name: z.string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' }).min(1, {
     message: "必須入力",
   }),
-  assetCateId: z.string().min(1, {
+  assetCateId: z.string({ required_error: '必須選択', invalid_type_error: '選択値に誤りがります' }).min(1, {
     message: "必須選択",
   }),
   asset_genre: z.string().optional(),
@@ -78,20 +78,20 @@ const formSchema = z.object({
   asset_renderer: z.string().optional(),
   program_id: z.string().optional(),
   program_name: z.string().optional(),
-  registrantAffiliationId: z.string().min(1, {
+  registrantAffiliationId: z.string({ required_error: '必須選択', invalid_type_error: '選択値に誤りがります' }).min(1, {
     message: "必須選択",
   }),
-  viewingRestrictionId: z.string().min(1, {
+  viewingRestrictionId: z.string({ required_error: '必須選択', invalid_type_error: '選択値に誤りがります' }).min(1, {
     message: "必須選択",
   }),
-  broadcastingRightId: z.string().min(1, {
+  broadcastingRightId: z.string({ required_error: '必須選択', invalid_type_error: '選択値に誤りがります' }).min(1, {
     message: "必須選択",
   }),
-  sharedAreaId: z.string().min(1, {
+  sharedAreaId: z.string({ required_error: '必須選択', invalid_type_error: '選択値に誤りがります' }).min(1, {
     message: "必須選択",
   }),
   rights_supplement: z
-    .string()
+    .string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' })
     .min(1, {
       message: "必須入力",
     })
@@ -99,7 +99,7 @@ const formSchema = z.object({
       message: "権利使用条件は最大 500 文字以内でご入力ください。",
     }),
   asset_detail: z
-    .string()
+    .string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' })
     .min(1, {
       message: "必須入力",
     })
@@ -109,7 +109,7 @@ const formSchema = z.object({
   // assetTagsStr: z.string().optional(),
   assetTags: z.object({
     tag: z
-      .string()
+      .string({ required_error: '必須入力', invalid_type_error: '入力値に誤りがります' })
       .min(1, {
         message: "必須入力",
       })

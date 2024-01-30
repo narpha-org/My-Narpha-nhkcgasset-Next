@@ -15,6 +15,8 @@ query CGAssetDetailClient($id: ID!, $apply_user_id: ID!) {
     asset_renderer
     program_id
     program_name
+    asset_author
+    asset_4k
     registrantAffiliation {
       id
       desc

@@ -943,6 +943,9 @@ type Mutation {
   "Import CGAssets."
   importCGAssets(input: ImportCGAssetsInput!): ImportCGAssets
 
+  "Import Zip CGAssets."
+  importZipCGAssets(input: ImportZipCGAssetsInput!): ImportZipCGAssets
+
   "Link a OktaAccount."
   linkAccount(account: LinkAccountInput!): OktaAccount
 
@@ -1840,6 +1843,12 @@ type CGAsset {
   "番組名"
   program_name: String
 
+  "作者"
+  asset_author: String
+
+  "4K対応"
+  asset_4k: String
+
   "登録者所属"
   registrantAffiliation: CGARegistrantAffiliation
 
@@ -1966,6 +1975,12 @@ input CreateCGAssetInput {
   "番組名"
   program_name: String
 
+  "作者"
+  asset_author: String
+
+  "4K対応"
+  asset_4k: String
+
   "登録者所属ID"
   registrantAffiliationId: ID
 
@@ -2059,6 +2074,12 @@ input UpdateCGAssetInput {
 
   "番組名"
   program_name: String
+
+  "作者"
+  asset_author: String
+
+  "4K対応"
+  asset_4k: String
 
   "登録者所属ID"
   registrantAffiliationId: ID
@@ -2231,6 +2252,33 @@ input AssetBulkExcelInput {
 }
 
 type ImportCGAssets {
+  total: Int
+}
+
+input ImportZipCGAssetsInput {
+  "登録ユーザID"
+  create_user_id: ID!
+
+  "CGアセットデータZip"
+  assetBulkZip: AssetBulkZipInput
+}
+
+"CGアセットデータZip"
+input AssetBulkZipInput {
+  "リソースファイル名"
+  file_name: String!
+
+  "URL"
+  url: String!
+
+  "リソースファイルパス"
+  file_path: String!
+  thumb_file_name: String
+  thumb_url: String
+  thumb_file_path: String
+}
+
+type ImportZipCGAssets {
   total: Int
 }
 

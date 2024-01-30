@@ -4,9 +4,9 @@ import { commonMetadataOpenGraph } from '@/app/shared-metadata'
 import { BulkRegistrationForm } from './components/bulk_registration-form';
 
 export const metadata: Metadata = {
-  title: 'データ一括登録',
+  title: 'データExcel一括登録',
   openGraph: {
-    title: 'データ一括登録',
+    title: 'データExcel一括登録',
     ...commonMetadataOpenGraph,
   },
   metadataBase: new URL(

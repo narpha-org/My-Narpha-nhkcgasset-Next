@@ -1,12 +1,12 @@
 import { Metadata } from 'next'
 
 import { commonMetadataOpenGraph } from '@/app/shared-metadata'
-import { BulkExportForm } from "./components/bulk_export-form";
+import { BulkZipUploadForm } from './components/bulk_zipupload-form';
 
 export const metadata: Metadata = {
-  title: 'データExcelエクスポート',
+  title: 'データZip一括登録',
   openGraph: {
-    title: 'データExcelエクスポート',
+    title: 'データZip一括登録',
     ...commonMetadataOpenGraph,
   },
   metadataBase: new URL(
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   )
 }
 
-const BulkExportPage = async ({
+const BulkZipUploadPage = async ({
   params
 }: {
   params: {}
@@ -25,10 +25,10 @@ const BulkExportPage = async ({
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <BulkExportForm />
+        <BulkZipUploadForm />
       </div>
     </div>
   );
 };
 
-export default BulkExportPage;
+export default BulkZipUploadPage;

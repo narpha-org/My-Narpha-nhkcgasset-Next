@@ -22,6 +22,7 @@ export function SystemItemToggle() {
     `/admin/user_role_c_g_asset_stores`,
     `/admin/c_g_a_registrant_affiliations`,
     `/admin/users`,
+    `/admin/bulk_zipupload`,
     `/admin/bulk_registration`,
     `/admin/bulk_export`,
   ].includes(pathname)
@@ -52,11 +53,14 @@ export function SystemItemToggle() {
         <DropdownMenuItem onClick={() => router.push(`/admin/users`)}>
           [閲覧のみ] Oktaユーザ
         </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`/admin/bulk_zipupload`)}>
+          CGアセット データZip一括登録
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/bulk_registration`)}>
-          CGアセット データ一括登録
+          CGアセット データExcel一括登録
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/admin/bulk_export`)}>
-          CGアセット データエクスポート
+          CGアセット データExcelエクスポート
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

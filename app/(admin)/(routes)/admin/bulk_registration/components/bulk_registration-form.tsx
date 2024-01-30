@@ -136,7 +136,7 @@ export const BulkRegistrationForm: React.FC<BulkRegistrationFormProps> = ({ }) =
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`CGアセット データ一括登録`} description="アセット情報Excelからデータを一括登録" />
+        <Heading title={`CGアセット データExcel一括登録`} description="アセット情報Excelからデータを一括登録" />
       </div>
       <Separator />
       <Form {...form}>

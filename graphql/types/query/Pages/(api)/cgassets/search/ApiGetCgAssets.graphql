@@ -27,6 +27,8 @@ query ApiGetCgAssets(
       asset_renderer
       program_id
       program_name
+      asset_author
+      asset_4k
       registrantAffiliation {
         desc
       }
