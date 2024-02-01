@@ -32,13 +32,13 @@ const GlacierDLDialog = ({
 
   let child;
 
-  if (IsRoleUser(session) || IsRoleOther(session)) {
-    child = <GlacierDownloadClient
-      applyDownloads={applyDownloads}
-      cgAsset={cgAsset}
-      setDialogOpen={setOpen}
-    />
-  }
+  // if (IsRoleUser(session) || IsRoleOther(session)) {
+  child = <GlacierDownloadClient
+    applyDownloads={applyDownloads}
+    cgAsset={cgAsset}
+    setDialogOpen={setOpen}
+  />
+  // }
 
   if (!child) {
     child = <div>Not Valid</div>

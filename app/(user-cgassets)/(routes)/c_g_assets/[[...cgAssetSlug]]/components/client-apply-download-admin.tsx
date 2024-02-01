@@ -197,7 +197,7 @@ const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
         break;
     }
 
-    return <div>承認・Box・消去</div>
+    return <div>Not Valid [{JSON.stringify(params, null, "\t")}]</div>
 
   }
 

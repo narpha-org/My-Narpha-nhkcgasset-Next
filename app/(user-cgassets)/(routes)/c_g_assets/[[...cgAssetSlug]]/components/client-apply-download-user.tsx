@@ -141,7 +141,7 @@ const CGAssetApplyDownloadClientUser: React.FC<CGAssetPageProps & {
         );
 
       case StatusApplyDownload.BoxDeliver: // DL済み通知
-        if (checkGlacierStatus([ApplyDownload]) === 0) {
+        if (checkGlacierStatus([ApplyDownload]) !== 1) {
           /* ダウンロード準備中 */
           return (
             <div className="flex-col">
@@ -222,7 +222,7 @@ const CGAssetApplyDownloadClientUser: React.FC<CGAssetPageProps & {
         break;
     }
 
-    return <div>承認・Box・消去</div>
+    return <div>Not Valid [{JSON.stringify(params, null, "\t")}]</div>
 
   }
 

@@ -6,50 +6,51 @@ import Image from "next/image";
 // import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { X, Undo2 } from "lucide-react"
+import { X, DownloadCloud } from "lucide-react"
 // import { useParams, useRouter } from "next/navigation"
-import { useSession } from "next-auth/react"
-import { dateFormat } from "@/lib/utils"
+// import { useSession } from "next-auth/react"
+import { dateFormat, isPastDate } from "@/lib/utils"
 
 import {
   ApplyDownload,
   CgAsset,
   User,
+  ApplyDownloadGlacier,
 } from "@/graphql/generated/graphql";
 
 import { Button } from "@/components/ui/button"
 import {
   Form,
-  FormControl,
-  FormDescription,
+  // FormControl,
+  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  // FormMessage,
 } from "@/components/ui/form"
-import { Separator } from "@/components/ui/separator"
+// import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
 import { getAppDLGlaciers } from "@/lib/check-glacier-status";
 
-import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
+// import { CGAssetPageProps, CGAssetPageSlug } from "../page-slug"
 import { getAssetMedias } from "../page-detail/asset-media";
 
 export const ApplyDownloadBoxDeliverViewAdminSchema = z.object({
-  manage_user_id: z.string({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
-  program_id: z.string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' }),
-  program_name: z.string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' }),
-  date_usage_start: z.date({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
-  date_usage_end: z.date({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
-  purpose_of_use_txt: z
-    .string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' })
-    .max(1000, {
-      message: "利用目的 は最大 1000 文字以内でご入力ください。",
-    }),
-  etc_txt: z
-    .string()
-    .max(1000, {
-      message: "その他 は最大 1000 文字以内でご入力ください。",
-    }),
+  // manage_user_id: z.string({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
+  // program_id: z.string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' }),
+  // program_name: z.string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' }),
+  // date_usage_start: z.date({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
+  // date_usage_end: z.date({ required_error: '必須選択', invalid_type_error: '選択に誤りがります' }),
+  // purpose_of_use_txt: z
+  //   .string({ required_error: '必須入力', invalid_type_error: '入力に誤りがります' })
+  //   .max(1000, {
+  //     message: "利用目的 は最大 1000 文字以内でご入力ください。",
+  //   }),
+  // etc_txt: z
+  //   .string()
+  //   .max(1000, {
+  //     message: "その他 は最大 1000 文字以内でご入力ください。",
+  //   }),
 });
 
 export type ApplyDownloadBoxDeliverViewAdminValues = z.infer<typeof ApplyDownloadBoxDeliverViewAdminSchema>
@@ -73,7 +74,7 @@ export const CGAssetApplyDownloadBoxDeliverViewAdmin: React.FC<CGAssetApplyDownl
 }) => {
   // const params = useParams() as unknown as CGAssetPageProps['params'];
   // const router = useRouter();
-  const { data: session, status } = useSession()
+  // const { data: session, status } = useSession()
 
   const [loading, setLoading] = useState(false);
   // const [pageNumber, setPageNumber] = useState(0);
@@ -100,7 +101,34 @@ export const CGAssetApplyDownloadBoxDeliverViewAdmin: React.FC<CGAssetApplyDownl
     defaultValues
   });
 
-  const appDLGlaciers = getAppDLGlaciers(cgAsset?.applyDownloads as ApplyDownload[]);
+  const download = (filename, content) => {
+    var element = document.createElement("a");
+    element.setAttribute("href", content);
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  };
+
+  const handleDownload = async (e, presigned_url: string, file_name: string) => {
+    try {
+      const result = await fetch(presigned_url, {
+        method: "GET",
+        headers: {}
+      });
+      const blob = await result.blob();
+      const url = URL.createObjectURL(blob);
+      download(file_name || cgAsset?.asset_name, url);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const appDLGlaciers = getAppDLGlaciers([initialData] as ApplyDownload[]);
 
   return (
     <>
@@ -304,10 +332,40 @@ export const CGAssetApplyDownloadBoxDeliverViewAdmin: React.FC<CGAssetApplyDownl
                           )}
                         />
                       </li>
-                      {(!appDLGlaciers || appDLGlaciers?.length === 0) &&
-                        <li>
-                          <h3>ダウンロード</h3>
-                          <p>
+                      <li>
+                        <h3>ダウンロード</h3>
+                        <p>
+                          {appDLGlaciers && appDLGlaciers.map((elem: ApplyDownloadGlacier | null) => {
+                            if (elem) {
+
+                              if (isPastDate(elem.expiry_date) || !elem.presigned_url) {
+                                return <div key={elem.id} className="mx-auto my-2">
+                                  <Button
+                                    className="btn btn__download btn__download__expired"
+                                    type="button"
+                                    style={{ cursor: "default" }}
+                                  >
+                                    <X className="mr-4 h-8 w-8" /> ダウンロード期限切れ
+                                  </Button>
+                                </div>
+                              }
+
+                              return <div key={elem.id} className="mx-auto my-2">
+                                <Button
+                                  className="btn btn__download"
+                                  type="button"
+                                  onClick={(event) => handleDownload(
+                                    event,
+                                    elem.presigned_url as string,
+                                    elem.file_name as string
+                                  )}
+                                >
+                                  <DownloadCloud className="mr-4 h-8 w-8" /> ダウンロード
+                                </Button>
+                              </div>
+                            }
+                          })}
+                          {(!appDLGlaciers || appDLGlaciers?.length === 0) &&
                             <div className="mx-auto my-2">
                               <Button
                                 className="btn btn__download btn__download__expired"
@@ -317,9 +375,9 @@ export const CGAssetApplyDownloadBoxDeliverViewAdmin: React.FC<CGAssetApplyDownl
                                 <X className="mr-4 h-8 w-8" /> DL対象ファイルなし
                               </Button>
                             </div>
-                          </p>
-                        </li>
-                      }
+                          }
+                        </p>
+                      </li>
                     </ul>
                   </div>
                 </div>

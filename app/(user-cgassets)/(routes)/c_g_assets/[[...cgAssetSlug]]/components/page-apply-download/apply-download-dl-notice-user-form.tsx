@@ -174,7 +174,7 @@ export const CGAssetApplyDownloadDLNoticeUserForm: React.FC<CGAssetApplyDownload
     }
   };
 
-  const appDLGlaciers = getAppDLGlaciers(cgAsset?.applyDownloads as ApplyDownload[]);
+  const appDLGlaciers = getAppDLGlaciers([initialData] as ApplyDownload[]);
 
   return (
     <>

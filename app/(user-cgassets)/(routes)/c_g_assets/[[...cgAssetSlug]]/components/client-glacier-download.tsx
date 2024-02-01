@@ -51,7 +51,7 @@ const GlacierDownloadClient: React.FC<GlacierDownloadClientProps> = ({ applyDown
     return null
   }
 
-  if (checkGlacierStatus(applyDownloads) === 0) {
+  if (checkGlacierStatus(applyDownloads) !== 1) {
     return (
       <div className="dialog__text">
         <div className="dialog__text-main">
