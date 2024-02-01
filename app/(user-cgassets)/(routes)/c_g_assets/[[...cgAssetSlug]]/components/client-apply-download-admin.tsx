@@ -20,8 +20,8 @@ import { Loader } from "@/components/ui/loader";
 import { CGAssetPageProps, CGAssetPageSlug } from './page-slug';
 import CGAssetApplyDownloadApplyView from './page-apply-download/apply-download-apply-view';
 import CGAssetApplyDownloadBoxDeliverForm from './page-apply-download/apply-download-box-deliver-form';
-import CGAssetApplyDownloadBoxDeliverViewAdmin from './page-apply-download/apply-download-box-deliver-view-admin';
-import CGAssetApplyDownloadDlNoticeViewAdmin from './page-apply-download/apply-download-dl-notice-view-admin';
+import CGAssetApplyDownloadBoxDeliverViewManager from './page-apply-download/apply-download-box-deliver-view-manager';
+import CGAssetApplyDownloadDlNoticeViewManager from './page-apply-download/apply-download-dl-notice-view-manager';
 import CGAssetApplyDownloadRemovalView from './page-apply-download/apply-download-removal-view';
 import CGAssetApplyDownloadDoneView from "./page-apply-download/apply-download-done-view";
 import CGAssetApplyDownloadGlacierForm from "./page-apply-download/apply-download-glacier-form";
@@ -139,7 +139,7 @@ const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
         return (
           <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-              <CGAssetApplyDownloadBoxDeliverViewAdmin
+              <CGAssetApplyDownloadBoxDeliverViewManager
                 initialData={ApplyDownload}
                 cgAsset={cgAsset}
                 manageUsers={manageUsers}
@@ -153,7 +153,7 @@ const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
         return (
           <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-              <CGAssetApplyDownloadDlNoticeViewAdmin
+              <CGAssetApplyDownloadDlNoticeViewManager
                 initialData={ApplyDownload}
                 cgAsset={cgAsset}
                 manageUsers={manageUsers}
