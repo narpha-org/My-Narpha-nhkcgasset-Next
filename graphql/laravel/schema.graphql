@@ -597,6 +597,9 @@ type Mutation {
   "ダウンロード申請"
   createApplyDownload(input: CreateApplyDownloadArgs!): ApplyDownload
 
+  "データ復元申請"
+  createApplyGlacier(input: CreateApplyGlacierArgs!): ApplyDownload
+
   "ダウンロード承認"
   updateApplyDownloadApproval(
     input: UpdateApplyDownloadApprovalArgs!
@@ -1122,7 +1125,7 @@ type ApplyDownload {
   cgAsset: CGAsset!
 
   "番組責任者ユーザ"
-  manageUser: User!
+  manageUser: User
 
   "ステータス"
   status: StatusApplyDownload!
@@ -1266,6 +1269,32 @@ input CreateApplyDownloadArgs {
 
   "その他"
   etc_txt: String
+}
+
+input CreateApplyGlacierArgs {
+  asset_db_id: ID!
+  user_id: ID!
+
+  "番組ID"
+  program_id: String
+
+  "番組名"
+  program_name: String
+
+  "利用期間・開始日"
+  date_usage_start: DateTime
+
+  "利用期間・終了日"
+  date_usage_end: DateTime
+
+  "利用目的"
+  purpose_of_use_txt: String
+
+  "その他"
+  etc_txt: String
+
+  "データ削除期限日"
+  removal_limit_date: DateTime
 }
 
 input UpdateApplyDownloadApprovalArgs {

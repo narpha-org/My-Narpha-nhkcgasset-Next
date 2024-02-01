@@ -8,7 +8,7 @@ import {
   ApplyDownload,
   CgAsset, CgaViewingRestriction,
 } from "@/graphql/generated/graphql";
-import { isServerRoleOther, isServerRoleUser } from "@/lib/check-role-server";
+import { isServerRoleAdmin, isServerRoleEditor, isServerRoleManager, isServerRoleOther, isServerRoleUser } from "@/lib/check-role-server";
 
 // import { Heading } from "@/components/ui/heading";
 // import { Separator } from "@/components/ui/separator";
@@ -53,7 +53,7 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
   // console.log(`applyDownloads: ${JSON.stringify(applyDownloads)}`);
   // console.log(`checkGlacierStatus(applyDownloads): ${checkGlacierStatus(applyDownloads)}`);
 
-  const downloadable = checkGlacierStatus(applyDownloads) === 1 || checkGlacierStatus(applyDownloads) === 0;
+  const downloadable = checkGlacierStatus(applyDownloads) === 1;
 
   return (
     <>
@@ -79,7 +79,12 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
                 )}
                 {downloadable === false && (await isServerRoleUser() || await isServerRoleOther()) && (
                   <div className="detail__sidedl">
-                    <p>ダウンロード</p><ApplyDownloadDialog cgAssetId={cgAsset.id} />
+                    <p>ダウンロード</p><ApplyDownloadDialog cgAssetId={cgAsset.id} title="申請" />
+                  </div>
+                )}
+                {!downloadable && (await isServerRoleAdmin() || await isServerRoleManager() || await isServerRoleEditor()) && (
+                  <div className="detail__sidedl">
+                    <p>データ復元</p><ApplyDownloadDialog cgAssetId={cgAsset.id} title="開始" />
                   </div>
                 )}
                 {(!await isServerRoleUser() && !await isServerRoleOther()) && (

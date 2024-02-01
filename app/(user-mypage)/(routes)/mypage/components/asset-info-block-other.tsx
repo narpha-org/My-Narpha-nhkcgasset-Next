@@ -23,23 +23,23 @@ import AssetInfoApplyDownloadOther from "./asset-info-apply-download-other";
 interface AssetInfoBlockOtherProps {
   downloadApplies: ApplyDownload[]
   downloadAppliesPg: ApplyDownloadPaginator['paginatorInfo']
-  applies: ApplyDownload[]
-  appliesPg: ApplyDownloadPaginator['paginatorInfo']
-  approvals: ApplyDownload[]
-  approvalsPg: ApplyDownloadPaginator['paginatorInfo']
-  cgAssets: CgAsset[]
-  cgAssetsPg: CgAssetPaginator['paginatorInfo']
+  // applies: ApplyDownload[]
+  // appliesPg: ApplyDownloadPaginator['paginatorInfo']
+  // approvals: ApplyDownload[]
+  // approvalsPg: ApplyDownloadPaginator['paginatorInfo']
+  // cgAssets: CgAsset[]
+  // cgAssetsPg: CgAssetPaginator['paginatorInfo']
 }
 
 const AssetInfoBlockOther: React.FC<AssetInfoBlockOtherProps> = ({
   downloadApplies,
   downloadAppliesPg,
-  applies,
-  appliesPg,
-  approvals,
-  approvalsPg,
-  cgAssets,
-  cgAssetsPg,
+  // applies,
+  // appliesPg,
+  // approvals,
+  // approvalsPg,
+  // cgAssets,
+  // cgAssetsPg,
 }) => {
   // const router = useRouter();
 

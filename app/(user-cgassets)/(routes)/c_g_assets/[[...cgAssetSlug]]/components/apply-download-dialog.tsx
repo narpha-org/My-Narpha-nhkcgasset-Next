@@ -30,7 +30,8 @@ import CGAssetApplyDownloadClientUser from "./client-apply-download-user";
 import CGAssetApplyDownloadClientOther from "./client-apply-download-other";
 
 const ApplyDownloadDialog = ({
-  cgAssetId
+  cgAssetId,
+  title
 }) => {
   const { data: session, status } = useSession();
 
@@ -69,7 +70,7 @@ const ApplyDownloadDialog = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          申請
+          {title}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-7xl" style={{

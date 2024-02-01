@@ -11,7 +11,7 @@ import { format } from 'date-fns'
 import { apolloClient } from "@/lib/apollo-client";
 import { ApolloQueryResult, FetchResult } from "@apollo/client";
 import { Button } from "@/components/ui/button-raw";
-import { Loader } from "@/components/ui/loader";
+// import { Loader } from "@/components/ui/loader";
 import { AlertModal } from "@/components/modals/alert-modal"
 import {
   GetCgAssetsCreatedAllQuery,
@@ -27,17 +27,17 @@ import { ROW_COUNT } from "@/lib/pagenation";
 import {
   Table,
   TableBody,
-  TableCaption,
+  // TableCaption,
   TableCell,
   TableHead,
-  TableHeader,
+  // TableHeader,
   TableRow,
 } from "@/components/ui/table-raw"
 
 interface AssetRegisterdListProps {
   searchRef: Ref<{ handleSearch(txt: string): void; } | undefined>
-  cgAssets: CgAsset[]
-  cgAssetsPg: CgAssetPaginator['paginatorInfo']
+  cgAssets?: CgAsset[]
+  cgAssetsPg?: CgAssetPaginator['paginatorInfo']
   cgAssetsSearchSection: string
 }
 
@@ -54,8 +54,8 @@ const AssetRegisterdList: React.FC<AssetRegisterdListProps> = forwardRef(({
 
   const rowCount = ROW_COUNT;
 
-  const [pageIndex, setPageIndex] = useState(cgAssetsPg.currentPage - 1);
-  const [pageCount, setPageCount] = useState(Math.ceil(cgAssetsPg.total / rowCount));
+  const [pageIndex, setPageIndex] = useState(cgAssetsPg!.currentPage - 1);
+  const [pageCount, setPageCount] = useState(Math.ceil(cgAssetsPg!.total / rowCount));
   const [order, setOrder] = useState('');
   const [orderAsc, setOrderAsc] = useState(true);
   const [searchTxt, setSearchTxt] = useState('');

@@ -20,10 +20,10 @@ interface HomeDashboardClientAdminProps {
   systemNotices: SystemNotice[]
   downloadApplies: ApplyDownload[]
   downloadAppliesPg: ApplyDownloadPaginator['paginatorInfo']
-  applies: ApplyDownload[]
-  appliesPg: ApplyDownloadPaginator['paginatorInfo']
-  approvals: ApplyDownload[]
-  approvalsPg: ApplyDownloadPaginator['paginatorInfo']
+  // applies: ApplyDownload[]
+  // appliesPg: ApplyDownloadPaginator['paginatorInfo']
+  // approvals: ApplyDownload[]
+  // approvalsPg: ApplyDownloadPaginator['paginatorInfo']
   cgAssets: CgAsset[]
   cgAssetsPg: CgAssetPaginator['paginatorInfo']
 }
@@ -32,10 +32,10 @@ export const HomeDashboardClientAdmin: React.FC<HomeDashboardClientAdminProps> =
   systemNotices,
   downloadApplies,
   downloadAppliesPg,
-  applies,
-  appliesPg,
-  approvals,
-  approvalsPg,
+  // applies,
+  // appliesPg,
+  // approvals,
+  // approvalsPg,
   cgAssets,
   cgAssetsPg
 }) => {
@@ -77,10 +77,10 @@ export const HomeDashboardClientAdmin: React.FC<HomeDashboardClientAdminProps> =
                   <AssetInfoBlock
                     downloadApplies={downloadApplies}
                     downloadAppliesPg={downloadAppliesPg}
-                    applies={applies}
-                    appliesPg={appliesPg}
-                    approvals={approvals}
-                    approvalsPg={approvalsPg}
+                    // applies={applies}
+                    // appliesPg={appliesPg}
+                    // approvals={approvals}
+                    // approvalsPg={approvalsPg}
                     cgAssets={cgAssets}
                     cgAssetsPg={cgAssetsPg}
                   />

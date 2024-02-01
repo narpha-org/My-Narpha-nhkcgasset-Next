@@ -24,6 +24,7 @@ import CGAssetApplyDownloadBoxDeliverViewAdmin from './page-apply-download/apply
 import CGAssetApplyDownloadDlNoticeViewAdmin from './page-apply-download/apply-download-dl-notice-view-admin';
 import CGAssetApplyDownloadRemovalView from './page-apply-download/apply-download-removal-view';
 import CGAssetApplyDownloadDoneView from "./page-apply-download/apply-download-done-view";
+import CGAssetApplyDownloadGlacierForm from "./page-apply-download/apply-download-glacier-form";
 
 const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -195,9 +196,24 @@ const CGAssetApplyDownloadClientAdmin: React.FC<CGAssetPageProps & {
       default:
         break;
     }
+
+    return <div>承認・Box・消去</div>
+
   }
 
-  return <div>承認・Box・消去</div>
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <CGAssetApplyDownloadGlacierForm
+          initialData={null}
+          cgAsset={cgAsset}
+          manageUsers={manageUsers}
+          setDialogOpen={setDialogOpen}
+          params={params}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default CGAssetApplyDownloadClientAdmin;

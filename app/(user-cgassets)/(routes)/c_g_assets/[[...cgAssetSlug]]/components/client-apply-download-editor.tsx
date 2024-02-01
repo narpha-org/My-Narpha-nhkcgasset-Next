@@ -25,6 +25,7 @@ import CGAssetApplyDownloadBoxDeliverViewManager from './page-apply-download/app
 import CGAssetApplyDownloadDlNoticeViewManager from './page-apply-download/apply-download-dl-notice-view-manager';
 import CGAssetApplyDownloadRemovalView from "./page-apply-download/apply-download-removal-view";
 import CGAssetApplyDownloadDoneView from "./page-apply-download/apply-download-done-view";
+import CGAssetApplyDownloadGlacierForm from "./page-apply-download/apply-download-glacier-form";
 
 const CGAssetApplyDownloadClientEditor: React.FC<CGAssetPageProps & {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -207,7 +208,7 @@ const CGAssetApplyDownloadClientEditor: React.FC<CGAssetPageProps & {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <CGAssetApplyDownloadForm
+        <CGAssetApplyDownloadGlacierForm
           initialData={null}
           cgAsset={cgAsset}
           manageUsers={manageUsers}

@@ -1,0 +1,13 @@
+mutation CreateApplyGlacier($input: CreateApplyGlacierArgs!) {
+  createApplyGlacier(input: $input) {
+    __typename
+    id
+    cgAsset {
+      id
+      asset_id
+      asset_name
+    }
+    status
+    created_at
+  }
+}

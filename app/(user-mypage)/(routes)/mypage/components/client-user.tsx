@@ -7,13 +7,13 @@ import {
   SystemNotice,
   ApplyDownload,
   ApplyDownloadPaginator,
-  CgAsset,
-  CgAssetPaginator,
+  // CgAsset,
+  // CgAssetPaginator,
 } from "@/graphql/generated/graphql";
 import { NavHeaderMypage } from '@/components/nav-header-mypage';
 
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
+// import { Heading } from "@/components/ui/heading";
+// import { Separator } from "@/components/ui/separator";
 import NoticeBlock from "./notice-block";
 import AssetInfoBlock from "./asset-info-block";
 import UserInfoBlock from "./user-info-block";
@@ -22,24 +22,24 @@ interface HomeDashboardClientUserProps {
   systemNotices: SystemNotice[]
   downloadApplies: ApplyDownload[]
   downloadAppliesPg: ApplyDownloadPaginator['paginatorInfo']
-  applies: ApplyDownload[]
-  appliesPg: ApplyDownloadPaginator['paginatorInfo']
-  approvals: ApplyDownload[]
-  approvalsPg: ApplyDownloadPaginator['paginatorInfo']
-  cgAssets: CgAsset[]
-  cgAssetsPg: CgAssetPaginator['paginatorInfo']
+  // applies: ApplyDownload[]
+  // appliesPg: ApplyDownloadPaginator['paginatorInfo']
+  // approvals: ApplyDownload[]
+  // approvalsPg: ApplyDownloadPaginator['paginatorInfo']
+  // cgAssets: CgAsset[]
+  // cgAssetsPg: CgAssetPaginator['paginatorInfo']
 }
 
 export const HomeDashboardClientUser: React.FC<HomeDashboardClientUserProps> = ({
   systemNotices,
   downloadApplies,
   downloadAppliesPg,
-  applies,
-  appliesPg,
-  approvals,
-  approvalsPg,
-  cgAssets,
-  cgAssetsPg
+  // applies,
+  // appliesPg,
+  // approvals,
+  // approvalsPg,
+  // cgAssets,
+  // cgAssetsPg
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -79,12 +79,12 @@ export const HomeDashboardClientUser: React.FC<HomeDashboardClientUserProps> = (
                   <AssetInfoBlock
                     downloadApplies={downloadApplies}
                     downloadAppliesPg={downloadAppliesPg}
-                    applies={applies}
-                    appliesPg={appliesPg}
-                    approvals={approvals}
-                    approvalsPg={approvalsPg}
-                    cgAssets={cgAssets}
-                    cgAssetsPg={cgAssetsPg}
+                  // applies={applies}
+                  // appliesPg={appliesPg}
+                  // approvals={approvals}
+                  // approvalsPg={approvalsPg}
+                  // cgAssets={cgAssets}
+                  // cgAssetsPg={cgAssetsPg}
                   />
                 </div>
               </div>

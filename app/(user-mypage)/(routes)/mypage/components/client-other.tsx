@@ -7,8 +7,8 @@ import {
   SystemNotice,
   ApplyDownload,
   ApplyDownloadPaginator,
-  CgAsset,
-  CgAssetPaginator,
+  // CgAsset,
+  // CgAssetPaginator,
 } from "@/graphql/generated/graphql";
 import { NavHeaderMypage } from '@/components/nav-header-mypage';
 
@@ -20,24 +20,24 @@ interface HomeDashboardClientOtherProps {
   systemNotices: SystemNotice[]
   downloadApplies: ApplyDownload[]
   downloadAppliesPg: ApplyDownloadPaginator['paginatorInfo']
-  applies: ApplyDownload[]
-  appliesPg: ApplyDownloadPaginator['paginatorInfo']
-  approvals: ApplyDownload[]
-  approvalsPg: ApplyDownloadPaginator['paginatorInfo']
-  cgAssets: CgAsset[]
-  cgAssetsPg: CgAssetPaginator['paginatorInfo']
+  // applies: ApplyDownload[]
+  // appliesPg: ApplyDownloadPaginator['paginatorInfo']
+  // approvals: ApplyDownload[]
+  // approvalsPg: ApplyDownloadPaginator['paginatorInfo']
+  // cgAssets: CgAsset[]
+  // cgAssetsPg: CgAssetPaginator['paginatorInfo']
 }
 
 export const HomeDashboardClientOther: React.FC<HomeDashboardClientOtherProps> = ({
   systemNotices,
   downloadApplies,
   downloadAppliesPg,
-  applies,
-  appliesPg,
-  approvals,
-  approvalsPg,
-  cgAssets,
-  cgAssetsPg
+  // applies,
+  // appliesPg,
+  // approvals,
+  // approvalsPg,
+  // cgAssets,
+  // cgAssetsPg
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -77,12 +77,12 @@ export const HomeDashboardClientOther: React.FC<HomeDashboardClientOtherProps> =
                   <AssetInfoBlock
                     downloadApplies={downloadApplies}
                     downloadAppliesPg={downloadAppliesPg}
-                    applies={applies}
-                    appliesPg={appliesPg}
-                    approvals={approvals}
-                    approvalsPg={approvalsPg}
-                    cgAssets={cgAssets}
-                    cgAssetsPg={cgAssetsPg}
+                  // applies={applies}
+                  // appliesPg={appliesPg}
+                  // approvals={approvals}
+                  // approvalsPg={approvalsPg}
+                  // cgAssets={cgAssets}
+                  // cgAssetsPg={cgAssetsPg}
                   />
                 </div>
               </div>

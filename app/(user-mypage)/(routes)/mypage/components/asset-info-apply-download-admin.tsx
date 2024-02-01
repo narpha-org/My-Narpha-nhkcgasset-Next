@@ -206,7 +206,7 @@ const AssetInfoApplyDownloadAdmin: React.FC<AssetInfoApplyDownloadAdminProps> = 
                   break;
                 case StatusApplyDownload.BoxDeliver: // Boxリンク通知
 
-                  if (checkGlacierStatus([elem]) === 0) {
+                  if (checkGlacierStatus([elem]) !== 1) {
                     action = "ダウンロード準備中"
                     // tag_gray_on = "on"
                   } else {

@@ -13,7 +13,7 @@ import {
   PaginatorInfo,
   CgAssetsSearchSection,
 } from "@/graphql/generated/graphql";
-import { MyPagenator } from "@/components/ui/pagenator";
+// import { MyPagenator } from "@/components/ui/pagenator";
 import { ROW_COUNT } from "@/lib/pagenation";
 
 import { HomeDashboardClientEditor } from './client-editor';
@@ -39,10 +39,10 @@ const HomeDashboardServerEditor = async ({ }: HomeDashboardServerEditorProps) =>
   const systemNotices = ret.data.SystemNoticesValid as SystemNotice[];
   const dls_WithDone = ret.data.ApplyDownloadsWithDone.data as ApplyDownload[];
   const dls_WithDone_pginfo = ret.data.ApplyDownloadsWithDone.paginatorInfo as PaginatorInfo;
-  const dls_OnlyApply = ret.data.ApplyDownloadsOnlyApply.data as ApplyDownload[];
-  const dls_OnlyApply_pginfo = ret.data.ApplyDownloadsOnlyApply.paginatorInfo as PaginatorInfo;
-  const dls_ApplyOrApproval = ret.data.ApplyDownloadsApplyOrApproval.data as ApplyDownload[];
-  const dls_ApplyOrApproval_pginfo = ret.data.ApplyDownloadsApplyOrApproval.paginatorInfo as PaginatorInfo;
+  // const dls_OnlyApply = ret.data.ApplyDownloadsOnlyApply.data as ApplyDownload[];
+  // const dls_OnlyApply_pginfo = ret.data.ApplyDownloadsOnlyApply.paginatorInfo as PaginatorInfo;
+  // const dls_ApplyOrApproval = ret.data.ApplyDownloadsApplyOrApproval.data as ApplyDownload[];
+  // const dls_ApplyOrApproval_pginfo = ret.data.ApplyDownloadsApplyOrApproval.paginatorInfo as PaginatorInfo;
   const cgAssets = ret.data.CGAssetsCreatedAll.data as CgAsset[];
   const cgAssets_pginfo = ret.data.CGAssetsCreatedAll.paginatorInfo as PaginatorInfo;
 
@@ -51,10 +51,10 @@ const HomeDashboardServerEditor = async ({ }: HomeDashboardServerEditorProps) =>
       systemNotices={systemNotices}
       downloadApplies={dls_WithDone}
       downloadAppliesPg={dls_WithDone_pginfo}
-      applies={dls_OnlyApply}
-      appliesPg={dls_OnlyApply_pginfo}
-      approvals={dls_ApplyOrApproval}
-      approvalsPg={dls_ApplyOrApproval_pginfo}
+      // applies={dls_OnlyApply}
+      // appliesPg={dls_OnlyApply_pginfo}
+      // approvals={dls_ApplyOrApproval}
+      // approvalsPg={dls_ApplyOrApproval_pginfo}
       cgAssets={cgAssets}
       cgAssetsPg={cgAssets_pginfo}
     />

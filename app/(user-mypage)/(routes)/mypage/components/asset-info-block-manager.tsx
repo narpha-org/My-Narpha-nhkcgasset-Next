@@ -25,21 +25,21 @@ import AssetRegisterdList from "./asset-registerd-list";
 interface AssetInfoBlockManagerProps {
   downloadApplies: ApplyDownload[]
   downloadAppliesPg: ApplyDownloadPaginator['paginatorInfo']
-  applies: ApplyDownload[]
-  appliesPg: ApplyDownloadPaginator['paginatorInfo']
-  approvals: ApplyDownload[]
-  approvalsPg: ApplyDownloadPaginator['paginatorInfo']
-  cgAssets: CgAsset[]
-  cgAssetsPg: CgAssetPaginator['paginatorInfo']
+  // applies: ApplyDownload[]
+  // appliesPg: ApplyDownloadPaginator['paginatorInfo']
+  // approvals: ApplyDownload[]
+  // approvalsPg: ApplyDownloadPaginator['paginatorInfo']
+  cgAssets?: CgAsset[]
+  cgAssetsPg?: CgAssetPaginator['paginatorInfo']
 }
 
 const AssetInfoBlockManager: React.FC<AssetInfoBlockManagerProps> = ({
   downloadApplies,
   downloadAppliesPg,
-  applies,
-  appliesPg,
-  approvals,
-  approvalsPg,
+  // applies,
+  // appliesPg,
+  // approvals,
+  // approvalsPg,
   cgAssets,
   cgAssetsPg,
 }) => {

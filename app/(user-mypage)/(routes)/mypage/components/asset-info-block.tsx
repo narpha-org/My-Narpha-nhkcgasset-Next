@@ -22,21 +22,21 @@ import AssetInfoBlockUser from "./asset-info-block-user";
 interface AssetInfoBlockProps {
   downloadApplies: ApplyDownload[]
   downloadAppliesPg: ApplyDownloadPaginator['paginatorInfo']
-  applies: ApplyDownload[]
-  appliesPg: ApplyDownloadPaginator['paginatorInfo']
-  approvals: ApplyDownload[]
-  approvalsPg: ApplyDownloadPaginator['paginatorInfo']
-  cgAssets: CgAsset[]
-  cgAssetsPg: CgAssetPaginator['paginatorInfo']
+  // applies: ApplyDownload[]
+  // appliesPg: ApplyDownloadPaginator['paginatorInfo']
+  // approvals: ApplyDownload[]
+  // approvalsPg: ApplyDownloadPaginator['paginatorInfo']
+  cgAssets?: CgAsset[]
+  cgAssetsPg?: CgAssetPaginator['paginatorInfo']
 }
 
 const AssetInfoBlock: React.FC<AssetInfoBlockProps> = ({
   downloadApplies,
   downloadAppliesPg,
-  applies,
-  appliesPg,
-  approvals,
-  approvalsPg,
+  // applies,
+  // appliesPg,
+  // approvals,
+  // approvalsPg,
   cgAssets,
   cgAssetsPg,
 }) => {
@@ -46,10 +46,10 @@ const AssetInfoBlock: React.FC<AssetInfoBlockProps> = ({
     return <AssetInfoBlockAdmin
       downloadApplies={downloadApplies}
       downloadAppliesPg={downloadAppliesPg}
-      applies={applies}
-      appliesPg={appliesPg}
-      approvals={approvals}
-      approvalsPg={approvalsPg}
+      // applies={applies}
+      // appliesPg={appliesPg}
+      // approvals={approvals}
+      // approvalsPg={approvalsPg}
       cgAssets={cgAssets}
       cgAssetsPg={cgAssetsPg}
     />
@@ -59,10 +59,10 @@ const AssetInfoBlock: React.FC<AssetInfoBlockProps> = ({
     return <AssetInfoBlockManager
       downloadApplies={downloadApplies}
       downloadAppliesPg={downloadAppliesPg}
-      applies={applies}
-      appliesPg={appliesPg}
-      approvals={approvals}
-      approvalsPg={approvalsPg}
+      // applies={applies}
+      // appliesPg={appliesPg}
+      // approvals={approvals}
+      // approvalsPg={approvalsPg}
       cgAssets={cgAssets}
       cgAssetsPg={cgAssetsPg}
     />
@@ -72,10 +72,10 @@ const AssetInfoBlock: React.FC<AssetInfoBlockProps> = ({
     return <AssetInfoBlockEditor
       downloadApplies={downloadApplies}
       downloadAppliesPg={downloadAppliesPg}
-      applies={applies}
-      appliesPg={appliesPg}
-      approvals={approvals}
-      approvalsPg={approvalsPg}
+      // applies={applies}
+      // appliesPg={appliesPg}
+      // approvals={approvals}
+      // approvalsPg={approvalsPg}
       cgAssets={cgAssets}
       cgAssetsPg={cgAssetsPg}
     />
@@ -84,10 +84,10 @@ const AssetInfoBlock: React.FC<AssetInfoBlockProps> = ({
   return <AssetInfoBlockUser
     downloadApplies={downloadApplies}
     downloadAppliesPg={downloadAppliesPg}
-    applies={applies}
-    appliesPg={appliesPg}
-    approvals={approvals}
-    approvalsPg={approvalsPg}
+  // applies={applies}
+  // appliesPg={appliesPg}
+  // approvals={approvals}
+  // approvalsPg={approvalsPg}
   />
 }
 

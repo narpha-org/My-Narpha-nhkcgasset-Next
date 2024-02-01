@@ -177,7 +177,7 @@ const AssetInfoApplyDownloadEditor: React.FC<AssetInfoApplyDownloadEditorProps> 
                   break;
                 case StatusApplyDownload.BoxDeliver: // DL済み通知
 
-                  if (checkGlacierStatus([elem]) === 0) {
+                  if (checkGlacierStatus([elem]) !== 1) {
                     action = "ダウンロード準備中"
                     // tag_gray_on = "on"
                   } else {
