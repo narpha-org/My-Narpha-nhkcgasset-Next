@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react";
-import { Download } from "lucide-react";
+// import { Download } from "lucide-react";
 import {
   IsRoleAdmin,
   IsRoleManager,
@@ -15,12 +15,13 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  // DialogDescription,
+  // DialogFooter,
+  // DialogHeader,
+  // DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { checkGlacierStatus } from "@/lib/check-glacier-status";
 
 import { CGAssetPageSlug } from "./page-slug";
 import CGAssetApplyDownloadClientAdmin from "./client-apply-download-admin";
@@ -31,10 +32,10 @@ import CGAssetApplyDownloadClientOther from "./client-apply-download-other";
 
 const ApplyDownloadDialog = ({
   cgAssetId,
+  applyDownloads,
   title
 }) => {
   const { data: session, status } = useSession();
-
   const [open, setOpen] = useState(false);
 
   const params = {
@@ -42,6 +43,37 @@ const ApplyDownloadDialog = ({
       cgAssetId,
       CGAssetPageSlug.ApplyDownload
     ]
+  }
+
+  if (checkGlacierStatus(applyDownloads) === 0) {
+    return <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button>
+          {title}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-7xl" style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "26.6666666667vw",
+        // height: "50vh",
+        maxWidth: "26.6666666667vw",
+        maxHeight: "100vh",
+        overflowY: "auto",
+        // zIndex: 1002,
+      }}>
+        <div className="dialog__text">
+          <div className="dialog__text-main">
+            <p>ダウンロード用データを再構築中です<br />
+              再構築には時間を要する可能性がございます</p>
+            <p>データを、マイページのダウンロード申請リストの<br />
+              「ダウンロード」ボタンから、ダウンロードしてください</p>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog >
   }
 
   let child;

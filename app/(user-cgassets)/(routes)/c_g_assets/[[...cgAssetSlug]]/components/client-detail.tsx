@@ -79,12 +79,20 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
                 )}
                 {downloadable === false && (await isServerRoleUser() || await isServerRoleOther()) && (
                   <div className="detail__sidedl">
-                    <p>ダウンロード</p><ApplyDownloadDialog cgAssetId={cgAsset.id} title="申請" />
+                    <p>ダウンロード</p><ApplyDownloadDialog
+                      cgAssetId={cgAsset.id}
+                      applyDownloads={[]}
+                      title="申請"
+                    />
                   </div>
                 )}
                 {!downloadable && (await isServerRoleAdmin() || await isServerRoleManager() || await isServerRoleEditor()) && (
                   <div className="detail__sidedl">
-                    <p>データ復元</p><ApplyDownloadDialog cgAssetId={cgAsset.id} title="開始" />
+                    <p>データ復元</p><ApplyDownloadDialog
+                      cgAssetId={cgAsset.id}
+                      applyDownloads={applyDownloads}
+                      title="開始"
+                    />
                   </div>
                 )}
                 {(!await isServerRoleUser() && !await isServerRoleOther()) && (
