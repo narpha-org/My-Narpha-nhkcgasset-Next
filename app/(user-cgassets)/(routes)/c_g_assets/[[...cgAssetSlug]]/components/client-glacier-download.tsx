@@ -101,6 +101,21 @@ const GlacierDownloadClient: React.FC<GlacierDownloadClientProps> = ({ applyDown
           <div className="download__inner">
             {appDLGlaciers && appDLGlaciers.map((elem: ApplyDownloadGlacier | null) => {
               if (elem) {
+                // return <div key={elem.id} className="mx-auto my-2">
+                //   <div>[{JSON.stringify(elem, null, "\t")}]</div>
+                // </div>
+
+                if (elem.ongoing_request === true) {
+                  return <div key={elem.id} className="mx-auto my-2">
+                    <Button
+                      className="btn btn__download btn__download__expired"
+                      type="button"
+                      style={{ cursor: "default" }}
+                    >
+                      <DownloadCloud className="mr-4 h-8 w-8" /> ダウンロード準備中
+                    </Button>
+                  </div>
+                }
 
                 if (isPastDate(elem.expiry_date) || !elem.presigned_url) {
                   return <div key={elem.id} className="mx-auto my-2">

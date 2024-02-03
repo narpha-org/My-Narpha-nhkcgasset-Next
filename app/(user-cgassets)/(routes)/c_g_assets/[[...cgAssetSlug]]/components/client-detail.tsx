@@ -64,6 +64,8 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
         <div className="detail">
           <div className="detail__inner">
             <div className="detail__mainbox">
+              {/* <div>[{JSON.stringify(applyDownloads)}]</div>
+              <div>[{checkGlacierStatus(applyDownloads)}]</div> */}
               <AssetHeadlineBlock cgAsset={cgAsset} />
               <AssetCarouselBlock cgAsset={cgAsset} />
               <AssetDetailDetailBlock cgAsset={cgAsset} />
@@ -81,7 +83,7 @@ const CGAssetDetailClient: React.FC<CGAssetDetailClientProps> = async ({
                   <div className="detail__sidedl">
                     <p>ダウンロード</p><ApplyDownloadDialog
                       cgAssetId={cgAsset.id}
-                      applyDownloads={[]}
+                      applyDownloads={applyDownloads}
                       title="申請"
                     />
                   </div>

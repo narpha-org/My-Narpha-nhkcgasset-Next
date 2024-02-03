@@ -76,6 +76,32 @@ const ApplyDownloadDialog = ({
     </Dialog >
   }
 
+  // return <Dialog open={open} onOpenChange={setOpen}>
+  //   <DialogTrigger asChild>
+  //     <Button>
+  //       {title}
+  //     </Button>
+  //   </DialogTrigger>
+  //   <DialogContent className="sm:max-w-7xl" style={{
+  //     position: "fixed",
+  //     top: "50%",
+  //     left: "50%",
+  //     transform: "translate(-50%, -50%)",
+  //     width: "26.6666666667vw",
+  //     // height: "50vh",
+  //     maxWidth: "26.6666666667vw",
+  //     maxHeight: "100vh",
+  //     overflowY: "auto",
+  //     // zIndex: 1002,
+  //   }}>
+  //     <div className="dialog__text">
+  //       <div className="dialog__text-main">
+  //         <div>[{JSON.stringify(applyDownloads, null, "\t")}]</div>
+  //       </div>
+  //     </div>
+  //   </DialogContent>
+  // </Dialog >
+
   let child;
 
   if (IsRoleAdmin(session)) {

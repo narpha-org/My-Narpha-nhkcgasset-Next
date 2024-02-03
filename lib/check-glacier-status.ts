@@ -4,6 +4,12 @@ import {
 } from "@/graphql/generated/graphql";
 
 export const checkGlacierStatus = (elems: ApplyDownload[]) => {
+  /* 
+  -1: 復元進行データなし
+   1: 復元進行データあり -> 復元ステータス:FALSE
+   0: 復元進行データあり -> 復元ステータス:TRUE
+  */
+
   if (!elems) {
     return -1;
   }
